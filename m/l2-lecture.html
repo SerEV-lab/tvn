@@ -1,0 +1,1234 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Лекция 2. Ионизация, электронная лавина, условие самостоятельности</title><style>:root{--ink:#16202c;--muted:#5b6675;--line:#d9dde3;--acc:#1f5faf;--bg:#fff;--soft:#f3f5f8}
+@media (prefers-color-scheme:dark){:root{--ink:#e6eaf0;--muted:#9aa6b5;--line:#33404f;--acc:#7fb3f0;--bg:#121820;--soft:#1b2430}img{background:#fff}}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 "PT Serif",Georgia,"Times New Roman",serif}
+.bar{position:sticky;top:0;display:flex;justify-content:space-between;gap:12px;padding:10px 16px;background:var(--soft);border-bottom:1px solid var(--line);font:600 14px system-ui,-apple-system,"Segoe UI",sans-serif;z-index:5}
+.bar a{color:var(--acc);text-decoration:none}.bar .pdf{border:1px solid var(--acc);border-radius:999px;padding:2px 12px}
+main{max-width:820px;margin:0 auto;padding:16px 16px 64px}
+h1,h2,h3,h4{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.25;margin:1.6em 0 .5em}
+h1{font-size:1.5em}h2{font-size:1.25em}h3{font-size:1.08em}
+p{margin:.5em 0}img{max-width:100%;height:auto;display:block;margin:12px auto;border-radius:6px}
+figure{margin:16px 0}figcaption{text-align:center;color:var(--muted);font-size:.9em}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:.92em;display:block;overflow-x:auto}
+td,th{border:1px solid var(--line);padding:6px 8px;vertical-align:top}th{background:var(--soft);text-align:left}
+math{font-size:1.08em}math[display=block]{overflow-x:auto;overflow-y:hidden;margin:10px 0}
+blockquote{margin:12px 0;padding:8px 14px;border-left:4px solid var(--acc);background:var(--soft)}
+@media print{.bar{display:none}body{font-size:12pt}main{max-width:none;padding:0}table{display:table}img{background:none}}
+</style></head><body><nav class="bar"><a href="../">← Техника высоких напряжений</a><a class="pdf" href="l2-lecture.pdf" download>Скачать PDF</a></nav><main><p>Техника высоких напряжений</p>
+<p><strong>Конспект лекции</strong></p>
+<p><strong>Лекция 2. Ионизация газа, электронная лавина, условие
+самостоятельности разряда</strong></p>
+<p><em>Как сильное поле превращает газ в проводник · материал для
+студентов</em></p>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><p><strong>О чём лекция.</strong> В лекции 1 мы научились находить,
+где поле сильное. Теперь — <strong>как сильное поле превращает
+непроводящий газ в проводник</strong>: откуда в газе свободные заряды,
+как электрон размножается лавиной и при каком условии разряд
+поддерживает себя сам. Эта физика понадобится в лекциях о стримере,
+короне, законе Пашена и частичных разрядах.</p>
+<p><strong>Интерактив.</strong> «Ионизация и лавина» на сайте курса:
+вкладки 1–4 повторяют разделы конспекта, вкладка 5 — задачи, вкладка 6 —
+тест. Задачи с разбором — в пособии студента к лекции 2.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>После лекции вы сможете:</strong></p>
+<ol type="1">
+<li><p>назвать виды объёмной ионизации и эмиссии и записать условие
+каждого;</p></li>
+<li><p>оценить энергию, которую электрон набирает на длине свободного
+пробега, и сравнить её с энергией ионизации;</p></li>
+<li><p>объяснить смысл коэффициентов α, η и γ и рассчитать α по формуле
+Таунсенда;</p></li>
+<li><p>рассчитать число электронов и ионов в лавине, объяснить, почему
+почти все ионы лежат у головки;</p></li>
+<li><p>записать и применить условие самостоятельности разряда, получить
+из него закон Пашена;</p></li>
+<li><p>объяснить, как давление, высота, влажность и газ меняют
+электрическую прочность промежутка.</p></li>
+</ol>
+<h2>1. Обозначения и сокращения</h2>
+<table>
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 56%" />
+<col style="width: 27%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Обозначение</strong></th>
+<th><strong>Смысл</strong></th>
+<th><strong>Единица</strong></th>
+</tr>
+<tr class="odd">
+<th>e</th>
+<th>элементарный заряд, 1,602·10<sup>−19</sup> Кл</th>
+<th>Кл</th>
+</tr>
+<tr class="header">
+<th>E</th>
+<th>напряжённость электрического поля</th>
+<th>В/см, кВ/см</th>
+</tr>
+<tr class="odd">
+<th>U, U<sub>пр</sub></th>
+<th>напряжение; пробивное напряжение промежутка</th>
+<th>кВ</th>
+</tr>
+<tr class="header">
+<th>S</th>
+<th>длина разрядного промежутка (катод — анод)</th>
+<th>см</th>
+</tr>
+<tr class="odd">
+<th>p</th>
+<th>давление газа</th>
+<th>мм рт. ст. (Торр)</th>
+</tr>
+<tr class="header">
+<th>E/p</th>
+<th>приведённая напряжённость — параметр подобия</th>
+<th>В/(см·мм рт. ст.)</th>
+</tr>
+<tr class="odd">
+<th>λ</th>
+<th>средняя длина свободного пробега</th>
+<th>мкм, см</th>
+</tr>
+<tr class="header">
+<th>Z</th>
+<th>число соударений на единице пути, λ = 1/Z</th>
+<th>1/см</th>
+</tr>
+<tr class="odd">
+<th>W<sub>и</sub>, W<sub>в</sub></th>
+<th>энергия ионизации, энергия возбуждения</th>
+<th>эВ</th>
+</tr>
+<tr class="header">
+<th>W<sub>вых</sub></th>
+<th>работа выхода электрона из металла</th>
+<th>эВ</th>
+</tr>
+<tr class="odd">
+<th>ψ</th>
+<th>степень ионизации n/N</th>
+<th>—</th>
+</tr>
+<tr class="header">
+<th>α</th>
+<th>коэффициент ударной ионизации — ионизаций на 1 см пути
+электрона</th>
+<th>1/см</th>
+</tr>
+<tr class="odd">
+<th>η</th>
+<th>коэффициент прилипания — захватов на 1 см пути</th>
+<th>1/см</th>
+</tr>
+<tr class="header">
+<th>γ</th>
+<th>коэффициент вторичной эмиссии — электронов с катода на один ион
+лавины</th>
+<th>—</th>
+</tr>
+<tr class="odd">
+<th>A, B</th>
+<th>константы формулы Таунсенда для газа</th>
+<th>1/(см·мм рт. ст.), В/(см·мм рт. ст.)</th>
+</tr>
+<tr class="header">
+<th>n, n<sub>0</sub></th>
+<th>число электронов в лавине; начальное число</th>
+<th>—</th>
+</tr>
+<tr class="odd">
+<th>N<sub>+</sub>, N<sub>−</sub></th>
+<th>положительные и отрицательные ионы лавины</th>
+<th>—</th>
+</tr>
+<tr class="header">
+<th>μ</th>
+<th>число вторичных электронов от одной лавины</th>
+<th>—</th>
+</tr>
+<tr class="odd">
+<th>I, I<sub>0</sub></th>
+<th>ток в цепи промежутка; ток внешнего ионизатора</th>
+<th>А, пА</th>
+</tr>
+<tr class="header">
+<th>r</th>
+<th>радиус головки лавины</th>
+<th>мм</th>
+</tr>
+<tr class="odd">
+<th>E<sub>q</sub></th>
+<th>поле заряда головки лавины</th>
+<th>кВ/см</th>
+</tr>
+<tr class="header">
+<th>v<sub>e</sub>, v<sub>и</sub></th>
+<th>скорость дрейфа электронов, ионов</th>
+<th>см/с</th>
+</tr>
+<tr class="odd">
+<th>h·ν</th>
+<th>энергия фотона</th>
+<th>эВ</th>
+</tr>
+<tr class="header">
+<th>δ</th>
+<th>относительная плотность воздуха</th>
+<th>—</th>
+</tr>
+<tr class="odd">
+<th>H</th>
+<th>высота над уровнем моря</th>
+<th>м</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 76%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Сокращение</strong></th>
+<th><strong>Расшифровка</strong></th>
+</tr>
+<tr class="odd">
+<th>КРУ, КРУЭ</th>
+<th>комплектное распределительное устройство; КРУ элегазовое</th>
+</tr>
+<tr class="header">
+<th>ВЛ, ПС, ОРУ</th>
+<th>воздушная линия; подстанция; открытое распределительное
+устройство</th>
+</tr>
+<tr class="odd">
+<th>УФ</th>
+<th>ультрафиолетовое излучение</th>
+</tr>
+<tr class="header">
+<th>SF₆</th>
+<th>элегаз — гексафторид серы</th>
+</tr>
+<tr class="odd">
+<th>ВДК</th>
+<th>вакуумная дугогасительная камера</th>
+</tr>
+<tr class="header">
+<th>ЧР</th>
+<th>частичный разряд (лекция 10)</th>
+</tr>
+<tr class="odd">
+<th>эВ</th>
+<th>электронвольт: 1 эВ = 1,602·10<sup>−19</sup> Дж — энергия, которую
+заряд e набирает, пройдя разность потенциалов 1 В</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<h2>2. Возбуждение, ионизация, рекомбинация</h2>
+<h3>2.1. Энергетические уровни</h3>
+<p>Потенциальная энергия атома минимальна, когда электроны находятся на
+ближайших к ядру орбитах. Переход электрона на более удалённую орбиту —
+<strong>возбуждение</strong>; энергию W<sub>в</sub> атом получает при
+ударе или при поглощении фотона. Время жизни возбуждённого состояния
+обычно порядка 10<sup>−8</sup> с (у метастабильных уровней — много
+больше); возвращаясь, атом излучает фотон. Если электрону передана
+энергия не меньше <strong>энергии ионизации</strong> W<sub>и</sub>, он
+отрывается: рождаются две свободные частицы — электрон и положительный
+ион.</p>
+<table>
+<colgroup>
+<col style="width: 19%" />
+<col style="width: 26%" />
+<col style="width: 26%" />
+<col style="width: 27%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Газ</strong></th>
+<th><strong>Возбуждение W<sub>в</sub>, эВ</strong></th>
+<th><strong>Ионизация W<sub>и</sub>, эВ</strong></th>
+<th><strong>Диссоциация, эВ</strong></th>
+</tr>
+<tr class="odd">
+<th>N₂</th>
+<th>6,1</th>
+<th>15,5</th>
+<th>9,77</th>
+</tr>
+<tr class="header">
+<th>N</th>
+<th>6,3</th>
+<th>14,5</th>
+<th>—</th>
+</tr>
+<tr class="odd">
+<th>O₂</th>
+<th>7,9</th>
+<th>12,5</th>
+<th>5,17</th>
+</tr>
+<tr class="header">
+<th>O</th>
+<th>9,1</th>
+<th>13,6</th>
+<th>—</th>
+</tr>
+<tr class="odd">
+<th>H₂O</th>
+<th>7,6</th>
+<th>12,7</th>
+<th>—</th>
+</tr>
+<tr class="header">
+<th>Ar</th>
+<th>11,5</th>
+<th>15,8</th>
+<th>—</th>
+</tr>
+<tr class="odd">
+<th>SF₆</th>
+<th>—</th>
+<th>15,6</th>
+<th>—</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p>Таблица 1. Минимальные энергии возбуждения, ионизации и диссоциации
+(табл. 1.1 и 1.2 учебника; Ar и SF₆ — справочные значения).</p>
+<p>Удобно помнить: <strong>1 эВ</strong> — энергия, которую электрон
+получает, пройдя разность потенциалов 1 В. Поэтому если напряжённость
+выражена в В/м, а путь в метрах, их произведение сразу даёт энергию в
+электронвольтах.</p>
+<h3>2.2. Рекомбинация и степень ионизации</h3>
+<p>Обратный процесс — <strong>рекомбинация</strong>: электрон и ион
+объединяются в нейтральную частицу, избыток энергии уносит фотон.
+Ионизация и рекомбинация вместе устанавливают равновесие, которое
+характеризует степень ионизации:</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ψ</mi><mo>=</mo><mfrac><mi>n</mi><mi>N</mi></mfrac><mo>,</mo></mrow><annotation encoding="application/x-tex">\psi = \frac{n}{N},</annotation></semantics></math>
+(1)</p>
+<p>где n — концентрация ионизированных частиц, N — общая концентрация.
+Газ, в котором значительная часть частиц ионизирована, —
+<strong>плазма</strong>; концентрации положительных и отрицательных
+зарядов в ней примерно равны (канал искры, дуги, лидера).</p>
+<h3>2.3. Электроотрицательные и электроположительные газы</h3>
+<p>Молекулы кислорода, паров воды, хлора, элегаза SF₆ способны захватить
+электрон и стать отрицательным ионом — это <strong>прилипание</strong>.
+Такие газы называют электроотрицательными. Отрицательный ион тяжёл и не
+ионизует, поэтому прилипание убирает электроны из размножения. Азот,
+инертные газы, водород — электроположительные, прилипания в них
+практически нет. Именно сильное прилипание делает элегаз примерно в
+2,5–3 раза прочнее воздуха при том же давлении.</p>
+<h2>3. Длина свободного пробега и энергия электрона</h2>
+<p>Если на единице пути частица испытывает Z соударений, средняя длина
+свободного пробега</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>=</mo><mfrac><mn>1</mn><mi>Z</mi></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">\lambda = \frac{1}{Z}.</annotation></semantics></math>
+(2)</p>
+<p>Число соударений пропорционально концентрации молекул, т. е. давлению
+при постоянной температуре, поэтому λ обратно пропорциональна давлению и
+прямо пропорциональна абсолютной температуре:</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>=</mo><msub><mi>λ</mi><mn>0</mn></msub><mo>⋅</mo><mfrac><msub><mi>p</mi><mn>0</mn></msub><mi>p</mi></mfrac><mo>⋅</mo><mfrac><mi>T</mi><msub><mi>T</mi><mn>0</mn></msub></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">\lambda = \lambda_{0} \cdot \frac{p_{0}}{p} \cdot \frac{T}{T_{0}}.</annotation></semantics></math>
+(3)</p>
+<p>В модели Таунсенда длина пробега электрона связана с константой A
+газа: λ = 1/(A·p). Для воздуха при 760 мм рт. ст. это 1/(15·760) см ≈
+0,88 мкм. Эту оценку использует интерактив и задачи.</p>
+<p><img
+src="l2-lecture/media/f20a02c69fd3b4c81dd8a76a142a3a6b2e4758e5.webp"
+title="Длина свободного пробега электрона в воздухе, азоте и аргоне в зависимости от давления"
+style="width:5.51042in;height:2.83333in"
+alt="Длина свободного пробега электрона в воздухе, азоте и аргоне в зависимости от давления" /></p>
+<p><strong>Рис. 1.</strong> Длина свободного пробега электрона в
+воздухе, азоте и аргоне в зависимости от давления</p>
+<p>Под действием поля электрон на пути λ набирает энергию</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>W</mi><mi>E</mi></msub><mo>=</mo><mi>e</mi><mo>⋅</mo><mi>E</mi><mo>⋅</mo><mi>λ</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">W_{E} = e \cdot E \cdot \lambda.</annotation></semantics></math>
+(4)</p>
+<p>Для воздуха при 30 кВ/см: W = 3·10<sup>6</sup> В/м ·
+0,88·10<sup>−6</sup> м ≈ 2,6 эВ — в 5 раз меньше энергии ионизации
+кислорода. Значит, при «рабочих» напряжённостях ионизует не средний
+электрон, а редкий, пролетевший без удара путь в несколько раз длиннее
+среднего. Отсюда вероятностный характер ионизации и всего пробоя.</p>
+<h3>3.1. Почему ионизуют электроны, а не ионы</h3>
+<p>Ион тоже ускоряется полем, но он сталкивается с молекулами той же
+массы и в упругом ударе отдаёт им значительную часть энергии — накопить
+энергию ионизации ион не успевает. Электрон в тысячи раз легче: в
+упругом ударе он теряет лишь малую долю энергии (порядка
+2m<sub>e</sub>/M ≈ 10<sup>−4</sup>) и копит её от пробега к пробегу.
+Кроме того, подвижность электронов примерно в 100 раз больше ионной.
+Поэтому основной механизм размножения зарядов в газе — <strong>ударная
+ионизация электронами</strong>.</p>
+<h2>4. Виды объёмной ионизации</h2>
+<h3>4.1. Ударная ионизация</h3>
+<p>Условие (формулы 1.5–1.6 учебника): кинетическая энергия, набранная
+электроном в поле, не меньше энергии ионизации молекулы:</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>m</mi><msup><mi>v</mi><mn>2</mn></msup></mrow><mn>2</mn></mfrac><mo>=</mo><mi>e</mi><mo>⋅</mo><mi>E</mi><mo>⋅</mo><mi>λ</mi><mo>≥</mo><msub><mi>W</mi><mi>и</mi></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">\frac{mv^{2}}{2} = e \cdot E \cdot \lambda \geq W_{и}.</annotation></semantics></math>
+(5)</p>
+<p><img
+src="l2-lecture/media/08d48b691e6e6276cfd89562188e12664e53f252.webp"
+title="Мнемосхема «Ударная ионизация электроном» в интерактиве (вкладка 1): электрон, разогнанный полем, выбивает второй электрон, молекула становится положительным ионом"
+style="width:4.72917in;height:3.875in"
+alt="Мнемосхема «Ударная ионизация электроном» в интерактиве (вкладка 1): электрон, разогнанный полем, выбивает второй электрон, молекула становится положительным ионом" /></p>
+<p><strong>Рис. 2.</strong> Мнемосхема «Ударная ионизация электроном» в
+интерактиве (вкладка 1): электрон, разогнанный полем, выбивает второй
+электрон, молекула становится положительным ионом</p>
+<h3>4.2. Вероятность ионизации и вывод коэффициента α</h3>
+<p>Длины пробегов распределены экспоненциально: доля электронов,
+пролетевших без удара путь не меньше x,</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msup><mi>e</mi><mrow><mo>−</mo><mi>x</mi><mi>/</mi><mi>λ</mi></mrow></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">P(x) = e^{- x/\lambda}.</annotation></semantics></math>
+(6)</p>
+<p>Чтобы ионизовать, электрон должен пролететь без удара путь
+x<sub>и</sub> = W<sub>и</sub>/(eE). В простейшей модели Таунсенда
+электрон при каждом ударе теряет всю энергию; тогда доля ионизирующих
+ударов</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>и</mi></msub><mo>=</mo><msup><mi>e</mi><mrow><mo>−</mo><msub><mi>W</mi><mi>и</mi></msub><mi>/</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>e</mi><mi>E</mi><mi>λ</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow></msup><mo>,</mo></mrow><annotation encoding="application/x-tex">P_{и} = e^{- W_{и}/(eE\lambda)},</annotation></semantics></math>
+(7)</p>
+<p>а так как на 1 см пути электрон испытывает 1/λ ударов, число
+ионизаций на 1 см</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mfrac><mn>1</mn><mi>λ</mi></mfrac><mo>⋅</mo><msup><mi>e</mi><mrow><mo>−</mo><msub><mi>W</mi><mi>и</mi></msub><mi>/</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>e</mi><mi>E</mi><mi>λ</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">\alpha = \frac{1}{\lambda} \cdot e^{- W_{и}/(eE\lambda)}.</annotation></semantics></math>
+(8)</p>
+<p>Подставив λ = 1/(A·p) и обозначив B = A·W<sub>и эфф</sub>, получим
+эмпирическую формулу Таунсенда:</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mi>α</mi><mi>p</mi></mfrac><mo>=</mo><mi>A</mi><mo>⋅</mo><msup><mi>e</mi><mrow><mo>−</mo><mfrac><mrow><mi>B</mi><mo>⋅</mo><mi>p</mi></mrow><mi>E</mi></mfrac></mrow></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">\frac{\alpha}{p} = A \cdot e^{- \frac{B \cdot p}{E}}.</annotation></semantics></math>
+(9)</p>
+<p>Главный вывод: <strong>α/p зависит только от E/p</strong>.
+Приведённая напряжённость E/p — параметр подобия: два промежутка с
+одинаковыми E/p и p·S ведут себя одинаково (это ключ к закону Пашена,
+лекция 4).</p>
+<table>
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 25%" />
+<col style="width: 27%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Газ</strong></th>
+<th><strong>A, 1/(см·мм рт. ст.)</strong></th>
+<th><strong>B, В/(см·мм рт. ст.)</strong></th>
+<th><strong>Диапазон E/p</strong></th>
+</tr>
+<tr class="odd">
+<th>Воздух</th>
+<th>15</th>
+<th>365</th>
+<th>100–800</th>
+</tr>
+<tr class="header">
+<th>Азот N₂</th>
+<th>12</th>
+<th>342</th>
+<th>100–600</th>
+</tr>
+<tr class="odd">
+<th>Аргон Ar</th>
+<th>12</th>
+<th>180</th>
+<th>100–600</th>
+</tr>
+<tr class="header">
+<th>CO₂</th>
+<th>20</th>
+<th>466</th>
+<th>500–1000</th>
+</tr>
+<tr class="odd">
+<th>Водород H₂</th>
+<th>5</th>
+<th>130</th>
+<th>150–600</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p>Таблица 2. Константы формулы Таунсенда (справочные данные физики
+газового разряда). Вне указанного диапазона формула даёт лишь оценку:
+при атмосферном давлении и E/p ≈ 40 погрешность порядка 10–15 %.</p>
+<p><img
+src="l2-lecture/media/76321ad36f4328e96390ec83d5e9116f373ff112.webp"
+title="Зависимость α/p от E/p для воздуха, азота и аргона"
+style="width:5.51042in;height:2.98958in"
+alt="Зависимость α/p от E/p для воздуха, азота и аргона" /></p>
+<p><strong>Рис. 3.</strong> Зависимость α/p от E/p для воздуха, азота и
+аргона</p>
+<p><img
+src="l2-lecture/media/af6a1e4d91d458649bcbeaf51a5f0707013bf366.png"
+title="Коэффициент α воздуха при нормальном давлении: при 30 кВ/см α ≈ 1, при 45 кВ/см — уже 24 ионизации на сантиметр"
+style="width:5.51042in;height:2.67708in"
+alt="Коэффициент α воздуха при нормальном давлении: при 30 кВ/см α ≈ 1, при 45 кВ/см — уже 24 ионизации на сантиметр" /></p>
+<p><strong>Рис. 4.</strong> Коэффициент α воздуха при нормальном
+давлении: при 30 кВ/см α ≈ 1, при 45 кВ/см — уже 24 ионизации на
+сантиметр</p>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Эффективная энергия ионизации.</strong> Для воздуха B/A =
+365/15 ≈ 24 эВ — почти вдвое больше табличных 12,5 эВ. Это не ошибка: на
+пути к ионизации электрон тратит энергию на возбуждение, колебания
+молекул, упругие удары. В интерактиве (вкладка 2) на графике показаны
+обе линии, и счёт ионизаций ведётся по эффективной — тогда «α по счёту»
+совпадает с формулой Таунсенда.</td>
+</tr>
+</tbody>
+</table>
+<p><img
+src="l2-lecture/media/f7099e6de551b57a7149eb45fed8c6584098c8a9.webp"
+title="Доля пробегов длиннее x: при 30 кВ/см ионизует лишь ≈ 0,01 % ударов, при 80 кВ/см — ≈ 3 %"
+style="width:5.51042in;height:2.67708in"
+alt="Доля пробегов длиннее x: при 30 кВ/см ионизует лишь ≈ 0,01 % ударов, при 80 кВ/см — ≈ 3 %" /></p>
+<p><strong>Рис. 5.</strong> Доля пробегов длиннее x: при 30 кВ/см
+ионизует лишь ≈ 0,01 % ударов, при 80 кВ/см — ≈ 3 %</p>
+<p><img
+src="l2-lecture/media/98ec907416d5f58ae326bcf3b341d9904b82593e.webp"
+title="Вкладка 2 «Энергия электрона»: «пила» энергии одного электрона, жёлтые точки — возбуждения, красные — ионизации"
+style="width:6.30208in;height:3.05208in"
+alt="Вкладка 2 «Энергия электрона»: «пила» энергии одного электрона, жёлтые точки — возбуждения, красные — ионизации" /></p>
+<p><strong>Рис. 6.</strong> Вкладка 2 «Энергия электрона»: «пила»
+энергии одного электрона, жёлтые точки — возбуждения, красные —
+ионизации</p>
+<h3>4.3. Ступенчатая ионизация</h3>
+<p>Первый удар лишь возбуждает атом. Если за время жизни возбуждения (≈
+10<sup>−8</sup> с) придёт второй удар или фотон, суммарной энергии
+хватит на ионизацию:</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>W</mi><mn>1</mn></msub><mo>+</mo><msub><mi>W</mi><mn>2</mn></msub><mo>≥</mo><msub><mi>W</mi><mi>и</mi></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">W_{1} + W_{2} \geq W_{и}.</annotation></semantics></math>
+(10)</p>
+<p>Значима там, где много возбуждённых частиц и часты удары: в канале
+искры и дуги, в тлеющем разряде.</p>
+<h3>4.4. Фотоионизация</h3>
+<p>Фотон ионизует, если его энергия не меньше энергии ионизации:</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo>⋅</mo><mi>ν</mi><mo>≥</mo><msub><mi>W</mi><mi>и</mi></msub><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mo>⇔</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><msub><mi>λ</mi><mi>ф</mi></msub><mo stretchy="false" form="prefix">[</mo><mi>н</mi><mi>м</mi><mo stretchy="false" form="postfix">]</mo><mspace width="0.222em"></mspace><mo>≤</mo><mfrac><mn>1240</mn><mrow><msub><mi>W</mi><mi>и</mi></msub><mo stretchy="false" form="prefix">[</mo><mi>э</mi><mi>В</mi><mo stretchy="false" form="postfix">]</mo></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">h \cdot \nu \geq W_{и}\ \ \  \Leftrightarrow \ \ \ \lambda_{ф}\lbrack нм\rbrack\  \leq \frac{1240}{W_{и}\lbrack эВ\rbrack}.</annotation></semantics></math>
+(11)</p>
+<table>
+<colgroup>
+<col style="width: 27%" />
+<col style="width: 25%" />
+<col style="width: 46%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Мишень</strong></th>
+<th><strong>Порог, эВ</strong></th>
+<th><strong>Наибольшая длина волны</strong></th>
+</tr>
+<tr class="odd">
+<th>O₂ (ионизация)</th>
+<th>12,5</th>
+<th>99 нм — вакуумный ультрафиолет</th>
+</tr>
+<tr class="header">
+<th>N₂ (ионизация)</th>
+<th>15,5</th>
+<th>80 нм</th>
+</tr>
+<tr class="odd">
+<th>Медь, сталь (фотоэмиссия)</th>
+<th>≈ 4,5</th>
+<th>≈ 276 нм — ближний ультрафиолет</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p>Источник фотонов — возбуждённые молекулы самой лавины. Вакуумный
+ультрафиолет поглощается в воздухе на долях миллиметра, поэтому
+фотоионизация рождает новые электроны прямо перед лавиной — это основа
+стримерного механизма (лекция 3).</p>
+<h3>4.5. Термоионизация</h3>
+<p>При температуре 5000–20 000 К молекулы движутся так быстро, что
+ионизуют друг друга при столкновениях; ионизуют и тепловые фотоны.
+Сначала молекулы диссоциируют (O₂ — 5,17 эВ, N₂ — 9,77 эВ), затем
+ионизуются атомы. Термоионизация поддерживает канал искры, лидера и дуги
+— в том числе дугу в выключателе.</p>
+<h2>5. Эмиссия электронов с катода</h2>
+<p>Энергия, нужная для выхода электрона из металла, — <strong>работа
+выхода</strong> W<sub>вых</sub> — в 2–10 раз меньше энергии ионизации
+газа; для меди и стали в воздухе ≈ 4,5 эВ. Поэтому катод — важный
+«поставщик» электронов.</p>
+<table>
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 34%" />
+<col style="width: 39%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Вид эмиссии</strong></th>
+<th><strong>Условие</strong></th>
+<th><strong>Где встречается</strong></th>
+</tr>
+<tr class="odd">
+<th>Вторичная (ударом иона)</th>
+<th><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><msub><mi>m</mi><mi>и</mi></msub><msup><msub><mi>v</mi><mi>и</mi></msub><mn>2</mn></msup></mrow><mn>2</mn></mfrac><mo>≥</mo><msub><mi>W</mi><mrow><mi>в</mi><mi>ы</mi><mi>х</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\frac{m_{и}{v_{и}}^{2}}{2} \geq W_{вых}</annotation></semantics></math></th>
+<th>Ионы лавины бьют в катод — механизм коэффициента γ</th>
+</tr>
+<tr class="header">
+<th>Фотоэмиссия</th>
+<th><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo>⋅</mo><mi>ν</mi><mo>≥</mo><msub><mi>W</mi><mrow><mi>в</mi><mi>ы</mi><mi>х</mi></mrow></msub></mrow><annotation encoding="application/x-tex">h \cdot \nu \geq W_{вых}</annotation></semantics></math></th>
+<th>УФ-подсветка разрядника; фотоны лавины на катоде</th>
+</tr>
+<tr class="odd">
+<th>Термоэлектронная</th>
+<th><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi><mo>=</mo><mi>A</mi><mo>⋅</mo><msup><mi>T</mi><mn>2</mn></msup><mo>⋅</mo><msup><mi>e</mi><mrow><mo>−</mo><msub><mi>W</mi><mrow><mi>в</mi><mi>ы</mi><mi>х</mi></mrow></msub><mi>/</mi><mi>k</mi><mi>T</mi></mrow></msup></mrow><annotation encoding="application/x-tex">j = A \cdot T^{2} \cdot e^{- W_{вых}/kT}</annotation></semantics></math></th>
+<th>Пятно дуги на контакте, катоды ламп</th>
+</tr>
+<tr class="header">
+<th>Автоэлектронная (полевая)</th>
+<th>E у поверхности ≈ 10<sup>7</sup>–10<sup>8</sup> В/см</th>
+<th>Микроострия в вакуумной камере выключателя</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p>Совокупность вторичных процессов на катоде (ударами ионов и фотонами)
+характеризуют <strong>коэффициентом вторичной эмиссии γ</strong> —
+числом эффективных электронов на один положительный ион лавины. Всегда γ
+≪ 1, обычно 10<sup>−4</sup>…10<sup>−1</sup>; он зависит от материала и
+состояния поверхности катода, газа и давления. В интерактиве и задачах
+по умолчанию γ = 0,01.</p>
+<p><img
+src="l2-lecture/media/f86f6f8ad7f80de4cc4421a019a462ea89da0051.webp"
+title="Вкладка 1: мнемосхемы объёмной ионизации, эмиссии и обратных процессов"
+style="width:6.30208in;height:1.25in"
+alt="Вкладка 1: мнемосхемы объёмной ионизации, эмиссии и обратных процессов" /></p>
+<p><strong>Рис. 7.</strong> Вкладка 1: мнемосхемы объёмной ионизации,
+эмиссии и обратных процессов</p>
+<h2>6. Прилипание электронов</h2>
+<p>Число захватов электрона на 1 см пути — коэффициент прилипания η. В
+лавине размножение определяет разность α − η: если она отрицательна,
+лавина затухает. Для воздуха при нормальных условиях α и η сравниваются
+при E ≈ 24–26 кВ/см (критическая напряжённость: ниже неё лавина в
+однородном поле не растёт). Влажность повышает прилипание (пары воды
+электроотрицательны); элегаз SF₆ — газ с очень сильным прилипанием,
+поэтому он применяется в КРУЭ и выключателях.</p>
+<h2>7. Электронная лавина</h2>
+<h3>7.1. Число электронов</h3>
+<p>Пусть с катода под действием внешнего ионизатора вышли n<sub>0</sub>
+электронов, и на расстоянии x от катода их стало n. На пути dx каждый
+электрон производит α·dx ионизаций, поэтому прирост (формулы 1.7–1.9
+учебника)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mi>n</mi><mo>=</mo><mi>α</mi><mo>⋅</mo><mi>n</mi><mo>⋅</mo><mi>d</mi><mi>x</mi><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mo>⇒</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><msubsup><mo>∫</mo><msub><mi>n</mi><mn>0</mn></msub><mi>n</mi></msubsup><mfrac><mrow><mi>d</mi><mi>n</mi></mrow><mi>n</mi></mfrac><mo>=</mo><msubsup><mo>∫</mo><mn>0</mn><mi>x</mi></msubsup><mrow><mi>α</mi><mo>⋅</mo><mi>d</mi><mi>x</mi></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">dn = \alpha \cdot n \cdot dx\ \ \  \Rightarrow \ \ \ \int_{n_{0}}^{n}\frac{dn}{n} = \int_{0}^{x}{\alpha \cdot dx}.</annotation></semantics></math>
+(12)</p>
+<p>В однородном поле α = const, и</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>ln</mo><mfrac><mi>n</mi><msub><mi>n</mi><mn>0</mn></msub></mfrac><mo>=</mo><mi>α</mi><mo>⋅</mo><mi>x</mi><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mo>⇒</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mi>n</mi><mo>=</mo><msub><mi>n</mi><mn>0</mn></msub><mo>⋅</mo><msup><mi>e</mi><mrow><mi>α</mi><mi>x</mi></mrow></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">\ln\frac{n}{n_{0}} = \alpha \cdot x\ \ \  \Rightarrow \ \ \ n = n_{0} \cdot e^{\alpha x}.</annotation></semantics></math>
+(13)</p>
+<p>С прилипанием часть электронов выбывает: на пути dx захватывается
+η·n·dx электронов, и (формула 1.11)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><msub><mi>n</mi><mn>0</mn></msub><mo>⋅</mo><msup><mi>e</mi><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>α</mi><mo>−</mo><mi>η</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>x</mi></mrow></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">n = n_{0} \cdot e^{(\alpha - \eta)x}.</annotation></semantics></math>
+(14)</p>
+<p>Рост экспоненциальный: на каждом отрезке 1/(α − η) число электронов
+увеличивается в e ≈ 2,72 раза. При α = 10 1/см на 1,5 см из одного
+электрона получается e<sup>15</sup> ≈ 3,3 млн.</p>
+<p><img
+src="l2-lecture/media/cb7f185283b3fe4a785664a48f9fc15ad213c845.webp"
+title="Рост числа электронов в лавине при разных α; пунктир — порог ≈ 10⁸, после которого лавина превращается в стример"
+style="width:5.51042in;height:2.83333in"
+alt="Рост числа электронов в лавине при разных α; пунктир — порог ≈ 10⁸, после которого лавина превращается в стример" /></p>
+<p><strong>Рис. 8.</strong> Рост числа электронов в лавине при разных α;
+пунктир — порог ≈ 10⁸, после которого лавина превращается в стример</p>
+<h3>7.2. Ионы лавины и их распределение</h3>
+<p>Каждая ионизация оставляет положительный ион там, где она произошла.
+Число положительных ионов к моменту, когда головка прошла путь x:</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>N</mi><mo>+</mo></msub><mo>=</mo><msub><mi>n</mi><mn>0</mn></msub><mo>⋅</mo><mfrac><mi>α</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>α</mi><mo>−</mo><mi>η</mi><mo stretchy="true" form="postfix">)</mo></mrow></mfrac><mo>⋅</mo><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>e</mi><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>α</mi><mo>−</mo><mi>η</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>x</mi></mrow></msup><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><msub><mi>N</mi><mo>−</mo></msub><mo>=</mo><msub><mi>n</mi><mn>0</mn></msub><mo>⋅</mo><mfrac><mi>η</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>α</mi><mo>−</mo><mi>η</mi><mo stretchy="true" form="postfix">)</mo></mrow></mfrac><mo>⋅</mo><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>e</mi><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>α</mi><mo>−</mo><mi>η</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>x</mi></mrow></msup><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">N_{+} = n_{0} \cdot \frac{\alpha}{(\alpha - \eta)} \cdot \left( e^{(\alpha - \eta)x} - 1 \right),\ \ \ N_{-} = n_{0} \cdot \frac{\eta}{(\alpha - \eta)} \cdot \left( e^{(\alpha - \eta)x} - 1 \right).</annotation></semantics></math>
+(15)</p>
+<p>Без прилипания N<sub>+</sub> = n − n<sub>0</sub>: ионов на
+n<sub>0</sub> меньше, чем электронов (формула 1.12). Плотность ионов
+вдоль пути растёт как e<sup>αx</sup>, поэтому:</p>
+<ul>
+<li><p><strong>центр тяжести ионов</strong> отстоит от головки примерно
+на 1/(α − η);</p></li>
+<li><p>в последнем отрезке длиной 1/(α − η) у головки лежит 1 − 1/e ≈
+<strong>63 %</strong> всех ионов;</p></li>
+<li><p>в задней половине лавины ионов в e<sup>(α−η)x/2</sup> раз меньше,
+чем всего: при αx = 15 — всего 0,055 %.</p></li>
+</ul>
+<p><img
+src="l2-lecture/media/0c18257ed4ff8e24b7d45d8134c8040d3b55f0f3.webp"
+title="Распределение положительных ионов вдоль пути лавины: почти все ионы рождаются у головки"
+style="width:5.51042in;height:2.52083in"
+alt="Распределение положительных ионов вдоль пути лавины: почти все ионы рождаются у головки" /></p>
+<p><strong>Рис. 9.</strong> Распределение положительных ионов вдоль пути
+лавины: почти все ионы рождаются у головки</p>
+<p>Электроны примерно в 100 раз подвижнее ионов, поэтому за время
+пробега лавины ионы практически неподвижны и образуют «хвост», а
+электроны — «головку» на фронте. Лавина имеет форму капли, обращённой
+хвостом к катоду. Положительный объёмный заряд искажает внешнее поле:
+впереди головки поле усилено, в хвосте ослаблено.</p>
+<h3>7.3. Размер головки, её поле и переход в стример</h3>
+<p>Головка расплывается из-за диффузии электронов. За время t =
+x/v<sub>e</sub> её радиус</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo>≈</mo><msqrt><mrow><mn>4</mn><mo>⋅</mo><mi>D</mi><mo>⋅</mo><mi>t</mi></mrow></msqrt><mo>=</mo><msqrt><mrow><mn>4</mn><mo>⋅</mo><mfrac><mi>D</mi><mi>μ</mi></mfrac><mo>⋅</mo><mfrac><mi>x</mi><mi>E</mi></mfrac></mrow></msqrt><mo>,</mo></mrow><annotation encoding="application/x-tex">r \approx \sqrt{4 \cdot D \cdot t} = \sqrt{4 \cdot \frac{D}{\mu} \cdot \frac{x}{E}},</annotation></semantics></math>
+(16)</p>
+<p>где D/μ — отношение коэффициента диффузии к подвижности (характерная
+энергия электронов, для воздуха порядка 1 В). Заряд головки e·n создаёт
+на её границе поле</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mi>q</mi></msub><mo>=</mo><mfrac><mrow><mi>e</mi><mo>⋅</mo><mi>n</mi></mrow><mrow><mn>4</mn><mi>π</mi><msub><mi>ε</mi><mn>0</mn></msub><msup><mi>r</mi><mn>2</mn></msup></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">E_{q} = \frac{e \cdot n}{4\pi\varepsilon_{0}r^{2}}.</annotation></semantics></math>
+(17)</p>
+<p>Пока E<sub>q</sub> ≪ E, лавина не замечает собственного заряда. Когда
+E<sub>q</sub> сравнивается с внешним полем, начинается интенсивная
+фотоионизация перед головкой, и лавина превращается в стример. Расчёт
+даёт это при αx ≈ 18–20, т. е. при n ≈ 10<sup>8</sup>–10<sup>9</sup> —
+критерий перехода из учебника (раздел 1.1.4). Длина пути, на которой это
+происходит, — <strong>критическая длина лавины</strong> x<sub>кр</sub>.
+Если x<sub>кр</sub> &lt; S, разряд развивается в стримерной форме
+(лекция 3).</p>
+<p><img
+src="l2-lecture/media/b5a434b15bf05e9926a8f04c0188cb0c3ddc8445.webp"
+title="Отношение поля головки к внешнему полю растёт экспоненциально и пересекает единицу при αx ≈ 17–20"
+style="width:5.51042in;height:2.67708in"
+alt="Отношение поля головки к внешнему полю растёт экспоненциально и пересекает единицу при αx ≈ 17–20" /></p>
+<p><strong>Рис. 10.</strong> Отношение поля головки к внешнему полю
+растёт экспоненциально и пересекает единицу при αx ≈ 17–20</p>
+<h3>7.4. Скорость и время</h3>
+<p>Скорость дрейфа электронов в воздухе при E/p ≈ 40 В/(см·мм рт. ст.) —
+порядка 10<sup>7</sup> см/с (в модели интерактива v<sub>e</sub> ≈
+3,2·10<sup>5</sup>·(E/p) см/с). Подвижность ионов μ<sub>и</sub> ≈ 2
+см²/(В·с) при нормальном давлении, т. е. ионы примерно в 100 раз
+медленнее. Лавина пересекает сантиметровый промежуток за десятки
+наносекунд, а ионы уходят к катоду за микросекунды.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 49%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Величина (воздух, 42 кВ/см, 760 мм рт. ст., x = 12
+мм)</strong></th>
+<th><strong>Значение в интерактиве</strong></th>
+</tr>
+<tr class="odd">
+<th>α, 1/см</th>
+<th>15,4</th>
+</tr>
+<tr class="header">
+<th>αx</th>
+<th>18,5</th>
+</tr>
+<tr class="odd">
+<th>Электронов в головке</th>
+<th>1,11·10<sup>8</sup></th>
+</tr>
+<tr class="header">
+<th>Положительных ионов</th>
+<th>1,11·10<sup>8</sup></th>
+</tr>
+<tr class="odd">
+<th>Ионов в последних 1/α</th>
+<th>6,99·10<sup>7</sup> (63 %)</th>
+</tr>
+<tr class="header">
+<th>Ионов в задней половине</th>
+<th>1,05·10<sup>4</sup> (&lt; 0,01 %)</th>
+</tr>
+<tr class="odd">
+<th>Центр ионов позади головки</th>
+<th>0,65 мм</th>
+</tr>
+<tr class="header">
+<th>Радиус головки</th>
+<th>0,107 мм</th>
+</tr>
+<tr class="odd">
+<th>Поле головки</th>
+<th>139 кВ/см &gt; 42 кВ/см — стример</th>
+</tr>
+<tr class="header">
+<th>Критическая длина лавины</th>
+<th>11,2 мм</th>
+</tr>
+<tr class="odd">
+<th>Время пробега</th>
+<th>68 нс; ионы за это время сдвинулись на 57 мкм</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p>Таблица 3. Лавина при настройках интерактива по умолчанию (вкладка
+3).</p>
+<p><img
+src="l2-lecture/media/f3e0345d683ee58582be58df9dc9c9e0f71bf55f.webp"
+title="Вкладка 3: лавина-капля в промежутке; электроны — синие, положительные ионы — оранжевые, жёлтая линия — центр ионов"
+style="width:6.30208in;height:1.60417in"
+alt="Вкладка 3: лавина-капля в промежутке; электроны — синие, положительные ионы — оранжевые, жёлтая линия — центр ионов" /></p>
+<p><strong>Рис. 11.</strong> Вкладка 3: лавина-капля в промежутке;
+электроны — синие, положительные ионы — оранжевые, жёлтая линия — центр
+ионов</p>
+<p><img
+src="l2-lecture/media/dcb62224cf8d382aee2dab3fd98e6188b5d67da1.png"
+title="Вкладка 3: рост lg n по пути и порог 10⁸"
+style="width:6.30208in;height:1.46875in"
+alt="Вкладка 3: рост lg n по пути и порог 10⁸" /></p>
+<p><strong>Рис. 12.</strong> Вкладка 3: рост lg n по пути и порог
+10⁸</p>
+<h2>8. Несамостоятельный и самостоятельный разряд</h2>
+<h3>8.1. Определения</h3>
+<p>После прохождения первичной лавины процесс может возобновиться или
+затухнуть. Для возобновления нужен хотя бы один
+<strong>эффективный</strong> вторичный электрон — способный дать новую
+лавину. Если такой электрон даёт только внешний ионизатор (ультрафиолет,
+радиоактивный фон, рентген), разряд <strong>несамостоятельный</strong>:
+убрали ионизатор — разряд погас. Если вторичный электрон рождается самой
+лавиной, разряд <strong>самостоятельный</strong>. Два механизма
+возобновления: 1) фотоны от возбуждённых молекул лавины вызывают
+фотоионизацию в газе и фотоэмиссию с катода; 2) положительные ионы
+лавины, приходя к катоду, выбивают электроны (вторичная эмиссия).</p>
+<h3>8.2. Вывод условия самостоятельности</h3>
+<p>Один электрон с катода даёт у анода e<sup>(α−η)S</sup> электронов и
+оставляет в промежутке</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>N</mi><mo>+</mo></msub><mo>=</mo><msup><mi>e</mi><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>α</mi><mo>−</mo><mi>η</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>S</mi></mrow></msup><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">N_{+} = e^{(\alpha - \eta)S} - 1</annotation></semantics></math>
+(18)</p>
+<p>положительных ионов (формула 1.12). Каждый ион, придя к катоду,
+выбивает в среднем γ эффективных электронов. Число вторичных электронов
+от одной лавины</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>μ</mi><mo>=</mo><mi>γ</mi><mo>⋅</mo><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>e</mi><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>α</mi><mo>−</mo><mi>η</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>S</mi></mrow></msup><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">\mu = \gamma \cdot \left( e^{(\alpha - \eta)S} - 1 \right).</annotation></semantics></math>
+(19)</p>
+<p>Каждый вторичный электрон даёт новую лавину, т. е. поколения образуют
+геометрическую прогрессию 1, μ, μ², μ³, … При μ &lt; 1 поколения
+затухают, при μ ≥ 1 — не затухают или растут. <strong>Условие
+самостоятельности разряда</strong> (формула 1.13 учебника):</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi><mo>⋅</mo><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>e</mi><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>α</mi><mo>−</mo><mi>η</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>S</mi></mrow></msup><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>≥</mo><mn>1</mn><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mo>⇔</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><mi>α</mi><mo>−</mo><mi>η</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>S</mi><mo>≥</mo><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>+</mo><mfrac><mn>1</mn><mi>γ</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">\gamma \cdot \left( e^{(\alpha - \eta)S} - 1 \right) \geq 1\ \ \  \Leftrightarrow \ \ \ (\alpha - \eta)S \geq \ln\left( 1 + \frac{1}{\gamma} \right).</annotation></semantics></math>
+(20)</p>
+<p>При γ = 0,01 нужно (α − η)S ≥ ln 101 = 4,62, т. е. лавина из ~100
+электронов. Чем больше γ, тем меньше нужное αS и ниже пробивное
+напряжение.</p>
+<p><img
+src="l2-lecture/media/b4a2d71d7564d3e92cfe3c590544a77651819584.png"
+title="Поколения лавин от одного электрона: при μ = 0,5 цепочка затухает, при μ = 1,5 — растёт"
+style="width:5.51042in;height:2.23958in"
+alt="Поколения лавин от одного электрона: при μ = 0,5 цепочка затухает, при μ = 1,5 — растёт" /></p>
+<p><strong>Рис. 13.</strong> Поколения лавин от одного электрона: при μ
+= 0,5 цепочка затухает, при μ = 1,5 — растёт</p>
+<h3>8.3. Ток в промежутке (опыт Таунсенда)</h3>
+<p>Схема опыта: плоский промежуток в газе подключён к источнику через
+резистор, последовательно включён чувствительный прибор; катод освещён
+ультрафиолетом, создающим фототок I<sub>0</sub>. Суммируя прогрессию
+поколений, получаем ток, который показывает прибор:</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mo>=</mo><msub><mi>I</mi><mn>0</mn></msub><mo>⋅</mo><msup><mi>e</mi><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>α</mi><mo>−</mo><mi>η</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>S</mi></mrow></msup><mo>⋅</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>+</mo><mi>μ</mi><mo>+</mo><msup><mi>μ</mi><mn>2</mn></msup><mo>+</mo><mi>…</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mfrac><mrow><msub><mi>I</mi><mn>0</mn></msub><mo>⋅</mo><msup><mi>e</mi><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>α</mi><mo>−</mo><mi>η</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>S</mi></mrow></msup></mrow><mrow><mn>1</mn><mo>−</mo><mi>γ</mi><mo>⋅</mo><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>e</mi><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>α</mi><mo>−</mo><mi>η</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>S</mi></mrow></msup><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">I = I_{0} \cdot e^{(\alpha - \eta)S} \cdot \left( 1 + \mu + \mu^{2} + \ldots \right) = \frac{I_{0} \cdot e^{(\alpha - \eta)S}}{1 - \gamma \cdot \left( e^{(\alpha - \eta)S} - 1 \right)}.</annotation></semantics></math>
+(21)</p>
+<p>Участки зависимости I(U) при плавном подъёме напряжения:</p>
+<ol type="1">
+<li><p><strong>I — ток насыщения:</strong> собираются все фотоэлектроны,
+I ≈ I<sub>0</sub>; ионизации ещё нет. (Ещё раньше — начальный участок,
+где растёт доля собранных зарядов; в интерактиве не показан.)</p></li>
+<li><p><strong>II — ударная ионизация:</strong> I ≈
+I<sub>0</sub>·e<sup>αS</sup>, ток растёт по экспоненте.</p></li>
+<li><p><strong>III — вторичная эмиссия:</strong> знаменатель 1 − μ
+уменьшается, ток растёт быстрее экспоненты.</p></li>
+<li><p><strong>IV — пробой:</strong> при μ → 1 знаменатель стремится к
+нулю, ток неограниченно растёт — разряд самостоятельный, ограничить ток
+может только внешняя цепь.</p></li>
+</ol>
+<p><img
+src="l2-lecture/media/05d4c93c53e800de4c1d54802c93789d878ab93f.png"
+title="Зависимость тока от напряжения для воздушного промежутка 1 см; Uпр = 35,5 кВ"
+style="width:5.51042in;height:2.83333in"
+alt="Зависимость тока от напряжения для воздушного промежутка 1 см; Uпр = 35,5 кВ" /></p>
+<p><strong>Рис. 14.</strong> Зависимость тока от напряжения для
+воздушного промежутка 1 см; U<sub>пр</sub> = 35,5 кВ</p>
+<p><img
+src="l2-lecture/media/cd80377f92187dc5dcb0012883e3a7b8938afa60.png"
+title="Вкладка 4: схема опыта Таунсенда — УФ-лампа, источник U, промежуток, микроамперметр; анимация судьбы одного электрона"
+style="width:6.30208in;height:1.60417in"
+alt="Вкладка 4: схема опыта Таунсенда — УФ-лампа, источник U, промежуток, микроамперметр; анимация судьбы одного электрона" /></p>
+<p><strong>Рис. 15.</strong> Вкладка 4: схема опыта Таунсенда —
+УФ-лампа, источник U, промежуток, микроамперметр; анимация судьбы одного
+электрона</p>
+<p><img
+src="l2-lecture/media/d26324e6d3b3a63ed616eff07a297cdebc69facc.png"
+title="Вкладка 4: показания прибора при подъёме U с выделенными участками I–IV"
+style="width:6.30208in;height:1.60417in"
+alt="Вкладка 4: показания прибора при подъёме U с выделенными участками I–IV" /></p>
+<p><strong>Рис. 16.</strong> Вкладка 4: показания прибора при подъёме U
+с выделенными участками I–IV</p>
+<h2>9. Закон Пашена как следствие условия самостоятельности</h2>
+<p>В однородном поле E = U/S. Подставим формулу Таунсенда в условие
+самостоятельности αS = ln(1 + 1/γ) (без прилипания):</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>⋅</mo><mi>p</mi><mo>⋅</mo><mi>S</mi><mo>⋅</mo><msup><mi>e</mi><mrow><mo>−</mo><mi>B</mi><mo>⋅</mo><mi>p</mi><mo>⋅</mo><mi>S</mi><mi>/</mi><mi>U</mi></mrow></msup><mo>=</mo><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>+</mo><mfrac><mn>1</mn><mi>γ</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mo>⇒</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><msub><mi>U</mi><mrow><mi>п</mi><mi>р</mi></mrow></msub><mo>=</mo><mfrac><mrow><mi>B</mi><mo>⋅</mo><mi>p</mi><mo>⋅</mo><mi>S</mi></mrow><mrow><mi>l</mi><mi>n</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>A</mi><mo>⋅</mo><mi>p</mi><mo>⋅</mo><mi>S</mi><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.222em"></mspace><mo>−</mo><mspace width="0.222em"></mspace><mi>l</mi><mi>n</mi><mspace width="0.222em"></mspace><mi>l</mi><mi>n</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>+</mo><mn>1</mn><mi>/</mi><mi>γ</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">A \cdot p \cdot S \cdot e^{- B \cdot p \cdot S/U} = \ln\left( 1 + \frac{1}{\gamma} \right)\ \ \  \Rightarrow \ \ \ U_{пр} = \frac{B \cdot p \cdot S}{ln(A \cdot p \cdot S)\  - \ ln\ ln(1 + 1/\gamma)}.</annotation></semantics></math>
+(22)</p>
+<p>Пробивное напряжение зависит только от произведения p·S. Кривая имеет
+минимум. Приравняв производную к нулю, получим</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>p</mi><mo>⋅</mo><mi>S</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>min</mo></msub><mo>=</mo><mfrac><mrow><mi>e</mi><mo>⋅</mo><mi>l</mi><mi>n</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>+</mo><mn>1</mn><mi>/</mi><mi>γ</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mi>A</mi></mfrac><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><msub><mi>U</mi><mo>min</mo></msub><mo>=</mo><mi>e</mi><mo>⋅</mo><mfrac><mi>B</mi><mi>A</mi></mfrac><mo>⋅</mo><mi>l</mi><mi>n</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>+</mo><mfrac><mn>1</mn><mi>γ</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">{(p \cdot S)}_{\min} = \frac{e \cdot ln(1 + 1/\gamma)}{A},\ \ \ U_{\min} = e \cdot \frac{B}{A} \cdot ln\left( 1 + \frac{1}{\gamma} \right).</annotation></semantics></math>
+(23)</p>
+<p>Для воздуха при γ = 0,01: (p·S)<sub>min</sub> = 0,84 мм рт. ст.·см,
+U<sub>min</sub> ≈ 305 В (опыт даёт около 330 В). Ниже этого напряжения
+воздушный промежуток не пробивается ни при каком p·S.</p>
+<p><strong>Правая ветвь</strong> (большие p·S, атмосферные промежутки):
+пробег короток, электрон набирает мало энергии — нужно сильное поле.
+<strong>Левая ветвь</strong> (малые p·S, разреженный газ или
+микрозазор): электронов-ударов на пути слишком мало, лавина не успевает
+размножиться — снова нужно большое напряжение. На этом основана
+вакуумная изоляция.</p>
+<table>
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 24%" />
+<col style="width: 24%" />
+<col style="width: 26%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>S, см (760 мм рт. ст.)</strong></th>
+<th><strong>p·S, мм рт. ст.·см</strong></th>
+<th><strong>U<sub>пр</sub>, кВ</strong></th>
+<th><strong>E<sub>пр</sub> = U/S, кВ/см</strong></th>
+</tr>
+<tr class="odd">
+<th>0,1</th>
+<th>76</th>
+<th>5,0</th>
+<th>50,3</th>
+</tr>
+<tr class="header">
+<th>0,5</th>
+<th>380</th>
+<th>19,5</th>
+<th>39,0</th>
+</tr>
+<tr class="odd">
+<th>1,0</th>
+<th>760</th>
+<th>35,5</th>
+<th>35,5</th>
+</tr>
+<tr class="header">
+<th>2,0</th>
+<th>1520</th>
+<th>65,2</th>
+<th>32,6</th>
+</tr>
+<tr class="odd">
+<th>3,0</th>
+<th>2280</th>
+<th>93,4</th>
+<th>31,1</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p>Таблица 4. Пробивное напряжение однородного воздушного промежутка по
+формуле Пашена (A = 15, B = 365, γ = 0,01). Видно падение пробивной
+напряжённости с ростом S.</p>
+<p><img
+src="l2-lecture/media/489ebbb8e1f457a02606ef2c5e1cfc69bbe34e01.webp"
+title="Кривые Пашена для воздуха, азота и аргона и влияние γ"
+style="width:5.51042in;height:2.98958in"
+alt="Кривые Пашена для воздуха, азота и аргона и влияние γ" /></p>
+<p><strong>Рис. 17.</strong> Кривые Пашена для воздуха, азота и аргона и
+влияние γ</p>
+<p><img
+src="l2-lecture/media/ba9ed13f9cc9aa89e377f9f3b75bc83a2a288db7.png"
+title="Вкладка 4: кривая Пашена с зонами «пробой» и «держит»; точка — промежуток студента при текущем U"
+style="width:6.30208in;height:1.75in"
+alt="Вкладка 4: кривая Пашена с зонами «пробой» и «держит»; точка — промежуток студента при текущем U" /></p>
+<p><strong>Рис. 18.</strong> Вкладка 4: кривая Пашена с зонами «пробой»
+и «держит»; точка — промежуток студента при текущем U</p>
+<h2>10. Как внешние условия меняют прочность промежутка</h2>
+<table>
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 35%" />
+<col style="width: 40%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Фактор</strong></th>
+<th><strong>Что меняется в физике</strong></th>
+<th><strong>Практическое следствие</strong></th>
+</tr>
+<tr class="odd">
+<th>Давление ↓ (высота, утечка газа)</th>
+<th>λ растёт, электрон набирает больше энергии; на правой ветви Пашена
+U<sub>пр</sub> падает почти пропорционально p</th>
+<th>Поправка изоляции на высоту; блокировка элегазовых аппаратов при
+падении давления</th>
+</tr>
+<tr class="header">
+<th>Давление ↑</th>
+<th>λ меньше, нужна большая E</th>
+<th>Сжатый газ — изоляция КРУЭ; но при очень малых зазорах — левая
+ветвь</th>
+</tr>
+<tr class="odd">
+<th>Температура ↑</th>
+<th>Плотность газа ↓, как при снижении давления</th>
+<th>Нормы приводят к нормальным условиям через относительную плотность
+δ</th>
+</tr>
+<tr class="header">
+<th>Влажность</th>
+<th>Пары воды электроотрицательны (η ↑); но конденсат на поверхностях
+резко снижает поверхностную прочность</th>
+<th>Влажность учитывают отдельной поправкой; конденсат в КРУ — частая
+причина перекрытий</th>
+</tr>
+<tr class="odd">
+<th>Газ</th>
+<th>Другие A, B и η</th>
+<th>SF₆ в 2,5–3 раза прочнее воздуха; аргон пробивается легче</th>
+</tr>
+<tr class="header">
+<th>Материал катода, облучение</th>
+<th>γ и наличие начальных электронов</th>
+<th>УФ-подсветка уменьшает разброс пробивного напряжения
+разрядников</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p>Плотность воздуха с высотой в нормах координации изоляции (МЭК
+60071-2) оценивают как δ = e<sup>−H/8150</sup>, H — высота в метрах;
+требуемую прочность изоляции умножают на поправочный коэффициент
+K<sub>a</sub> = e<sup>m·H/8150</sup>, где показатель m зависит от вида
+воздействия и конфигурации изоляции (обычно 0,5–1).</p>
+<table>
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 24%" />
+<col style="width: 24%" />
+<col style="width: 26%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>H, м</strong></th>
+<th><strong>δ</strong></th>
+<th><strong>p, мм рт. ст.</strong></th>
+<th><strong>U<sub>пр</sub> 1 см по Пашену, кВ</strong></th>
+</tr>
+<tr class="odd">
+<th>0</th>
+<th>1,00</th>
+<th>760</th>
+<th>35,5</th>
+</tr>
+<tr class="header">
+<th>1000</th>
+<th>0,88</th>
+<th>672</th>
+<th>31,9</th>
+</tr>
+<tr class="odd">
+<th>2000</th>
+<th>0,78</th>
+<th>595</th>
+<th>28,7</th>
+</tr>
+<tr class="header">
+<th>3000</th>
+<th>0,69</th>
+<th>526</th>
+<th>25,8</th>
+</tr>
+<tr class="odd">
+<th>4000</th>
+<th>0,61</th>
+<th>465</th>
+<th>23,2</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p>Таблица 5. Снижение плотности воздуха и пробивного напряжения с
+высотой.</p>
+<p><img
+src="l2-lecture/media/2a7d69e8cca0a566dbc76eb726f29e97c80bbd5e.webp"
+title="Относительная плотность воздуха и пробивное напряжение промежутка 1 см в зависимости от высоты"
+style="width:5.51042in;height:2.67708in"
+alt="Относительная плотность воздуха и пробивное напряжение промежутка 1 см в зависимости от высоты" /></p>
+<p><strong>Рис. 19.</strong> Относительная плотность воздуха и пробивное
+напряжение промежутка 1 см в зависимости от высоты</p>
+<h2>11. Реальные случаи</h2>
+<p>Случаи 11.1–11.3 описаны в открытых источниках (ссылки в разделе 13),
+случай 11.4 — нормативная практика, 11.5 — обобщённые типовые ситуации
+для обсуждения без привязки к конкретному объекту.</p>
+<p>11.1. Потеря ракеты из-за дуги при низком давлении (Rocket Lab,
+2023)</p>
+<table>
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 78%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Что случилось</th>
+<th>19 сентября 2023 г. вторая ступень ракеты Electron потеряла питание
+примерно через 151 с полёта, спутник был потерян. Расследование
+установило дугу в высоковольтном источнике питания контроллеров
+двигателя: дуга замкнула батареи. По данным компании, совпали три
+условия: пульсации переменного напряжения поверх постоянного, следы
+гелия и азота в межступенчатом отсеке и трудно обнаружимый дефект
+изоляции жгута.</th>
+</tr>
+<tr class="odd">
+<th>Физика</th>
+<th>По мере подъёма давление падает, p·S уходит на левую ветвь кривой
+Пашена — к её минимуму, где пробой возможен при сотнях вольт. Примесь
+гелия и азота меняет константы A и B. Компания прямо ссылается на анализ
+по закону Пашена.</th>
+</tr>
+<tr class="header">
+<th>Урок</th>
+<th>Отсек с высоковольтным оборудованием сделали герметичным с
+поддерживаемым давлением — уход с минимума Пашена; ужесточили наземные
+испытания с запасом по условиям.</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<h3>11.2. Элегазовый выключатель на морозе (Канада, 2022)</h3>
+<table>
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 78%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Что случилось</th>
+<th>28 декабря 2022 г. на лесопильном комбинате (Армстронг, Британская
+Колумбия) отказала концевая муфта кабеля 25 кВ, возникла дуга.
+Выключатель 138 кВ с элегазом должен был отключить КЗ, но находился в
+блокировке из-за низкого давления газа: КЗ длилось около 165 с до
+отключения сетью, трансформатор повреждён. Номинал 87 psi (≈ 6 бар) при
+20 °C, сигнал 76 psi, блокировка ниже 72 psi; после аварии — 50 psi.
+Сигнал о низком давлении поступил за 6 дней и не был отработан;
+температура доходила до −34 °C.</th>
+</tr>
+<tr class="odd">
+<th>Физика</th>
+<th>Прочность элегаза определяется его плотностью (p·S). Низкое давление
+— меньше молекул на пути, слабее прилипание; аппарат блокируют, чтобы он
+не отключал дугу при недостаточной прочности. Холод снижает давление и
+может вызвать сжижение SF₆.</th>
+</tr>
+<tr class="header">
+<th>Урок</th>
+<th>Для Арктики — прямой урок: сигнализацию плотности элегаза нельзя
+игнорировать; блокировка защищает аппарат, но оставляет сеть без
+отключения — нужна резервная защита.</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<h3>11.3. Скрытая потеря вакуума в вакуумной камере</h3>
+<table>
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 78%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Что случилось</th>
+<th>Даже лучшие вакуумные камеры понемногу теряют вакуум. Изготовленные
+при 10<sup>−4</sup>–10<sup>−5</sup> Па, они начинают не выдерживать
+испытание высоким напряжением при давлении около 10<sup>−1</sup> Па и
+могут отказать внезапно; испытание высоким напряжением даёт лишь
+«годен/не годен».</th>
+</tr>
+<tr class="odd">
+<th>Физика</th>
+<th>При глубоком вакууме p·S далеко левее минимума Пашена — пробоя газа
+нет (зазор 8–12 мм держит сотни киловольт). Рост давления сдвигает
+рабочую точку к минимуму, прочность резко падает. Метод контроля MAC
+использует разряд Пеннинга в магнитном поле: ток ионизации
+пропорционален давлению — прямое применение ударной ионизации.</th>
+</tr>
+<tr class="header">
+<th>Урок</th>
+<th>Состояние вакуума измеряют током ионизации; профилактические
+испытания ВДК — часть обслуживания КРУ 6–10 кВ на горных
+предприятиях.</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<h3>11.4. Поправка на высоту в координации изоляции</h3>
+<table>
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 78%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Что случилось</th>
+<th>Нормы МЭК 60071-2 требуют увеличивать испытательные напряжения
+внешней изоляции для подстанций выше 1000 м: плотность воздуха δ =
+e<sup>−H/8150</sup>, на 3000 м она ≈ 0,69. Испытания на высоте до 4300 м
+проводились в Китае при проектировании линий сверхвысокого
+напряжения.</th>
+</tr>
+<tr class="odd">
+<th>Физика</th>
+<th>Меньше плотность — длиннее пробег — меньше U<sub>пр</sub> (правая
+ветвь Пашена, табл. 5).</th>
+</tr>
+<tr class="header">
+<th>Урок</th>
+<th>Оборудование, рассчитанное «на уровень моря», в горах работает с
+уменьшенным запасом.</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<h2>12. Вопросы для самопроверки</h2>
+<ol type="1">
+<li><p>Почему при 30 кВ/см воздух не пробивается, хотя ионизация
+возможна?</p></li>
+<li><p>Что общего у фотоионизации и стримера?</p></li>
+<li><p>Чем α отличается от γ?</p></li>
+<li><p>Почему ионы лавины почти неподвижны?</p></li>
+<li><p>Что будет, если η &gt; α?</p></li>
+<li><p>Как связаны условие самостоятельности и закон Пашена?</p></li>
+<li><p>Почему у кривой Пашена есть минимум?</p></li>
+<li><p>Зачем облучают шаровые разрядники?</p></li>
+<li><p>Почему вакуум — хороший изолятор?</p></li>
+<li><p>Чем опасно падение давления элегаза?</p></li>
+</ol>
+<h2>13. Источники</h2>
+<ul>
+<li><p>Важов В. Ф., Лавринович В. А. Техника высоких напряжений:
+учебник. — Томск: ТПУ, 2014. — Разд. 1.1.</p></li>
+<li><p>Райзер Ю. П. Физика газового разряда. — М.: Наука (таблица
+констант A, B).</p></li>
+<li><p>Rocket Lab. Update on anomaly review, Electron, 19.09.2023 —
+https://satnow.com/news/details/1289-rocket-lab-announces-next-electron-launch-window-and-provides-update-on-anomaly-review</p></li>
+<li><p>Technical Safety BC. Incident investigation II-1487206-2022
+(Armstrong, BC) — https://files.technicalsafetybc.ca (отчёт
+II-1487206-2022)</p></li>
+<li><p>TestGuy Wiki. Magnetron Atmospheric Condition (MAC) Testing
+Principles —
+https://wiki.testguy.net/t/magnetron-atmospheric-condition-mac-testing-principles/71</p></li>
+<li><p>Pigini A. Dielectric Strength &amp; Air Density // INMR —
+https://www.inmr.com/dielectric-strength-air-density/</p></li>
+<li><p>МЭК 60071-2. Координация изоляции. Ч. 2: Руководство по
+применению.</p></li>
+</ul>
+</main></body></html>

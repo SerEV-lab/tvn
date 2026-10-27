@@ -1,0 +1,654 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Электроды 3D</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;700&family=IBM+Plex+Sans:wght@400;600&display=swap">
+<style>
+:root{
+  --bg:#D9DFE7; --panel:#F3F5F8; --ink:#18232F; --muted:#556272; --line:#C3CCD7; --well:#E6EBF1;
+  --accent:#2457C5; --accent-ink:#FFFFFF; --soft:#E7EEFB; --hot:#C8372B; --ok:#1E8A4C; --warn:#B7791F;
+  --stage1:#2B3549; --stage2:#0C1018;
+  --f-disp:"IBM Plex Sans Condensed","Arial Narrow",Arial,sans-serif;
+  --f-body:"IBM Plex Sans",Arial,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  color-scheme:light;
+}
+[hidden]{display:none!important}
+html,body{background:var(--bg);color:var(--ink)}
+body{font-family:var(--f-body);font-size:16px;line-height:1.5;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+.wrap{max-width:1380px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+h1,h2,h3{font-family:var(--f-disp);font-weight:700;line-height:1.1;margin:0;text-wrap:balance}
+h1{font-size:clamp(26px,3.2vw,36px)}
+h2{font-size:24px}
+h3{font-size:19px}
+p{margin:0}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+sub,sup{font-size:.72em}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(6px);padding-top:max(12px,env(safe-area-inset-top,0px));padding-bottom:10px;border-bottom:1px solid var(--line);margin:0 calc(-1*max(16px,env(safe-area-inset-left,0px))) 0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.topin{max-width:1380px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap}
+.tabs{display:flex;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:4px;overflow-x:auto}
+.tabs button{border:0;background:transparent;border-radius:7px;padding:8px 14px;font-weight:600;white-space:nowrap;color:var(--muted)}
+.tabs button.on{background:var(--accent);color:var(--accent-ink)}
+.tabs button span{font-family:var(--f-mono);font-weight:400;margin-right:6px;opacity:.8}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.q{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;border:1px solid var(--accent);color:var(--accent);background:var(--panel);font-size:12px;font-weight:600;line-height:1;padding:0;margin-left:5px;vertical-align:2px;flex:none}
+.q:hover,.q.on{background:var(--accent);color:var(--accent-ink)}
+#tip{position:fixed;z-index:50;max-width:min(360px,calc(100vw - 32px));background:#18232F;color:#F1F4F8;font-size:14px;line-height:1.45;padding:10px 12px;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.18);pointer-events:none}
+#tip b{color:#FFD27A}
+.concepts{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.cpt{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+.cpt b{font-family:var(--f-disp);font-size:17px}
+.cpt p{font-size:14px;color:var(--muted)}
+.cpt .fm{font-family:var(--f-mono);font-size:14px;color:var(--ink)}
+.lab{display:grid;grid-template-columns:300px minmax(0,1fr);gap:16px;align-items:start}
+.side{display:flex;flex-direction:column;gap:14px}
+.lbl{font-size:13px;font-weight:600;color:var(--muted);display:flex;align-items:center;margin-bottom:5px}
+.sys{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.sys button{display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:left;font-size:13px;line-height:1.2;border:1px solid var(--line);background:var(--well);border-radius:8px;padding:8px}
+.sys svg{width:30px;height:22px}
+.sys button.on{border-color:var(--accent);background:var(--soft);box-shadow:inset 0 0 0 1px var(--accent)}
+.seg{display:flex;flex-wrap:wrap;gap:4px}
+.seg button{border:1px solid var(--line);background:var(--well);border-radius:6px;padding:6px 10px;font-size:13px}
+.seg button.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.rng .tp{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.rng output{font-family:var(--f-mono);font-size:16px;font-weight:500}
+.rng input{width:100%;accent-color:var(--accent)}
+.view{display:flex;flex-direction:column;gap:10px;min-width:0}
+.viewbar{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}
+.stage{position:relative;border-radius:10px;overflow:hidden;background:radial-gradient(ellipse at 50% 30%,var(--stage1),var(--stage2));border:1px solid var(--line);height:min(60vh,580px);min-height:340px;touch-action:none}
+.stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:grab}
+.stage canvas.drag{cursor:grabbing}
+.tag{position:absolute;transform:translate(-50%,-50%);font-family:var(--f-mono);font-size:12.5px;color:#F1F4F8;background:rgba(12,16,24,.82);border:1px solid rgba(255,255,255,.22);padding:2px 7px;border-radius:5px;white-space:nowrap;pointer-events:none}
+.tag.max{border-color:#FFD27A;color:#FFD27A;font-weight:500}
+.tag.probe{border-color:#7FD4FF;color:#7FD4FF;transform:translate(12px,-130%)}
+.legend{position:absolute;left:10px;bottom:10px;display:flex;gap:8px;align-items:center;font-size:12px;color:#E6EAF0;background:rgba(12,16,24,.72);padding:4px 8px;border-radius:6px;border:1px solid rgba(255,255,255,.15)}
+.legend .bar{height:10px;width:130px;border-radius:3px;background:linear-gradient(90deg,#0D0887,#5402A3,#8B0AA5,#B93289,#DB5C68,#F48849,#FEBC2B,#F0F921)}
+.zoom{position:absolute;right:10px;bottom:10px;display:flex;gap:4px}
+.zoom button{width:36px;height:36px;border-radius:8px;border:1px solid rgba(255,255,255,.22);background:rgba(12,16,24,.75);color:#F1F4F8;font-size:18px}
+.layers{display:flex;flex-wrap:wrap;gap:6px}
+.layers label{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:var(--panel);border-radius:7px;padding:6px 10px;font-size:14px;cursor:pointer;user-select:none}
+.layers label.on{border-color:var(--accent);background:var(--soft)}
+.layers input{accent-color:var(--accent);width:16px;height:16px;margin:0}
+.layers .sw{width:12px;height:12px;border-radius:3px;flex:none}
+.cap{font-size:14px;color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 12px}
+.calc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:16px}
+.step{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;align-items:start;padding:10px 0;border-top:1px solid var(--line)}
+.step:first-of-type{border-top:0}
+.step .n{width:28px;height:28px;border-radius:50%;background:var(--soft);color:var(--accent);font-family:var(--f-mono);font-weight:600;display:flex;align-items:center;justify-content:center}
+.step .tt{font-weight:600;display:flex;align-items:center;flex-wrap:wrap}
+.step .fm{font-family:var(--f-mono);font-size:16px;margin-top:4px;overflow-wrap:anywhere}
+.step .res{display:inline-block;font-family:var(--f-mono);font-weight:600;background:var(--soft);color:var(--accent);border-radius:5px;padding:1px 7px}
+.step .sm{font-size:14px;color:var(--muted);margin-top:4px}
+.verdict{padding:10px 12px;border-radius:8px;font-weight:600}
+.verdict.ok{background:#E6F4EC;color:var(--ok)} .verdict.bad{background:#FBE9E7;color:var(--hot)}
+.plot svg{width:100%;height:auto;display:block}
+.plot text{font-family:var(--f-mono);font-size:13px;fill:var(--muted)}
+.tries{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.try{border:1px dashed var(--line);border-radius:8px;padding:10px 12px;background:var(--well);display:flex;flex-direction:column;gap:6px;font-size:14px}
+.try b{font-family:var(--f-disp);font-size:16px}
+.btn{border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);border-radius:7px;padding:8px 14px;font-size:15px}
+.btn.ghost{background:transparent;color:var(--accent)}
+.btn.sm{padding:5px 10px;font-size:14px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.tasks{display:flex;flex-direction:column;gap:10px}
+.task{border:1px solid var(--line);border-radius:10px;background:var(--panel);overflow:hidden}
+.task>button.hd{width:100%;display:grid;grid-template-columns:36px minmax(0,1fr) auto;gap:10px;align-items:center;text-align:left;background:transparent;border:0;padding:12px 16px}
+.task .num{width:32px;height:32px;border-radius:8px;background:var(--soft);color:var(--accent);font-family:var(--f-mono);font-weight:600;display:flex;align-items:center;justify-content:center}
+.task .num.done{background:var(--ok);color:#fff}
+.task .ttl{font-family:var(--f-disp);font-size:18px;font-weight:700}
+.task .bd{padding:0 16px 16px;display:flex;flex-direction:column;gap:12px}
+.case{background:#FFF8EA;border-left:4px solid var(--warn);padding:10px 12px;border-radius:6px;font-size:15px}
+.case .eyebrow{color:var(--warn)}
+.given{background:var(--well);border-radius:6px;padding:10px 12px}
+.ans{display:grid;max-width:720px;grid-template-columns:minmax(0,1fr) 140px 64px 34px;gap:8px;align-items:center}
+.ans input{box-sizing:border-box;font-family:var(--f-mono);font-size:16px;padding:7px 9px;border:1px solid var(--line);border-radius:6px;width:100%;min-width:0}
+.ans .mk{font-size:20px;text-align:center}
+.ans .mk.ok{color:var(--ok)} .ans .mk.no{color:var(--hot)}
+.hint{background:var(--soft);border-radius:6px;padding:8px 12px;font-size:15px}
+.sol ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:6px}
+.src{font-size:13px;color:var(--muted)}
+.src a{color:var(--accent)}
+.test{display:flex;flex-direction:column;gap:12px}
+.qq{border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.qq .qt{font-weight:600}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.opts label{display:flex;gap:8px;align-items:flex-start;border:1px solid var(--line);border-radius:7px;padding:8px 10px;cursor:pointer;background:var(--well)}
+.opts input{margin-top:4px;accent-color:var(--accent)}
+.opts label.right{border-color:var(--ok);background:#E6F4EC}
+.opts label.wrong{border-color:var(--hot);background:#FBE9E7}
+.expl{font-size:14px;color:var(--muted)}
+.score{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.grade{width:72px;height:72px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-family:var(--f-disp);font-size:44px;font-weight:700;color:#fff}
+.small{font-size:13px;color:var(--muted)}
+@media (max-width:1100px){.concepts{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:980px){.lab{grid-template-columns:1fr}.view{order:-1}.calc{grid-template-columns:1fr}.tries{grid-template-columns:1fr}}
+@media (max-width:640px){.concepts{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:4px}.cpt{flex:0 0 78%;scroll-snap-align:start}.legend .bar{width:50px}.legend span:first-child,.legend span:nth-child(3){display:none}.stage{height:62vh}.opts{grid-template-columns:1fr}.ans{grid-template-columns:1fr 1fr 34px}.ans>span:first-child{grid-column:1/-1}.tabs button{padding:7px 9px;font-size:14px}}
+</style>
+
+<div class="top"><div class="topin">
+  <div style="display:flex;flex-direction:column;gap:4px"><span class="eyebrow">Техника высоких напряжений · лекция 1 · напряжённость и неоднородность поля</span><h1>Электроды 3D</h1></div>
+  <nav class="tabs" role="tablist"><button role="tab" data-tab="t1" class="on"><span>1</span>Эксперимент</button><button role="tab" data-tab="t2"><span>2</span>Задачи</button><button role="tab" data-tab="t3"><span>3</span>Тест</button></nav>
+</div></div>
+
+<div class="wrap" style="margin-top:16px">
+<section id="t1" style="display:flex;flex-direction:column;gap:16px">
+  <div class="concepts">
+    <div class="cpt"><b>Напряжённость E<button class="q" data-t="E" aria-label="Подсказка">?</button></b><p>Сила поля, действующая на заряд. От неё зависит, выдержит ли изоляция.</p><div class="fm">E = F/q, кВ/см</div></div>
+    <div class="cpt"><b>Средняя E<sub>ср</sub><button class="q" data-t="Eav" aria-label="Подсказка">?</button></b><p>Какой была бы E, если бы поле было однородным.</p><div class="fm">E<sub>ср</sub> = U/d</div></div>
+    <div class="cpt"><b>Наибольшая E<sub>max</sub><button class="q" data-t="Emax" aria-label="Подсказка">?</button></b><p>Максимум поля — у электрода с наименьшим радиусом кривизны.</p><div class="fm">E<sub>max</sub> ≥ E<sub>ср</sub></div></div>
+    <div class="cpt"><b>Неоднородность k<sub>н</sub><button class="q" data-t="kn" aria-label="Подсказка">?</button></b><p>Во сколько раз максимум больше среднего.</p><div class="fm">k<sub>н</sub> = E<sub>max</sub>/E<sub>ср</sub></div></div>
+    <div class="cpt"><b>Прочность воздуха E<sub>0</sub><button class="q" data-t="E0" aria-label="Подсказка">?</button></b><p>Выше этого значения воздух у электрода начинает ионизироваться.</p><div class="fm">E<sub>0</sub> ≈ 30 кВ/см</div></div>
+  </div>
+
+  <div class="lab">
+    <aside class="card side">
+      <div><div class="lbl">Система электродов<button class="q" data-t="sys" aria-label="Подсказка">?</button></div><div class="sys" id="sys"></div></div>
+      <div id="potBox"><div class="lbl">Подключение второго электрода<button class="q" data-t="gnd" aria-label="Подсказка">?</button></div><div class="seg" id="pot"></div><p class="small" id="potNote" style="margin-top:6px"></p></div>
+      <div><div class="lbl">Полярность электрода 1<button class="q" data-t="pol" aria-label="Подсказка">?</button></div><div class="seg" id="pol"><button data-pl="1" class="on">плюс «+»</button><button data-pl="-1">минус «−»</button></div></div>
+      <div class="rng"><div class="tp"><label class="lbl" for="U">Напряжение U<button class="q" data-t="U" aria-label="Подсказка">?</button></label><output id="oU"></output></div><input type="range" id="U" min="1" max="500" step="1" value="100"></div>
+      <div class="rng"><div class="tp"><label class="lbl" for="r" id="lr">Радиус r</label><output id="or"></output></div><input type="range" id="r" min="0" max="1000" step="1"></div>
+      <div class="rng"><div class="tp"><label class="lbl" for="d" id="ld">Промежуток d</label><output id="od"></output></div><input type="range" id="d" min="0" max="1000" step="1"></div>
+      <p class="small" id="sysNote"></p>
+    </aside>
+    <div class="view">
+      <div class="viewbar"><div class="layers" id="layers"></div></div>
+      <div class="stage" id="stage">
+        <canvas id="cv" aria-label="Трёхмерная сцена электродов и поля" role="img"></canvas>
+        <div id="tags"></div>
+        <div class="legend"><span>слабое</span><span class="bar"></span><span>сильное поле</span><span class="mono" id="lgMax"></span></div>
+        <div class="zoom"><button id="zin" aria-label="Приблизить">+</button><button id="zout" aria-label="Отдалить">−</button><button id="zres" aria-label="Исходный вид" style="font-size:14px">⟲</button></div>
+      </div>
+      <p class="cap" id="cap"></p>
+    </div>
+  </div>
+
+  <div class="calc">
+    <div class="card"><h3>Расчёт по шагам</h3><div id="steps"></div></div>
+    <div class="card"><h3>Как меняется E вдоль промежутка</h3><div class="plot" id="plot"></div><p class="small" id="probeNote"></p></div>
+  </div>
+
+  <div class="card"><h3>Попробуйте сами</h3><div class="tries" id="tries"></div></div>
+</section>
+
+<section id="t2" hidden style="display:flex;flex-direction:column;gap:16px">
+  <div class="card"><div class="row" style="justify-content:space-between"><div><h2>Практические занятия</h2><p class="small">10 задач по ситуациям из практики. Введите ответ и нажмите «Проверить»; принимается отклонение до 3 %. Каждую задачу можно открыть в лаборатории и проверить на 3D-модели.</p></div><div class="mono" id="tProg"></div></div></div>
+  <div class="tasks" id="tasks"></div>
+</section>
+
+<section id="t3" hidden style="display:flex;flex-direction:column;gap:16px">
+  <div class="card"><h2>Тест</h2><p class="small">10 вопросов, один правильный ответ в каждом. Оценка: 9–10 верных — «5», 7–8 — «4», 6 — «3», меньше 6 — «2».</p><div class="row"><span class="lbl" style="margin:0">Вариант:</span><div class="seg" id="vars"></div></div></div>
+  <div class="test" id="test"></div>
+  <div class="row"><button class="btn" id="submit">Завершить тест</button><button class="btn ghost" id="retry">Начать заново</button></div>
+  <div class="card" id="result" hidden></div>
+</section>
+
+<p class="small">Расчёт поля: плоскости, кабель, провод над землёй и острие (гиперболоид) — точные аналитические решения; шары — метод зеркальных изображений. Приближённые формулы — Важов, Лавринович «Техника высоких напряжений» (ТПУ, 2014), практикумы кафедры ТЭВН ТПУ; острие — формула Коэльо–Дебо.</p>
+</div>
+<div id="tip" hidden></div>
+
+<script>
+const TIPS={
+E:"<b>Напряжённость электрического поля E</b> — сила, с которой поле действует на единичный положительный заряд: E = F/q. Показывает, насколько сильно поле «тянет» заряды в данной точке. Единицы: В/м; в технике высоких напряжений удобнее кВ/см (1 кВ/см = 100 кВ/м). Именно E решает, выдержит ли изоляция.",
+phi:"<b>Потенциал φ</b> — энергия единичного заряда в данной точке поля относительно земли, кВ. Напряжение между электродами — разность их потенциалов: U = φ₁ − φ₂.",
+U:"<b>Напряжение U</b> — разность потенциалов между электродами, кВ. В лаборатории это напряжение, приложенное к электроду 1 относительно земли или второго электрода.",
+r:"<b>Радиус кривизны</b> — радиус окружности, которая лучше всего «прилегает» к поверхности в данной точке. У острия он маленький (доли миллиметра), у шара равен радиусу шара, у плоскости — бесконечно большой. Чем меньше радиус кривизны, тем сильнее поле у поверхности.",
+d:"<b>Промежуток d</b> — кратчайшее расстояние между поверхностями электродов, см. Для кабеля — толщина изоляции между жилой и экраном.",
+Eav:"<b>Средняя напряжённость E<sub>ср</sub> = U/d</b> — такой была бы напряжённость, если бы поле было однородным. Реальное поле у острых электродов больше среднего.",
+Emax:"<b>Наибольшая напряжённость E<sub>max</sub></b> — максимум поля в промежутке. Обычно находится на поверхности электрода с наименьшим радиусом кривизны. Пробой изоляции начинается именно там.",
+kn:"<b>Коэффициент неоднородности k<sub>н</sub> = E<sub>max</sub>/E<sub>ср</sub></b>. Для однородного поля k<sub>н</sub> = 1. Чем больше k<sub>н</sub>, тем неоднороднее поле. Условно: до 2 — слабонеоднородное, больше 4 — резконеоднородное (границы в учебниках немного различаются).",
+E0:"<b>E<sub>0</sub> ≈ 30 кВ/см</b> — электрическая прочность воздуха в однородном поле при нормальных условиях (20 °C, 760 мм рт. ст., амплитудное значение). Если E<sub>max</sub> у поверхности больше, воздух там начинает ионизироваться: появляется свечение и треск (корона).",
+line:"<b>Силовая линия</b> — линия, касательная к которой в каждой точке совпадает с направлением E. Начинается на положительном заряде, заканчивается на отрицательном. Где линии гуще — поле сильнее.",
+eq:"<b>Эквипотенциаль</b> — поверхность (в разрезе — линия) одинакового потенциала. Силовые линии всегда перпендикулярны эквипотенциалям. Где эквипотенциали сближаются — поле сильнее.",
+gnd:"<b>Заземление</b> — соединение электрода с землёй; его потенциал становится равным нулю. Земля «далеко вокруг» тоже имеет нулевой потенциал, поэтому заземлённый электрод и окружение работают вместе.",
+flt:"<b>Плавающий электрод</b> — металлическая часть, ни к чему не подключённая. Её общий заряд равен нулю, а потенциал устанавливается сам — промежуточный между соседними электродами.",
+pol:"<b>Полярность</b> — знак напряжения на электроде 1. При смене полярности картина поля та же, меняется только направление силовых линий (стрелок).",
+sys:"<b>Система электродов</b> — форма и взаимное расположение электродов. От неё зависит, как распределится поле: равномерно (плоскости) или со сгущением у острых частей (острие, тонкий провод).",
+uni:"<b>Однородное поле</b> — напряжённость одинакова во всех точках (идеально — между двумя большими параллельными плоскостями). <b>Неоднородное</b> — напряжённость меняется от точки к точке.",
+coax:"<b>Коаксиальные цилиндры</b> — цилиндр внутри цилиндра на общей оси. Так устроен кабель: внутренний проводник — <b>жила</b>, внешний — <b>экран</b> (оболочка), между ними изоляция.",
+hyp:"<b>Острие</b> моделируется гиперболоидом вращения — фигурой, которая на конце закруглена с радиусом r. Это классическая модель «острие–плоскость» с точным решением.",
+img:"<b>Метод зеркальных изображений</b> — заземлённую плоскость заменяют «зеркальным» зарядом противоположного знака. Поле над плоскостью от этого не меняется, а расчёт становится простым."
+};
+
+const TASKS=[
+{t:"Испытательная ячейка с плоскими электродами",
+ c:"Электрическую прочность изоляционных материалов определяют в ячейке с плоскими электродами, края которых плавно скруглены (профиль Роговского). Скругление нужно, чтобы поле на краях не было сильнее, чем в центре, и пробой происходил в однородном поле.",
+ src:[["Профиль Роговского — однородное поле без усиления на краях","https://nessengr.com/techdata/rogowski/rogowski.html"]],
+ g:"Расстояние между электродами d = 2 см, приложено U = 50 кВ (амплитуда), между электродами воздух.",
+ q:[["Напряжённость поля E","кВ/см",[25]],["При каком напряжении поле достигнет E₀ = 30 кВ/см?","кВ",[60]]],
+ h:"Поле однородное: E = U/d. Для второго вопроса выразите U из той же формулы.",
+ s:["Поле между плоскими электродами однородное, поэтому E<sub>max</sub> = E<sub>ср</sub> = U/d.","E = 50 / 2 = <b>25 кВ/см</b>; k<sub>н</sub> = 1.","U = E₀·d = 30·2 = <b>60 кВ</b>. Выше этого напряжения воздух в ячейке пробьётся."],
+ lab:{sys:"pp",U:50,d:2,r:5}},
+{t:"Заусенец на шине распредустройства",
+ c:"После резки на кромке медной шины остался заусенец. При включении в ячейке слышен треск, датчик частичных разрядов фиксирует импульсы. Острые кромки и углы — известная причина частичных разрядов: поле концентрируется на малом радиусе кривизны. Кромку зачистили и скруглили.",
+ src:[["Острые углы проводников вызывают частичные разряды; скругление снижает концентрацию поля","https://researchconnect.stonybrook.edu/en/publications/toward-partial-discharge-reduction-by-corner-correction-in-power-/"]],
+ g:"Заусенец моделируем острием с радиусом закругления r = 0,05 см (0,5 мм), после зачистки r = 0,5 см. Расстояние до заземлённой стенки d = 5 см, U = 20 кВ.",
+ q:[["E<sub>max</sub> у заусенца","кВ/см",[133.5,134.1]],["E<sub>max</sub> после скругления","кВ/см",[21.7,22.45]]],
+ h:"Для острия: E<sub>max</sub> ≈ 2U/(r·ln(4d/r)). Не забудьте, что ln — натуральный логарифм.",
+ s:["Острие–плоскость: E<sub>max</sub> ≈ 2U/(r·ln(4d/r)).","Заусенец: 2·20/(0,05·ln(400)) = 40/(0,05·5,99) = <b>133,5 кВ/см</b> — в 4,5 раза больше E₀ = 30 кВ/см: у кромки воздух ионизируется, отсюда треск и частичные разряды.","После скругления: 2·20/(0,5·ln(40)) = 40/(0,5·3,69) = <b>21,7 кВ/см</b> &lt; 30 кВ/см — разрядов нет.","Точный расчёт в лаборатории: 134,1 и 22,5 кВ/см. Поле уменьшилось почти в 6 раз только за счёт радиуса кривизны."],
+ lab:{sys:"hp",U:20,d:5,r:0.05}},
+{t:"Шаровой наконечник вывода",
+ c:"Высоковольтный вывод испытательной установки заканчивается металлическим шаром. Шар выбран потому, что у него нет острых кромок, и поле распределено равномернее, чем у торца стержня.",
+ src:[],
+ g:"Шар радиусом r = 3 см находится на расстоянии d = 6 см от заземлённой плиты, U = 50 кВ.",
+ q:[["E<sub>max</sub> у шара","кВ/см",[22.5,22.31]],["Коэффициент неоднородности k<sub>н</sub>","",[2.7,2.68]]],
+ h:"E<sub>max</sub> ≈ 0,9·U·(r + d)/(r·d); k<sub>н</sub> = E<sub>max</sub>/E<sub>ср</sub>, где E<sub>ср</sub> = U/d.",
+ s:["E<sub>ср</sub> = U/d = 50/6 = 8,33 кВ/см.","E<sub>max</sub> ≈ 0,9·50·(3 + 6)/(3·6) = 405/18 = <b>22,5 кВ/см</b> (точный расчёт — 22,3).","k<sub>н</sub> = E<sub>max</sub>/E<sub>ср</sub> = 22,5/8,33 = <b>2,7</b> — поле неоднородное (между слабо- и резконеоднородным).","22,5 &lt; 30 кВ/см — воздух у шара выдерживает."],
+ lab:{sys:"sp",U:50,d:6,r:3}},
+{t:"Экранное кольцо вместо головки болта",
+ c:"На оборудовании сверхвысокого напряжения острые детали арматуры закрывают экранными (антикоронными) кольцами — тороидами большого радиуса. Поле у поверхности обратно связано с радиусом кривизны, и большое кольцо снижает его ниже порога ионизации воздуха (≈ 30 кВ/см). Для линий выше 230 кВ производители рекомендуют кольцо на линейном конце гирлянды.",
+ src:[["Corona ring — экранные кольца и порог 30 кВ/см","https://en.wikipedia.org/wiki/Corona_ring"]],
+ g:"Головку болта моделируем шаром r = 0,5 см, экран — шаром r = 10 см. В обоих случаях расстояние до заземлённой конструкции d = 30 см, U = 150 кВ. Считайте по приближённой формуле для шара.",
+ q:[["E<sub>max</sub> у головки болта","кВ/см",[274.5,302.5]],["E<sub>max</sub> у экрана","кВ/см",[18,18.16]]],
+ h:"E<sub>max</sub> ≈ 0,9·U·(r + d)/(r·d) для каждого радиуса.",
+ s:["Болт: 0,9·150·30,5/(0,5·30) = <b>274,5 кВ/см</b> — в 9 раз выше E₀: корона гарантирована.","Экран: 0,9·150·40/(10·30) = <b>18,0 кВ/см</b> &lt; 30 — короны нет.","Точный расчёт: 302,5 и 18,2 кВ/см. Для маленького шара далеко от плоскости (d/r = 60) приближённая формула занижает на 10 % — проверьте в лаборатории."],
+ lab:{sys:"sp",U:150,d:30,r:0.5}},
+{t:"Почему провода ЛЭП 500 кВ расщепляют",
+ c:"Начиная с напряжений выше примерно 132 кВ провода ЛЭП страдают от короны: потери энергии, шум, радиопомехи. На линиях 330–750 кВ каждую фазу делают из нескольких проводов (расщеплённая фаза): такой пучок работает как один провод большого радиуса, и поле у поверхности снижается.",
+ src:[["Bundle conductor — расщепление фаз для снижения короны","https://en.wikipedia.org/wiki/Bundle_conductor"]],
+ g:"Один провод радиусом r = 1,2 см висит на высоте h = 10 м над землёй (влиянием других фаз пренебрегаем). Амплитуда фазного напряжения: для 220 кВ U = 220·√2/√3 = 179,6 кВ, для 500 кВ U = 408 кВ.",
+ q:[["E<sub>max</sub> для линии 220 кВ","кВ/см",[20.2]],["E<sub>max</sub> для линии 500 кВ","кВ/см",[45.9]]],
+ h:"Провод над землёй: E<sub>max</sub> ≈ U/(r·ln(2h/r)); h = 1000 см.",
+ s:["2h/r = 2000/1,2 = 1667; ln 1667 = 7,42.","220 кВ: 179,6/(1,2·7,42) = <b>20,2 кВ/см</b> — ниже 30 кВ/см, один провод справляется.","500 кВ: 408/(1,2·7,42) = <b>45,9 кВ/см</b> — намного выше E₀: одиночный провод «горел» бы короной. Поэтому фазу расщепляют на 3 провода и больше."],
+ lab:{sys:"wp",U:180,d:998.8,r:1.2}},
+{t:"Поле в изоляции кабеля 10 кВ",
+ c:"В кабеле поле сосредоточено между жилой и экраном. Сильнее всего оно у поверхности жилы — там изоляция нагружена больше всего, и именно там при производстве особенно опасны пустоты и примеси.",
+ src:[],
+ g:"Радиус жилы r = 0,9 см, толщина изоляции d = 0,45 см (радиус экрана R = 1,35 см). Амплитуда фазного напряжения U = 10·√2/√3 = 8,16 кВ.",
+ q:[["E<sub>max</sub> у жилы","кВ/см",[22.4]],["E у экрана","кВ/см",[14.9]]],
+ h:"Коаксиальная система: E(ρ) = U/(ρ·ln(R/r)). У жилы ρ = r, у экрана ρ = R.",
+ s:["ln(R/r) = ln(1,35/0,9) = ln 1,5 = 0,405.","У жилы: 8,16/(0,9·0,405) = <b>22,4 кВ/см</b> = 2,24 кВ/мм.","У экрана: 8,16/(1,35·0,405) = <b>14,9 кВ/см</b>.","Поле убывает от жилы к экрану как 1/ρ. Твёрдая изоляция кабеля выдерживает в десятки раз больше, чем воздух, поэтому 2,24 кВ/мм для неё — рабочий режим."],
+ lab:{sys:"cx",U:8.16,d:0.45,r:0.9}},
+{t:"Шаровой разрядник: один шар заземлён",
+ c:"Напряжение в испытательных лабораториях измеряют шаровыми разрядниками. Стандарт IEC 60052 так и называется: «измерение напряжения шаровыми разрядниками (один шар заземлён)». Таблицы пробивных напряжений составлены именно для включения с заземлённым шаром, и симметричное питание дало бы другую картину поля.",
+ src:[["IEC 60052: Voltage measurement by means of sphere-gaps (one sphere earthed)","https://www.boutique.afnor.org/en-gb/standard/iec-600521960/recommendations-for-voltage-measurement-by-means-of-spheregaps-one-sphere-e/xs100209/436807"]],
+ g:"Шары диаметром 25 см (r = 12,5 см), промежуток d = 10 см, U = 150 кВ. Определите E<sub>max</sub> в лаборатории («Шар — шар»).",
+ q:[["E<sub>max</sub> при питании ±U/2","кВ/см",[19.24]],["E<sub>max</sub> у высоковольтного шара, второй заземлён","кВ/см",[20.67]]],
+ h:"Откройте задачу в лаборатории и переключайте подключение. Значение E<sub>max</sub> — в карточке «Расчёт по шагам».",
+ s:["±U/2: поле симметрично, <b>19,2 кВ/см</b> у обоих шаров.","Второй шар заземлён: у высоковольтного шара <b>20,7 кВ/см</b>, у заземлённого 17,8.","Разница 7 %: при d &lt; r поле слабонеоднородное и влияние земли небольшое. У маленьких шаров (r = 5 см, d = 10 см) разница достигает 32 % — проверьте."],
+ lab:{sys:"ss",U:150,d:10,r:12.5,pot:"sym"}},
+{t:"Подбор радиуса экрана",
+ c:"Конструктор выбирает радиус шарового экрана на конце высоковольтного вывода. Требование: E<sub>max</sub> не больше 80 % от E₀, то есть 24 кВ/см.",
+ src:[],
+ g:"U = 100 кВ, расстояние до заземлённых конструкций d = 20 см.",
+ q:[["Наименьший радиус экрана r","см",[4.62]]],
+ h:"Запишите неравенство 0,9·U·(r + d)/(r·d) ≤ 24 и решите его относительно r.",
+ s:["0,9·100·(r + 20)/(20r) ≤ 24 ⇒ 90(r + 20) ≤ 480r ⇒ 1800 ≤ 390r.","r ≥ 1800/390 = <b>4,62 см</b>.","Проверка в лаборатории: при r = 4,6 см точный расчёт даёт 24,7 кВ/см — чуть больше 24. Приближённая формула занижает на ~3 %, поэтому берут с запасом: r = 5 см."],
+ lab:{sys:"sp",U:100,d:20,r:4.6}},
+{t:"Незаземлённая деталь рядом с высоким напряжением",
+ c:"Металлическая деталь, не подключённая к земле, оказавшись рядом с электродом под напряжением, приобретает потенциал. Прикоснуться к ней опасно, поэтому все металлические части в зоне высокого напряжения заземляют.",
+ src:[],
+ g:"Шар r = 5 см под напряжением U = 100 кВ, рядом такой же незаземлённый шар, промежуток d = 10 см. Определите в лаборатории потенциал «плавающего» шара.",
+ q:[["Потенциал плавающего шара φ₂","кВ",[25.12]]],
+ h:"Лаборатория → «Шар — шар» → «шар 2 не подключён». Потенциал выводится в расчёте.",
+ s:["Плавающий шар не имеет заряда, но находится в поле первого шара и принимает потенциал <b>≈ 25 кВ</b> — четверть приложенного напряжения.","Это напряжение прикосновения — смертельно опасно. Вывод: всё металлическое в зоне высокого напряжения заземляют."],
+ lab:{sys:"ss",U:100,d:10,r:5,pot:"flt"}},
+{t:"Сравнение неоднородности полей",
+ c:"От коэффициента неоднородности зависит, как будет развиваться разряд: в слабонеоднородном поле (k<sub>н</sub> &lt; 2) пробой наступает сразу, в резконеоднородном (k<sub>н</sub> &gt; 4) сначала появляется корона у острого электрода.",
+ src:[],
+ g:"Промежуток d = 10 см. Сравните острие с r = 0,2 см и шар r = 5 см (оба над заземлённой плоскостью).",
+ q:[["k<sub>н</sub> для острия","",[18.9,19.03]],["k<sub>н</sub> для шара","",[2.7,2.68]]],
+ h:"k<sub>н</sub> = E<sub>max</sub>/E<sub>ср</sub>, напряжение сокращается: для острия k<sub>н</sub> ≈ 2d/(r·ln(4d/r)), для шара k<sub>н</sub> ≈ 0,9·(r + d)/r.",
+ s:["Острие: 2·10/(0,2·ln 200) = 20/(0,2·5,30) = <b>18,9</b> — резконеоднородное поле.","Шар: 0,9·15/5 = <b>2,7</b> — поле неоднородное, но далеко от резконеоднородного.","k<sub>н</sub> не зависит от напряжения — только от геометрии. Проверьте: меняйте U в лаборатории, k<sub>н</sub> не меняется."],
+ lab:{sys:"hp",U:100,d:10,r:0.2}}
+];
+const TESTS=[
+[
+ ["Что показывает напряжённость электрического поля E?",["Силу, действующую на единичный положительный заряд","Энергию, запасённую в изоляции","Ток, протекающий через изоляцию","Заряд электрода"],0,"E = F/q — сила на единичный заряд."],
+ ["В каких единицах в технике высоких напряжений обычно выражают E?",["кВ/см","кВ·см","кВ","Кл/м"],0,"Напряжённость — напряжение на единицу длины: кВ/см, кВ/мм, В/м."],
+ ["Между плоскими электродами d = 4 см приложено U = 80 кВ. Чему равна E?",["20 кВ/см","320 кВ/см","0,05 кВ/см","84 кВ/см"],0,"E = U/d = 80/4 = 20 кВ/см."],
+ ["Как изменится E<sub>max</sub> у электрода, если уменьшить его радиус кривизны?",["Увеличится","Уменьшится","Не изменится","Станет равной нулю"],0,"Чем острее электрод (меньше радиус кривизны), тем сильнее поле у его поверхности."],
+ ["Чему равен k<sub>н</sub> для однородного поля?",["1","0","Бесконечности","Он зависит от напряжения"],0,"В однородном поле E<sub>max</sub> = E<sub>ср</sub>, поэтому k<sub>н</sub> = 1."],
+ ["Где в системе «шар — плоскость» напряжённость наибольшая?",["На поверхности шара в точке, ближайшей к плоскости","На плоскости прямо под шаром","Посередине промежутка","На верхушке шара"],0,"Максимум — у электрода с меньшим радиусом кривизны, в точке, ближайшей ко второму электроду."],
+ ["Как расположены силовые линии относительно эквипотенциалей?",["Перпендикулярно","Параллельно","Под углом 45°","Совпадают с ними"],0,"Поле направлено туда, где потенциал быстрее всего убывает, — перпендикулярно эквипотенциалям."],
+ ["О чём говорит сгущение силовых линий?",["Поле в этом месте сильнее","Поле в этом месте слабее","Потенциал там равен нулю","Там нет поля"],0,"Густота силовых линий пропорциональна напряжённости."],
+ ["Какова примерно электрическая прочность воздуха при нормальных условиях в однородном поле?",["≈ 30 кВ/см","≈ 3 кВ/см","≈ 300 кВ/см","≈ 0,3 кВ/см"],0,"E₀ ≈ 30 кВ/см (амплитуда)."],
+ ["Шар r = 5 см над заземлённой плоскостью, d = 10 см, U = 100 кВ. E<sub>max</sub> ≈ 0,9·U·(r+d)/(r·d) равна:",["27 кВ/см","10 кВ/см","18 кВ/см","135 кВ/см"],0,"0,9·100·15/(5·10) = 27 кВ/см."]
+],
+[
+ ["Как называется отношение E<sub>max</sub>/E<sub>ср</sub>?",["Коэффициент неоднородности поля","Коэффициент запаса","Диэлектрическая проницаемость","Коэффициент трансформации"],0,"k<sub>н</sub> = E<sub>max</sub>/E<sub>ср</sub>."],
+ ["Средняя напряжённость в промежутке определяется как:",["U/d","U·d","d/U","U²/d"],0,"E<sub>ср</sub> = U/d."],
+ ["U = 60 кВ, d = 3 см, E<sub>max</sub> = 50 кВ/см. Чему равен k<sub>н</sub>?",["2,5","0,4","20","150"],0,"E<sub>ср</sub> = 60/3 = 20; k<sub>н</sub> = 50/20 = 2,5."],
+ ["Какой электрод создаёт наиболее неоднородное поле при одинаковом промежутке?",["Острие","Шар большого радиуса","Плоскость","Цилиндр большого радиуса"],0,"У острия наименьший радиус кривизны."],
+ ["Что такое эквипотенциаль?",["Поверхность одинакового потенциала","Линия одинаковой напряжённости","Траектория электрона","Граница электрода"],0,"Во всех точках эквипотенциали потенциал одинаков."],
+ ["Где в коаксиальном кабеле напряжённость наибольшая?",["У поверхности жилы","У экрана","Посередине изоляции","Одинакова во всей изоляции"],0,"E(ρ) = U/(ρ·ln(R/r)) убывает с ростом ρ, максимум — при ρ = r."],
+ ["Зачем на оборудовании сверхвысокого напряжения ставят экранные кольца?",["Чтобы увеличить радиус кривизны и снизить E у поверхности","Чтобы увеличить ёмкость","Для механической прочности","Чтобы повысить напряжение"],0,"Большой радиус кривизны — меньше E, нет короны."],
+ ["Что произойдёт с E во всех точках, если напряжение увеличить в 2 раза, а геометрию не менять?",["E увеличится в 2 раза","E увеличится в 4 раза","E не изменится","E уменьшится в 2 раза"],0,"Поле пропорционально напряжению."],
+ ["Изменится ли k<sub>н</sub>, если увеличить напряжение?",["Нет, k<sub>н</sub> зависит только от геометрии","Да, увеличится","Да, уменьшится","Станет равным 1"],0,"E<sub>max</sub> и E<sub>ср</sub> растут одинаково, их отношение не меняется."],
+ ["Провод r = 1 см на высоте h = 5 м, U = 100 кВ. E<sub>max</sub> ≈ U/(r·ln(2h/r)) равна (ln 1000 ≈ 6,9):",["≈ 14,5 кВ/см","≈ 0,2 кВ/см","≈ 100 кВ/см","≈ 690 кВ/см"],0,"100/(1·6,9) ≈ 14,5 кВ/см."]
+],
+[
+ ["Потенциал заземлённого электрода равен:",["Нулю","Приложенному напряжению","Половине напряжения","Бесконечности"],0,"Заземление — соединение с землёй, потенциал 0."],
+ ["Напряжение между электродами — это:",["Разность их потенциалов","Сумма их потенциалов","Произведение заряда на расстояние","Напряжённость у электрода"],0,"U = φ₁ − φ₂."],
+ ["Два шара r = 5 см, d = 10 см, напряжение одно и то же. Где E<sub>max</sub> больше?",["Когда один шар заземлён","При питании ±U/2","Одинаково","Зависит от полярности"],0,"При заземлённом втором шаре E<sub>max</sub> у шара под напряжением больше (в примере — на 32 %)."],
+ ["Плавающий (незаземлённый) электрод рядом с электродом под напряжением:",["Приобретает промежуточный потенциал","Всегда имеет нулевой потенциал","Имеет потенциал, равный приложенному","Не влияет на поле"],0,"Его заряд равен нулю, а потенциал устанавливается сам."],
+ ["Для чего у испытательных ячеек края плоских электродов скругляют (профиль Роговского)?",["Чтобы поле на краях не было больше, чем в центре","Для красоты","Чтобы уменьшить массу","Чтобы увеличить ёмкость"],0,"Иначе пробой произойдёт на краю, а не в однородной части."],
+ ["Радиус кривизны плоскости:",["Бесконечно большой","Равен нулю","Равен толщине пластины","Равен расстоянию до второго электрода"],0,"Плоскость не искривлена — радиус кривизны бесконечен."],
+ ["Острие r = 0,1 см над плоскостью, d = 10 см, U = 30 кВ. E<sub>max</sub> ≈ 2U/(r·ln(4d/r)) (ln 400 ≈ 6,0):",["≈ 100 кВ/см","≈ 3 кВ/см","≈ 30 кВ/см","≈ 600 кВ/см"],0,"2·30/(0,1·6,0) = 100 кВ/см."],
+ ["E<sub>max</sub> = 100 кВ/см у острия из предыдущей задачи. Что будет у острия?",["Ионизация воздуха (корона): 100 > 30 кВ/см","Ничего, поле слабое","Сразу пробой всего промежутка","Острие охладится"],0,"E<sub>max</sub> превышает E₀ — у острия начинается ионизация."],
+ ["Силовая линия начинается:",["На положительном заряде","На отрицательном заряде","В любой точке пространства","Только на земле"],0,"Линии идут от «+» к «−»."],
+ ["Что изменится при смене полярности электрода?",["Направление силовых линий; величина E та же","Величина E вдвое","Форма эквипотенциалей","Коэффициент неоднородности"],0,"Картина поля та же, меняется только направление."]
+],
+[
+ ["Напряжённость поля 1 кВ/мм — это сколько кВ/см?",["10 кВ/см","0,1 кВ/см","100 кВ/см","1 кВ/см"],0,"1 мм = 0,1 см, поэтому 1 кВ/мм = 10 кВ/см."],
+ ["U = 120 кВ, d = 6 см. E<sub>ср</sub> равна:",["20 кВ/см","720 кВ/см","0,05 кВ/см","114 кВ/см"],0,"120/6 = 20 кВ/см."],
+ ["Поле, в котором k<sub>н</sub> = 15, называют:",["Резконеоднородным","Однородным","Слабонеоднородным","Нулевым"],0,"k<sub>н</sub> > 4 — резконеоднородное поле."],
+ ["Почему провода ЛЭП 500 кВ делают расщеплёнными (несколько проводов в фазе)?",["Пучок работает как провод большого радиуса и снижает E у поверхности","Чтобы уменьшить массу","Чтобы снизить напряжение","Для защиты от гололёда"],0,"Больше эквивалентный радиус — меньше поверхностная напряжённость и корона."],
+ ["Где эквипотенциали в разрезе поля располагаются гуще всего?",["Около электрода с малым радиусом кривизны","Около плоскости","Посередине промежутка","Везде одинаково"],0,"Густые эквипотенциали = сильное поле, а оно у острого электрода."],
+ ["Кабель: r = 1 см, R = 2,72 см (ln(R/r) = 1), U = 10 кВ. E у жилы равна:",["10 кВ/см","3,7 кВ/см","27,2 кВ/см","5 кВ/см"],0,"E = U/(r·ln(R/r)) = 10/(1·1) = 10 кВ/см."],
+ ["В том же кабеле E у экрана равна:",["≈ 3,7 кВ/см","10 кВ/см","27,2 кВ/см","0"],0,"10/(2,72·1) ≈ 3,7 кВ/см."],
+ ["Что такое E₀ ≈ 30 кВ/см?",["Электрическая прочность воздуха в однородном поле","Напряжённость поля Земли","Предельная напряжённость в кабеле","Средняя напряжённость любого промежутка"],0,"Выше E₀ воздух начинает ионизироваться."],
+ ["Шар r = 10 см и шар r = 1 см на одинаковом расстоянии от плоскости при одном U. У какого E<sub>max</sub> больше?",["У шара r = 1 см","У шара r = 10 см","Одинаково","Зависит от полярности"],0,"Меньший радиус кривизны — сильнее поле."],
+ ["Каким методом удобно рассчитывать поле заряда над заземлённой плоскостью?",["Методом зеркальных изображений","Методом контурных токов","Методом наложения токов","Методом эквивалентного генератора"],0,"Плоскость заменяют зеркальным зарядом противоположного знака."]
+],
+[
+ ["Формула E = F/q определяет:",["Напряжённость электрического поля","Потенциал","Ёмкость","Напряжение"],0,"Сила на единичный заряд."],
+ ["Между плоскостями d = 2 см. При каком U напряжённость достигнет 30 кВ/см?",["60 кВ","15 кВ","32 кВ","600 кВ"],0,"U = E·d = 30·2 = 60 кВ."],
+ ["Шар–плоскость: E<sub>max</sub> = 24 кВ/см, U = 80 кВ, d = 8 см. k<sub>н</sub> равен:",["2,4","0,42","10","3"],0,"E<sub>ср</sub> = 10 кВ/см; k<sub>н</sub> = 24/10 = 2,4."],
+ ["Какая система даёт однородное поле?",["Две большие параллельные плоскости","Острие — плоскость","Провод над землёй","Шар — шар малого радиуса"],0,"Между большими параллельными плоскостями поле одинаково во всех точках."],
+ ["Почему заусенцы и острые кромки на шинах опасны?",["У них малый радиус кривизны — высокое E и разряды","Они увеличивают сопротивление","Они уменьшают ток","Они не опасны"],0,"Поле концентрируется на остром месте, начинаются частичные разряды."],
+ ["Во сколько раз примерно уменьшится E<sub>max</sub> у острия, если радиус закругления увеличить с 0,05 до 0,5 см (d = 5 см)?",["≈ в 6 раз","В 10 раз ровно","В 2 раза","Не изменится"],0,"Расчёт: 134 → 22,5 кВ/см, примерно в 6 раз (логарифм в знаменателе тоже меняется)."],
+ ["Почему все металлические части в зоне высокого напряжения заземляют?",["Незаземлённые части приобретают опасный потенциал","Чтобы увеличить напряжение","Чтобы уменьшить массу","Для красоты"],0,"Плавающая деталь принимает промежуточный потенциал — опасно прикосновение."],
+ ["Как направлен вектор E относительно поверхности металлического электрода?",["Перпендикулярно поверхности","По касательной","Под углом 45°","Внутрь металла"],0,"Поверхность проводника — эквипотенциаль, E ей перпендикулярна."],
+ ["Внутри металлического электрода напряжённость электростатического поля:",["Равна нулю","Максимальна","Равна E<sub>ср</sub>","Равна E₀"],0,"В проводнике заряды перераспределяются так, что поле внутри исчезает."],
+ ["Кабель с r = 1 см, R = 3 см. При каком r (R фиксирован) E<sub>max</sub> будет наименьшей?",["r = R/e ≈ 1,1 см","r = R/2 = 1,5 см","r как можно меньше","r = R"],0,"Минимум U/(r·ln(R/r)) — при r = R/e."]
+]
+];
+
+const fx=(v,n)=>{if(!isFinite(v))return"—";return(+v).toFixed(n).replace(".",",").replace("-","−")};
+const fa=v=>fx(v,Math.abs(v)>=100?0:Math.abs(v)>=10?1:2);
+const E0=30;
+const SYS=[
+ {k:"pp",n:"Плоскость — плоскость",ic:'<path d="M3 5h24M3 17h24" stroke="currentColor" stroke-width="2.4"/>'},
+ {k:"sp",n:"Шар — плоскость",ic:'<circle cx="15" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 19h24" stroke="currentColor" stroke-width="2.4"/>'},
+ {k:"ss",n:"Шар — шар",ic:'<circle cx="8" cy="11" r="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="22" cy="11" r="5" fill="none" stroke="currentColor" stroke-width="2"/>'},
+ {k:"hp",n:"Острие — плоскость",ic:'<path d="M10 1C12 8 13 10 15 13c2-3 3-5 5-12" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 19h24" stroke="currentColor" stroke-width="2.4"/>'},
+ {k:"wp",n:"Провод над землёй",ic:'<circle cx="15" cy="7" r="3" fill="currentColor"/><path d="M3 19h24" stroke="currentColor" stroke-width="2.4"/>'},
+ {k:"cx",n:"Кабель (коаксиал)",ic:'<circle cx="15" cy="11" r="9" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="15" cy="11" r="3" fill="currentColor"/>'}];
+const POT={pp:[["g","нижняя плоскость заземлена (0 кВ)"]],sp:[["g","плоскость заземлена (0 кВ)"]],ss:[["sym","источник ±U/2, земля в середине"],["gnd","шар 2 заземлён (U и 0)"],["flt","шар 2 не подключён"]],hp:[["g","плоскость заземлена (0 кВ)"]],wp:[["g","земля (0 кВ)"]],cx:[["g","экран заземлён (0 кВ)"]]};
+const DEF={pp:{r:5,d:2,U:50},sp:{r:5,d:10,U:100},ss:{r:5,d:10,U:100},hp:{r:0.5,d:10,U:60},wp:{r:0.5,d:20,U:100},cx:{r:1.5,d:3,U:100}};
+const RT={pp:"r",sp:"r",ss:"r",hp:"r",wp:"r",cx:"r"};
+let st={sys:"sp",U:100,r:5,d:10,pot:"g",pol:1,L:{slice:true,equi:true,lines:true,glow:false,surf:true}};
+const LAY=[["slice","Цветной разрез","linear-gradient(135deg,#5402A3,#DB5C68,#F0F921)"],["equi","Эквипотенциали","repeating-linear-gradient(0deg,#1E2638 0 2px,transparent 2px 4px)"],["lines","Силовые линии","linear-gradient(45deg,transparent 45%,#1E2638 45% 58%,transparent 58%)"],["glow","Свечение","radial-gradient(#FFD27A,#F48849)"],["surf","Цвет поверхности","linear-gradient(135deg,#8B0AA5,#FEBC2B)"]];
+const lg=(v,a,b)=>a*Math.pow(b/a,v/1000),lgi=(x,a,b)=>Math.round(1000*Math.log(x/a)/Math.log(b/a));
+const RR=[0.02,30],DR=[0.2,1000];
+let M=null,LINES=[],PROBE=null,PROF=null;
+const cam={yaw:.55,pitch:.3,dist:60,tx:0,ty:0,tz:0};
+
+function images(r1,r2,s,V1,V2){const q=[],p=[],w=[];
+  const series=(V,ra,rb,za,zb,ia)=>{let Q=ra*V,P=za,inB=false;q.push(Q);p.push(P);w.push(ia);
+    for(let k=0;k<500;k++){const c=inB?za:zb,rr=inB?ra:rb,dd=Math.abs(P-c);const Qn=-Q*rr/dd,Pn=c+(P-c)*rr*rr/dd/dd;Q=Qn;P=Pn;inB=!inB;q.push(Q);p.push(P);w.push(inB?1-ia:ia);if(Math.abs(Q)<1e-10*Math.abs(ra*V))break}};
+  if(V1)series(V1,r1,r2,0,s,0);if(V2)series(V2,r2,r1,s,0,1);return{q,p,w}}
+function pointField(m){const q=m.q,X=m.X,Y=m.Y,Z=m.Z,n=q.length;return(x,y,z)=>{let ph=0,ex=0,ey=0,ez=0;for(let i=0;i<n;i++){const dx=x-X[i],dy=y-Y[i],dz=z-Z[i],d2=dx*dx+dy*dy+dz*dz,dd=Math.sqrt(d2),k=q[i]/(d2*dd);ph+=q[i]/dd;ex+=k*dx;ey+=k*dy;ez+=k*dz}return[ph,ex,ey,ez]}}
+function hitSphere(o,d,c,r){const ox=o[0]-c[0],oy=o[1]-c[1],oz=o[2]-c[2];const b=ox*d[0]+oy*d[1]+oz*d[2],cc=ox*ox+oy*oy+oz*oz-r*r,D=b*b-cc;if(D<0)return null;const s=Math.sqrt(D);let t=-b-s;if(t<1e-6)t=-b+s;if(t<1e-6)return null;return t}
+function at(o,d,t){return[o[0]+t*d[0],o[1]+t*d[1],o[2]+t*d[2]]}
+function sphereSeeds(c,r,ok){const S=[];const K=1600,ga=Math.PI*(3-Math.sqrt(5));for(let i=0;i<K;i++){const y=1-2*(i+.5)/K,rr=Math.sqrt(1-y*y),t=ga*i;const n=[Math.cos(t)*rr,y,Math.sin(t)*rr];const p=[c[0]+n[0]*r*1.002,c[1]+n[1]*r*1.002,c[2]+n[2]*r*1.002];if(ok(p))S.push([p,n,1])}return S}
+
+function build(){
+  const {sys,r,d,pot}=st,U=st.U*st.pol;const m={kind:sys};
+  const ground=(G)=>(o,dv)=>{if(Math.abs(dv[1])>1e-9){const t=-o[1]/dv[1];if(t>0){const p=at(o,dv,t);if(Math.hypot(p[0],p[2])<G)return{t,id:2,n:[0,1,0],p}}}return null};
+  if(sys==="pp"){const R=Math.max(2.2*d,3);m.R=R;m.size=Math.max(2*d,R);
+    m.field=(x,y,z)=>(y<0||y>d||Math.hypot(x,z)>R)?[NaN,0,0,0]:[U*y/d,0,-U/d,0];
+    m.inside=(x,y,z)=>y>d?1:y<0?2:0;
+    m.hits=[(o,dv)=>{if(Math.abs(dv[1])<1e-9)return null;const out=[];for(const [yy,id] of [[d,1],[0,2]]){const t=(yy-o[1])/dv[1];if(t>0){const p=at(o,dv,t);if(Math.hypot(p[0],p[2])<R)out.push({t,id,n:[0,o[1]>yy?1:-1,0],p})}}out.sort((a,b)=>a.t-b.t);return out[0]||null}];
+    m.ax=[[0,d,0],[0,0,0]];m.V1=U;m.V2=0;m.sb=[-R*.85,R*.85,0,d];m.cam=[0,d/2,0,R*2.1];m.box=[[-R,R],[0,d],[-R,R]];
+    m.seeds=()=>{const S=[];for(let i=-4;i<=4;i++)for(let j=-4;j<=4;j++){const x=i*R*.2,z=j*R*.2;if(Math.hypot(x,z)<R*.85)S.push([[x,d,z],[0,-1,0],1])}return S}}
+  else if(sys==="sp"){const im=images(r,r,2*(r+d),U,-U),n=im.q.length;m.q=new Float64Array(im.q);m.X=new Float64Array(n);m.Y=new Float64Array(n);m.Z=new Float64Array(n);for(let i=0;i<n;i++)m.Y[i]=(r+d)-im.p[i];
+    m.field=pointField(m);m.c1=[0,r+d,0];const G=Math.max(3*(r+d),6*r);m.G=G;m.size=2*r+d;
+    m.inside=(x,y,z)=>Math.hypot(x,y-r-d,z)<r?1:y<0?2:0;
+    m.hits=[(o,dv)=>{const t=hitSphere(o,dv,m.c1,r);if(t===null)return null;const p=at(o,dv,t);return{t,id:1,n:[p[0]/r,(p[1]-r-d)/r,p[2]/r],p}},ground(G)];
+    m.ax=[[0,d,0],[0,0,0]];m.V1=U;m.V2=0;m.sb=[-G*.7,G*.7,0,2*r+d+r*1.2];m.cam=[0,(r+d)*.6,0,(2*r+d)*3.3];m.seeds=()=>sphereSeeds(m.c1,r,p=>p[1]>0);
+    const B=Math.max(r*1.8,d*1.3);m.box=[[-B,B],[0,r+d+B],[-B,B]]}
+  else if(sys==="ss"){const s=2*r+d,x1=-(r+d/2);let V1=U,V2=0;
+    if(pot==="sym"){V1=U/2;V2=-U/2}
+    if(pot==="flt"){const a=images(r,r,s,1,0),b=images(r,r,s,0,1);const Qa=a.q.reduce((t,v,i)=>t+(a.w[i]===1?v:0),0),Qb=b.q.reduce((t,v,i)=>t+(b.w[i]===1?v:0),0);V2=-Qa/Qb*U}
+    const im=images(r,r,s,V1,V2),n=im.q.length;m.q=new Float64Array(im.q);m.X=new Float64Array(n);m.Y=new Float64Array(n);m.Z=new Float64Array(n);for(let i=0;i<n;i++)m.X[i]=x1+im.p[i];
+    m.field=pointField(m);m.c1=[x1,0,0];m.c2=[x1+s,0,0];m.size=2*(2*r+d/2);
+    m.inside=(x,y,z)=>Math.hypot(x-m.c1[0],y,z)<r?1:Math.hypot(x-m.c2[0],y,z)<r?2:0;
+    m.hits=[1,2].map(id=>(o,dv)=>{const c=id===1?m.c1:m.c2;const t=hitSphere(o,dv,c,r);if(t===null)return null;const p=at(o,dv,t);return{t,id,n:[(p[0]-c[0])/r,p[1]/r,p[2]/r],p}});
+    m.ax=[[x1+r,0,0],[x1+s-r,0,0]];m.V1=V1;m.V2=V2;const sz=m.size*.85;m.sb=[-sz,sz,-sz*.6,sz*.6];m.cam=[0,0,0,(2*r+d)*3.3];m.seeds=()=>sphereSeeds(m.c1,r,()=>true);
+    const B=r*2+d*.6;m.box=[[x1-B,x1+s+B],[-B,B],[-B,B]]}
+  else if(sys==="hp"){const a=Math.sqrt(d*d+r*d),A=d,B2=r*d,L0=Math.log((a+d)/(a-d)),Yt=d+Math.max(2.2*d,12*r),G=Math.max(3*d,Yt*1.2);
+    m.a=a;m.A=A;m.B2=B2;m.L0=L0;m.Yt=Yt;m.G=G;m.size=Yt;
+    m.field=(x,y,z)=>{if(y<0)return[NaN,0,0,0];const rho2=x*x+z*z,s1=Math.sqrt(rho2+(y-a)*(y-a)),s2=Math.sqrt(rho2+(y+a)*(y+a)),cc=(s2-s1)/(2*a);if(cc>=d/a)return[NaN,0,0,0];const k=U/L0*2/(1-cc*cc)/(2*a);
+      return[U*Math.log((1+cc)/(1-cc))/L0,-k*(x/s2-x/s1),-k*((y+a)/s2-(y-a)/s1),-k*(z/s2-z/s1)]};
+    m.inside=(x,y,z)=>{if(y<0)return 2;return(y*y/(A*A)-(x*x+z*z)/B2>=1&&y<=Yt+1e-9)?1:0};
+    m.hits=[(o,dv)=>{const a2=dv[1]*dv[1]/(A*A)-(dv[0]*dv[0]+dv[2]*dv[2])/B2,b2=2*(o[1]*dv[1]/(A*A)-(o[0]*dv[0]+o[2]*dv[2])/B2),c2=o[1]*o[1]/(A*A)-(o[0]*o[0]+o[2]*o[2])/B2-1;
+      let ts=[];if(Math.abs(a2)<1e-12){if(Math.abs(b2)>1e-12)ts=[-c2/b2]}else{const D=b2*b2-4*a2*c2;if(D>=0){const s=Math.sqrt(D);ts=[(-b2-s)/(2*a2),(-b2+s)/(2*a2)].sort((u,v)=>u-v)}}
+      for(const t of ts){if(t<=1e-6)continue;const p=at(o,dv,t);if(p[1]>=d-1e-9&&p[1]<=Yt){const nn=[p[0]/B2,-p[1]/(A*A),p[2]/B2],l=Math.hypot(...nn);return{t,id:1,n:nn.map(v=>v/l),p}}}
+      if(Math.abs(dv[1])>1e-9){const t=(Yt-o[1])/dv[1];if(t>0){const p=at(o,dv,t);if((p[0]*p[0]+p[2]*p[2])/B2<=Yt*Yt/(A*A)-1)return{t,id:1,n:[0,1,0],p}}}return null},ground(G)];
+    m.ax=[[0,d,0],[0,0,0]];m.V1=U;m.V2=0;const W=Math.max(2.2*d,6*r);m.sb=[-W,W,0,Math.min(Yt,d*2.4)];m.cam=[0,d*.85,0,Yt*1.55];
+    m.box=[[-W,W],[0,Math.min(Yt,d*2.2)],[-W,W]];
+    m.seeds=()=>{const S=[];const ny=60,nt=36;for(let i=0;i<ny;i++){const y=d+(Yt-d)*Math.pow((i+.5)/ny,2);const rho=Math.sqrt(B2*(y*y/(A*A)-1));const y2=d+(Yt-d)*Math.pow((i+1.5)/ny,2),rho2=Math.sqrt(B2*(y2*y2/(A*A)-1));const ds=Math.hypot(y2-y,rho2-rho);
+      for(let j=0;j<nt;j++){const t=2*Math.PI*(j+.5)/nt,nn=[Math.cos(t)*rho/B2,-y/(A*A),Math.sin(t)*rho/B2],l=Math.hypot(...nn);S.push([[rho*Math.cos(t)+nn[0]/l*1e-3*r,y+nn[1]/l*1e-3*r,rho*Math.sin(t)+nn[2]/l*1e-3*r],nn.map(v=>v/l),Math.max(rho,r*.3)*ds])}}return S}}
+  else if(sys==="wp"){const h=r+d,a=Math.sqrt(h*h-r*r),L=Math.log((h+a)/r),Lw=Math.max(6*h,20),G=Math.max(2.2*h,Lw*.65);m.h=h;m.a=a;m.L=L;m.Lw=Lw;m.G=G;m.size=h*2;
+    m.field=(x,y,z)=>{if(y<0||Math.abs(z)>Lw/2)return[NaN,0,0,0];const r1=x*x+(y-a)*(y-a),r2=x*x+(y+a)*(y+a),k=U/L;return[k*.5*Math.log(r2/r1),k*(x/r1-x/r2),k*((y-a)/r1-(y+a)/r2),0]};
+    m.inside=(x,y,z)=>y<0?2:(Math.hypot(x,y-h)<r&&Math.abs(z)<=Lw/2)?1:0;
+    m.hits=[(o,dv)=>{const ox=o[0],oy=o[1]-h;const A2=dv[0]*dv[0]+dv[1]*dv[1],B=ox*dv[0]+oy*dv[1],C=ox*ox+oy*oy-r*r,D=B*B-A2*C;let best=null;
+      if(A2>1e-12&&D>=0){const s=Math.sqrt(D);for(const t of [(-B-s)/A2,(-B+s)/A2]){if(t<=1e-6)continue;const p=at(o,dv,t);if(Math.abs(p[2])<=Lw/2){best={t,id:1,n:[p[0]/r,(p[1]-h)/r,0],p};break}}}
+      if(Math.abs(dv[2])>1e-9)for(const zz of [-Lw/2,Lw/2]){const t=(zz-o[2])/dv[2];if(t>1e-6&&(!best||t<best.t)){const p=at(o,dv,t);if(Math.hypot(p[0],p[1]-h)<r)best={t,id:1,n:[0,0,Math.sign(zz)],p}}}return best},ground(G)];
+    m.ax=[[0,d,0],[0,0,0]];m.V1=U;m.V2=0;m.sb=[-h*2.2,h*2.2,0,h*2.1];m.cam=[0,h*.7,-Lw*.12,h*5.2];m.box=[[-h*1.6,h*1.6],[0,h*2],[-Lw*.45,Lw*.45]];
+    m.seeds=()=>{const S=[];for(let j=0;j<720;j++){const t=2*Math.PI*j/720,nn=[Math.cos(t),Math.sin(t),0];S.push([[r*1.002*nn[0],h+r*1.002*nn[1],0],nn,1])}return S}}
+  else {const R=r+d,Lc=Math.max(7*R,20),ln=Math.log(R/r);m.R=R;m.L=Lc;m.size=Lc*.8;
+    m.field=(x,y,z)=>{const rho=Math.hypot(y,z);if(x>1e-6||x<-Lc||rho<r||rho>R)return[NaN,0,0,0];const E=U/(rho*ln);return[U*Math.log(R/rho)/ln,0,E*y/rho,E*z/rho]};
+    m.inside=(x,y,z)=>{const rho=Math.hypot(y,z);return rho<r?1:rho>R?2:0};
+    m.hits=[(o,dv)=>{const a=dv[1]*dv[1]+dv[2]*dv[2],b=o[1]*dv[1]+o[2]*dv[2];let best=null;const take=h=>{if(h&&(!best||h.t<best.t))best=h};
+      for(const [rad,id] of [[r,1],[R,2]]){const c=o[1]*o[1]+o[2]*o[2]-rad*rad,D=b*b-a*c;if(a>1e-12&&D>=0){const s=Math.sqrt(D);for(const t of [(-b-s)/a,(-b+s)/a]){if(t<=1e-6)continue;const p=at(o,dv,t);if(p[0]>0||p[0]<-Lc)continue;take({t,id,n:[0,p[1]/rad,p[2]/rad],p,ext:id===2});break}}}
+      if(Math.abs(dv[0])>1e-9)for(const sx of [-Lc,0]){const t=(sx-o[0])/dv[0];if(t>1e-6){const p=at(o,dv,t);const rh=Math.hypot(p[1],p[2]);if(rh<r)take({t,id:1,n:[sx<0?-1:1,0,0],p,cap:true});else if(sx<0&&rh<R)take({t,id:2,n:[-1,0,0],p,ext:true})}}return best}];
+    m.ax=[[0,r,0],[0,R,0]];m.V1=U;m.V2=0;m.sb=[-R,R,-R,R];m.sax=0;m.cam=[-Lc*.18,0,0,R*6.2];m.box=null;m.seeds=null}
+  m.sax=m.sax??2;return m}
+
+function Emag(p){const e=M.field(...p);return Math.hypot(e[1],e[2],e[3])}
+function axisProf(n){const A=M.ax[0],B=M.ax[1];const len=Math.hypot(B[0]-A[0],B[1]-A[1],B[2]-A[2]);const u=[(B[0]-A[0])/len,(B[1]-A[1])/len,(B[2]-A[2])/len];const out=[];
+  for(let i=0;i<=n;i++){const s=len*(1e-6+(1-2e-6)*i/n);out.push([s,Emag([A[0]+u[0]*s,A[1]+u[1]*s,A[2]+u[2]*s])])}return{len,pts:out,u}}
+
+const CM=[[13,8,135],[84,2,163],[139,10,165],[185,50,137],[219,92,104],[244,136,73],[254,188,43],[240,249,33]];
+function cmap(t){t=isFinite(t)?Math.max(0,Math.min(1,t)):1;const f=t*(CM.length-1),i=Math.min(CM.length-2,Math.floor(f)),u=f-i;return[CM[i][0]+(CM[i+1][0]-CM[i][0])*u,CM[i][1]+(CM[i+1][1]-CM[i][1])*u,CM[i][2]+(CM[i+1][2]-CM[i][2])*u]}
+function camBasis(W,H){const cp=Math.cos(cam.pitch),e=[cam.tx+cam.dist*cp*Math.sin(cam.yaw),cam.ty+cam.dist*Math.sin(cam.pitch),cam.tz+cam.dist*cp*Math.cos(cam.yaw)];
+  let f=[cam.tx-e[0],cam.ty-e[1],cam.tz-e[2]];const fl=Math.hypot(...f);f=f.map(v=>v/fl);let rt=[-f[2],0,f[0]];const rl=Math.hypot(...rt);rt=rt.map(v=>v/rl);
+  const up=[rt[1]*f[2]-rt[2]*f[1],rt[2]*f[0]-rt[0]*f[2],rt[0]*f[1]-rt[1]*f[0]];return{e,f,rt,up,th:Math.tan(22.5*Math.PI/180),asp:W/H,W,H}}
+function project(B,p){const v=[p[0]-B.e[0],p[1]-B.e[1],p[2]-B.e[2]];const z=v[0]*B.f[0]+v[1]*B.f[1]+v[2]*B.f[2];if(z<=.01)return null;
+  const x=(v[0]*B.rt[0]+v[1]*B.rt[1]+v[2]*B.rt[2])/(z*B.th*B.asp),y=(v[0]*B.up[0]+v[1]*B.up[1]+v[2]*B.up[2])/(z*B.th);return[(x+1)/2*B.W,(1-y)/2*B.H,Math.hypot(...v)]}
+function scene(o,d){let best=null;for(const h of M.hits){const r=h(o,d);if(r&&(!best||r.t<best.t))best=r}return best}
+function onSlice(p){const sb=M.sb;const u=M.sax===0?p[2]:p[0];return u>sb[0]&&u<sb[1]&&p[1]>sb[2]&&p[1]<sb[3]}
+function boxT(o,d,b){let t0=0,t1=Infinity;for(let i=0;i<3;i++){if(Math.abs(d[i])<1e-12){if(o[i]<b[i][0]||o[i]>b[i][1])return null}else{let a=(b[i][0]-o[i])/d[i],c=(b[i][1]-o[i])/d[i];if(a>c)[a,c]=[c,a];t0=Math.max(t0,a);t1=Math.min(t1,c);if(t0>t1)return null}}return[t0,t1]}
+
+const cv=document.getElementById("cv"),ctx=cv.getContext("2d");let EMAP=30,DEPTH=null,DW=0,DH=0,lowTimer=null;
+function render(scale){
+  const rect=cv.getBoundingClientRect();if(rect.width<10)return;const dpr=Math.min(window.devicePixelRatio||1,1.5);
+  const W=Math.max(60,Math.round(rect.width*dpr/scale)),H=Math.max(40,Math.round(rect.height*dpr/scale));const B=camBasis(W,H);
+  const img=ctx.createImageData(W,H),D=img.data;DEPTH=new Float32Array(W*H);DW=W;DH=H;
+  const Ld=[.45,.8,.4].map(v=>v/Math.hypot(.45,.8,.4));const hv=[205,170,110],gn=[70,78,96],c1=[43,53,73],c2=[12,16,24],cu=[205,135,70];
+  const lv=Math.max(1e-9,Math.abs(M.V1-M.V2)/10),off=Math.min(M.V1,M.V2,0),ax=M.sax;const glow=st.L.glow&&M.box,slice=st.L.slice||M.kind==="cx",equi=st.L.equi;
+  const NS=scale>2?14:30,warm=[255,190,80];
+  for(let py=0;py<H;py++){const vy=(1-2*(py+.5)/H)*B.th;
+    for(let px=0;px<W;px++){const vx=(2*(px+.5)/W-1)*B.th*B.asp;let d=[B.f[0]+vx*B.rt[0]+vy*B.up[0],B.f[1]+vx*B.rt[1]+vy*B.up[1],B.f[2]+vx*B.rt[2]+vy*B.up[2]];const dl=Math.hypot(...d);d=[d[0]/dl,d[1]/dl,d[2]/dl];
+      const rr=Math.hypot((px-W/2)/W,(py-H*.35)/H)*1.4;let col=[c1[0]+(c2[0]-c1[0])*rr,c1[1]+(c2[1]-c1[1])*rr,c1[2]+(c2[2]-c1[2])*rr],depth=Infinity;
+      const h=scene(B.e,d);
+      if(h){depth=h.t;const lam=Math.max(0,h.n[0]*Ld[0]+h.n[1]*Ld[1]+h.n[2]*Ld[2]),sh=.55+.45*lam;let base;
+        if(h.ext)base=gn;else if(h.cap&&M.kind==="cx")base=cu;
+        else if(st.L.surf){const e=1e-4*Math.max(st.r,.02);const E=Emag([h.p[0]+h.n[0]*e,h.p[1]+h.n[1]*e,h.p[2]+h.n[2]*e]);base=isFinite(E)&&E>0?cmap(Math.sqrt(E/EMAP)):(h.id===1?hv:cmap(0))}else base=h.id===1?hv:gn;
+        if(h.id===2&&h.n[1]===1&&M.kind!=="pp"){const gx=Math.abs(((h.p[0]/(M.size/6))%1+1)%1-.5),gz=Math.abs(((h.p[2]/(M.size/6))%1+1)%1-.5);if(gx>.46||gz>.46)base=base.map(v=>Math.min(255,v*1.25+12))}
+        const spec=Math.pow(Math.max(0,lam),24)*.25;col=[Math.min(255,base[0]*sh+255*spec),Math.min(255,base[1]*sh+255*spec),Math.min(255,base[2]*sh+255*spec)]}
+      if(slice&&Math.abs(d[ax])>1e-9){const ts=-B.e[ax]/d[ax];if(ts>0&&ts<depth){const p=at(B.e,d,ts);p[ax]=ax===0?-1e-7:0;
+        if(onSlice(p)&&!M.inside(...p)){const e=M.field(...p);if(isFinite(e[0])){const E=Math.hypot(e[1],e[2],e[3]);let c=cmap(Math.sqrt(E/EMAP));const ps=ts*2*B.th/H;
+          const fr=(e[0]-off)/lv;if(equi&&Math.abs(fr-Math.round(fr))*lv/Math.max(E,1e-9)<ps*.8)c=[255,255,255];
+          const al=.93;col=[c[0]*al+col[0]*(1-al),c[1]*al+col[1]*(1-al),c[2]*al+col[2]*(1-al)];depth=ts}}}}
+      if(glow){const bt=boxT(B.e,d,M.box);if(bt){const t0=bt[0],t1=Math.min(bt[1],depth);if(t1>t0){const dt=(t1-t0)/NS;let acc=0;for(let k=0;k<NS;k++){const t=t0+(k+.5)*dt;const p=at(B.e,d,t);if(M.inside(...p))continue;const E=Emag(p);if(!isFinite(E))continue;const x=E/EMAP;acc+=Math.pow(Math.max(0,x-.18),2.2)*dt}
+        const a=1-Math.exp(-acc*4/Math.max(M.size*.25,1e-6));if(a>0.002){const g=Math.min(.9,a);col=[Math.min(255,col[0]+warm[0]*g),Math.min(255,col[1]+warm[1]*g),Math.min(255,col[2]+warm[2]*g)]}}}}
+      const k=py*W+px;DEPTH[k]=depth;D[k*4]=col[0];D[k*4+1]=col[1];D[k*4+2]=col[2];D[k*4+3]=255}}
+  const off2=document.createElement("canvas");off2.width=W;off2.height=H;off2.getContext("2d").putImageData(img,0,0);
+  cv.width=Math.round(rect.width*dpr);cv.height=Math.round(rect.height*dpr);ctx.drawImage(off2,0,0,cv.width,cv.height);
+  const B2=camBasis(cv.width,cv.height),sx=W/cv.width;if(st.L.lines)drawLines(B2,sx,.9);drawOverlay(B2)}
+function occluded(p,B,sx){const q=project(B,p);if(!q)return true;const ix=Math.floor(q[0]*sx),iy=Math.floor(q[1]*sx);if(ix<0||iy<0||ix>=DW||iy>=DH)return false;return q[2]>DEPTH[iy*DW+ix]*1.003+1e-3}
+function drawLines(B,sx,alpha){ctx.lineWidth=Math.max(1.2,cv.width/700);
+  for(const ln of LINES){ctx.strokeStyle=`rgba(255,255,255,${alpha})`;ctx.beginPath();let pen=false;for(const p of ln){const q=project(B,p);if(q&&!occluded(p,B,sx)){if(pen)ctx.lineTo(q[0],q[1]);else{ctx.moveTo(q[0],q[1]);pen=true}}else pen=false}ctx.stroke();
+    const i=Math.floor(ln.length*.4);if(ln.length>6&&alpha>.4){const a=project(B,ln[i]),b=project(B,ln[i+2]);if(a&&b&&!occluded(ln[i],B,sx)){const ang=Math.atan2(b[1]-a[1],b[0]-a[0]),s=cv.width/110;ctx.fillStyle=`rgba(255,255,255,${alpha})`;ctx.beginPath();ctx.moveTo(a[0]+s*Math.cos(ang),a[1]+s*Math.sin(ang));ctx.lineTo(a[0]+s*Math.cos(ang+2.5),a[1]+s*Math.sin(ang+2.5));ctx.lineTo(a[0]+s*Math.cos(ang-2.5),a[1]+s*Math.sin(ang-2.5));ctx.fill()}}}}
+function trace(p0){const pts=[p0.slice()];let p=p0.slice();const h=Math.max(st.r*.6,M.size/220,st.d/120);const lim=Math.max(M.size*1.6,(M.G||0)*1.05);const sg=Math.sign(st.pol);
+  for(let k=0;k<1800;k++){const e=M.field(...p),n=Math.hypot(e[1],e[2],e[3]);if(!(n>0))break;const m=[p[0]+.5*h*e[1]/n*sg,p[1]+.5*h*e[2]/n*sg,p[2]+.5*h*e[3]/n*sg];const e2=M.field(...m),n2=Math.hypot(e2[1],e2[2],e2[3]);if(!(n2>0))break;
+    p=[p[0]+h*e2[1]/n2*sg,p[1]+h*e2[2]/n2*sg,p[2]+h*e2[3]/n2*sg];pts.push(p);const ins=M.inside(...p);if(ins===2||(ins===1&&k>4))break;if(Math.hypot(p[0]-cam.tx,p[1],p[2]-cam.tz)>lim)break}
+  if(sg<0)pts.reverse();return pts}
+function buildLines(){LINES=[];const r=st.r;
+  if(M.kind==="cx"){for(let j=0;j<16;j++){const a=2*Math.PI*j/16,y=Math.cos(a),z=Math.sin(a);const ln=[];for(let k=0;k<=12;k++){const rr=r+(M.R-r)*k/12;ln.push([M.R*.002,rr*y,rr*z])}if(st.pol<0)ln.reverse();LINES.push(ln)}return}
+  if(M.kind==="pp"){for(const [p] of M.seeds()){const ln=[[p[0],st.d,p[2]],[p[0],0,p[2]]];if(st.pol<0)ln.reverse();LINES.push(ln)}return}
+  const S=M.seeds();const w=S.map(([p,n,a])=>{const e=M.field(...p);return Math.max(0,(e[1]*n[0]+e[2]*n[1]+e[3]*n[2])*st.pol)*a});
+  const tot=w.reduce((a,b)=>a+b,0),N=M.kind==="wp"?24:40;let acc=0,j=0;for(let i=0;i<S.length&&j<N;i++){acc+=w[i];while(j<N&&acc>=tot*(j+.5)/N){LINES.push(trace(S[i][0]));j++}}
+  if(M.kind==="wp")for(const z of [-M.Lw*.3,M.Lw*.3])for(const ln of LINES.slice(0,24).filter((_,i)=>i%2===0))LINES.push(ln.map(p=>[p[0],p[1],z]))}
+const tags=document.getElementById("tags");
+function drawOverlay(B){const dpr=cv.width/cv.getBoundingClientRect().width,T=[],r=st.r,U=st.U*st.pol;
+  const tag=(p,txt,cls,ox,oy)=>{const q=project(B,p);if(q&&q[0]>0&&q[0]<cv.width&&q[1]>0&&q[1]<cv.height)T.push(`<div class="tag ${cls||""}" style="left:${q[0]/dpr+(ox||0)}px;top:${q[1]/dpr+(oy||0)}px">${txt}</div>`)};
+  const sU=v=>(v>0?"+":v<0?"−":"")+fa(Math.abs(v))+" кВ";
+  if(M.kind==="pp"){tag([-M.R*.75,st.d,0],"электрод 1: "+sU(U),"",0,-16);tag([M.R*.5,0,M.R*.5],"земля, 0 кВ")}
+  if(M.kind==="sp"){tag([0,M.c1[1]+r*1.4,0],sU(U));tag([M.G*.5,0,M.G*.35],"земля, 0 кВ")}
+  if(M.kind==="ss"){tag([M.c1[0],r*1.45,0],sU(M.V1));tag([M.c2[0],r*1.45,0],st.pot==="gnd"?"0 кВ (заземлён)":st.pot==="flt"?"не подключён: "+sU(M.V2):sU(M.V2))}
+  if(M.kind==="hp"){tag([0,M.Yt*.92,0],"острие "+sU(U));tag([M.G*.45,0,M.G*.3],"земля, 0 кВ")}
+  if(M.kind==="wp"){tag([0,M.h+r+M.h*.12,M.Lw*.42],"провод "+sU(U));tag([M.G*.45,0,M.G*.3],"земля, 0 кВ")}
+  if(M.kind==="cx"){tag([0,0,0],"жила "+sU(U));tag([-M.L*.55,M.R*1.25,0],"экран, 0 кВ")}
+  const E1=PROF.pts[0][1],pm=M.ax[0],q=project(B,pm);
+  if(q){ctx.strokeStyle="#FFD27A";ctx.lineWidth=Math.max(2,cv.width/450);ctx.beginPath();ctx.arc(q[0],q[1],cv.width/95,0,7);ctx.stroke()}
+  if(M.kind==="cx")tag([0,-M.R*1.3,0],"E max = "+fa(E1)+" кВ/см","max");else if(M.kind==="ss")tag([pm[0]+r*.15,-r*.55,0],"E max = "+fa(E1)+" кВ/см","max");else tag(pm,"E max = "+fa(E1)+" кВ/см","max",95,-6);
+  if(PROBE){const e=M.field(...PROBE);const E=Math.hypot(e[1],e[2],e[3]);const a=project(B,PROBE);if(a&&isFinite(e[0])&&E>0){const L=M.size*.12*(.4+.6*Math.sqrt(E/EMAP));const b=project(B,[PROBE[0]+L*e[1]/E,PROBE[1]+L*e[2]/E,PROBE[2]+L*e[3]/E]);
+    ctx.strokeStyle="#7FD4FF";ctx.fillStyle="#7FD4FF";ctx.lineWidth=Math.max(2.5,cv.width/350);ctx.beginPath();ctx.moveTo(a[0],a[1]);if(b)ctx.lineTo(b[0],b[1]);ctx.stroke();
+    if(b){const ang=Math.atan2(b[1]-a[1],b[0]-a[0]),s=cv.width/70;ctx.beginPath();ctx.moveTo(b[0]+s*Math.cos(ang),b[1]+s*Math.sin(ang));ctx.lineTo(b[0]+s*Math.cos(ang+2.4),b[1]+s*Math.sin(ang+2.4));ctx.lineTo(b[0]+s*Math.cos(ang-2.4),b[1]+s*Math.sin(ang-2.4));ctx.fill()}
+    ctx.beginPath();ctx.arc(a[0],a[1],cv.width/110,0,7);ctx.fillStyle="#0C1018";ctx.fill();ctx.stroke();T.push(`<div class="tag probe" style="left:${a[0]/dpr}px;top:${a[1]/dpr}px">E = ${fa(E)} кВ/см · φ = ${fx(e[0],1)} кВ</div>`)}}
+  tags.innerHTML=T.join("")}
+
+function nice(v){const p=Math.pow(10,Math.floor(Math.log10(v))),m=v/p;return(m<1.5?1:m<3.5?2:m<7.5?5:10)*p}
+function plotAxis(){const {len,pts}=PROF;const W=820,H=330,L=60,R=150,T=18,Bm=50;const ymax=Math.max(E0*1.12,...pts.map(p=>p[1]))*1.06;const X=v=>L+(W-L-R)*v/len,Y=v=>T+(H-T-Bm)*(1-v/ymax);const yt=nice(ymax/5),xt=nice(len/5);
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Напряжённость вдоль оси промежутка">`;
+  for(let v=0;v<=ymax;v+=yt)s+=`<line x1="${L}" x2="${W-R}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="${L-8}" y="${Y(v)+4}" text-anchor="end">${fx(v,yt<1?1:0)}</text>`;
+  for(let v=0;v<=len+1e-9;v+=xt)s+=`<text x="${X(v)}" y="${H-Bm+20}" text-anchor="middle">${fx(v,xt<1?(xt<.1?2:1):0)}</text>`;
+  s+=`<line x1="${L}" x2="${W-R}" y1="${Y(0)}" y2="${Y(0)}" stroke="var(--muted)"/><line x1="${L}" x2="${L}" y1="${T}" y2="${H-Bm}" stroke="var(--muted)"/>`;
+  const Eav=Math.abs(M.V1-M.V2)/st.d,E1=pts[0][1];const area=pts.map(p=>X(p[0]).toFixed(1)+","+Y(Math.min(p[1],ymax)).toFixed(1));
+  s+=`<polygon points="${X(0)},${Y(0)} ${area.join(" ")} ${X(len)},${Y(0)}" fill="#2457C5" opacity=".08"/>`;
+  s+=`<line x1="${L}" x2="${W-R}" y1="${Y(E0)}" y2="${Y(E0)}" stroke="var(--hot)" stroke-width="1.5" stroke-dasharray="7 5"/><text x="${W-R+8}" y="${Y(E0)+4}" style="fill:var(--hot)">E₀ = 30 кВ/см</text>`;
+  s+=`<line x1="${L}" x2="${W-R}" y1="${Y(Eav)}" y2="${Y(Eav)}" stroke="var(--ok)" stroke-width="1.5" stroke-dasharray="3 4"/><text x="${W-R+8}" y="${Y(Eav)+4}" style="fill:var(--ok)">E ср = ${fa(Eav)}</text>`;
+  s+=`<polyline points="${area.join(" ")}" fill="none" stroke="#2457C5" stroke-width="3"/><circle cx="${X(0)}" cy="${Y(Math.min(E1,ymax))}" r="5" fill="#C8372B"/><text x="${X(0)+10}" y="${Y(Math.min(E1,ymax))+4}" style="fill:#C8372B;font-weight:600">E max = ${fa(E1)}</text>`;
+  s+=`<text x="${(L+W-R)/2}" y="${H-8}" text-anchor="middle">расстояние от электрода 1 до электрода 2, см</text><text x="${L}" y="12">E, кВ/см</text></svg>`;document.getElementById("plot").innerHTML=s}
+
+const Q=k=>`<button class="q" data-t="${k}" aria-label="Подсказка">?</button>`;
+function steps(){const {r,d}=st,U=st.U,dV=Math.abs(M.V1-M.V2);const E1=PROF.pts[0][1],E2=PROF.pts[PROF.pts.length-1][1],Eav=dV/d,kn=E1/Eav;
+  const S=(n,t,fm,sm)=>`<div class="step"><div class="n">${n}</div><div><div class="tt">${t}</div>${fm?`<div class="fm">${fm}</div>`:""}${sm?`<div class="sm">${sm}</div>`:""}</div></div>`;
+  const res=v=>`<span class="res">${v}</span>`;let h="";
+  const given={pp:`U = ${fa(U)} кВ, d = ${fa(d)} см`,sp:`U = ${fa(U)} кВ, r = ${fa(r)} см, d = ${fa(d)} см`,ss:`U = ${fa(U)} кВ, r = ${fa(r)} см, d = ${fa(d)} см`,hp:`U = ${fa(U)} кВ, r = ${fa(r)} см, d = ${fa(d)} см`,wp:`U = ${fa(U)} кВ, r = ${fa(r)} см, d = ${fa(d)} см, высота оси h = r + d = ${fa(r+d)} см`,cx:`U = ${fa(U)} кВ, r = ${fa(r)} см, d = ${fa(d)} см, R = r + d = ${fa(r+d)} см`}[M.kind];
+  h+=S(1,"Исходные данные",given,M.kind==="ss"?{sym:"шар 1: +U/2, шар 2: −U/2",gnd:"шар 1: U, шар 2 заземлён (0 кВ)",flt:"шар 1: U, шар 2 не подключён"}[st.pot]:"электрод 1: U, электрод 2 заземлён (0 кВ)");
+  if(M.kind==="ss"&&st.pot!=="gnd"){h+=S(2,"Напряжение между шарами",st.pot==="sym"?`шар 1: +${fa(U/2)} кВ, шар 2: −${fa(U/2)} кВ ⇒ ${fa(dV)} кВ`:`шар 2 не подключён и сам принимает потенциал φ₂ = ${fa(M.V2)} кВ ⇒ U − φ₂ = ${fa(dV)} кВ`)}
+  const n0=M.kind==="ss"&&st.pot!=="gnd"?3:2;
+  h+=S(n0,"Средняя напряжённость"+Q("Eav"),`E<sub>ср</sub> = U/d = ${fa(dV)}/${fa(d)} = ${res(fa(Eav)+" кВ/см")}`);
+  let f="",chk="";
+  if(M.kind==="pp"){f=`поле однородное: E<sub>max</sub> = E<sub>ср</sub> = ${res(fa(E1)+" кВ/см")}`}
+  if(M.kind==="sp"){const ap=.9*U*(r+d)/(r*d);f=`E<sub>max</sub> ≈ 0,9·U·(r+d)/(r·d) = 0,9·${fa(U)}·${fa(r+d)}/(${fa(r)}·${fa(d)}) = ${res(fa(ap)+" кВ/см")}`;chk=`точный расчёт ${Q("img")}: ${fa(E1)} кВ/см (расхождение ${fx(Math.abs(ap-E1)/E1*100,1)} %)`}
+  if(M.kind==="ss"){if(st.pot==="sym"){const ap=.9*(U/2)*(r+d/2)/(r*d/2);f=`как шар — плоскость с U/2 и d/2: E<sub>max</sub> ≈ 0,9·(U/2)·(r+d/2)/(r·d/2) = ${res(fa(ap)+" кВ/см")}`;chk=`точный расчёт: ${fa(E1)} кВ/см у обоих шаров`}else{f=`по точному расчёту ${Q("img")}: у шара под напряжением ${res(fa(E1)+" кВ/см")}`;chk=`у второго шара ${fa(E2)} кВ/см${st.pot==="gnd"?` · при питании ±U/2 было бы ${fa(symE())} кВ/см`:""}`}}
+  if(M.kind==="hp"){const ap=2*U/(r*Math.log(4*d/r));f=`E<sub>max</sub> ≈ 2U/(r·ln(4d/r)) = 2·${fa(U)}/(${fa(r)}·ln ${fa(4*d/r)}) = ${res(fa(ap)+" кВ/см")}`;chk=`точный расчёт ${Q("hyp")}: ${fa(E1)} кВ/см (расхождение ${fx(Math.abs(ap-E1)/E1*100,1)} %)`}
+  if(M.kind==="wp"){const ap=U/(r*Math.log(2*(r+d)/r));f=`E<sub>max</sub> ≈ U/(r·ln(2h/r)) = ${fa(U)}/(${fa(r)}·ln ${fa(2*(r+d)/r)}) = ${res(fa(ap)+" кВ/см")}`;chk=`точный расчёт ${Q("img")}: ${fa(E1)} кВ/см (расхождение ${fx(Math.abs(ap-E1)/E1*100,1)} %)`}
+  if(M.kind==="cx"){f=`E<sub>max</sub> = U/(r·ln(R/r)) = ${fa(U)}/(${fa(r)}·ln ${fa((r+d)/r)}) = ${res(fa(E1)+" кВ/см")}`;chk=`у экрана E = U/(R·ln(R/r)) = ${fa(E2)} кВ/см ${Q("coax")}`}
+  h+=S(n0+1,"Наибольшая напряжённость"+Q("Emax"),f,chk);
+  const cls=kn<1.05?"однородное":kn<2?"слабонеоднородное":kn<=4?"неоднородное":"резконеоднородное";
+  h+=S(n0+2,"Коэффициент неоднородности"+Q("kn"),`k<sub>н</sub> = E<sub>max</sub>/E<sub>ср</sub> = ${fa(E1)}/${fa(Eav)} = ${res(fx(kn,2))}`,`поле ${cls}`);
+  const ok=E1<=E0;h+=S(n0+3,"Сравнение с прочностью воздуха"+Q("E0"),`E<sub>max</sub>/E<sub>0</sub> = ${fa(E1)}/30 = ${res(fx(E1/E0,2))}`);
+  h+=`<div class="verdict ${ok?"ok":"bad"}">${M.kind==="cx"?(ok?"Даже в воздухе поле у жилы было бы ниже E₀.":"В воздушном зазоре у жилы началась бы ионизация. В настоящем кабеле изоляция твёрдая, её прочность намного выше."):ok?"Воздух выдерживает: E<sub>max</sub> меньше E₀.":"У электрода E<sub>max</sub> больше E₀ — там воздух начнёт ионизироваться (свечение, треск — корона)."}</div>`;
+  document.getElementById("steps").innerHTML=h}
+function symE(){const {r,d}=st,U=st.U;const s=2*r+d;const im=images(r,r,s,U/2,-U/2);let e=0;for(let i=0;i<im.q.length;i++){const dz=r-im.p[i];e+=im.q[i]*dz/Math.abs(dz)**3}return Math.abs(e)}
+
+const CAP={slice:"<b>Цветной разрез</b> — плоскость через электроды, как рисунок в учебнике: тёмно-фиолетовый — слабое поле, жёлтый — сильное.",
+ equi:"<b>Эквипотенциали</b> — белые линии равного потенциала через 10 % U; где они сгущаются, там поле сильнее.",
+ lines:"<b>Силовые линии</b> показывают направление E: выходят из «+», входят в «−»; гуще линии — сильнее поле.",
+ glow:"<b>Свечение</b> — объёмная дымка там, где E близка к максимальной.",
+ surf:"<b>Цвет поверхности</b> — E на поверхности электродов той же шкалой. Жёлтое кольцо — точка E<sub>max</sub>. Щелчок по разрезу ставит зонд."};
+function ui(){document.getElementById("sys").innerHTML=SYS.map(s=>`<button data-s="${s.k}" class="${s.k===st.sys?"on":""}"><svg viewBox="0 0 30 22" aria-hidden="true">${s.ic}</svg>${s.n}</button>`).join("");
+  document.getElementById("pot").innerHTML=POT[st.sys].map(([k,n])=>`<button data-p="${k}" class="${k===st.pot?"on":""}">${n}</button>`).join("");
+  document.querySelectorAll("[data-s]").forEach(b=>b.onclick=()=>selectSys(b.dataset.s));
+  document.querySelectorAll("[data-p]").forEach(b=>b.onclick=()=>{st.pot=b.dataset.p;update()});
+  document.querySelectorAll("[data-pl]").forEach(b=>b.classList.toggle("on",+b.dataset.pl===st.pol));
+  document.getElementById("layers").innerHTML=LAY.map(([k,n,c])=>`<label class="${st.L[k]?"on":""}"><input type="checkbox" data-l="${k}" ${st.L[k]?"checked":""}><span class="sw" style="background:${c}"></span>${n}</label>`).join("");
+  document.querySelectorAll("[data-l]").forEach(b=>b.onchange=()=>{st.L[b.dataset.l]=b.checked;update()});
+  document.getElementById("oU").textContent=fa(st.U)+" кВ";document.getElementById("or").textContent=fa(st.r)+" см";document.getElementById("od").textContent=fa(st.d)+" см";
+  document.getElementById("lr").innerHTML={pp:"Радиус (здесь не влияет)",sp:"Радиус шара r",ss:"Радиус шаров r",hp:"Радиус острия r",wp:"Радиус провода r",cx:"Радиус жилы r"}[st.sys]+Q("r");
+  document.getElementById("ld").innerHTML=(st.sys==="cx"?"Толщина изоляции d":"Промежуток d")+Q("d");
+  document.getElementById("r").disabled=st.sys==="pp";
+  document.getElementById("potNote").innerHTML=st.sys==="ss"?{sym:"Оба шара под напряжением, U/2 и −U/2 относительно земли. Поле симметрично, E<sub>max</sub> одинакова у обоих шаров.",gnd:"Шар 2 соединён с землёй. Всё напряжение U — на шаре 1, поле у него сильнее, чем при ±U/2.",flt:"Шар 2 ни к чему не подключён: его потенциал устанавливается сам и может быть опасен при прикосновении."}[st.pot]:`В этой системе второй электрод всегда заземлён. Сравнить «заземлён / ±U/2 / не подключён» можно в системе <button class="btn ghost sm" id="goSS">Шар — шар</button>`;
+  const g=document.getElementById("goSS");if(g)g.onclick=()=>{selectSys("ss");st.pot="gnd";update()};
+  document.getElementById("sysNote").innerHTML={pp:"Эталон: поле одинаково во всём промежутке, k<sub>н</sub> = 1.",sp:"Уменьшайте r: E<sub>ср</sub> не меняется, а E<sub>max</sub> у шара растёт.",ss:"Переключайте подключение второго шара: напряжение то же, а поле у первого шара разное.",hp:"Острие — самый маленький радиус кривизны: поле сгущается у вершины.",wp:"Провод над землёй: поле сосредоточено у поверхности провода.",cx:"Кабель в разрезе: поле максимально у жилы и убывает к экрану."}[st.sys];
+  document.getElementById("cap").innerHTML=LAY.filter(([k])=>st.L[k]||(k==="slice"&&st.sys==="cx")).map(([k])=>CAP[k]).join(" ")||"Включите хотя бы один слой."}
+function selectSys(k){st.sys=k;st.pot=POT[k][0][0];Object.assign(st,DEF[k]);PROBE=null;sync();resetCam();update()}
+function sync(){document.getElementById("U").value=Math.round(st.U);document.getElementById("r").value=lgi(st.r,...RR);document.getElementById("d").value=lgi(st.d,...DR)}
+function resetCam(){const m=build();const rc=document.getElementById("stage").getBoundingClientRect();const asp=rc.width/Math.max(1,rc.height);const k=asp<1.2?Math.pow(1.2/asp,.85):1;
+  cam.tx=m.cam[0];cam.ty=m.cam[1];cam.tz=m.cam[2];cam.dist=m.cam[3]*k;cam.yaw=m.kind==="cx"?1.05:m.kind==="wp"?.95:.55;cam.pitch=m.kind==="pp"?.07:.28}
+let pend=null;
+function update(){ui();M=build();PROF=axisProf(400);const E1=PROF.pts[0][1];EMAP=Math.max(E0,E1);document.getElementById("lgMax").textContent="0…"+fa(EMAP)+" кВ/см";
+  if(PROBE&&(M.inside(...PROBE)||!isFinite(M.field(...PROBE)[0])))PROBE=null;
+  steps();plotAxis();clearTimeout(pend);render(5);pend=setTimeout(()=>{if(st.L.lines)buildLines();else LINES=[];render(2.2);setTimeout(()=>render(1.25),30)},80);
+  document.getElementById("probeNote").innerHTML=PROBE?probeText():"Наибольшая напряжённость — у поверхности электрода 1 (слева на графике). Площадь под кривой — это напряжение U."}
+function probeText(){const e=M.field(...PROBE);const E=Math.hypot(e[1],e[2],e[3]);return `Зонд: E = ${fa(E)} кВ/см, потенциал φ = ${fx(e[0],1)} кВ, это ${fx(E/PROF.pts[0][1]*100,0)} % от E<sub>max</sub>.`}
+function quick(){clearTimeout(lowTimer);render(5);lowTimer=setTimeout(()=>render(1.25),160)}
+let drag=null;
+cv.addEventListener("pointerdown",e=>{drag={x:e.clientX,y:e.clientY,yaw:cam.yaw,pitch:cam.pitch,moved:false};cv.setPointerCapture(e.pointerId);cv.classList.add("drag")});
+cv.addEventListener("pointermove",e=>{if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(Math.abs(dx)+Math.abs(dy)>4)drag.moved=true;if(drag.moved){cam.yaw=drag.yaw-dx*.008;cam.pitch=Math.max(-1.2,Math.min(1.35,drag.pitch+dy*.006));quick()}});
+cv.addEventListener("pointerup",e=>{cv.classList.remove("drag");if(drag&&!drag.moved)pick(e);drag=null});
+cv.addEventListener("wheel",e=>{e.preventDefault();cam.dist*=e.deltaY>0?1.1:1/1.1;quick()},{passive:false});
+document.getElementById("zin").onclick=()=>{cam.dist/=1.2;quick()};document.getElementById("zout").onclick=()=>{cam.dist*=1.2;quick()};document.getElementById("zres").onclick=()=>{resetCam();quick()};
+function pick(e){const rc=cv.getBoundingClientRect();const B=camBasis(rc.width,rc.height);const vx=(2*(e.clientX-rc.left)/rc.width-1)*B.th*B.asp,vy=(1-2*(e.clientY-rc.top)/rc.height)*B.th;
+  const d=[B.f[0]+vx*B.rt[0]+vy*B.up[0],B.f[1]+vx*B.rt[1]+vy*B.up[1],B.f[2]+vx*B.rt[2]+vy*B.up[2]];const ax=M.sax;if(Math.abs(d[ax])<1e-9)return;const t=-B.e[ax]/d[ax];if(t<=0)return;const p=at(B.e,d,t);p[ax]=ax===0?-1e-7:0;
+  if(!(st.L.slice||M.kind==="cx")||!onSlice(p)||M.inside(...p)||!isFinite(M.field(...p)[0]))return;PROBE=p;render(1.25);document.getElementById("probeNote").innerHTML=probeText()}
+document.getElementById("U").oninput=e=>{st.U=+e.target.value;update()};
+document.getElementById("r").oninput=e=>{st.r=+lg(+e.target.value,...RR).toPrecision(3);update()};
+document.getElementById("d").oninput=e=>{st.d=+lg(+e.target.value,...DR).toPrecision(3);update()};
+document.querySelectorAll("[data-pl]").forEach(b=>b.onclick=()=>{st.pol=+b.dataset.pl;update()});
+const TRIES=[["Радиус кривизны","Шар — плоскость: уменьшайте радиус шара от 20 до 0,5 см. Как меняются E<sub>max</sub> и k<sub>н</sub>? А E<sub>ср</sub>?",{sys:"sp",r:20,d:10,U:100}],
+ ["Заземление","Шар — шар: переключите «±U/2», «заземлён», «не подключён». Напряжение одно — почему E<sub>max</sub> разная?",{sys:"ss",r:5,d:10,U:100,pot:"sym"}],
+ ["Однородное и неоднородное","Сравните «Плоскость — плоскость» и «Острие — плоскость» при d = 10 см и U = 100 кВ. Во сколько раз отличаются k<sub>н</sub>?",{sys:"hp",r:0.5,d:10,U:100}]];
+document.getElementById("tries").innerHTML=TRIES.map((t,i)=>`<div class="try"><b>${t[0]}</b><span>${t[1]}</span><button class="btn ghost sm" data-try="${i}">Настроить</button></div>`).join("");
+document.querySelectorAll("[data-try]").forEach(b=>b.onclick=()=>loadLab(TRIES[+b.dataset.try][2]));
+function loadLab(c){st.sys=c.sys;st.pot=c.pot||POT[c.sys][0][0];Object.assign(st,{pol:1},c);PROBE=null;showTab("t1");sync();resetCam();update();document.getElementById("stage").scrollIntoView({behavior:"smooth",block:"center"})}
+
+const tip=document.getElementById("tip");let tipOwner=null;
+function showTip(b){const t=TIPS[b.dataset.t];if(!t)return;tip.innerHTML=t;tip.hidden=false;const r=b.getBoundingClientRect();const w=tip.offsetWidth,h=tip.offsetHeight;let x=r.left+r.width/2-w/2;x=Math.max(12,Math.min(window.innerWidth-w-12,x));let y=r.bottom+8;if(y+h>window.innerHeight-8)y=r.top-h-8;tip.style.left=x+"px";tip.style.top=y+"px";tipOwner=b;document.querySelectorAll(".q.on").forEach(q=>q.classList.remove("on"));b.classList.add("on")}
+function hideTip(){tip.hidden=true;if(tipOwner)tipOwner.classList.remove("on");tipOwner=null}
+document.addEventListener("mouseover",e=>{const b=e.target.closest(".q");if(b)showTip(b)});
+document.addEventListener("mouseout",e=>{const b=e.target.closest(".q");if(b&&b===tipOwner)hideTip()});
+document.addEventListener("focusin",e=>{const b=e.target.closest(".q");if(b)showTip(b)});
+document.addEventListener("focusout",e=>{if(e.target.closest(".q"))hideTip()});
+document.addEventListener("click",e=>{const b=e.target.closest(".q");if(b){e.preventDefault();e.stopPropagation();if(tipOwner===b&&!tip.hidden)hideTip();else showTip(b)}else hideTip()},true);
+window.addEventListener("scroll",hideTip,{passive:true});
+
+function showTab(id){for(const t of ["t1","t2","t3"])document.getElementById(t).hidden=t!==id;document.querySelectorAll("[data-tab]").forEach(b=>{b.classList.toggle("on",b.dataset.tab===id);b.setAttribute("aria-selected",b.dataset.tab===id)});if(id==="t1")quick();try{localStorage.setItem("e3d-tab",id)}catch(e){}}
+document.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>{showTab(b.dataset.tab);window.scrollTo({top:0})});
+
+const TS={open:0,done:{}};
+function parseNum(s){s=String(s).trim().replace(/\s/g,"").replace(",",".");return s===""?NaN:Number(s)}
+function renderTasks(){document.getElementById("tasks").innerHTML=TASKS.map((t,i)=>{const open=TS.open===i;const dn=TS.done[i];
+  return `<div class="task"><button class="hd" data-tk="${i}" aria-expanded="${open}"><span class="num${dn?" done":""}">${i+1}</span><span class="ttl">${t.t}</span><span class="small">${open?"свернуть ▲":"открыть ▼"}</span></button>${open?`<div class="bd">
+  <div class="case"><div class="eyebrow">Ситуация из практики</div>${t.c}${t.src.length?`<div class="src" style="margin-top:6px">Источник: ${t.src.map(s=>`<a href="${s[1]}" target="_blank" rel="noopener">${s[0]}</a>`).join("; ")}</div>`:""}</div>
+  <div class="given"><b>Дано.</b> ${t.g}</div>
+  ${t.q.map((q,j)=>`<div class="ans"><span>${q[0]}</span><input id="a${i}_${j}" inputmode="decimal" autocomplete="off" aria-label="${q[0].replace(/<[^>]+>/g,"")}"><span class="small">${q[1]}</span><span class="mk" id="m${i}_${j}"></span></div>`).join("")}
+  <div class="row"><button class="btn" data-chk="${i}">Проверить</button><button class="btn ghost" data-hint="${i}">Подсказка</button><button class="btn ghost" data-sol="${i}">Решение</button><button class="btn ghost" data-lab="${i}">Открыть в лаборатории</button></div>
+  <div class="hint" id="h${i}" hidden>${t.h}</div>
+  <div class="sol" id="s${i}" hidden><ol>${t.s.map(x=>`<li>${x}</li>`).join("")}</ol></div></div>`:""}</div>`}).join("");
+  document.getElementById("tProg").textContent="решено "+Object.keys(TS.done).length+" из "+TASKS.length;
+  document.querySelectorAll("[data-tk]").forEach(b=>b.onclick=()=>{const i=+b.dataset.tk;TS.open=TS.open===i?-1:i;renderTasks()});
+  document.querySelectorAll("[data-chk]").forEach(b=>b.onclick=()=>{const i=+b.dataset.chk,t=TASKS[i];let all=true;t.q.forEach((q,j)=>{const v=parseNum(document.getElementById(`a${i}_${j}`).value),m=document.getElementById(`m${i}_${j}`);const ok=isFinite(v)&&q[2].some(a=>Math.abs(v-a)<=Math.abs(a)*.03);m.textContent=isFinite(v)?(ok?"✓":"✗"):"?";m.className="mk "+(ok?"ok":"no");if(!ok)all=false});
+    if(all){TS.done[i]=true;document.getElementById("tProg").textContent="решено "+Object.keys(TS.done).length+" из "+TASKS.length;document.querySelector(`[data-tk="${i}"] .num`).classList.add("done")}});
+  document.querySelectorAll("[data-hint]").forEach(b=>b.onclick=()=>{const e=document.getElementById("h"+b.dataset.hint);e.hidden=!e.hidden});
+  document.querySelectorAll("[data-sol]").forEach(b=>b.onclick=()=>{const e=document.getElementById("s"+b.dataset.sol);e.hidden=!e.hidden});
+  document.querySelectorAll("[data-lab]").forEach(b=>b.onclick=()=>loadLab(TASKS[+b.dataset.lab].lab))}
+
+let TV=0,TA={},TDONE=false;
+function perm(n,seed){const a=[...Array(n).keys()];let s=seed*9301+49297;for(let i=n-1;i>0;i--){s=(s*9301+49297)%233280;const j=Math.floor(s/233280*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function renderTest(){document.getElementById("vars").innerHTML=TESTS.map((_,i)=>`<button data-v="${i}" class="${i===TV?"on":""}">${i+1}</button>`).join("");
+  document.querySelectorAll("[data-v]").forEach(b=>b.onclick=()=>{TV=+b.dataset.v;TA={};TDONE=false;document.getElementById("result").hidden=true;renderTest()});
+  document.getElementById("test").innerHTML=TESTS[TV].map((q,i)=>{const p=perm(4,TV*31+i*7+5);return `<div class="qq"><div class="qt">${i+1}. ${q[0]}</div><div class="opts">${p.map(o=>{let c="";if(TDONE){if(o===q[2])c="right";else if(TA[i]===o)c="wrong"}return `<label class="${c}"><input type="radio" name="q${i}" value="${o}" ${TA[i]===o?"checked":""} ${TDONE?"disabled":""}><span>${q[1][o]}</span></label>`}).join("")}</div>${TDONE?`<div class="expl">${TA[i]===q[2]?"Верно. ":"Правильно: "+q[1][q[2]]+". "}${q[3]}</div>`:""}</div>`}).join("");
+  document.querySelectorAll("#test input").forEach(inp=>inp.onchange=()=>{TA[+inp.name.slice(1)]=+inp.value})}
+document.getElementById("submit").onclick=()=>{const n=TESTS[TV].length;const ans=Object.keys(TA).length;if(ans<n&&!document.getElementById("submit").dataset.warn){document.getElementById("submit").dataset.warn=1;document.getElementById("submit").textContent=`Отвечено ${ans} из ${n}. Всё равно завершить?`;return}
+  delete document.getElementById("submit").dataset.warn;document.getElementById("submit").textContent="Завершить тест";
+  TDONE=true;renderTest();const k=TESTS[TV].filter((q,i)=>TA[i]===q[2]).length;const g=k>=9?5:k>=7?4:k>=6?3:2;const col={5:"#1E8A4C",4:"#2457C5",3:"#B7791F",2:"#C8372B"}[g];
+  const r=document.getElementById("result");r.hidden=false;r.innerHTML=`<div class="score"><div class="grade" style="background:${col}">${g}</div><div><h3>Вариант ${TV+1}: ${k} из ${n} верно</h3><p class="small">${g===5?"Отлично! Тема освоена.":g===4?"Хорошо. Посмотрите разбор ошибок выше.":g===3?"Удовлетворительно. Повторите понятия и решите задачи вкладки 2.":"Нужно повторить тему: вернитесь к эксперименту и подсказкам «?»."}</p><p class="small">Шкала: 9–10 — «5», 7–8 — «4», 6 — «3», меньше 6 — «2».</p></div></div>`;r.scrollIntoView({behavior:"smooth",block:"center"})};
+document.getElementById("retry").onclick=()=>{TA={};TDONE=false;document.getElementById("result").hidden=true;renderTest();window.scrollTo({top:0})};
+
+new ResizeObserver(()=>quick()).observe(document.getElementById("stage"));
+renderTasks();renderTest();sync();resetCam();update();
+try{const t=localStorage.getItem("e3d-tab");if(t&&t!=="t1")showTab(t)}catch(e){}
+</script>
+<a href="../" title="Все материалы" style="position:fixed;right:10px;bottom:10px;z-index:99999;background:rgba(31,95,175,.92);color:#fff;font:600 13px system-ui,sans-serif;padding:6px 11px;border-radius:999px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.25)">⌂ Все материалы</a><script>addEventListener("load",function(){var h=location.hash.slice(1),b=h&&document.querySelector("[data-tab="+h+"]");if(b)b.click()})</script></html>

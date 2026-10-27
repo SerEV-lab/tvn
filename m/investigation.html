@@ -1,0 +1,324 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Игра «Расследование»: памятка и бланк хода</title><style>:root{--ink:#16202c;--muted:#5b6675;--line:#d9dde3;--acc:#1f5faf;--bg:#fff;--soft:#f3f5f8}
+@media (prefers-color-scheme:dark){:root{--ink:#e6eaf0;--muted:#9aa6b5;--line:#33404f;--acc:#7fb3f0;--bg:#121820;--soft:#1b2430}img{background:#fff}}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 "PT Serif",Georgia,"Times New Roman",serif}
+.bar{position:sticky;top:0;display:flex;justify-content:space-between;gap:12px;padding:10px 16px;background:var(--soft);border-bottom:1px solid var(--line);font:600 14px system-ui,-apple-system,"Segoe UI",sans-serif;z-index:5}
+.bar a{color:var(--acc);text-decoration:none}.bar .pdf{border:1px solid var(--acc);border-radius:999px;padding:2px 12px}
+main{max-width:820px;margin:0 auto;padding:16px 16px 64px}
+h1,h2,h3,h4{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.25;margin:1.6em 0 .5em}
+h1{font-size:1.5em}h2{font-size:1.25em}h3{font-size:1.08em}
+p{margin:.5em 0}img{max-width:100%;height:auto;display:block;margin:12px auto;border-radius:6px}
+figure{margin:16px 0}figcaption{text-align:center;color:var(--muted);font-size:.9em}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:.92em;display:block;overflow-x:auto}
+td,th{border:1px solid var(--line);padding:6px 8px;vertical-align:top}th{background:var(--soft);text-align:left}
+math{font-size:1.08em}math[display=block]{overflow-x:auto;overflow-y:hidden;margin:10px 0}
+blockquote{margin:12px 0;padding:8px 14px;border-left:4px solid var(--acc);background:var(--soft)}
+@media print{.bar{display:none}body{font-size:12pt}main{max-width:none;padding:0}table{display:table}img{background:none}}
+</style></head><body><nav class="bar"><a href="../">← Техника высоких напряжений</a><a class="pdf" href="investigation.pdf" download>Скачать PDF</a></nav><main><p>Техника высоких напряжений</p>
+<p><strong>Памятка студента</strong></p>
+<p><strong>Игра «Расследование»</strong></p>
+<p><em>Как диагност выбирает проверки · памятка и бланк хода
+команды</em></p>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Ваша задача.</strong> По PRPD-диаграмме и легенде объекта
+определить источник ЧР и принять решение. У команды 100 очков. Каждая
+проверка стоит очков, каждая ошибка — 50. Итог = 100 − проверки −
+ошибки. Хороший диагност тратит мало, но не гадает.</td>
+</tr>
+</tbody>
+</table>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Правила честной игры.</strong> У соседних команд другие
+случаи. Варианты ответов на каждом устройстве перемешаны по-своему.
+Ответив, поднимите руку и не показывайте экран соседям — разбор будет
+после ответа всех команд.</td>
+</tr>
+</tbody>
+</table>
+<h2>1. Что даёт каждая проверка</h2>
+<table>
+<colgroup>
+<col style="width: 31%" />
+<col style="width: 9%" />
+<col style="width: 59%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Проверка</strong></th>
+<th><strong>Цена</strong></th>
+<th><strong>Какую версию помогает отсечь</strong></th>
+</tr>
+<tr class="odd">
+<th>Снять напряжение или сравнить с записью при остановленном
+объекте</th>
+<th>10</th>
+<th>Помеху: ЧР без напряжения исчезают, помеха остаётся</th>
+</tr>
+<tr class="header">
+<th>Поднять напряжение</th>
+<th>10</th>
+<th>Показывает, как растут число и величина импульсов, сдвиг облаков к
+нулю</th>
+</tr>
+<tr class="odd">
+<th>Фазовые гистограммы и асимметрия</th>
+<th>15</th>
+<th>Пору (облака одинаковы, разброс величины широкий) от поверхности и
+паза (одна полуволна крупнее) и от плавающего потенциала (импульсы
+одинаковые)</th>
+</tr>
+<tr class="header">
+<th>Проверить синхронизацию</th>
+<th>15</th>
+<th>Ложную картину: при чужой фазе облака сдвинуты на 120°</th>
+</tr>
+<tr class="odd">
+<th>Сравнить с другими фазами</th>
+<th>20</th>
+<th>Распределённый дефект (во всех фазах) от местного (в одной)</th>
+</tr>
+<tr class="header">
+<th>Тренд Q<sub>m</sub>, прошлые испытания</th>
+<th>25</th>
+<th>Стабильный дефект от развивающегося — если история есть</th>
+</tr>
+<tr class="odd">
+<th>Отключить соседний источник помех</th>
+<th>20</th>
+<th>Помеху от ПЧ или выпрямителя рядом: столбики исчезают, ЧР
+остаются</th>
+</tr>
+<tr class="header">
+<th>Измерить tgδ</th>
+<th>20–25</th>
+<th>Общее состояние изоляции; местный дефект почти не виден</th>
+</tr>
+<tr class="odd">
+<th>Локация</th>
+<th>25</th>
+<th>Место дефекта: какая муфта, какой участок</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Перед каждой покупкой ответьте вслух:</strong> какую версию
+мы проверяем и что изменится в нашем решении после ответа? Если ничего
+не изменится — проверка не нужна.</td>
+</tr>
+</tbody>
+</table>
+<h2>2. Признаки источников</h2>
+<table>
+<colgroup>
+<col style="width: 28%" />
+<col style="width: 71%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Источник</strong></th>
+<th><strong>Признак на PRPD</strong></th>
+</tr>
+<tr class="odd">
+<th>Внутренняя пора</th>
+<th>Два почти одинаковых облака на подъёмах полуволн (0–90° и
+180–270°)</th>
+</tr>
+<tr class="header">
+<th>Поверхностный разряд</th>
+<th>Облака на подъёмах, но одна полуволна в 2–5 раз крупнее</th>
+</tr>
+<tr class="odd">
+<th>Пазовые разряды</th>
+<th>Сильная асимметрия полуволн, обычно во всех фазах; величины —
+нКл</th>
+</tr>
+<tr class="header">
+<th>Корона на высоковольтном острие</th>
+<th>Полоса мелких одинаковых импульсов у 270°</th>
+</tr>
+<tr class="odd">
+<th>Корона на заземлённом острие</th>
+<th>То же у 90°</th>
+</tr>
+<tr class="header">
+<th>Плавающий потенциал</th>
+<th>Пары крупных одинаковых импульсов, Q<sub>m</sub> почти равен
+наибольшему</th>
+</tr>
+<tr class="odd">
+<th>Помеха преобразователя</th>
+<th>Вертикальные столбики через 60°, есть и без напряжения</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<h2>3. Нужные формулы</h2>
+<table>
+<colgroup>
+<col style="width: 47%" />
+<col style="width: 52%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Что</strong></th>
+<th><strong>Формула</strong></th>
+</tr>
+<tr class="odd">
+<th>Место дефекта в кабеле по отражению</th>
+<th>x = L − v·Δt/2, v ≈ 170 м/мкс</th>
+</tr>
+<tr class="header">
+<th>Расстояние до источника по звуку в масле</th>
+<th>s = v<sub>зв</sub>·t, v<sub>зв</sub> ≈ 1400 м/с</th>
+</tr>
+<tr class="odd">
+<th>Асимметрия полуволн</th>
+<th>Q<sub>m+</sub> / Q<sub>m−</sub></th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<h2>4. Бланк хода команды</h2>
+<p>Команда: ______________________ Случай: ______________________ Дата:
+____________</p>
+<p><strong>Версии по стартовой диаграмме</strong> (2–3 штуки):</p>
+<table>
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 93%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>№</strong></th>
+<th><strong>Версия и почему</strong></th>
+</tr>
+<tr class="odd">
+<th>1</th>
+<th></th>
+</tr>
+<tr class="header">
+<th>2</th>
+<th></th>
+</tr>
+<tr class="odd">
+<th>3</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><strong>Купленные проверки:</strong></p>
+<table>
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 31%" />
+<col style="width: 9%" />
+<col style="width: 52%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>№</strong></th>
+<th><strong>Проверка</strong></th>
+<th><strong>Цена</strong></th>
+<th><strong>Что узнали и какую версию отбросили</strong></th>
+</tr>
+<tr class="odd">
+<th>1</th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+<tr class="header">
+<th>2</th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+<tr class="odd">
+<th>3</th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+<tr class="header">
+<th>4</th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+<tr class="odd">
+<th>5</th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Наш диагноз — источник ЧР</strong></th>
+<th><strong>Наше решение</strong></th>
+</tr>
+<tr class="odd">
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 24%" />
+<col style="width: 24%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Потрачено</strong></th>
+<th><strong>Ошибки × 50</strong></th>
+<th><strong>Итог</strong></th>
+<th><strong>Оптимум (после разбора)</strong></th>
+</tr>
+<tr class="odd">
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><strong>После разбора:</strong> какую проверку можно было не покупать
+и почему?
+___________________________________________________________________________</p>
+</main></body></html>

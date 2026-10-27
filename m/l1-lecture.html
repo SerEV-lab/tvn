@@ -1,0 +1,700 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Лекция 1. Напряжённость и неоднородность поля</title><style>:root{--ink:#16202c;--muted:#5b6675;--line:#d9dde3;--acc:#1f5faf;--bg:#fff;--soft:#f3f5f8}
+@media (prefers-color-scheme:dark){:root{--ink:#e6eaf0;--muted:#9aa6b5;--line:#33404f;--acc:#7fb3f0;--bg:#121820;--soft:#1b2430}img{background:#fff}}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 "PT Serif",Georgia,"Times New Roman",serif}
+.bar{position:sticky;top:0;display:flex;justify-content:space-between;gap:12px;padding:10px 16px;background:var(--soft);border-bottom:1px solid var(--line);font:600 14px system-ui,-apple-system,"Segoe UI",sans-serif;z-index:5}
+.bar a{color:var(--acc);text-decoration:none}.bar .pdf{border:1px solid var(--acc);border-radius:999px;padding:2px 12px}
+main{max-width:820px;margin:0 auto;padding:16px 16px 64px}
+h1,h2,h3,h4{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.25;margin:1.6em 0 .5em}
+h1{font-size:1.5em}h2{font-size:1.25em}h3{font-size:1.08em}
+p{margin:.5em 0}img{max-width:100%;height:auto;display:block;margin:12px auto;border-radius:6px}
+figure{margin:16px 0}figcaption{text-align:center;color:var(--muted);font-size:.9em}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:.92em;display:block;overflow-x:auto}
+td,th{border:1px solid var(--line);padding:6px 8px;vertical-align:top}th{background:var(--soft);text-align:left}
+math{font-size:1.08em}math[display=block]{overflow-x:auto;overflow-y:hidden;margin:10px 0}
+blockquote{margin:12px 0;padding:8px 14px;border-left:4px solid var(--acc);background:var(--soft)}
+@media print{.bar{display:none}body{font-size:12pt}main{max-width:none;padding:0}table{display:table}img{background:none}}
+</style></head><body><nav class="bar"><a href="../">← Техника высоких напряжений</a><a class="pdf" href="l1-lecture.pdf" download>Скачать PDF</a></nav><main><p>Техника высоких напряжений</p>
+<p><strong>Лекция 1</strong></p>
+<p><strong>Электрическое поле в изоляционных промежутках</strong></p>
+<p><em>Напряжённость поля, степень неоднородности и её зависимость от
+формы электродов</em></p>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><p><strong>Цель лекции.</strong> Сформировать понятия напряжённости
+электрического поля и коэффициента неоднородности; показать, как форма
+электродов, радиус кривизны, расстояние и схема подключения (заземление)
+влияют на наибольшую напряжённость; научиться оценивать E<sub>max</sub>
+по инженерным формулам и сравнивать её с электрической прочностью
+воздуха.</p>
+<p><strong>Учебные вопросы.</strong> 1) Напряжённость и потенциал. 2)
+Однородное и неоднородное поле, коэффициент неоднородности. 3) Радиус
+кривизны и усиление поля. 4) Типовые системы электродов и расчётные
+формулы. 5) Влияние заземления, плавающие электроды, полярность. 6)
+Способы снижения неоднородности. 7) Демонстрационные опыты на 3D-модели
+«Электроды 3D».</p>
+<p><strong>Связанные материалы.</strong> Интерактивная модель «Электроды
+3D» (вкладки «Эксперимент», «Задачи», «Тест»), практическое занятие № 1,
+чек-лист для студентов.</p></td>
+</tr>
+</tbody>
+</table>
+<h2>1. Зачем изучать электрическое поле в изоляции</h2>
+<p>Любая высоковольтная конструкция — это электроды (проводники под
+разными потенциалами) и изоляция между ними: воздух, газ, масло, твёрдый
+диэлектрик. Изоляция работает, пока напряжённость электрического поля в
+ней меньше её электрической прочности. Пробой начинается не там, где
+поле «в среднем» велико, а там, где оно максимально. Поэтому главная
+задача расчёта поля в технике высоких напряжений — найти наибольшую
+напряжённость E<sub>max</sub> и место, где она возникает.</p>
+<p>Одно и то же напряжение может быть безопасным или опасным в
+зависимости от формы электродов. Заусенец на шине, острый угол арматуры,
+тонкий провод — всё это места концентрации поля. Понимание того, от чего
+зависит E<sub>max</sub>, — основа проектирования изоляции и всех
+следующих тем курса: разрядов в газах, короны, пробоя жидкой и твёрдой
+изоляции.</p>
+<h2>2. Напряжённость и потенциал</h2>
+<h3>2.1. Определения</h3>
+<p><strong>Напряжённость электрического поля E</strong> — векторная
+величина, равная силе, с которой поле действует на неподвижный единичный
+положительный заряд:</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mo>=</mo><mfrac><mi>F</mi><mi>q</mi></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">E = \frac{F}{q}.</annotation></semantics></math>
+(1)</p>
+<p>Единица СИ — В/м. В технике высоких напряжений удобнее кВ/см: 1 кВ/см
+= 100 кВ/м = 0,1 кВ/мм. Направление вектора E совпадает с направлением
+силы на положительный заряд — от электрода с большим потенциалом к
+электроду с меньшим.</p>
+<p><strong>Потенциал φ</strong> — энергия единичного заряда в данной
+точке поля относительно точки с нулевым потенциалом (в технике —
+относительно земли). <strong>Напряжение</strong> между электродами —
+разность их потенциалов, U = φ<sub>1</sub> − φ<sub>2</sub>.
+Напряжённость связана с потенциалом: она направлена в сторону
+наибыстрейшего убывания потенциала и численно равна скорости этого
+убывания:</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mo>=</mo><mo>−</mo><mi>g</mi><mi>r</mi><mi>a</mi><mi>d</mi><mspace width="0.222em"></mspace><mi>φ</mi><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mi>E</mi><mo>=</mo><mo>−</mo><mfrac><mrow><mi>d</mi><mi>φ</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">E = - grad\ \varphi,\ \ E = - \frac{d\varphi}{dx}.</annotation></semantics></math>
+(2)</p>
+<p>Напряжение между электродами равно интегралу напряжённости вдоль
+любого пути от одного электрода к другому, например вдоль оси
+промежутка:</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi><mo>=</mo><msubsup><mo>∫</mo><mn>0</mn><mi>d</mi></msubsup><mrow><mi>E</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>d</mi><mi>x</mi></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">U = \int_{0}^{d}{E(x)dx}.</annotation></semantics></math>
+(3)</p>
+<p>Геометрический смысл формулы (3): площадь под графиком E(x) вдоль оси
+промежутка равна приложенному напряжению. Если поле где-то сгущается (E
+велика), то в другом месте промежутка оно должно быть слабее — площадь
+остаётся постоянной.</p>
+<h3>2.2. Наглядное изображение поля</h3>
+<p><strong>Силовая линия</strong> — линия, касательная к которой в
+каждой точке совпадает с направлением вектора E. Силовые линии
+начинаются на положительных зарядах (электроде «+») и заканчиваются на
+отрицательных (электроде «−» или земле). Чем гуще силовые линии, тем
+сильнее поле.</p>
+<p><strong>Эквипотенциальная поверхность</strong> (в разрезе —
+эквипотенциаль) — поверхность одинакового потенциала. Силовые линии
+всегда перпендикулярны эквипотенциалям. Поверхность металлического
+электрода сама является эквипотенциалью, поэтому вектор E у поверхности
+проводника перпендикулярен ей, а внутри проводника в электростатике E =
+0.</p>
+<p>Чем ближе друг к другу эквипотенциали, проведённые через равные
+интервалы потенциала, тем больше напряжённость. В модели «Электроды 3D»
+эквипотенциали проведены через 10 % приложенного напряжения, а цвет
+разреза показывает величину E: тёмно-фиолетовый — слабое поле, жёлтый —
+сильное.</p>
+<h2>3. Однородное и неоднородное поле</h2>
+<h3>3.1. Однородное поле</h3>
+<p>Поле называют <strong>однородным</strong>, если напряжённость
+одинакова во всех точках по величине и направлению. Практически такое
+поле существует между двумя большими параллельными плоскими электродами
+вдали от их краёв. Для него интеграл (3) даёт простейшую формулу:</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mo>=</mo><mfrac><mi>U</mi><mi>d</mi></mfrac><mo>,</mo></mrow><annotation encoding="application/x-tex">E = \frac{U}{d},</annotation></semantics></math>
+(4)</p>
+<p>где d — расстояние между электродами. Однородное поле — эталон: в нём
+изоляция используется полностью, каждый слой нагружен одинаково. Чтобы
+на краях плоских электродов поле не усиливалось, их профиль плавно
+скругляют (электроды Роговского) — такие электроды применяют в
+испытательных ячейках для определения электрической прочности
+материалов.</p>
+<p><img
+src="l1-lecture/media/3bf64632cd81405a83a954be7d4e0fa61db1977f.webp"
+title="Плоскость — плоскость, U = 50 кВ, d = 2 см. Разрез окрашен одним цветом, эквипотенциали равноотстоят, силовые линии параллельны: E = 25 кВ/см во всём промежутке"
+style="width:5.51042in;height:3.19792in"
+alt="Плоскость — плоскость, U = 50 кВ, d = 2 см. Разрез окрашен одним цветом, эквипотенциали равноотстоят, силовые линии параллельны: E = 25 кВ/см во всём промежутке" /></p>
+<p><strong>Рис. 1.</strong> Плоскость — плоскость, U = 50 кВ, d = 2 см.
+Разрез окрашен одним цветом, эквипотенциали равноотстоят, силовые линии
+параллельны: E = 25 кВ/см во всём промежутке</p>
+<h3>3.2. Неоднородное поле. Коэффициент неоднородности</h3>
+<p>Если хотя бы один электрод не плоский (шар, цилиндр, острие), поле
+становится <strong>неоднородным</strong>: напряжённость максимальна у
+поверхности электрода с наименьшим радиусом кривизны и убывает по мере
+удаления от него. Для характеристики такого поля вводят две
+величины.</p>
+<p><strong>Средняя напряжённость</strong> — та, что была бы при
+однородном поле:</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mrow><mi>с</mi><mi>р</mi></mrow></msub><mo>=</mo><mfrac><mi>U</mi><mi>d</mi></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">E_{ср} = \frac{U}{d}.</annotation></semantics></math>
+(5)</p>
+<p><strong>Коэффициент неоднородности</strong> — отношение наибольшей
+напряжённости к средней:</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>k</mi><mi>н</mi></msub><mo>=</mo><mfrac><msub><mi>E</mi><mo>max</mo></msub><msub><mi>E</mi><mrow><mi>с</mi><mi>р</mi></mrow></msub></mfrac><mo>=</mo><mfrac><mrow><msub><mi>E</mi><mo>max</mo></msub><mo>⋅</mo><mi>d</mi></mrow><mi>U</mi></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">k_{н} = \frac{E_{\max}}{E_{ср}} = \frac{E_{\max} \cdot d}{U}.</annotation></semantics></math>
+(6)</p>
+<p>Для однородного поля k<sub>н</sub> = 1, для любого неоднородного
+k<sub>н</sub> &gt; 1. Важное свойство: k<sub>н</sub> не зависит от
+напряжения, только от геометрии системы электродов, — при увеличении U в
+два раза и E<sub>max</sub>, и E<sub>ср</sub> растут в два раза.</p>
+<p>Условная классификация полей, используемая в курсе (границы в
+учебниках несколько различаются):</p>
+<table>
+<colgroup>
+<col style="width: 27%" />
+<col style="width: 25%" />
+<col style="width: 46%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Поле</strong></th>
+<th><strong>k<sub>н</sub></strong></th>
+<th><strong>Пример</strong></th>
+</tr>
+<tr class="odd">
+<th>Однородное</th>
+<th>= 1</th>
+<th>Плоскость — плоскость</th>
+</tr>
+<tr class="header">
+<th>Слабонеоднородное</th>
+<th>&lt; 2</th>
+<th>Шары при d &lt; r, коаксиальный кабель</th>
+</tr>
+<tr class="odd">
+<th>Неоднородное</th>
+<th>2…4</th>
+<th>Шар — плоскость при d ≈ 2r</th>
+</tr>
+<tr class="header">
+<th>Резконеоднородное</th>
+<th>&gt; 4</th>
+<th>Острие — плоскость, провод над землёй</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p>Деление важно для дальнейших тем: в слабонеоднородном поле пробой
+газа наступает практически сразу после начала ионизации, а в
+резконеоднородном сначала у острого электрода возникает самостоятельный
+местный разряд — корона, и лишь при большем напряжении — пробой всего
+промежутка.</p>
+<h3>3.3. Распределение напряжённости вдоль оси</h3>
+<p>Наглядно неоднородность видна на графике E(x) вдоль оси промежутка.
+На рис. 2 — шар радиусом 5 см над заземлённой плоскостью, d = 10 см, U =
+100 кВ. Средняя напряжённость 10 кВ/см, у поверхности шара
+E<sub>max</sub> = 26,8 кВ/см, у плоскости — 5,4 кВ/см. Площадь под
+кривой по-прежнему равна 100 кВ.</p>
+<p><img
+src="l1-lecture/media/c49c4653ed3697b7416e9309e2929d0f86f4c3a7.png"
+title="Напряжённость вдоль оси промежутка шар — плоскость (r = 5 см, d = 10 см, U = 100 кВ). Пунктиры: E&lt;sub&gt;ср&lt;/sub&gt; = 10 кВ/см и E&lt;sub&gt;0&lt;/sub&gt; = 30 кВ/см"
+style="width:5.51042in;height:2.22917in"
+alt="Напряжённость вдоль оси промежутка шар — плоскость (r = 5 см, d = 10 см, U = 100 кВ). Пунктиры: E&lt;sub&gt;ср&lt;/sub&gt; = 10 кВ/см и E&lt;sub&gt;0&lt;/sub&gt; = 30 кВ/см" /></p>
+<p><strong>Рис. 2.</strong> Напряжённость вдоль оси промежутка шар —
+плоскость (r = 5 см, d = 10 см, U = 100 кВ). Пунктиры: E<sub>ср</sub> =
+10 кВ/см и E<sub>0</sub> = 30 кВ/см</p>
+<h2>4. Радиус кривизны и усиление поля</h2>
+<p><strong>Радиус кривизны</strong> поверхности в точке — радиус
+окружности, которая наилучшим образом прилегает к поверхности в этой
+точке. У плоскости он бесконечен, у шара равен радиусу шара, у острия
+составляет доли миллиметра. Основная закономерность: <strong>чем меньше
+радиус кривизны электрода, тем больше напряжённость у его
+поверхности</strong>.</p>
+<p>Это легко показать на уединённом шаре радиусом r под потенциалом U
+(второй электрод — бесконечно удалённая «земля»). Поле снаружи шара
+такое же, как у точечного заряда в его центре:</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>ρ</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mfrac><mrow><mi>U</mi><mo>⋅</mo><mi>r</mi></mrow><mi>ρ</mi></mfrac><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mi>E</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>ρ</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mfrac><mrow><mi>U</mi><mo>⋅</mo><mi>r</mi></mrow><msup><mi>ρ</mi><mn>2</mn></msup></mfrac><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><msub><mi>E</mi><mo>max</mo></msub><mo>=</mo><mfrac><mi>U</mi><mi>r</mi></mfrac><mo>,</mo></mrow><annotation encoding="application/x-tex">\varphi(\rho) = \frac{U \cdot r}{\rho},\ \ E(\rho) = \frac{U \cdot r}{\rho^{2}},\ \ E_{\max} = \frac{U}{r},</annotation></semantics></math>
+(7)</p>
+<p>где ρ — расстояние от центра шара. При одном и том же потенциале шар
+радиусом 1 мм имеет у поверхности поле в 100 раз сильнее, чем шар
+радиусом 10 см. Именно поэтому острые кромки, заусенцы и тонкие провода
+— главные источники короны и частичных разрядов.</p>
+<p>Если вокруг шара есть второй, концентрический заземлённый шар
+радиусом R = r + d (сферический конденсатор), то</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>ρ</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mfrac><mrow><mi>U</mi><mo>⋅</mo><mi>r</mi><mo>⋅</mo><mi>R</mi></mrow><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>R</mi><mspace width="0.222em"></mspace><mo>−</mo><mspace width="0.222em"></mspace><mi>r</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>⋅</mo><msup><mi>ρ</mi><mn>2</mn></msup></mrow></mfrac><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><msub><mi>E</mi><mo>max</mo></msub><mo>=</mo><mfrac><mrow><mi>U</mi><mo>⋅</mo><mi>R</mi></mrow><mrow><mi>r</mi><mo>⋅</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>R</mi><mspace width="0.222em"></mspace><mo>−</mo><mspace width="0.222em"></mspace><mi>r</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac><mo>=</mo><mfrac><mrow><mi>U</mi><mo>⋅</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>r</mi><mspace width="0.222em"></mspace><mo>+</mo><mspace width="0.222em"></mspace><mi>d</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mi>r</mi><mo>⋅</mo><mi>d</mi></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">E(\rho) = \frac{U \cdot r \cdot R}{(R\  - \ r) \cdot \rho^{2}},\ \ E_{\max} = \frac{U \cdot R}{r \cdot (R\  - \ r)} = \frac{U \cdot (r\  + \ d)}{r \cdot d}.</annotation></semantics></math>
+(8)</p>
+<p>Формула (8) — основа инженерной оценки для системы шар — плоскость
+(раздел 5.1).</p>
+<p><img
+src="l1-lecture/media/b9b355b46355f9797ebcb139846274da90ee6177.webp"
+title="Шар — плоскость, r = 20 см, d = 10 см, U = 100 кВ: E&lt;sub&gt;max&lt;/sub&gt; = 13,6 кВ/см, k&lt;sub&gt;н&lt;/sub&gt; = 1,36"
+style="width:5.51042in;height:3.19792in"
+alt="Шар — плоскость, r = 20 см, d = 10 см, U = 100 кВ: E&lt;sub&gt;max&lt;/sub&gt; = 13,6 кВ/см, k&lt;sub&gt;н&lt;/sub&gt; = 1,36" /></p>
+<p><strong>Рис. 3.</strong> Шар — плоскость, r = 20 см, d = 10 см, U =
+100 кВ: E<sub>max</sub> = 13,6 кВ/см, k<sub>н</sub> = 1,36</p>
+<p><img
+src="l1-lecture/media/373eaa7cf79af27ca4d6df86f355300b7509724a.webp"
+title="Тот же промежуток и напряжение, r = 0,5 см: E&lt;sub&gt;max&lt;/sub&gt; = 205 кВ/см, k&lt;sub&gt;н&lt;/sub&gt; = 20,5. Средняя напряжённость в обоих случаях 10 кВ/см"
+style="width:5.51042in;height:3.19792in"
+alt="Тот же промежуток и напряжение, r = 0,5 см: E&lt;sub&gt;max&lt;/sub&gt; = 205 кВ/см, k&lt;sub&gt;н&lt;/sub&gt; = 20,5. Средняя напряжённость в обоих случаях 10 кВ/см" /></p>
+<p><strong>Рис. 4.</strong> Тот же промежуток и напряжение, r = 0,5 см:
+E<sub>max</sub> = 205 кВ/см, k<sub>н</sub> = 20,5. Средняя напряжённость
+в обоих случаях 10 кВ/см</p>
+<h2>5. Типовые системы электродов</h2>
+<p>Для практических расчётов используют несколько типовых систем, для
+которых известны точные или приближённые формулы. Ниже r — радиус
+кривизны «острого» электрода, d — расстояние между поверхностями
+электродов, U — напряжение между ними (в формулах — амплитудное
+значение).</p>
+<h3>5.1. Шар — плоскость</h3>
+<p>Заземлённая плоскость искажает поле шара: силовые линии сгущаются на
+нижней части шара. Инженерная формула получена поправкой к формуле
+сферического конденсатора (8):</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mo>max</mo></msub><mo>≈</mo><mn>0</mn><mo>,</mo><mn>9</mn><mo>⋅</mo><mfrac><mrow><mi>U</mi><mo>⋅</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>r</mi><mspace width="0.222em"></mspace><mo>+</mo><mspace width="0.222em"></mspace><mi>d</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mi>r</mi><mo>⋅</mo><mi>d</mi></mrow></mfrac><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><msub><mi>k</mi><mi>н</mi></msub><mo>≈</mo><mn>0</mn><mo>,</mo><mn>9</mn><mo>⋅</mo><mfrac><mrow><mi>r</mi><mspace width="0.222em"></mspace><mo>+</mo><mspace width="0.222em"></mspace><mi>d</mi></mrow><mi>r</mi></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">E_{\max} \approx 0,9 \cdot \frac{U \cdot (r\  + \ d)}{r \cdot d},\ \ k_{н} \approx 0,9 \cdot \frac{r\  + \ d}{r}.</annotation></semantics></math>
+(9)</p>
+<p>Точное решение строят методом зеркальных изображений: заземлённую
+плоскость заменяют зеркальным шаром с противоположным потенциалом. При d
+≤ (5…10)r погрешность формулы (9) не превышает нескольких процентов; при
+большем удалении шара от плоскости она занижает E<sub>max</sub> до 10 %.
+Пример: r = 5 см, d = 10 см, U = 100 кВ — по (9) получаем 27,0 кВ/см,
+точный расчёт 26,8 кВ/см (рис. 5).</p>
+<p><img
+src="l1-lecture/media/9d66d805c53b6fcb5cf9d5c4c528de2d2dfaaf78.webp"
+title="Шар — плоскость, r = 5 см, d = 10 см, U = 100 кВ. Жёлтое кольцо — место E&lt;sub&gt;max&lt;/sub&gt; = 26,8 кВ/см на нижней точке шара"
+style="width:5.51042in;height:3.19792in"
+alt="Шар — плоскость, r = 5 см, d = 10 см, U = 100 кВ. Жёлтое кольцо — место E&lt;sub&gt;max&lt;/sub&gt; = 26,8 кВ/см на нижней точке шара" /></p>
+<p><strong>Рис. 5.</strong> Шар — плоскость, r = 5 см, d = 10 см, U =
+100 кВ. Жёлтое кольцо — место E<sub>max</sub> = 26,8 кВ/см на нижней
+точке шара</p>
+<h3>5.2. Шар — шар</h3>
+<p>Два одинаковых шара — классическая система шаровых разрядников для
+измерения высоких напряжений. При <strong>симметричном питании</strong>
+(потенциалы +U/2 и −U/2 относительно земли) плоскость симметрии между
+шарами имеет нулевой потенциал и играет роль заземлённой плоскости.
+Тогда каждую половину можно считать системой шар — плоскость с
+напряжением U/2 и расстоянием d/2:</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mo>max</mo></msub><mo>≈</mo><mn>0</mn><mo>,</mo><mn>9</mn><mo>⋅</mo><mfrac><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mi>U</mi><mn>2</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>⋅</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>r</mi><mspace width="0.222em"></mspace><mo>+</mo><mspace width="0.222em"></mspace><mfrac><mi>d</mi><mn>2</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mi>r</mi><mo>⋅</mo><mfrac><mi>d</mi><mn>2</mn></mfrac></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">E_{\max} \approx 0,9 \cdot \frac{\left( \frac{U}{2} \right) \cdot \left( r\  + \ \frac{d}{2} \right)}{r \cdot \frac{d}{2}}.</annotation></semantics></math>
+(10)</p>
+<p>Если один шар заземлён, симметрия нарушается: поле у шара под
+напряжением усиливается, у заземлённого — ослабевает (подробнее — раздел
+6).</p>
+<h3>5.3. Острие — плоскость</h3>
+<p>Острие моделируют гиперболоидом вращения с радиусом закругления
+вершины r; для этой формы существует точное решение. При r ≪ d
+наибольшая напряжённость у вершины (формула Коэльо — Дебо)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mo>max</mo></msub><mo>≈</mo><mfrac><mrow><mn>2</mn><mi>U</mi></mrow><mrow><mi>r</mi><mo>⋅</mo><mi>l</mi><mi>n</mi><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mn>4</mn><mi>d</mi></mrow><mi>r</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">E_{\max} \approx \frac{2U}{r \cdot ln\left( \frac{4d}{r} \right)}.</annotation></semantics></math>
+(11)</p>
+<p>Например, r = 0,5 см, d = 10 см, U = 60 кВ: E<sub>ср</sub> = 6 кВ/см,
+а E<sub>max</sub> ≈ 2·60/(0,5·ln 80) = 54,8 кВ/см (точно 55,8),
+k<sub>н</sub> ≈ 9,3 — резконеоднородное поле. Поле резко падает уже на
+расстоянии нескольких r от вершины (рис. 6, 7).</p>
+<p><img
+src="l1-lecture/media/1a2f84e28b99ef71cf28e4947a76e82c37d9fe95.webp"
+title="Острие — плоскость, r = 0,5 см, d = 10 см, U = 60 кВ: эквипотенциали сгущаются у вершины, E&lt;sub&gt;max&lt;/sub&gt; = 55,8 кВ/см"
+style="width:5.51042in;height:3.19792in"
+alt="Острие — плоскость, r = 0,5 см, d = 10 см, U = 60 кВ: эквипотенциали сгущаются у вершины, E&lt;sub&gt;max&lt;/sub&gt; = 55,8 кВ/см" /></p>
+<p><strong>Рис. 6.</strong> Острие — плоскость, r = 0,5 см, d = 10 см, U
+= 60 кВ: эквипотенциали сгущаются у вершины, E<sub>max</sub> = 55,8
+кВ/см</p>
+<p><img
+src="l1-lecture/media/722e33b0b30f1fb03fd465ddb420edc2e9af08b0.png"
+title="Напряжённость вдоль оси острие — плоскость: почти всё напряжение приходится на малую область у вершины"
+style="width:5.51042in;height:2.22917in"
+alt="Напряжённость вдоль оси острие — плоскость: почти всё напряжение приходится на малую область у вершины" /></p>
+<p><strong>Рис. 7.</strong> Напряжённость вдоль оси острие — плоскость:
+почти всё напряжение приходится на малую область у вершины</p>
+<h3>5.4. Провод над землёй</h3>
+<p>Провод воздушной линии радиусом r на высоте h = r + d над землёй —
+система «цилиндр — плоскость». Методом зеркальных изображений
+(зеркальный провод под землёй с противоположным зарядом) получают</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mo>max</mo></msub><mo>≈</mo><mfrac><mi>U</mi><mrow><mi>r</mi><mo>⋅</mo><mi>l</mi><mi>n</mi><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mn>2</mn><mi>h</mi></mrow><mi>r</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">E_{\max} \approx \frac{U}{r \cdot ln\left( \frac{2h}{r} \right)}.</annotation></semantics></math>
+(12)</p>
+<p>Например, для линии 220 кВ (фазное амплитудное напряжение 180 кВ), r
+= 1,2 см, h = 10 м: E<sub>max</sub> ≈ 20 кВ/см. Для 500 кВ с тем же
+проводом получилось бы около 46 кВ/см — выше прочности воздуха, поэтому
+на линиях 330 кВ и выше фазу расщепляют на несколько проводов (задача 5
+практического занятия).</p>
+<p><img
+src="l1-lecture/media/2448090441c3bce7ee574b72b44cbb350cee3a2e.webp"
+title="Провод над землёй, r = 0,5 см, d = 20 см, U = 100 кВ: E&lt;sub&gt;max&lt;/sub&gt; = 46,5 кВ/см, k&lt;sub&gt;н&lt;/sub&gt; = 9,3"
+style="width:5.51042in;height:3.19792in"
+alt="Провод над землёй, r = 0,5 см, d = 20 см, U = 100 кВ: E&lt;sub&gt;max&lt;/sub&gt; = 46,5 кВ/см, k&lt;sub&gt;н&lt;/sub&gt; = 9,3" /></p>
+<p><strong>Рис. 8.</strong> Провод над землёй, r = 0,5 см, d = 20 см, U
+= 100 кВ: E<sub>max</sub> = 46,5 кВ/см, k<sub>н</sub> = 9,3</p>
+<h3>5.5. Коаксиальные цилиндры (кабель)</h3>
+<p>В кабеле жила радиусом r и экран радиусом R = r + d расположены на
+одной оси. Поле радиальное, его напряжённость на расстоянии ρ от оси</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>ρ</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mfrac><mi>U</mi><mrow><mi>ρ</mi><mo>⋅</mo><mi>l</mi><mi>n</mi><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mi>R</mi><mi>r</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><msub><mi>E</mi><mo>max</mo></msub><mo>=</mo><mfrac><mi>U</mi><mrow><mi>r</mi><mo>⋅</mo><mi>l</mi><mi>n</mi><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mi>R</mi><mi>r</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">E(\rho) = \frac{U}{\rho \cdot ln\left( \frac{R}{r} \right)},\ \ E_{\max} = \frac{U}{r \cdot ln\left( \frac{R}{r} \right)}.</annotation></semantics></math>
+(13)</p>
+<p>Наибольшая напряжённость — у поверхности жилы, наименьшая — у экрана;
+отношение равно R/r. При заданном внешнем радиусе R напряжённость у жилы
+минимальна, если</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo>=</mo><mfrac><mi>R</mi><mi>e</mi></mfrac><mo>≈</mo><mn>0</mn><mo>,</mo><mn>37</mn><mo>⋅</mo><mi>R</mi><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><msub><mi>E</mi><mrow><mi>m</mi><mi>a</mi><mi>x</mi><mo>,</mo><mi>m</mi><mi>i</mi><mi>n</mi></mrow></msub><mo>=</mo><mfrac><mrow><mi>e</mi><mo>⋅</mo><mi>U</mi></mrow><mi>R</mi></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">r = \frac{R}{e} \approx 0,37 \cdot R,\ \ E_{max,min} = \frac{e \cdot U}{R}.</annotation></semantics></math>
+(14)</p>
+<p>Слишком тонкая жила — сильное поле из-за малого радиуса кривизны;
+слишком толстая — тонкий слой изоляции. Оптимум (14) используется при
+проектировании кабелей и вводов.</p>
+<p><img
+src="l1-lecture/media/b79779394f9b1d8952d11f1f2ab8135025d18651.webp"
+title="Кабель: r = 1,5 см, d = 3 см, U = 100 кВ. У жилы E&lt;sub&gt;max&lt;/sub&gt; = 60,7 кВ/см, у экрана 20,2 кВ/см"
+style="width:5.51042in;height:3.19792in"
+alt="Кабель: r = 1,5 см, d = 3 см, U = 100 кВ. У жилы E&lt;sub&gt;max&lt;/sub&gt; = 60,7 кВ/см, у экрана 20,2 кВ/см" /></p>
+<p><strong>Рис. 9.</strong> Кабель: r = 1,5 см, d = 3 см, U = 100 кВ. У
+жилы E<sub>max</sub> = 60,7 кВ/см, у экрана 20,2 кВ/см</p>
+<h3>5.6. Сводка расчётных формул</h3>
+<table>
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 45%" />
+<col style="width: 27%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Система</strong></th>
+<th><strong>E<sub>max</sub></strong></th>
+<th><strong>k<sub>н</sub> (U сокращается)</strong></th>
+</tr>
+<tr class="odd">
+<th>Плоскость — плоскость</th>
+<th>U/d</th>
+<th>1</th>
+</tr>
+<tr class="header">
+<th>Шар — плоскость</th>
+<th>0,9·U·(r + d)/(r·d)</th>
+<th>0,9·(r + d)/r</th>
+</tr>
+<tr class="odd">
+<th>Шар — шар (±U/2)</th>
+<th>0,9·(U/2)·(r + d/2)/(r·d/2)</th>
+<th>0,9·(r + d/2)/r</th>
+</tr>
+<tr class="header">
+<th>Острие — плоскость</th>
+<th>2U/(r·ln(4d/r))</th>
+<th>2d/(r·ln(4d/r))</th>
+</tr>
+<tr class="odd">
+<th>Провод над землёй, h = r + d</th>
+<th>U/(r·ln(2h/r))</th>
+<th>d/(r·ln(2h/r))</th>
+</tr>
+<tr class="header">
+<th>Коаксиальные цилиндры, R = r + d</th>
+<th>U/(r·ln(R/r))</th>
+<th>d/(r·ln(R/r))</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<h2>6. Влияние заземления и полярности</h2>
+<h3>6.1. Схема подключения второго электрода</h3>
+<p><strong>Заземление</strong> — соединение электрода с землёй; его
+потенциал становится равным нулю. В реальной установке «земля» — это не
+только заземлённый электрод, но и пол, стены, корпуса оборудования.
+Поэтому одно и то же напряжение между электродами при разных схемах
+подключения создаёт разное поле.</p>
+<p>Рассмотрим два одинаковых шара r = 5 см с промежутком d = 10 см и
+напряжением 100 кВ между ними (результаты 3D-модели):</p>
+<table>
+<colgroup>
+<col style="width: 35%" />
+<col style="width: 21%" />
+<col style="width: 21%" />
+<col style="width: 21%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Схема подключения</strong></th>
+<th><strong>Потенциалы шаров</strong></th>
+<th><strong>E у шара 1, кВ/см</strong></th>
+<th><strong>E у шара 2, кВ/см</strong></th>
+</tr>
+<tr class="odd">
+<th>Симметричное питание ±U/2</th>
+<th>+50 / −50 кВ</th>
+<th>17,7</th>
+<th>17,7</th>
+</tr>
+<tr class="header">
+<th>Шар 2 заземлён</th>
+<th>+100 / 0 кВ</th>
+<th>23,4</th>
+<th>12,0</th>
+</tr>
+<tr class="odd">
+<th>Шар 2 не подключён (плавающий)</th>
+<th>+100 / +25,1 кВ</th>
+<th>20,4</th>
+<th>6,1</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p>При заземлении одного шара наибольшая напряжённость выросла на 32 %:
+силовые линии от шара под напряжением идут не только ко второму шару, но
+и к окружающей «земле», и шар 2 уже не уравновешивает поле симметрично.
+Поэтому таблицы пробивных напряжений шаровых разрядников (стандарт IEC
+60052) составлены для определённой схемы — с одним заземлённым
+шаром.</p>
+<p><img
+src="l1-lecture/media/0b0b157b12cd086aa6b69427f7d60a804cb07922.webp"
+title="Шар — шар, симметричное питание ±50 кВ: картина симметрична, E&lt;sub&gt;max&lt;/sub&gt; = 17,7 кВ/см у обоих шаров"
+style="width:5.51042in;height:3.19792in"
+alt="Шар — шар, симметричное питание ±50 кВ: картина симметрична, E&lt;sub&gt;max&lt;/sub&gt; = 17,7 кВ/см у обоих шаров" /></p>
+<p><strong>Рис. 10.</strong> Шар — шар, симметричное питание ±50 кВ:
+картина симметрична, E<sub>max</sub> = 17,7 кВ/см у обоих шаров</p>
+<p><img
+src="l1-lecture/media/daa37f187af552276d9a737a788d52fab6ca27ca.webp"
+title="Шар 2 заземлён, шар 1 под напряжением 100 кВ: E&lt;sub&gt;max&lt;/sub&gt; = 23,4 кВ/см, картина несимметрична"
+style="width:5.51042in;height:3.19792in"
+alt="Шар 2 заземлён, шар 1 под напряжением 100 кВ: E&lt;sub&gt;max&lt;/sub&gt; = 23,4 кВ/см, картина несимметрична" /></p>
+<p><strong>Рис. 11.</strong> Шар 2 заземлён, шар 1 под напряжением 100
+кВ: E<sub>max</sub> = 23,4 кВ/см, картина несимметрична</p>
+<h3>6.2. Плавающие электроды</h3>
+<p><strong>Плавающий электрод</strong> — металлическая часть, ни к чему
+не подключённая. Её суммарный заряд равен нулю, но в поле соседнего
+электрода на ней разделяются заряды, и она приобретает промежуточный
+потенциал. В примере выше незаземлённый шар принял потенциал около 25 кВ
+— четверть приложенного напряжения. Прикосновение к такой детали
+смертельно опасно. Отсюда правило техники безопасности: все
+металлические части в зоне высокого напряжения заземляют, а перед
+работой на отключённой установке на неё накладывают заземление.</p>
+<p><img
+src="l1-lecture/media/fff18545905753a3f48db00b4993364ea7024a27.webp"
+title="Шар 2 не подключён: он приобрёл потенциал +25,1 кВ, хотя ни к чему не присоединён"
+style="width:5.51042in;height:3.19792in"
+alt="Шар 2 не подключён: он приобрёл потенциал +25,1 кВ, хотя ни к чему не присоединён" /></p>
+<p><strong>Рис. 12.</strong> Шар 2 не подключён: он приобрёл потенциал
++25,1 кВ, хотя ни к чему не присоединён</p>
+<h3>6.3. Полярность</h3>
+<p>При смене знака напряжения на электроде картина электростатического
+поля не меняется: те же эквипотенциали, та же величина E<sub>max</sub>,
+меняется только направление силовых линий. Однако процессы разряда в
+резконеоднородном поле при положительной и отрицательной полярности
+острия существенно различаются (полярный эффект) — это тема следующих
+лекций.</p>
+<h2>7. Способы снижения неоднородности поля</h2>
+<p>Задача конструктора — сделать так, чтобы E<sub>max</sub> во всех
+точках была меньше допустимой напряжённости изоляции с запасом. Основные
+приёмы:</p>
+<ol type="1">
+<li><p><strong>Увеличение радиуса кривизны</strong>: скругление кромок
+шин, зачистка заусенцев, применение шаровых наконечников на
+выводах.</p></li>
+<li><p><strong>Экраны</strong>: экранные (антикоронные) кольца на
+гирляндах изоляторов и арматуре сверхвысокого напряжения, тороидальные
+экраны на испытательных установках.</p></li>
+<li><p><strong>Расщепление проводов</strong> воздушных линий 330 кВ и
+выше: пучок проводов работает как провод большого эквивалентного
+радиуса.</p></li>
+<li><p><strong>Оптимизация размеров</strong>: выбор радиуса жилы кабеля
+r ≈ R/e, выбор расстояний.</p></li>
+<li><p><strong>Профилирование электродов</strong> (профиль Роговского)
+для получения однородного поля в испытательных ячейках.</p></li>
+<li><p><strong>Заземление и выравнивание потенциалов</strong>:
+устранение плавающих металлических частей.</p></li>
+</ol>
+<h3>7.1. Условие отсутствия ионизации воздуха</h3>
+<p>Электрическая прочность воздуха в однородном поле при нормальных
+условиях (20 °C, 101,3 кПа) для промежутков порядка 1 см составляет
+примерно E<sub>0</sub> ≈ 30 кВ/см (амплитудное значение). В неоднородном
+поле ионизация начинается у электрода с малым радиусом кривизны, как
+только там</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mo>max</mo></msub><mo>≥</mo><msub><mi>E</mi><mn>0</mn></msub><mo>≈</mo><mn>30</mn><mspace width="0.222em"></mspace><mi>к</mi><mi>В</mi><mi>/</mi><mi>с</mi><mi>м</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">E_{\max} \geq E_{0} \approx 30\ кВ/см.</annotation></semantics></math>
+(15)</p>
+<p>Условие (15) — первая инженерная проверка конструкции. Точное
+значение напряжённости начала ионизации зависит от радиуса электрода,
+давления и температуры воздуха и будет уточнено при изучении короны.</p>
+<h2>8. Демонстрационные опыты на модели «Электроды 3D»</h2>
+<p>Модель рассчитывает поле точно: плоскости, кабель, провод над землёй
+и острие — по аналитическим решениям, шары — методом зеркальных
+изображений. Сцену можно вращать мышью, приближать колесом или кнопками.
+Слои включаются галочками над сценой: цветной разрез (величина E),
+эквипотенциали, силовые линии, свечение (области сильного поля), цвет
+поверхности электродов. Щелчок по разрезу ставит зонд — показываются E и
+φ в точке. Справа выводятся расчёт по шагам и график E вдоль оси.</p>
+<h4>Опыт 1. Однородное поле</h4>
+<p><strong>Настройка:</strong> Плоскость — плоскость; U = 50 кВ; d = 2
+см.</p>
+<ol type="1">
+<li><p>Включите разрез и эквипотенциали. Убедитесь, что цвет разреза
+одинаков, а эквипотенциали равноотстоят.</p></li>
+<li><p>Поставьте зонд в несколько точек промежутка — E везде 25
+кВ/см.</p></li>
+<li><p>Увеличьте U до 60 кВ. E = 30 кВ/см = E<sub>0</sub>: это
+напряжение пробоя воздушного промежутка 2 см.</p></li>
+<li><p>Уменьшите d вдвое — E удвоится.</p></li>
+</ol>
+<p><strong>Ожидаемый результат:</strong> E = U/d, k<sub>н</sub> = 1; в
+однородном поле E<sub>max</sub> = E<sub>ср</sub>.</p>
+<h4>Опыт 2. Радиус кривизны</h4>
+<p><strong>Настройка:</strong> Шар — плоскость; U = 100 кВ; d = 10 см; r
+изменяется от 20 до 0,5 см (кнопка «Настроить» в блоке «Попробуйте
+сами»).</p>
+<ol type="1">
+<li><p>Запишите E<sub>ср</sub>, E<sub>max</sub> и k<sub>н</sub> при r =
+20; 5; 2; 0,5 см.</p></li>
+<li><p>Сравните график E вдоль оси: при малом r кривая становится
+«пиком» у шара.</p></li>
+<li><p>Сравните результат приближённой формулы и точного расчёта (шаг 3
+расчёта).</p></li>
+</ol>
+<p><strong>Ожидаемый результат:</strong> E<sub>ср</sub> = 10 кВ/см не
+меняется; E<sub>max</sub> = 13,6 → 26,8 → 55,9 → 205 кВ/см. Чем меньше
+r, тем сильнее поле у поверхности.</p>
+<h4>Опыт 3. Острие</h4>
+<p><strong>Настройка:</strong> Острие — плоскость; U = 60 кВ; d = 10 см;
+r = 0,5 см.</p>
+<ol type="1">
+<li><p>Включите «Свечение» и выключите разрез: дымка видна только у
+вершины.</p></li>
+<li><p>Найдите зондом точку, где E падает до E<sub>ср</sub>.</p></li>
+<li><p>Уменьшите r до 0,05 см и увеличьте до 2 см; запишите
+k<sub>н</sub>.</p></li>
+</ol>
+<p><strong>Ожидаемый результат:</strong> Поле резконеоднородное
+(k<sub>н</sub> ≈ 9), сосредоточено у вершины; при r = 0,5 см
+E<sub>max</sub> = 55,8 кВ/см &gt; E<sub>0</sub> — у острия возникнет
+корона, хотя E<sub>ср</sub> всего 6 кВ/см.</p>
+<h4>Опыт 4. Заземление второго электрода</h4>
+<p><strong>Настройка:</strong> Шар — шар; r = 5 см; d = 10 см; U = 100
+кВ.</p>
+<ol type="1">
+<li><p>Переключайте «Подключение второго электрода»: источник ±U/2 — шар
+2 заземлён — шар 2 не подключён.</p></li>
+<li><p>Для каждой схемы запишите E у обоих шаров и потенциал шара
+2.</p></li>
+<li><p>Объясните, почему при одном и том же напряжении E<sub>max</sub>
+разная.</p></li>
+</ol>
+<p><strong>Ожидаемый результат:</strong> 17,7 / 23,4 / 20,4 кВ/см у шара
+1; плавающий шар принимает потенциал ≈ 25 кВ.</p>
+<h4>Опыт 5. Провод и кабель</h4>
+<p><strong>Настройка:</strong> Провод над землёй (r = 0,5 см; d = 20 см;
+U = 100 кВ), затем кабель (r = 1,5 см; d = 3 см; U = 100 кВ).</p>
+<ol type="1">
+<li><p>Для провода сравните E<sub>max</sub> с E<sub>0</sub>; увеличьте r
+до 2 см.</p></li>
+<li><p>Для кабеля запишите E у жилы и у экрана, проверьте отношение
+R/r.</p></li>
+<li><p>При постоянном R = r + d = 4,5 см подберите r, при котором
+E<sub>max</sub> минимальна.</p></li>
+</ol>
+<p><strong>Ожидаемый результат:</strong> Провод: 46,5 кВ/см — корона;
+при r = 2 см поле падает ниже E<sub>0</sub>. Кабель: минимум
+E<sub>max</sub> при r ≈ R/e ≈ 1,66 см.</p>
+<h4>Опыт 6. Полярность</h4>
+<p><strong>Настройка:</strong> Шар — плоскость, U = 100 кВ; переключите
+полярность «+» / «−».</p>
+<ol type="1">
+<li><p>Сравните картину разреза, E<sub>max</sub> и направление стрелок
+силовых линий.</p></li>
+</ol>
+<p><strong>Ожидаемый результат:</strong> Величина поля и эквипотенциали
+одинаковы; изменилось только направление E.</p>
+<p>Результаты опыта 2 удобно свести в таблицу:</p>
+<table>
+<colgroup>
+<col style="width: 19%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 19%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>r, см</strong></th>
+<th><strong>E<sub>ср</sub>, кВ/см</strong></th>
+<th><strong>E<sub>max</sub> (формула), кВ/см</strong></th>
+<th><strong>E<sub>max</sub> (модель), кВ/см</strong></th>
+<th><strong>k<sub>н</sub></strong></th>
+</tr>
+<tr class="odd">
+<th>20</th>
+<th>10</th>
+<th>13,5</th>
+<th>13,6</th>
+<th>1,36</th>
+</tr>
+<tr class="header">
+<th>5</th>
+<th>10</th>
+<th>27,0</th>
+<th>26,8</th>
+<th>2,68</th>
+</tr>
+<tr class="odd">
+<th>2</th>
+<th>10</th>
+<th>54,0</th>
+<th>55,9</th>
+<th>5,59</th>
+</tr>
+<tr class="header">
+<th>0,5</th>
+<th>10</th>
+<th>189</th>
+<th>205</th>
+<th>20,5</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<h2>9. Выводы</h2>
+<ol type="1">
+<li><p>Электрическая прочность изоляции определяется наибольшей
+напряжённостью E<sub>max</sub>, а не средней U/d.</p></li>
+<li><p>Степень неоднородности поля характеризуется коэффициентом
+k<sub>н</sub> = E<sub>max</sub>/E<sub>ср</sub>, который зависит только
+от геометрии электродов.</p></li>
+<li><p>Наибольшая напряжённость возникает у электрода с наименьшим
+радиусом кривизны; уменьшение радиуса резко усиливает поле.</p></li>
+<li><p>Схема подключения влияет на поле: заземление одного из электродов
+делает поле несимметричным и усиливает его у электрода под напряжением;
+незаземлённые детали приобретают опасный потенциал.</p></li>
+<li><p>Если E<sub>max</sub> &gt; E<sub>0</sub> ≈ 30 кВ/см, у электрода
+начинается ионизация воздуха. Снизить E<sub>max</sub> можно увеличением
+радиусов кривизны, экранами, расщеплением проводов, оптимизацией
+размеров.</p></li>
+</ol>
+<h2>10. Контрольные вопросы</h2>
+<ol type="1">
+<li><p>Дайте определение напряжённости электрического поля. В каких
+единицах её выражают в технике высоких напряжений?</p></li>
+<li><p>Как связаны напряжённость и потенциал? Что означает площадь под
+графиком E(x) вдоль оси промежутка?</p></li>
+<li><p>Какое поле называют однородным? Приведите пример системы
+электродов.</p></li>
+<li><p>Что такое коэффициент неоднородности? Почему он не зависит от
+напряжения?</p></li>
+<li><p>Почему у острия поле сильнее, чем у шара при том же напряжении и
+расстоянии?</p></li>
+<li><p>Запишите формулу E<sub>max</sub> для систем шар — плоскость,
+острие — плоскость, провод над землёй, кабель.</p></li>
+<li><p>При каком радиусе жилы напряжённость в кабеле минимальна? Почему
+существует оптимум?</p></li>
+<li><p>Как изменится поле двух шаров, если вместо симметричного питания
+один шар заземлить?</p></li>
+<li><p>Почему опасна незаземлённая металлическая деталь вблизи электрода
+под напряжением?</p></li>
+<li><p>Меняется ли картина электростатического поля при смене
+полярности?</p></li>
+<li><p>Назовите способы уменьшения неоднородности поля в высоковольтных
+конструкциях.</p></li>
+<li><p>При каком условии у электрода начинается ионизация
+воздуха?</p></li>
+</ol>
+<h2>Литература</h2>
+<ol type="1">
+<li><p>Важов В. Ф., Лавринович В. А. Техника высоких напряжений :
+учебник. — Томск : Изд-во ТПУ.</p></li>
+<li><p>Базуткин В. В., Ларионов В. П., Пинталь Ю. С. Техника высоких
+напряжений: изоляция и перенапряжения в электрических системах. — М. :
+Энергоатомиздат, 1986.</p></li>
+<li><p>Разевиг Д. В. Техника высоких напряжений. — М. : Энергия,
+1976.</p></li>
+<li><p>IEC 60052. Voltage measurement by means of standard air gaps
+(sphere gaps, one sphere earthed).</p></li>
+</ol>
+</main></body></html>

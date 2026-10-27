@@ -1,0 +1,578 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Лекция 2. Пособие студента: задачи и кейсы</title><style>:root{--ink:#16202c;--muted:#5b6675;--line:#d9dde3;--acc:#1f5faf;--bg:#fff;--soft:#f3f5f8}
+@media (prefers-color-scheme:dark){:root{--ink:#e6eaf0;--muted:#9aa6b5;--line:#33404f;--acc:#7fb3f0;--bg:#121820;--soft:#1b2430}img{background:#fff}}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 "PT Serif",Georgia,"Times New Roman",serif}
+.bar{position:sticky;top:0;display:flex;justify-content:space-between;gap:12px;padding:10px 16px;background:var(--soft);border-bottom:1px solid var(--line);font:600 14px system-ui,-apple-system,"Segoe UI",sans-serif;z-index:5}
+.bar a{color:var(--acc);text-decoration:none}.bar .pdf{border:1px solid var(--acc);border-radius:999px;padding:2px 12px}
+main{max-width:820px;margin:0 auto;padding:16px 16px 64px}
+h1,h2,h3,h4{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.25;margin:1.6em 0 .5em}
+h1{font-size:1.5em}h2{font-size:1.25em}h3{font-size:1.08em}
+p{margin:.5em 0}img{max-width:100%;height:auto;display:block;margin:12px auto;border-radius:6px}
+figure{margin:16px 0}figcaption{text-align:center;color:var(--muted);font-size:.9em}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:.92em;display:block;overflow-x:auto}
+td,th{border:1px solid var(--line);padding:6px 8px;vertical-align:top}th{background:var(--soft);text-align:left}
+math{font-size:1.08em}math[display=block]{overflow-x:auto;overflow-y:hidden;margin:10px 0}
+blockquote{margin:12px 0;padding:8px 14px;border-left:4px solid var(--acc);background:var(--soft)}
+@media print{.bar{display:none}body{font-size:12pt}main{max-width:none;padding:0}table{display:table}img{background:none}}
+</style></head><body><nav class="bar"><a href="../">← Техника высоких напряжений</a><a class="pdf" href="l2-student.pdf" download>Скачать PDF</a></nav><main><p>Техника высоких напряжений</p>
+<p><strong>Методическое пособие для студента</strong></p>
+<p><strong>Ионизация газа и электронная лавина: как решать
+задачи</strong></p>
+<p><em>Справочные данные, алгоритм, разобранные примеры, задачи для
+самостоятельной работы и реальные случаи · лекция 2</em></p>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Как работать с пособием.</strong> Сначала просмотрите
+справочный раздел 1 и сводку формул 2. Затем разберите примеры раздела 3
+— повторите каждый расчёт сами. После этого решите задачи раздела 4 и
+сверьтесь с ответами в конце. Раздел 5 — случаи с реальных объектов:
+ответьте на вопросы письменно, это часть практического занятия.
+Интерактив «Ионизация и электронная лавина» помогает проверить себя:
+вкладки 2–4 считают те же величины.</td>
+</tr>
+</tbody>
+</table>
+<h2>1. Справочные данные</h2>
+<table>
+<colgroup>
+<col style="width: 44%" />
+<col style="width: 55%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Величина</strong></th>
+<th><strong>Значение</strong></th>
+</tr>
+<tr class="odd">
+<th>Элементарный заряд e</th>
+<th>1,602·10<sup>−19</sup> Кл; 1 эВ = 1,602·10<sup>−19</sup> Дж</th>
+</tr>
+<tr class="header">
+<th>Электрическая постоянная ε<sub>0</sub></th>
+<th>8,854·10<sup>−12</sup> Ф/м; 1/(4πε<sub>0</sub>) =
+8,99·10<sup>9</sup> м/Ф</th>
+</tr>
+<tr class="odd">
+<th>h·c</th>
+<th>1240 эВ·нм</th>
+</tr>
+<tr class="header">
+<th>Нормальное давление</th>
+<th>760 мм рт. ст. = 101,3 кПа; 1 мм рт. ст. = 133,3 Па; 1 бар ≈ 750 мм
+рт. ст.</th>
+</tr>
+<tr class="odd">
+<th>Длина пробега электрона в воздухе (модель)</th>
+<th>λ = 1/(A·p) ≈ 0,88 мкм при 760 мм рт. ст.</th>
+</tr>
+<tr class="header">
+<th>Работа выхода (медь, сталь)</th>
+<th>≈ 4,5 эВ</th>
+</tr>
+<tr class="odd">
+<th>Коэффициент γ (если не задан)</th>
+<th>0,01</th>
+</tr>
+<tr class="header">
+<th>Критерий перехода лавины в стример</th>
+<th>αx ≈ 18–20; n ≈ 10<sup>8</sup>–10<sup>9</sup></th>
+</tr>
+<tr class="odd">
+<th>Скорость дрейфа электронов</th>
+<th>≈ 10<sup>7</sup> см/с; ионов — примерно в 100 раз меньше</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<table>
+<colgroup>
+<col style="width: 19%" />
+<col style="width: 18%" />
+<col style="width: 18%" />
+<col style="width: 22%" />
+<col style="width: 21%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Газ</strong></th>
+<th><strong>W<sub>в</sub>, эВ</strong></th>
+<th><strong>W<sub>и</sub>, эВ</strong></th>
+<th><strong>A, 1/(см·мм рт. ст.)</strong></th>
+<th><strong>B, В/(см·мм рт. ст.)</strong></th>
+</tr>
+<tr class="odd">
+<th>Воздух (O₂ / N₂)</th>
+<th>6,1</th>
+<th>12,5</th>
+<th>15</th>
+<th>365</th>
+</tr>
+<tr class="header">
+<th>Азот N₂</th>
+<th>6,1</th>
+<th>15,5</th>
+<th>12</th>
+<th>342</th>
+</tr>
+<tr class="odd">
+<th>Аргон Ar</th>
+<th>11,5</th>
+<th>15,8</th>
+<th>12</th>
+<th>180</th>
+</tr>
+<tr class="header">
+<th>Пары H₂O</th>
+<th>7,6</th>
+<th>12,7</th>
+<th>—</th>
+<th>—</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<h2>2. Сводка формул</h2>
+<table>
+<colgroup>
+<col style="width: 27%" />
+<col style="width: 43%" />
+<col style="width: 28%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Что считаем</strong></th>
+<th><strong>Формула</strong></th>
+<th><strong>Замечание</strong></th>
+</tr>
+<tr class="odd">
+<th>Энергия на длине пробега</th>
+<th><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>W</mi><mo>=</mo><mi>e</mi><mo>⋅</mo><mi>E</mi><mo>⋅</mo><mi>λ</mi></mrow><annotation encoding="application/x-tex">W = e \cdot E \cdot \lambda</annotation></semantics></math></th>
+<th>W в эВ = E (В/м)·λ (м)</th>
+</tr>
+<tr class="header">
+<th>Условие ударной ионизации</th>
+<th><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mo>⋅</mo><mi>E</mi><mo>⋅</mo><mi>λ</mi><mo>≥</mo><msub><mi>W</mi><mi>и</mi></msub></mrow><annotation encoding="application/x-tex">e \cdot E \cdot \lambda \geq W_{и}</annotation></semantics></math></th>
+<th>иначе ионизуют лишь редкие длинные пробеги</th>
+</tr>
+<tr class="odd">
+<th>Доля пробегов длиннее x</th>
+<th><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>=</mo><msup><mi>e</mi><mrow><mo>−</mo><mi>x</mi><mi>/</mi><mi>λ</mi></mrow></msup></mrow><annotation encoding="application/x-tex">P = e^{- x/\lambda}</annotation></semantics></math></th>
+<th>x и λ в одних единицах</th>
+</tr>
+<tr class="header">
+<th>Граница фотоионизации</th>
+<th><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>≤</mo><mfrac><mn>1240</mn><msub><mi>W</mi><mi>и</mi></msub></mfrac></mrow><annotation encoding="application/x-tex">\lambda \leq \frac{1240}{W_{и}}</annotation></semantics></math></th>
+<th>λ в нм, W в эВ</th>
+</tr>
+<tr class="odd">
+<th>Коэффициент Таунсенда</th>
+<th><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mi>A</mi><mo>⋅</mo><mi>p</mi><mo>⋅</mo><msup><mi>e</mi><mrow><mo>−</mo><mi>B</mi><mo>⋅</mo><mi>p</mi><mi>/</mi><mi>E</mi></mrow></msup></mrow><annotation encoding="application/x-tex">\alpha = A \cdot p \cdot e^{- B \cdot p/E}</annotation></semantics></math></th>
+<th>p в мм рт. ст., E в В/см, α в 1/см</th>
+</tr>
+<tr class="header">
+<th>Электроны в лавине</th>
+<th><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><msub><mi>n</mi><mn>0</mn></msub><mo>⋅</mo><msup><mi>e</mi><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>α</mi><mo>−</mo><mi>η</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>x</mi></mrow></msup></mrow><annotation encoding="application/x-tex">n = n_{0} \cdot e^{(\alpha - \eta)x}</annotation></semantics></math></th>
+<th>η = 0, если газ электроположителен</th>
+</tr>
+<tr class="odd">
+<th>Положительные ионы</th>
+<th><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>N</mi><mo>+</mo></msub><mo>=</mo><msub><mi>n</mi><mn>0</mn></msub><mo>⋅</mo><mfrac><mi>α</mi><mrow><mi>α</mi><mo>−</mo><mi>η</mi></mrow></mfrac><mo>⋅</mo><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>e</mi><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>α</mi><mo>−</mo><mi>η</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>x</mi></mrow></msup><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">N_{+} = n_{0} \cdot \frac{\alpha}{\alpha - \eta} \cdot (e^{(\alpha - \eta)x} - 1)</annotation></semantics></math></th>
+<th>без η: N₊ = n − n₀</th>
+</tr>
+<tr class="header">
+<th>Вторичные электроны</th>
+<th><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>μ</mi><mo>=</mo><mi>γ</mi><mo>⋅</mo><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>e</mi><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>α</mi><mo>−</mo><mi>η</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>S</mi></mrow></msup><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\mu = \gamma \cdot (e^{(\alpha - \eta)S} - 1)</annotation></semantics></math></th>
+<th>μ ≥ 1 — разряд самостоятельный</th>
+</tr>
+<tr class="odd">
+<th>Условие самостоятельности</th>
+<th><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>α</mi><mo>−</mo><mi>η</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>S</mi><mo>=</mo><mi>l</mi><mi>n</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>+</mo><mn>1</mn><mi>/</mi><mi>γ</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">(\alpha - \eta)S = ln(1 + 1/\gamma)</annotation></semantics></math></th>
+<th>при γ = 0,01: 4,62</th>
+</tr>
+<tr class="header">
+<th>Ток Таунсенда</th>
+<th><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mo>=</mo><mfrac><mrow><msub><mi>I</mi><mn>0</mn></msub><mo>⋅</mo><msup><mi>e</mi><mrow><mi>α</mi><mi>S</mi></mrow></msup></mrow><mrow><mn>1</mn><mo>−</mo><mi>μ</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">I = \frac{I_{0} \cdot e^{\alpha S}}{1 - \mu}</annotation></semantics></math></th>
+<th>μ &lt; 1</th>
+</tr>
+<tr class="odd">
+<th>Закон Пашена</th>
+<th><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mrow><mi>п</mi><mi>р</mi></mrow></msub><mo>=</mo><mfrac><mrow><mi>B</mi><mo>⋅</mo><mi>p</mi><mo>⋅</mo><mi>S</mi></mrow><mrow><mi>l</mi><mi>n</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>A</mi><mo>⋅</mo><mi>p</mi><mo>⋅</mo><mi>S</mi><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.222em"></mspace><mo>−</mo><mspace width="0.222em"></mspace><mi>l</mi><mi>n</mi><mspace width="0.222em"></mspace><mi>l</mi><mi>n</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>+</mo><mn>1</mn><mi>/</mi><mi>γ</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac></mrow><annotation encoding="application/x-tex">U_{пр} = \frac{B \cdot p \cdot S}{ln(A \cdot p \cdot S)\  - \ ln\ ln(1 + 1/\gamma)}</annotation></semantics></math></th>
+<th>зависит только от p·S</th>
+</tr>
+<tr class="header">
+<th>Минимум Пашена</th>
+<th><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>p</mi><mi>S</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>min</mo></msub><mo>=</mo><mfrac><mrow><mi>e</mi><mo>⋅</mo><mi>l</mi><mi>n</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>+</mo><mn>1</mn><mi>/</mi><mi>γ</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mi>A</mi></mfrac></mrow><annotation encoding="application/x-tex">{(pS)}_{\min} = \frac{e \cdot ln(1 + 1/\gamma)}{A}</annotation></semantics></math></th>
+<th>для воздуха 0,84 мм рт. ст.·см, ≈ 305 В</th>
+</tr>
+<tr class="odd">
+<th>Плотность воздуха на высоте</th>
+<th><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mo>=</mo><msup><mi>e</mi><mrow><mo>−</mo><mi>H</mi><mi>/</mi><mn>8150</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\delta = e^{- H/8150}</annotation></semantics></math></th>
+<th>p = 760·δ мм рт. ст.</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<h2>3. Алгоритм решения и разобранные примеры</h2>
+<ol type="1">
+<li><p>Выпишите данные и <strong>сразу переведите единицы</strong>: E —
+в В/см для формулы α (или в В/м для энергии), p — в мм рт. ст., S — в
+см.</p></li>
+<li><p>Определите, что спрашивают: энергию, α, число частиц, μ,
+U<sub>пр</sub>.</p></li>
+<li><p>Выберите формулу из сводки и запишите её в общем виде.</p></li>
+<li><p>Подставьте числа, следите за показателем экспоненты — ошибка в
+нём меняет ответ в тысячи раз.</p></li>
+<li><p>Проверьте порядок величины: α воздуха при атмосферном давлении —
+единицы–десятки 1/см; U<sub>пр</sub> 1 см воздуха — около 30–35
+кВ.</p></li>
+</ol>
+<h3>Пример 1. Хватит ли энергии на ионизацию</h3>
+<p><strong>Дано:</strong> воздух, E = 50 кВ/см, λ = 0,88 мкм,
+W<sub>и</sub>(O₂) = 12,5 эВ.</p>
+<p>Энергия на среднем пробеге:</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>W</mi><mo>=</mo><mi>E</mi><mo>⋅</mo><mi>λ</mi><mo>=</mo><mn>5</mn><mo>⋅</mo><msup><mn>10</mn><mn>6</mn></msup><mo>⋅</mo><mn>0</mn><mo>,</mo><mn>88</mn><mo>⋅</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>6</mn></mrow></msup><mo>=</mo><mn>4</mn><mo>,</mo><mn>4</mn><mspace width="0.222em"></mspace><mi>э</mi><mi>В</mi></mrow><annotation encoding="application/x-tex">W = E \cdot \lambda = 5 \cdot 10^{6} \cdot 0,88 \cdot 10^{- 6} = 4,4\ эВ</annotation></semantics></math></p>
+<p>Путь, нужный для ионизации кислорода, и его доля:</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mfrac><msub><mi>W</mi><mi>и</mi></msub><mrow><mi>e</mi><mo>⋅</mo><mi>E</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mn>12</mn><mo>,</mo><mn>5</mn></mrow><mrow><mn>5</mn><mo>⋅</mo><mn>10</mn><mi>⁶</mi></mrow></mfrac><mi>м</mi><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mn>2</mn><mo>,</mo><mn>5</mn><mspace width="0.222em"></mspace><mi>м</mi><mi>к</mi><mi>м</mi><mspace width="0.222em"></mspace><mo>≈</mo><mspace width="0.222em"></mspace><mn>2</mn><mo>,</mo><mn>8</mn><mi>λ</mi><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mi>P</mi><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><msup><mi>e</mi><mrow><mo>−</mo><mn>2</mn><mo>,</mo><mn>8</mn></mrow></msup><mo>≈</mo><mspace width="0.222em"></mspace><mn>0</mn><mo>,</mo><mn>06</mn></mrow><annotation encoding="application/x-tex">x = \frac{W_{и}}{e \cdot E} = \frac{12,5}{5 \cdot 10⁶}м\  = \ 2,5\ мкм\  \approx \ 2,8\lambda,\ \ \ P\  = \ e^{- 2,8} \approx \ 0,06</annotation></semantics></math></p>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Ответ:</strong> на среднем пробеге — нет (4,4 эВ &lt; 12,5
+эВ); но около 6 % пробегов достаточно длинны.</td>
+</tr>
+</tbody>
+</table>
+<h3>Пример 2. Коэффициент α по Таунсенду</h3>
+<p><strong>Дано:</strong> воздух, p = 760 мм рт. ст., E = 40 кВ/см = 40
+000 В/см.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>15</mn><mo>⋅</mo><mn>760</mn><mo>⋅</mo><msup><mi>e</mi><mrow><mo>−</mo><mn>365</mn><mo>⋅</mo><mn>760</mn><mi>/</mi><mn>40000</mn></mrow></msup><mo>=</mo><mn>11400</mn><mo>⋅</mo><msup><mi>e</mi><mrow><mo>−</mo><mn>6</mn><mo>,</mo><mn>94</mn></mrow></msup><mo>=</mo><mn>11</mn><mo>,</mo><mn>1</mn><mspace width="0.222em"></mspace><mn>1</mn><mi>/</mi><mi>с</mi><mi>м</mi></mrow><annotation encoding="application/x-tex">\alpha = 15 \cdot 760 \cdot e^{- 365 \cdot 760/40000} = 11400 \cdot e^{- 6,94} = 11,1\ 1/см</annotation></semantics></math></p>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Ответ:</strong> α ≈ 11,1 1/см — одиннадцать ионизаций на
+сантиметр пути.</td>
+</tr>
+</tbody>
+</table>
+<h3>Пример 3. Число электронов и стример</h3>
+<p><strong>Дано:</strong> α = 11,1 1/см (пример 2), промежуток S = 1,5
+см, n<sub>0</sub> = 1.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mi>S</mi><mo>=</mo><mn>11</mn><mo>,</mo><mn>1</mn><mo>⋅</mo><mn>1</mn><mo>,</mo><mn>5</mn><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mn>16</mn><mo>,</mo><mn>6</mn></mrow><annotation encoding="application/x-tex">\alpha S = 11,1 \cdot 1,5\  = \ 16,6</annotation></semantics></math></p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mo stretchy="false" form="prefix">[</mo><mi>o</mi><mi>b</mi><mi>j</mi><mi>e</mi><mi>c</mi><mi>t</mi><mspace width="0.222em"></mspace><mi>O</mi><mi>b</mi><mi>j</mi><mi>e</mi><mi>c</mi><mi>t</mi><mo stretchy="false" form="postfix">]</mo><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mn>1</mn><mo>,</mo><mn>69</mn><mo>⋅</mo><mn>10</mn><mo>&lt;</mo><mi>s</mi><mi>u</mi><mi>p</mi><mo>&gt;</mo><mn>7</mn><mo>&lt;</mo><mi>/</mi><mi>s</mi><mi>u</mi><mi>p</mi><mo>&gt;</mo></mrow><annotation encoding="application/x-tex">n = \lbrack object\ Object\rbrack\  = \ 1,69 \cdot 10 &lt; sup &gt; 7 &lt; /sup &gt;</annotation></semantics></math></p>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Ответ:</strong> n ≈ 1,69·10<sup>7</sup> электронов; αS =
+16,6 &lt; 18 — лавина дойдёт до анода, не став стримером.</td>
+</tr>
+</tbody>
+</table>
+<h3>Пример 4. Влияние прилипания</h3>
+<p><strong>Дано:</strong> α = 11,1 1/см, η = 3 1/см, x = 1 см.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><msup><mi>e</mi><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mn>11</mn><mo>,</mo><mn>1</mn><mo>−</mo><mn>3</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>⋅</mo><mn>1</mn></mrow></msup><mo>=</mo><mn>3273</mn></mrow><annotation encoding="application/x-tex">n = e^{(11,1 - 3) \cdot 1} = 3273</annotation></semantics></math></p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>N</mi><mo>+</mo></msub><mo>=</mo><mfrac><mrow><mn>11</mn><mo>,</mo><mn>1</mn></mrow><mrow><mn>8</mn><mo>,</mo><mn>1</mn></mrow></mfrac><mo>⋅</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>3273</mn><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.222em"></mspace><mo>≈</mo><mspace width="0.222em"></mspace><mn>4485</mn></mrow><annotation encoding="application/x-tex">N_{+} = \frac{11,1}{8,1} \cdot (3273 - 1)\  \approx \ 4485</annotation></semantics></math></p>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Ответ:</strong> электронов 3273 вместо 65749 без прилипания:
+в 20 раз меньше.</td>
+</tr>
+</tbody>
+</table>
+<h3>Пример 5. При какой напряжённости разряд станет самостоятельным</h3>
+<p><strong>Дано:</strong> воздух, S = 1 см, 760 мм рт. ст., γ = 0,01, η
+= 0.</p>
+<p>Нужно αS = ln 101 = 4,62, т. е. α = 4,62 1/см:</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>4</mn><mo>,</mo><mn>62</mn><mo>=</mo><mn>11400</mn><mo>⋅</mo><msup><mi>e</mi><mrow><mo>−</mo><mn>277400</mn><mi>/</mi><mi>E</mi></mrow></msup><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mo>⇒</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mfrac><mn>277400</mn><mi>E</mi></mfrac><mo>=</mo><mspace width="0.222em"></mspace><mi>l</mi><mi>n</mi><mfrac><mn>11400</mn><mrow><mn>4</mn><mo>,</mo><mn>62</mn></mrow></mfrac><mo>=</mo><mspace width="0.222em"></mspace><mn>7</mn><mo>,</mo><mn>81</mn></mrow><annotation encoding="application/x-tex">4,62 = 11400 \cdot e^{- 277400/E}\ \ \  \Rightarrow \ \ \ \frac{277400}{E} = \ ln\frac{11400}{4,62} = \ 7,81</annotation></semantics></math></p>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Ответ:</strong> E = 277 400/7,81 ≈ 35,5 кВ/см, т. е.
+U<sub>пр</sub> ≈ 35,5 кВ — это закон Пашена.</td>
+</tr>
+</tbody>
+</table>
+<h3>Пример 6. Промежуток на высоте 3000 м</h3>
+<p><strong>Дано:</strong> однородный воздушный промежуток 1 см, H = 3000
+м.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mo>=</mo><msup><mi>e</mi><mrow><mo>−</mo><mn>3000</mn><mi>/</mi><mn>8150</mn></mrow></msup><mo>=</mo><mn>0</mn><mo>,</mo><mn>692</mn><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mi>p</mi><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mn>760</mn><mo>⋅</mo><mi>δ</mi><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mn>526</mn><mspace width="0.222em"></mspace><mi>м</mi><mi>м</mi><mspace width="0.222em"></mspace><mi>р</mi><mi>т</mi><mi>.</mi><mspace width="0.222em"></mspace><mi>с</mi><mi>т</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">\delta = e^{- 3000/8150} = 0,692,\ \ \ p\  = \ 760 \cdot \delta\  = \ 526\ мм\ рт.\ ст.</annotation></semantics></math></p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mrow><mi>п</mi><mi>р</mi></mrow></msub><mo>=</mo><mfrac><mrow><mn>365</mn><mo>⋅</mo><mn>526</mn></mrow><mrow><mi>l</mi><mi>n</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>15</mn><mo>⋅</mo><mn>526</mn><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.222em"></mspace><mo>−</mo><mspace width="0.222em"></mspace><mn>1</mn><mo>,</mo><mn>527</mn></mrow></mfrac><mo>=</mo><mn>25</mn><mo>,</mo><mn>8</mn><mspace width="0.222em"></mspace><mi>к</mi><mi>В</mi></mrow><annotation encoding="application/x-tex">U_{пр} = \frac{365 \cdot 526}{ln(15 \cdot 526)\  - \ 1,527} = 25,8\ кВ</annotation></semantics></math></p>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Ответ:</strong> ≈ 25,8 кВ вместо 35,5 кВ на уровне моря — на
+27 % меньше.</td>
+</tr>
+</tbody>
+</table>
+<h3>Пример 7. Ток через промежуток с ультрафиолетом</h3>
+<p><strong>Дано:</strong> I<sub>0</sub> = 2 пА, αS = 3, γ = 0,05.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>μ</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>05</mn><mo>⋅</mo><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>e</mi><mn>3</mn></msup><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mn>0</mn><mo>,</mo><mn>954</mn></mrow><annotation encoding="application/x-tex">\mu = 0,05 \cdot (e^{3} - 1)\  = \ 0,954</annotation></semantics></math></p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mo>=</mo><mfrac><mrow><mn>2</mn><mo>⋅</mo><msup><mi>e</mi><mn>3</mn></msup></mrow><mrow><mn>1</mn><mo>−</mo><mn>0</mn><mo>,</mo><mn>954</mn></mrow></mfrac><mo>=</mo><mn>878</mn><mo>,</mo><mn>6</mn><mspace width="0.222em"></mspace><mi>п</mi><mi>А</mi></mrow><annotation encoding="application/x-tex">I = \frac{2 \cdot e^{3}}{1 - 0,954} = 878,6\ пА</annotation></semantics></math></p>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Ответ:</strong> I ≈ 878,6 пА; μ &lt; 1 — разряд
+несамостоятельный, без лампы погаснет.</td>
+</tr>
+</tbody>
+</table>
+<h2>4. Задачи для самостоятельного решения</h2>
+<table>
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 76%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>№</strong></th>
+<th><strong>Условие</strong></th>
+<th><strong>Единица ответа</strong></th>
+</tr>
+<tr class="odd">
+<th>1</th>
+<th>В ячейке КРУ у кромки шины E = 40 кВ/см. Какую энергию набирает
+электрон на среднем пробеге 0,88 мкм?</th>
+<th>эВ</th>
+</tr>
+<tr class="header">
+<th>2</th>
+<th>Какой наибольшей длины волны фотон ионизует азот (15,5 эВ)?</th>
+<th>нм</th>
+</tr>
+<tr class="odd">
+<th>3</th>
+<th>Найдите α воздуха при 760 мм рт. ст. и E = 50 кВ/см.</th>
+<th>1/см</th>
+</tr>
+<tr class="header">
+<th>4</th>
+<th>Найдите α воздуха при давлении 200 мм рт. ст. и E = 15 кВ/см.
+Сравните E/p с примером 2.</th>
+<th>1/см</th>
+</tr>
+<tr class="odd">
+<th>5</th>
+<th>Лавина в промежутке 8 мм при α = 20 1/см. Сколько электронов дойдёт
+до анода от одного начального?</th>
+<th>шт.</th>
+</tr>
+<tr class="header">
+<th>6</th>
+<th>Сколько положительных ионов останется в промежутке задачи 5? Какая
+их доля в задней половине лавины, %?</th>
+<th>%</th>
+</tr>
+<tr class="odd">
+<th>7</th>
+<th>При α = 15 1/см и η = 5 1/см сколько электронов будет на пути 1,2
+см?</th>
+<th>шт.</th>
+</tr>
+<tr class="header">
+<th>8</th>
+<th>Каким должно быть αS для самостоятельного разряда при γ =
+0,001?</th>
+<th>—</th>
+</tr>
+<tr class="odd">
+<th>9</th>
+<th>Найдите пробивное напряжение воздушного промежутка 5 мм при 760 мм
+рт. ст. (γ = 0,01).</th>
+<th>кВ</th>
+</tr>
+<tr class="header">
+<th>10</th>
+<th>Защитный промежуток должен быть 10 мм, а после ремонта выставили 8
+мм. На сколько процентов снизилось пробивное напряжение (однородное
+поле, 760 мм рт. ст.)?</th>
+<th>%</th>
+</tr>
+<tr class="odd">
+<th>11</th>
+<th>Найдите давление (мм рт. ст.), при котором промежуток 10 мм
+оказывается в минимуме кривой Пашена для воздуха.</th>
+<th>мм рт. ст.</th>
+</tr>
+<tr class="header">
+<th>12</th>
+<th>При какой длине лавина станет стримером, если α = 25 1/см (критерий
+αx = 20)? Ответ в мм.</th>
+<th>мм</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<h2>5. Случаи с реальных объектов</h2>
+<p>Прочитайте описание и ответьте на вопросы. Источники указаны в конце
+пособия.</p>
+<h3>Случай 1. Дуга в ракете на большой высоте</h3>
+<p>19 сентября 2023 г. вторая ступень ракеты Electron (Rocket Lab)
+потеряла питание примерно через 151 с полёта. Расследование установило
+электрическую дугу в высоковольтном источнике питания: совпали пульсации
+напряжения, следы гелия и азота в отсеке и скрытый дефект изоляции
+жгута. Компания сослалась на анализ по закону Пашена и сделала отсек
+герметичным с поддерживаемым давлением.</p>
+<ol type="1">
+<li><p>Как меняется p·S промежутка в жгуте по мере подъёма ракеты? В
+какую сторону кривой Пашена движется рабочая точка?</p></li>
+<li><p>Для зазора 1 мм найдите давление, при котором он окажется в
+минимуме Пашена для воздуха. Почему пробой возможен при сотнях
+вольт?</p></li>
+<li><p>Почему герметизация отсека решает проблему, хотя изоляцию не
+меняли?</p></li>
+</ol>
+<h3>Случай 2. Элегазовый выключатель на морозе</h3>
+<p>28 декабря 2022 г. на комбинате в Британской Колумбии (Канада)
+выключатель 138 кВ с элегазом не отключил короткое замыкание: он был
+заблокирован из-за низкого давления газа. Номинал 87 psi при 20 °C,
+предупредительный сигнал 76 psi, блокировка ниже 72 psi; после аварии —
+50 psi. Сигнал о низком давлении пришёл за 6 дней, но газ не доливали.
+Мороз доходил до −34 °C. Замыкание длилось около 165 с, трансформатор
+был повреждён.</p>
+<ol type="1">
+<li><p>Почему прочность элегаза зависит от его плотности? Свяжите с
+формулой Таунсенда и законом Пашена.</p></li>
+<li><p>При постоянном количестве газа давление пропорционально
+абсолютной температуре. Каким станет давление 87 psi (20 °C) при −34 °C?
+Сравните с порогом блокировки.</p></li>
+<li><p>Почему приборы контроля элегаза измеряют плотность (с
+термокомпенсацией), а не просто давление?</p></li>
+<li><p>Какой урок для подстанций Кольского полуострова?</p></li>
+</ol>
+<h3>Случай 3. Скрытая потеря вакуума</h3>
+<p>Вакуумную камеру выключателя изготавливают при давлении
+10<sup>−4</sup>–10<sup>−5</sup> Па. Она начинает не выдерживать
+испытание высоким напряжением при давлении около 10<sup>−1</sup> Па.
+Давление внутри камеры измеряют методом MAC: в магнитном поле зажигают
+разряд Пеннинга, его ток ионизации пропорционален давлению.</p>
+<ol type="1">
+<li><p>Где на кривой Пашена находится зазор 10 мм при 10<sup>−4</sup>
+Па? Почему он держит сотни киловольт?</p></li>
+<li><p>Почему ток разряда Пеннинга растёт с давлением? Свяжите с
+коэффициентом α.</p></li>
+<li><p>Почему испытание высоким напряжением («годен/не годен») не
+предупреждает о постепенной потере вакуума?</p></li>
+</ol>
+<h3>Случай 4. Неверный зазор после ремонта</h3>
+<p>После ремонта защитный искровой промежуток выставили меньше
+паспортного. Линия стала отключаться при коммутациях, хотя грозы не
+было; причину долго искали в выключателях и защитах.</p>
+<ol type="1">
+<li><p>Как зависит пробивное напряжение промежутка от его длины на
+правой ветви кривой Пашена? Используйте задачу 10.</p></li>
+<li><p>Почему уменьшенный промежуток срабатывает от коммутационных
+перенапряжений?</p></li>
+<li><p>Какую проверку следовало сделать при приёмке после
+ремонта?</p></li>
+</ol>
+<h3>Случай 5. Шаровой разрядник «капризничает»</h3>
+<p>В лаборатории шаровой разрядник при одном и том же напряжении то
+пробивается, то нет. После установки ультрафиолетовой лампы разброс
+резко уменьшился.</p>
+<ol type="1">
+<li><p>Какую роль играют начальные электроны? Вспомните
+несамостоятельный разряд.</p></li>
+<li><p>Почему разряду нужно «время ожидания» свободного электрона
+(статистическое запаздывание)?</p></li>
+<li><p>Какой коэффициент из лекции связан с облучением катода?</p></li>
+</ol>
+<h2>6. Ответы к задачам раздела 4</h2>
+<table>
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 34%" />
+<col style="width: 27%" />
+<col style="width: 28%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>№</strong></th>
+<th><strong>Ответ</strong></th>
+<th><strong>№</strong></th>
+<th><strong>Ответ</strong></th>
+</tr>
+<tr class="odd">
+<th>1</th>
+<th>3,52 эВ</th>
+<th>2</th>
+<th>80,0 нм</th>
+</tr>
+<tr class="header">
+<th>3</th>
+<th>44,4 1/см</th>
+<th>4</th>
+<th>23,1 1/см</th>
+</tr>
+<tr class="odd">
+<th>5</th>
+<th>8,89·10<sup>6</sup> шт.</th>
+<th>6</th>
+<th>0,03 %</th>
+</tr>
+<tr class="header">
+<th>7</th>
+<th>1,63·10<sup>5</sup> шт.</th>
+<th>8</th>
+<th>6,91</th>
+</tr>
+<tr class="odd">
+<th>9</th>
+<th>19,5 кВ</th>
+<th>10</th>
+<th>17,6 %</th>
+</tr>
+<tr class="header">
+<th>11</th>
+<th>0,84 мм рт. ст.</th>
+<th>12</th>
+<th>8,00 мм</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p>К задаче 6: ионов на один меньше, чем электронов, ≈
+8,9·10<sup>6</sup>; в задней половине — e<sup>−αx/2</sup> ≈ 0,03 %. К
+задаче 11: 0,84 мм рт. ст. ≈ 112 Па.</p>
+<h2>Источники случаев</h2>
+<ul>
+<li><p>Rocket Lab: обзор аномалии Electron 19.09.2023 —
+satnow.com</p></li>
+<li><p>Technical Safety BC: отчёт II-1487206-2022 (Armstrong,
+BC)</p></li>
+<li><p>TestGuy Wiki: Magnetron Atmospheric Condition (MAC) Testing
+Principles</p></li>
+<li><p>Важов В. Ф., Лавринович В. А. Техника высоких напряжений. — ТПУ,
+2014, разд. 1.1</p></li>
+</ul>
+</main></body></html>

@@ -1,0 +1,524 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Ионизация и лавина</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;700&family=IBM+Plex+Sans:wght@400;600&display=swap">
+<style>
+/* Лабораторный стол: светлые панели, тёмные экраны приборов; акцент — синий, импульсы — тёплый/холодный по полярности */
+:root{
+  --bg:#D8DFE2; --panel:#F3F6F6; --ink:#15212A; --muted:#51606C; --line:#BFCACF; --well:#E6ECEE;
+  --accent:#1F5FAF; --accent-ink:#FFFFFF; --soft:#E2ECF8; --hot:#C8372B; --ok:#1E8A4C; --warn:#A8670F;
+  --scr:#0D171E; --scr2:#16242D; --grid:#253844; --scrtxt:#9FB4C0; --pos:#FF8A3D; --neg:#4FB3FF; --spark:#FFD54A;
+  --cu:#B8743A; --ins:#C9D8B5; --ins2:#E3D7A6;
+  --f-disp:"IBM Plex Sans Condensed","Arial Narrow",Arial,sans-serif;
+  --f-body:"IBM Plex Sans",Arial,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  color-scheme:light;
+}
+[hidden]{display:none!important}
+html,body{background:var(--bg);color:var(--ink)}
+body{margin:0;font-family:var(--f-body);font-size:16px;line-height:1.5;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+.wrap{max-width:1380px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+h1,h2,h3{font-family:var(--f-disp);font-weight:700;line-height:1.1;margin:0;text-wrap:balance}
+h1{font-size:clamp(26px,3.2vw,36px)}
+h2{font-size:23px}
+h3{font-size:18px}
+p{margin:0}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+sub,sup{font-size:.72em}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 93%,transparent);backdrop-filter:blur(6px);padding-top:12px;padding-bottom:10px;border-bottom:1px solid var(--line);margin-left:calc(-1*max(16px,env(safe-area-inset-left,0px)));margin-right:calc(-1*max(16px,env(safe-area-inset-right,0px)));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.topin{max-width:1380px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap}
+.tabs{display:flex;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:4px;overflow-x:auto;max-width:100%}
+.tabs button{border:0;background:transparent;border-radius:7px;padding:8px 13px;font-weight:600;white-space:nowrap;color:var(--muted)}
+.tabs button.on{background:var(--accent);color:var(--accent-ink)}
+.tabs button span{font-family:var(--f-mono);font-weight:400;margin-right:6px;opacity:.8}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.q{display:inline-flex;align-items:center;justify-content:center;width:19px;height:19px;border-radius:50%;border:1.4px solid var(--accent);color:var(--accent);background:var(--panel);font:700 12px/1 var(--f-body);cursor:help;padding:0;margin:0 3px;vertical-align:middle;flex:none}
+.q:hover,.q.on{background:var(--accent);color:var(--accent-ink)}
+svg .sq{cursor:help}
+svg .sq circle{fill:var(--panel);stroke:var(--accent);stroke-width:1.4}
+svg .sq text{fill:var(--accent);font:700 11px var(--f-body)}
+svg .sq:hover circle,svg .sq.on circle{fill:var(--accent)}
+svg .sq:hover text,svg .sq.on text{fill:var(--accent-ink)}
+#tip{box-sizing:border-box;position:fixed;z-index:60;width:max-content;max-width:min(380px,calc(100vw - 16px));background:#15212A;color:#EEF3F6;font-size:14.5px;line-height:1.45;padding:10px 12px;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.3)}
+#tip b{color:#FFD27A}
+#tip .x{float:right;margin:-4px -4px 0 8px;border:0;background:none;color:#9FB4C0;font-size:18px;line-height:1;padding:0 4px}
+.concepts{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.cpt{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:4px}
+.cpt b{font-family:var(--f-disp);font-size:16.5px}
+.cpt b .q{float:right}
+.cpt p{font-size:13.5px;color:var(--muted)}
+.lab{display:grid;grid-template-columns:310px minmax(0,1fr);gap:16px;align-items:start}
+.lab.rev{grid-template-columns:minmax(0,1fr) 330px}
+.side{display:flex;flex-direction:column;gap:14px}
+.lbl{font-size:13px;font-weight:600;color:var(--muted);display:block;margin-bottom:5px}
+.seg{display:flex;flex-wrap:wrap;gap:4px}
+.seg button{border:1px solid var(--line);background:var(--well);border-radius:6px;padding:6px 10px;font-size:13.5px}
+.seg button.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.grid2 button{border:1px solid var(--line);background:var(--well);border-radius:8px;padding:7px 9px;text-align:left;font-size:13.5px;line-height:1.25}
+.grid2 button.on{border-color:var(--accent);background:var(--soft);box-shadow:inset 0 0 0 1px var(--accent);font-weight:600}
+.rng .tp{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.rng output{font-family:var(--f-mono);font-size:15px;font-weight:500}
+.rng input{width:100%;accent-color:var(--accent)}
+.btns{display:flex;flex-wrap:wrap;gap:6px}
+.btn{border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);border-radius:7px;padding:8px 14px;font-weight:600;font-size:14.5px}
+.btn.ghost{background:var(--panel);color:var(--accent)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.reads{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:6px}
+.rd{background:var(--well);border:1px solid var(--line);border-radius:7px;padding:6px 9px;display:flex;flex-direction:column;gap:1px;min-width:0}
+.rd span{font-size:12px;color:var(--muted);display:block;line-height:1.35}
+.rd b{font-family:var(--f-mono);font-weight:500;font-size:16px;font-variant-numeric:tabular-nums}
+.rd.hot b{color:var(--hot)} .rd.ok b{color:var(--ok)}
+.scr{background:var(--scr);border-radius:8px;border:1px solid #071016;position:relative;min-width:0}
+.scr canvas{display:block;width:100%}
+.scrh{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 10px 0;color:var(--scrtxt);font-family:var(--f-mono);font-size:12px;flex-wrap:wrap}
+.scrh b{color:#E8F1F5;font-weight:500}
+.scrh .seg button{background:#1E2E38;border-color:#33495A;color:#CFE0EA;padding:3px 9px;font-size:12px}
+.scrh .seg button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.lg{display:inline-flex;align-items:center;gap:5px;margin-right:10px}
+.lg i{display:inline-block;width:14px;height:3px;border-radius:2px}
+.two{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:12px}
+.fig{background:var(--well);border:1px solid var(--line);border-radius:8px;padding:6px;min-width:0}
+.fig svg{display:block;width:100%;height:auto}
+.fig svg text{font-family:var(--f-body);fill:#15212A}
+.fig .cap{font-size:12.5px;color:var(--muted);padding:2px 4px 0}
+.log{background:var(--well);border-left:4px solid var(--accent);border-radius:6px;padding:8px 12px;font-size:14.5px;min-height:44px}
+.list{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:5px;font-size:14.5px}
+.info h3{margin-bottom:2px}
+.info p{font-size:14.5px}
+.tabp{display:flex;flex-direction:column;gap:12px}
+.tag{display:inline-block;align-self:flex-start;font-family:var(--f-mono);font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:1px 6px}
+.warn{background:#FCEFD8;border:1px solid #E8C27A;color:#5C3B05;border-radius:7px;padding:8px 12px;font-size:14.5px}
+.good{background:#E1F3E7;border:1px solid #9BD1AE;color:#134A2A;border-radius:7px;padding:8px 12px;font-size:14.5px}
+.bad{background:#F9E2DF;border:1px solid #E3A49B;color:#6B1A11;border-radius:7px;padding:8px 12px;font-size:14.5px}
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;font-size:14px}
+.steps li{display:flex;gap:8px;align-items:flex-start}
+.steps li i{flex:none;width:18px;height:18px;border-radius:50%;border:1.5px solid var(--line);margin-top:2px;display:inline-flex;align-items:center;justify-content:center;font-style:normal;font-size:11px;color:#fff}
+.steps li.done i{background:var(--ok);border-color:var(--ok)}
+.steps li.done i::after{content:"✓"}
+.case{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:14px;align-items:start}
+.opts{display:flex;flex-direction:column;gap:6px}
+.opts button{text-align:left;border:1px solid var(--line);background:var(--well);border-radius:7px;padding:8px 10px;font-size:14.5px;line-height:1.35}
+.opts button.sel{border-color:var(--accent);background:var(--soft)}
+.opts button.right{border-color:var(--ok);background:#E1F3E7}
+.opts button.wrong{border-color:var(--hot);background:#F9E2DF}
+.opts button:disabled{cursor:default;color:var(--ink)}
+.dots{display:flex;gap:5px;flex-wrap:wrap}
+.dots i{width:12px;height:12px;border-radius:50%;background:var(--line)}
+.dots i.cur{background:var(--accent)} .dots i.ok{background:var(--ok)} .dots i.half{background:var(--warn)} .dots i.no{background:var(--hot)}
+.task{border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.task h3{display:flex;gap:10px;align-items:baseline}
+.task h3 .mono{color:var(--muted);font-size:14px}
+.task p{font-size:15.5px;max-width:80ch}
+.ans{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.ans input{width:140px;font:inherit;font-family:var(--f-mono);padding:7px 10px;border:1px solid var(--line);border-radius:7px;background:#fff;color:var(--ink)}
+.ans .u{color:var(--muted);font-family:var(--f-mono)}
+.tq{border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:12px 16px;display:flex;flex-direction:column;gap:8px}
+.tq .qq{font-weight:600}
+.tq label{display:flex;gap:8px;align-items:flex-start;padding:5px 8px;border-radius:6px;border:1px solid transparent;font-size:15px;cursor:pointer}
+.tq label:hover{background:var(--well)}
+.tq label.right{border-color:var(--ok);background:#E1F3E7}
+.tq label.wrong{border-color:var(--hot);background:#F9E2DF}
+.tq input{margin-top:5px;accent-color:var(--accent)}
+.tq .ex{font-size:14px;color:var(--muted)}
+.circ{overflow-x:auto}
+.circ svg{min-width:640px}
+.circ svg text{font-family:var(--f-body);font-size:12.5px;fill:var(--ink)}
+.circ .el{cursor:pointer}
+.circ .el:hover .hl,.circ .el:focus-visible .hl{stroke:var(--accent);stroke-dasharray:4 3;fill:var(--soft);fill-opacity:.5}
+.circ .hl{fill:transparent;stroke:transparent;stroke-width:1.5}
+.sw{display:flex;align-items:center;gap:8px;font-size:14px}
+.sw button{min-width:110px}
+@media (max-width:1050px){.concepts{grid-template-columns:repeat(3,minmax(0,1fr))}.two,.case{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:820px){.lab,.lab.rev{grid-template-columns:minmax(0,1fr)}.concepts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.cpt p{display:none}.cpt{padding:8px 10px}.cpt b{font-size:15px}}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.mech{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.mc{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:6px;cursor:pointer;text-align:left;font:inherit;color:inherit}
+.mc:hover,.mc:focus-visible{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.mc b{font-family:var(--f-disp);font-size:16.5px}
+.mc .grp{font-family:var(--f-mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.mc svg{width:100%;height:auto;background:#0D171E;border-radius:7px;display:block}
+.mc .cond{font-size:13.5px;line-height:1.4}
+.mc .cond i{font-style:normal;font-family:var(--f-mono);color:var(--accent);font-size:13px}
+.fml{font-family:"IBM Plex Sans",Georgia,serif;font-size:19px;background:var(--well);border-left:4px solid var(--accent);border-radius:6px;padding:8px 14px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px}
+.fml i{font-family:Georgia,"Times New Roman",serif;font-size:21px}
+.fml small{font-family:var(--f-body);font-size:13px;color:var(--muted)}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 3px;line-height:1.15}
+.frac>span:first-child{border-bottom:1.4px solid currentColor;padding:0 3px}
+.frac>span:last-child{padding:0 3px}
+#dlg{position:fixed;inset:0;z-index:70;background:rgba(13,23,30,.55);display:flex;align-items:center;justify-content:center;padding:16px}
+#dlg[hidden]{display:none!important}
+#dlg .box{background:var(--panel);border-radius:12px;max-width:760px;width:100%;max-height:calc(100vh - 32px);overflow:auto;padding:18px;display:flex;flex-direction:column;gap:12px;position:relative}
+#dlg .x{position:absolute;top:8px;right:10px;border:0;background:none;font-size:26px;line-height:1;color:var(--muted);padding:4px 8px}
+#dlg svg{width:100%;height:auto;background:#0D171E;border-radius:8px}
+.gen{display:flex;gap:4px;align-items:flex-end;height:150px}
+.chip{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--accent);color:var(--accent);background:var(--panel);border-radius:14px;padding:2px 10px;font-size:13px;cursor:help}
+.chip:hover,.chip.on{background:var(--accent);color:#fff}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+@keyframes mvR{0%{transform:translateX(0);opacity:1}45%{transform:translateX(var(--d,70px));opacity:1}50%,100%{transform:translateX(var(--d,70px));opacity:0}}
+@keyframes out1{0%,48%{transform:translate(0,0);opacity:0}52%{opacity:1}100%{transform:translate(var(--dx,70px),var(--dy,-24px));opacity:1}}
+@keyframes flash{0%,45%{opacity:0}50%{opacity:1}75%,100%{opacity:0}}
+@keyframes show2{0%,48%{opacity:0}52%,100%{opacity:1}}
+@keyframes hide2{0%,48%{opacity:1}52%,100%{opacity:0}}
+@keyframes jig{0%,100%{transform:translate(0,0)}25%{transform:translate(3px,-2px)}50%{transform:translate(-2px,3px)}75%{transform:translate(2px,2px)}}
+@keyframes glow{0%,100%{opacity:.35}50%{opacity:1}}
+.an{animation-duration:3.2s;animation-iteration-count:infinite;animation-timing-function:linear;transform-box:fill-box}
+.a-mv{animation-name:mvR}.a-out{animation-name:out1}.a-fl{animation-name:flash}.a-s2{animation-name:show2}.a-h2{animation-name:hide2}.a-jig{animation-name:jig;animation-duration:.5s}.a-gl{animation-name:glow;animation-duration:1.6s}
+@keyframes mv1{0%{transform:translateX(0);opacity:1}25%{transform:translateX(var(--d,70px));opacity:1}27%,100%{transform:translateX(var(--d,70px));opacity:0}}
+@keyframes mv2{0%,38%{transform:translateX(0);opacity:0}40%{opacity:1}63%{transform:translateX(var(--d,70px));opacity:1}65%,100%{transform:translateX(var(--d,70px));opacity:0}}
+@keyframes s25{0%,24%{opacity:0}27%,100%{opacity:1}}
+@keyframes s25h{0%,24%{opacity:0}27%,63%{opacity:1}66%,100%{opacity:0}}
+@keyframes s65{0%,63%{opacity:0}66%,100%{opacity:1}}
+@keyframes h65{0%,63%{opacity:1}66%,100%{opacity:0}}
+@keyframes out65{0%,63%{transform:translate(0,0);opacity:0}66%{opacity:1}100%{transform:translate(var(--dx,70px),var(--dy,-24px));opacity:1}}
+@keyframes fl65{0%,62%{opacity:0}66%{opacity:1}85%,100%{opacity:0}}
+@keyframes fl25{0%,22%{opacity:0}26%{opacity:1}40%,100%{opacity:0}}
+.a-mv1{animation-name:mv1}.a-mv2{animation-name:mv2}.a-s25{animation-name:s25}.a-s25h{animation-name:s25h}.a-s65{animation-name:s65}.a-h65{animation-name:h65}.a-o65{animation-name:out65}.a-f65{animation-name:fl65}.a-f25{animation-name:fl25}
+@media (prefers-reduced-motion:reduce){.an{animation:none}}
+@media (max-width:560px){.fml{font-size:17px}.fml i{font-size:19px}}
+</style>
+
+<div class="wrap">
+<header class="top"><div class="topin">
+ <div><div class="eyebrow">Техника высоких напряжений · лекция 2 · физика разряда</div><h1>Ионизация и электронная лавина</h1></div>
+ <nav class="tabs" role="tablist" aria-label="Разделы">
+  <button role="tab" data-tab="t1" class="on"><span>1</span>Виды ионизации</button>
+  <button role="tab" data-tab="t2"><span>2</span>Энергия электрона</button>
+  <button role="tab" data-tab="t3"><span>3</span>Лавина</button>
+  <button role="tab" data-tab="t4"><span>4</span>Самостоятельность</button>
+  <button role="tab" data-tab="t5"><span>5</span>Задачи</button>
+  <button role="tab" data-tab="t6"><span>6</span>Тест</button>
+ </nav>
+</div></header>
+
+<section class="concepts" aria-label="Ключевые понятия">
+ <div class="cpt"><b>Ионизация <button class="q" data-tip="ion" aria-label="Справка">?</button></b><p>Атом теряет электрон: рождаются электрон и ион</p></div>
+ <div class="cpt"><b>Длина пробега λ <button class="q" data-tip="lam" aria-label="Справка">?</button></b><p>Путь электрона между ударами</p></div>
+ <div class="cpt"><b>Коэффициент α <button class="q" data-tip="alpha" aria-label="Справка">?</button></b><p>Ионизаций на 1 см пути электрона</p></div>
+ <div class="cpt"><b>Коэффициент γ <button class="q" data-tip="gamma" aria-label="Справка">?</button></b><p>Вторичных электронов с катода на один ион</p></div>
+ <div class="cpt"><b>Самостоятельный разряд <button class="q" data-tip="self" aria-label="Справка">?</button></b><p>Сам воспроизводит себя без внешнего ионизатора</p></div>
+</section>
+
+<section id="t1" class="tabp"></section>
+<section id="t2" class="tabp" hidden></section>
+<section id="t3" class="tabp" hidden></section>
+<section id="t4" class="tabp" hidden></section>
+<section id="t5" class="tabp" hidden></section>
+<section id="t6" class="tabp" hidden></section>
+</div>
+<div id="tip" role="tooltip" hidden></div>
+<div id="dlg" hidden role="dialog" aria-modal="true" aria-labelledby="dlgt"><div class="box"><button class="x" aria-label="Закрыть">×</button><div id="dlgc"></div></div></div>
+<script>
+const GAS={
+ air:{n:"воздух",A:15,B:365,We:6.1,Wi:12.5,Wn:"O₂ 12,5 эВ; возбуждение N₂ 6,1 эВ",eta:true},
+ n2:{n:"азот",A:12,B:342,We:6.1,Wi:15.5,Wn:"N₂ 15,5 эВ; возбуждение 6,1 эВ",eta:false},
+ ar:{n:"аргон",A:12,B:180,We:11.5,Wi:15.8,Wn:"Ar 15,8 эВ; возбуждение 11,5 эВ",eta:false}};
+const TIPS={
+ion:"<b>Ионизация</b> — атом или молекула теряет хотя бы один электрон. Рождаются две свободные частицы: электрон и положительный ион. Энергию, нужную для этого, называют энергией ионизации W<sub>и</sub> (эВ). Обратный процесс — <b>рекомбинация</b>.",
+lam:"<b>Средняя длина свободного пробега λ</b> — путь частицы между двумя соударениями, λ = 1/Z. Обратно пропорциональна давлению и прямо — температуре. Для электрона в воздухе при 760 мм рт. ст. и 20 °C λ ≈ 0,9 мкм (оценка по модели Таунсенда λ = 1/(A·p)).",
+alpha:"<b>Коэффициент ударной ионизации α</b> — число ионизаций, которые производит электрон на 1 см пути вдоль поля (учебник Важова, раздел 1.1.3). Эмпирически α = A·p·exp(−B·p/E). Для воздуха A = 15 1/(см·мм рт. ст.), B = 365 В/(см·мм рт. ст.) — те же константы, что в законе Пашена.",
+gamma:"<b>Коэффициент вторичной эмиссии γ</b> — сколько эффективных электронов выбивает с катода (ударами ионов и фотонами) один положительный ион лавины. Всегда γ ≪ 1: обычно 10⁻⁴…10⁻¹, зависит от материала катода, газа и давления.",
+self:"<b>Самостоятельный разряд</b> поддерживает себя сам: каждая лавина рождает хотя бы один вторичный электрон для следующей. <b>Несамостоятельный</b> гаснет, если убрать внешний ионизатор (ультрафиолет, радиоактивный фон, рентген).",
+eta:"<b>Коэффициент прилипания η</b> — число электронов, захваченных нейтральными молекулами на 1 см пути (образуются отрицательные ионы). Электроотрицательные газы — кислород, пары воды, элегаз SF₆ — прилипанием «гасят» лавину. В азоте и инертных газах η ≈ 0.",
+aeff:"<b>Эффективный коэффициент</b> α − η. Если он отрицателен, лавина не растёт, а затухает: электроны захватываются быстрее, чем рождаются.",
+p:"<b>Давление p</b> в мм рт. ст. (Торр). 760 — нормальное атмосферное. В горах ниже (2000 м — около 600), в элегазовом КРУЭ — в несколько раз выше.",
+E:"<b>Напряжённость E</b> в однородном поле плоского промежутка: E = U/S. Ионизацию определяет отношение E/p: при той же E, но меньшем давлении электрон пролетает дольше и набирает больше энергии.",
+S:"<b>Длина промежутка S</b> — расстояние катод — анод. В однородном поле лавина, вышедшая с катода, пройдёт весь промежуток.",
+n0:"<b>n<sub>0</sub></b> — число начальных электронов, вышедших с катода (от внешнего ионизатора или фона).",
+head:"<b>Головка лавины</b> — облако электронов на её фронте. Электроны лёгкие и быстрые, поэтому все они в головке. Радиус головки растёт из-за диффузии: r ≈ √(4·D·t) = √(4·(D/μ)·x/E), D/μ ≈ 1 В для воздуха (оценка).",
+tail:"<b>Хвост лавины</b> — положительные ионы, оставшиеся там, где произошла ионизация. Ионы примерно в 100 раз медленнее электронов и за время лавины почти не сдвигаются. Плотность ионов растёт экспоненциально к головке.",
+cg:"<b>Центр ионов</b>: из-за экспоненциального роста почти все ионы рождаются у самой головки. Их центр тяжести отстоит от головки примерно на 1/(α − η), а в задней половине лавины ионов в e<sup>(α−η)x/2</sup> раз меньше, чем всего.",
+eq:"<b>Поле заряда головки</b> E<sub>q</sub> = e·n/(4πε<sub>0</sub>r²). Пока E<sub>q</sub> ≪ E, лавина «не замечает» своего заряда. Когда E<sub>q</sub> сравнивается с внешним полем (αx ≈ 18–20, n ≈ 10⁸), лавина превращается в стример — это тема лекции 3.",
+ve:"<b>Скорость дрейфа</b> электронов в воздухе — порядка 10⁷ см/с при E/p ≈ 40 В/(см·мм рт. ст.); модель: v<sub>e</sub> ≈ 3,2·10⁵·(E/p) см/с. Ионы: v<sub>и</sub> = μ<sub>и</sub>·E, μ<sub>и</sub> ≈ 2 см²/(В·с) при 760 мм рт. ст.",
+weff:"<b>Эффективная энергия ионизации B/A</b> (для воздуха ≈ 24 эВ) больше табличной (12,5 эВ): по пути электрон тратит энергию на возбуждение, колебания молекул и упругие удары. Поэтому в простой модели «удар — потеря всей энергии» порог берут равным B/A, и она даёт ровно формулу Таунсенда α = A·p·exp(−B·p/E).",
+pas:"<b>Закон Пашена</b> получается из условия самостоятельности: U<sub>пр</sub> = B·p·S / [ln(A·p·S) − ln ln(1 + 1/γ)]. Пробивное напряжение зависит только от произведения p·S. Подробно — лекция 4.",
+tc:"<b>Ток в цепи промежутка</b> — то, что показывает микроамперметр, включённый последовательно с промежутком. Лампа выбивает с катода I<sub>0</sub> = 1 пА фотоэлектронов. Каждый из них даёт лавину в e<sup>(α−η)S</sup> электронов, а вторичные электроны с катода добавляют поколения: I = I<sub>0</sub>·e<sup>(α−η)S</sup>/(1 − μ). При μ → 1 знаменатель → 0, ток неограниченно растёт: это пробой. (Самый начальный участок, где растёт сбор зарядов, на графике не показан.)",
+I0:"<b>I<sub>0</sub></b> — ток фотоэлектронов с катода от внешнего ионизатора (ультрафиолетовой лампы, радиоактивного фона)."
+};
+const MECH=[
+ {k:"imp",g:"Объёмная",t:"Ударная ионизация электроном",c:"<i>e·E·λ ≥ W<sub>и</sub></i>",ex:"Основной механизм размножения электронов в лавине — в любом промежутке перед пробоем.",d:"Электрон разгоняется полем и на длине свободного пробега набирает энергию W = e·E·λ. Если к удару она не меньше энергии ионизации W<sub>и</sub>, из молекулы выбивается второй электрон: было 1 — стало 2 электрона и положительный ион. Ионы тоже набирают энергию, но в ударах с молекулами той же массы теряют её почти всю, поэтому ионизуют электроны."},
+ {k:"step",g:"Объёмная",t:"Ступенчатая ионизация",c:"<i>W<sub>1</sub> + W<sub>2</sub> ≥ W<sub>и</sub></i>, второй удар за ≈10⁻⁸ с",ex:"Значима при большой плотности возбуждённых частиц: в канале искры и дуги, в тлеющем разряде.",d:"Первый удар лишь возбуждает атом — электрон переходит на дальнюю орбиту, но не отрывается. Если до возвращения в основное состояние (обычно около 10⁻⁸ с, у метастабильных уровней намного дольше) придёт второй удар, суммы энергий хватит на ионизацию."},
+ {k:"photo",g:"Объёмная",t:"Фотоионизация",c:"<i>h·ν ≥ W<sub>и</sub></i>, λ [нм] ≤ 1240 / W<sub>и</sub> [эВ]",ex:"Возбуждённые молекулы лавины излучают фотоны, которые рождают новые электроны впереди неё — основа стримера (лекция 3). Для O₂ нужен вакуумный ультрафиолет короче 99 нм.",d:"Фотон с энергией h·ν не меньше энергии ионизации выбивает электрон из молекулы. Источник фотонов — возбуждённые в той же лавине молекулы, а также внешний ультрафиолет. Фотоионизация тоже бывает ступенчатой."},
+ {k:"therm",g:"Объёмная",t:"Термоионизация",c:"<i>k·T</i> сравнима с <i>W<sub>и</sub></i>: T ≈ 5000–20 000 К",ex:"Канал искры, дуги и лидера, дуга в выключателе: газ сам себя ионизует за счёт нагрева.",d:"При очень высокой температуре молекулы движутся так быстро, что ионизуют друг друга при столкновениях; ионизуют и тепловые фотоны. Сначала молекулы распадаются на атомы (диссоциация O₂ — 5,2 эВ, N₂ — 9,8 эВ), затем ионизуются атомы."},
+ {k:"ionem",g:"С поверхности",t:"Вторичная эмиссия ударом иона",c:"<i>m<sub>и</sub>v<sub>и</sub>²/2 ≥ W<sub>вых</sub></i>",ex:"Механизм γ: положительные ионы лавины бьют в катод и выбивают электроны для следующей лавины.",d:"Положительный ион, пришедший к катоду, выбивает из металла электрон. Нужно, чтобы энергия иона превышала работу выхода W<sub>вых</sub> (для меди и стали ≈ 4,5 эВ). Именно этот процесс вместе с фотоэмиссией задаёт коэффициент γ."},
+ {k:"phem",g:"С поверхности",t:"Фотоэмиссия",c:"<i>h·ν ≥ W<sub>вых</sub></i>: для меди λ ≤ 276 нм",ex:"Ультрафиолетовая лампа у разрядника стабилизирует его пробивное напряжение — даёт начальные электроны.",d:"Фотон выбивает электрон из катода, если его энергия больше работы выхода. Работа выхода в 2–10 раз меньше энергии ионизации, поэтому для фотоэмиссии хватает ближнего ультрафиолета."},
+ {k:"thmem",g:"С поверхности",t:"Термоэлектронная эмиссия",c:"<i>j = A·T²·e<sup>−W<sub>вых</sub>/kT</sup></i>",ex:"Раскалённое пятно дуги на контакте выключателя, катод вакуумной лампы.",d:"Нагретый металл испускает электроны: часть из них имеет энергию больше работы выхода. Плотность тока быстро растёт с температурой (формула Ричардсона — Дэшмана)."},
+ {k:"field",g:"С поверхности",t:"Автоэлектронная эмиссия",c:"<i>E</i> у поверхности ≈ 10⁷–10⁸ В/см",ex:"Микроострия и заусенцы на электродах вакуумного выключателя, где поле усиливается в сотни раз.",d:"Очень сильное поле сужает потенциальный барьер у поверхности металла, и электроны проходят сквозь него (туннелируют). Среднее поле для этого слишком мало, но на микроостриях оно усиливается в десятки — сотни раз."},
+ {k:"rec",g:"Обратный процесс",t:"Рекомбинация",c:"<i>e⁻ + A⁺ → A + h·ν</i>",ex:"После погасания разряда ионизация «рассасывается»; излучение рекомбинации даёт свечение.",d:"Электрон и положительный ион объединяются в нейтральный атом, избыток энергии уносит фотон. Ионизация и рекомбинация вместе задают степень ионизации газа ψ = n/N."},
+ {k:"att",g:"Обратный процесс",t:"Прилипание электрона",c:"<i>e⁻ + O₂ → O₂⁻</i>; коэффициент η",ex:"Элегаз SF₆ в КРУЭ и выключателях: сильное прилипание поднимает электрическую прочность примерно в 2,5 раза выше воздуха.",d:"Нейтральная молекула электроотрицательного газа (O₂, H₂O, SF₆) захватывает электрон и становится отрицательным ионом. Тяжёлый ион ионизовать не может — электрон «выбывает» из лавины. Азот и инертные газы электроположительны: прилипания нет."}];
+const TASKS=[
+ {id:"k1",t:"Энергия на длине пробега",x:"В ячейке КРУ 6 кВ у кромки шины напряжённость поля 30 кВ/см. Средняя длина свободного пробега электрона в воздухе при нормальных условиях около 0,9 мкм. Какую энергию в среднем набирает электрон между двумя соударениями?",h:["Энергия, набранная зарядом e на пути λ в поле E, равна работе поля.","Если E выразить в В/м, а λ в метрах, произведение E·λ сразу даст энергию в электронвольтах."],a:2.7,tol:0.03,u:"эВ",s:"W = E·λ = 3·10⁶ В/м · 0,9·10⁻⁶ м = 2,7 эВ — в 4–5 раз меньше энергии ионизации O₂ (12,5 эВ). Ионизуют только те электроны, которым «повезло» пролететь без удара в несколько раз дольше среднего."},
+ {id:"k2",t:"Путь до ионизации",x:"При той же напряжённости 30 кВ/см какой путь должен пролететь электрон без соударений, чтобы набрать энергию ионизации молекулы кислорода (12,5 эВ)?",h:["Энергия растёт линейно с пройденным путём.","Ответ сравните со средней длиной пробега 0,9 мкм."],a:4.17,tol:0.03,u:"мкм",s:"x = W<sub>и</sub>/(e·E) = 12,5 / 3·10⁶ м = 4,17 мкм ≈ 4,6λ. Вероятность пролететь такой путь без удара e<sup>−x/λ</sup> ≈ 1 %."},
+ {id:"k3",t:"Фотоны от короны",x:"Корона на проводах ВЛ светится в ультрафиолете. Какой наибольшей длины волны фотон ещё способен ионизовать молекулу кислорода (12,5 эВ)?",h:["Условие фотоионизации: энергия кванта не меньше энергии ионизации.","h·c ≈ 1240 эВ·нм."],a:99.2,tol:0.02,u:"нм",s:"λ = 1240/12,5 = 99 нм — вакуумный ультрафиолет: он поглощается в воздухе на долях миллиметра, поэтому фотоионизация работает только рядом с лавиной."},
+ {id:"k4",t:"Электроны в головке лавины",x:"При испытании воздушного промежутка коэффициент ударной ионизации α = 10 1/см, прилипанием пренебрегаем. Лавина вышла из катода с одним электроном и прошла 1,5 см. Сколько электронов в её головке?",h:["Каждый электрон на пути dx рождает α·dx новых: рост экспоненциальный.","Ответ дайте в миллионах."],a:3.27,tol:0.02,u:"млн",s:"n = e<sup>αx</sup> = e<sup>15</sup> ≈ 3,27·10⁶. Положительных ионов в хвосте — на один меньше."},
+ {id:"k5",t:"Влажный воздух и прилипание",x:"В сыром руднике воздух содержит много паров воды. В промежутке 1 см α = 12 1/см, коэффициент прилипания η = 2 1/см. Сколько электронов дойдёт до анода от одного начального?",h:["Прилипшие электроны выбывают из размножения.","Работает разность коэффициентов."],a:22026,tol:0.01,u:"шт.",s:"n = e<sup>(α−η)S</sup> = e<sup>10</sup> ≈ 22 026. Без прилипания было бы e<sup>12</sup> ≈ 162 755 — в 7,4 раза больше."},
+ {id:"k6",t:"Порог самостоятельности",x:"Для медного катода в воздухе примем γ = 0,01. Каким должно быть произведение αS, чтобы разряд стал самостоятельным (прилипанием пренебречь)?",h:["Один первичный электрон должен дать хотя бы один вторичный.","Число ионов первичной лавины e<sup>αS</sup> − 1; каждый даёт γ электронов."],a:4.62,tol:0.02,u:"",s:"γ(e<sup>αS</sup> − 1) = 1 → αS = ln(1 + 1/γ) = ln 101 = 4,62."},
+ {id:"k7",t:"Подстанция в горах",x:"Однородный воздушный промежуток 1 см на подстанции, где давление 600 мм рт. ст. (≈ 2000 м над морем). По закону Пашена с A = 15 1/(см·мм рт. ст.), B = 365 В/(см·мм рт. ст.), γ = 0,01 найдите пробивное напряжение.",h:["Пробивное напряжение зависит от произведения p·S.","U<sub>пр</sub> = B·pS / [ln(A·pS) − ln ln(1 + 1/γ)]."],a:28.9,tol:0.02,u:"кВ",s:"pS = 600 мм рт. ст.·см; ln(9000) = 9,11; ln ln 101 = 1,53; U<sub>пр</sub> = 365·600/7,58 = 28,9 кВ. На уровне моря тот же промежуток держит 35,5 кВ — изоляцию высокогорных ПС берут с запасом."},
+ {id:"k8",t:"Ток с внешним ионизатором",x:"Катод разрядника освещают ультрафиолетом: фототок I<sub>0</sub> = 1 пА. В промежутке αS = 4, γ = 0,01. Каков ток через промежуток?",h:["Одна лавина усиливает ток в e<sup>αS</sup> раз.","Вторичные электроны дают геометрическую прогрессию поколений."],a:117.7,tol:0.02,u:"пА",s:"I = I<sub>0</sub>·e<sup>4</sup>/[1 − 0,01(e<sup>4</sup> − 1)] = 54,6/0,464 = 118 пА. Разряд ещё несамостоятельный: γ(e<sup>αS</sup> − 1) = 0,54 < 1, без ультрафиолета ток исчезнет."},
+ {id:"k9",t:"Где лавина станет стримером",x:"В промежутке 2 см при перенапряжении α = 16 1/см. Лавина превращается в стример, когда αx ≈ 20. На каком расстоянии от катода это произойдёт?",h:["Критерий перехода — критическое число электронов ≈ 10⁸–10⁹.","Сравните ответ с длиной промежутка."],a:1.25,tol:0.02,u:"см",s:"x<sub>кр</sub> = 20/16 = 1,25 см < 2 см — лавина станет стримером, не дойдя до анода, и разряд пойдёт в стримерной форме (лекция 3)."}];
+const TEST=[
+ {q:"Что называют ионизацией?",o:["Переход электрона на дальнюю орбиту без отрыва","Отрыв от атома или молекулы хотя бы одного электрона: рождаются электрон и положительный ион","Захват электрона нейтральной молекулой","Объединение иона и электрона","Распад молекулы на атомы"],a:1,e:"Переход на дальнюю орбиту — возбуждение, захват — прилипание, объединение — рекомбинация, распад — диссоциация."},
+ {q:"Почему ударную ионизацию в газе производят в основном электроны, а не ионы?",o:["У ионов нет заряда","Электрон лёгкий: между ударами он набирает энергию, а ион теряет её в ударах с молекулами той же массы","Ионы движутся быстрее и пролетают мимо молекул","Ионы сразу рекомбинируют","Ионы не чувствуют электрического поля"],a:1,e:"Ион тоже ускоряется полем, но в упругом ударе с равной по массе молекулой отдаёт почти всю энергию."},
+ {q:"Условие ударной ионизации электроном:",o:["e·E·λ ≥ W<sub>вых</sub>","e·E·λ ≥ W<sub>и</sub>","E ≥ 10⁸ В/см","k·T ≥ W<sub>и</sub>","h·ν ≥ W<sub>и</sub>"],a:1,e:"Энергия, набранная на длине пробега, должна быть не меньше энергии ионизации молекулы."},
+ {q:"Как меняется средняя длина свободного пробега электрона при росте давления газа?",o:["Растёт пропорционально давлению","Уменьшается обратно пропорционально давлению","Не зависит от давления","Растёт как квадрат давления","Зависит только от напряжённости поля"],a:1,e:"λ = 1/Z, а число столкновений на единице пути пропорционально концентрации молекул, то есть давлению."},
+ {q:"Что нужно для ступенчатой ионизации?",o:["Один удар с энергией больше W<sub>и</sub>","Два воздействия: второе — пока атом ещё возбуждён","Нагрев газа до 10 000 К","Электроотрицательный газ","Сильное поле у катода"],a:1,e:"Сумма энергий двух воздействий должна превысить W<sub>и</sub>, а второе должно прийти за время жизни возбуждения."},
+ {q:"Фотоионизация молекулы O₂ (W<sub>и</sub> = 12,5 эВ) возможна фотонами с длиной волны:",o:["Больше 400 нм (видимый свет)","Короче примерно 99 нм (вакуумный ультрафиолет)","Около 1 мкм (инфракрасный)","Любой длины волны","Только рентгеновскими короче 0,1 нм"],a:1,e:"λ ≤ 1240/12,5 ≈ 99 нм."},
+ {q:"Какой вид эмиссии требует у поверхности поля порядка 10⁷–10⁸ В/см?",o:["Термоэлектронная","Автоэлектронная (полевая)","Фотоэмиссия","Вторичная ионная","Рекомбинационная"],a:1,e:"Сильное поле сужает потенциальный барьер, и электроны туннелируют. На микроостриях поле усиливается в сотни раз."},
+ {q:"Работа выхода электрона для медных и стальных электродов в воздухе составляет примерно:",o:["0,5 эВ","4,5 эВ","12,5 эВ","24 эВ","100 эВ"],a:1,e:"W<sub>вых</sub> ≈ 4,5 эВ — в 2–10 раз меньше энергии ионизации газов."},
+ {q:"Коэффициент ударной ионизации α — это:",o:["Доля ионизованных молекул газа","Число ионизаций, производимых электроном на 1 см пути вдоль поля","Число электронов, выбитых из катода одним ионом","Скорость дрейфа электронов","Отношение E/p"],a:1,e:"Доля ионизованных молекул — степень ионизации ψ, электроны с катода на ион — коэффициент γ."},
+ {q:"Число электронов в лавине в однородном поле без прилипания:",o:["n = n<sub>0</sub>·α·x","n = n<sub>0</sub>·e<sup>αx</sup>","n = n<sub>0</sub>/(1 − αx)","n = n<sub>0</sub>·(αx)²","n = n<sub>0</sub> + αx"],a:1,e:"dn = α·n·dx → n = n<sub>0</sub>·e<sup>αx</sup>."},
+ {q:"Прилипание электронов — это:",o:["Осаждение электронов на анод","Захват электрона нейтральной молекулой с образованием отрицательного иона (O₂, H₂O, SF₆)","Объединение электрона и положительного иона","Выбивание электрона из катода ионом","Прилипание ионов к катоду"],a:1,e:"Прилипание характеризуют коэффициентом η; в лавине работает разность α − η."},
+ {q:"Где находятся электроны и ионы электронной лавины?",o:["Равномерно перемешаны по всему промежутку","Электроны — в головке на фронте, положительные ионы — в хвосте, почти неподвижно","Ионы впереди, электроны позади","Все у катода","Все у анода"],a:1,e:"Электроны примерно в 100 раз подвижнее ионов, поэтому лавина имеет форму капли: голова из электронов, хвост из ионов."},
+ {q:"Условие самостоятельности разряда (Таунсенд):",o:["αS ≥ 1","γ·(e<sup>(α−η)S</sup> − 1) ≥ 1","η > α","E ≥ 30 кВ/см","n ≥ 10⁸"],a:1,e:"Первичная лавина должна обеспечить хотя бы один вторичный эффективный электрон."},
+ {q:"Как влияет увеличение γ (другой материал катода, облучение)?",o:["Пробивное напряжение растёт","Самостоятельный разряд возникает при меньшем αS, то есть при меньшем напряжении","Не влияет ни на что","Лавина перестаёт расти","Исчезает прилипание"],a:1,e:"Нужное αS = ln(1 + 1/γ) уменьшается с ростом γ."},
+ {q:"При каком произведении αx лавина переходит в стример?",o:["αx ≈ 1","αx ≈ 4–5","αx ≈ 18–20, число электронов ≈ 10⁸–10⁹","αx ≈ 100","Никогда"],a:2,e:"Тогда поле заряда головки сравнивается с внешним, и начинается фотоионизация впереди лавины — лекция 3."}];
+
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const fx=(v,n=1)=>(+v).toFixed(n).replace(".",",").replace("-","−");
+const SUP={"0":"⁰","1":"¹","2":"²","3":"³","4":"⁴","5":"⁵","6":"⁶","7":"⁷","8":"⁸","9":"⁹","-":"⁻"};
+const fN=(n,d=2)=>{if(!isFinite(n))return "∞";const a=Math.abs(n);if(a<1e4)return a>=100?Math.round(n).toLocaleString("ru-RU").replace(/ /g," "):fx(n,a<10?d:1);const e=Math.floor(Math.log10(a)),m=n/Math.pow(10,e);return fx(m,d)+"·10"+String(e).split("").map(c=>SUP[c]).join("")};
+const qb=k=>`<button class="q" data-tip="${k}" aria-label="Справка">?</button>`;
+const tip=$("#tip");let tipFor=null,tipPin=false;
+function showTip(el,pin){const k=el.dataset.tip;const t=TIPS[k]||el.dataset.tipt;if(!t)return;tipFor=el;tipPin=!!pin;$$(".q.on,.chip.on").forEach(x=>x.classList.remove("on"));el.classList.add("on");
+ tip.innerHTML=(pin?'<button class="x" aria-label="Закрыть">×</button>':"")+t;tip.hidden=false;
+ const r=el.getBoundingClientRect(),w=tip.offsetWidth,h=tip.offsetHeight;let x=Math.min(Math.max(8,r.left+r.width/2-w/2),innerWidth-w-8),y=r.bottom+8;if(y+h>innerHeight-8)y=Math.max(8,r.top-h-8);tip.style.left=x+"px";tip.style.top=y+"px";
+ const xb=tip.querySelector(".x");if(xb)xb.onclick=e=>{e.stopPropagation();hideTip()}}
+function hideTip(){tip.hidden=true;if(tipFor)tipFor.classList.remove("on");tipFor=null;tipPin=false}
+document.addEventListener("mouseover",e=>{if(tipPin)return;const el=e.target.closest&&e.target.closest("[data-tip],[data-tipt]");if(el)showTip(el,false)});
+document.addEventListener("mouseout",e=>{if(tipPin)return;const el=e.target.closest&&e.target.closest("[data-tip],[data-tipt]");if(el&&!(e.relatedTarget&&el.contains(e.relatedTarget)))hideTip()});
+document.addEventListener("click",e=>{const el=e.target.closest&&e.target.closest("[data-tip],[data-tipt]");if(el){e.preventDefault();if(tipFor===el&&tipPin)hideTip();else showTip(el,true)}else if(!tip.contains(e.target))hideTip()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){hideTip();closeDlg()}});
+addEventListener("scroll",()=>{if(!tip.hidden)hideTip()},true);
+const dlg=$("#dlg");function openDlg(h){$("#dlgc").innerHTML=h;dlg.hidden=false;dlg.querySelector(".x").focus()}
+function closeDlg(){if(!dlg.hidden){dlg.hidden=true;const f=dlg._from;if(f)f.focus()}}
+dlg.querySelector(".x").onclick=closeDlg;dlg.addEventListener("click",e=>{if(e.target===dlg)closeDlg()});
+let curTab="t1";
+$$(".tabs button").forEach(b=>b.onclick=()=>{curTab=b.dataset.tab;$$(".tabs button").forEach(x=>x.classList.toggle("on",x===b));$$(".tabp").forEach(s=>s.hidden=s.id!==curTab);hideTip();onTab(curTab)});
+function canvasBox(el,h,draw){const cv=document.createElement("canvas");el.appendChild(cv);const o={cv,ctx:cv.getContext("2d"),w:0,h};
+ const fit=()=>{const w=Math.max(200,el.clientWidth);const dpr=Math.min(2,devicePixelRatio||1);o.w=w;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);cv.style.height=h+"px";o.ctx.setTransform(dpr,0,0,dpr,0,0);draw&&draw()};
+ o.fit=fit;new ResizeObserver(()=>{if(Math.abs(el.clientWidth-o.w)>1)fit()}).observe(el);return o}
+const rng=(id,lab,tk,min,max,step,val,unit)=>`<div class="rng"><div class="tp"><span class="lbl">${lab} ${tk?qb(tk):""}</span><output id="${id}o"></output></div><input type="range" id="${id}" min="${min}" max="${max}" step="${step}" value="${val}" aria-label="${lab.replace(/<[^>]+>/g,"")}">${unit?"":""}</div>`;
+const seg=(id,opts,val)=>`<div class="seg" id="${id}">${opts.map(([v,t])=>`<button data-v="${v}" class="${String(v)===String(val)?"on":""}">${t}</button>`).join("")}</div>`;
+function bindSeg(id,cb){$$("#"+id+" button").forEach(b=>b.onclick=()=>{$$("#"+id+" button").forEach(x=>x.classList.toggle("on",x===b));cb(b.dataset.v)})}
+const rd=(id,lab,tk)=>`<div class="rd" id="${id}w"><span>${lab} ${tk?qb(tk):""}</span><b id="${id}"></b></div>`;
+const alphaOf=(g,p,Ekv)=>{const G=GAS[g],E=Ekv*1000;return E<=0?0:G.A*p*Math.exp(-G.B*p/E)};
+
+/* ---------- мнемосхемы ---------- */
+const EC="#4FB3FF",IC="#FF8A3D",PH="#FFD54A",TX="#CFE0EA",MU="#9FB4C0";
+const el_=(x,y,cls="",st="")=>`<g class="${cls}" style="${st}"><circle cx="${x}" cy="${y}" r="4.5" fill="${EC}"/></g>`;
+const atom=(x,y,lab="")=>`<g><ellipse cx="${x}" cy="${y}" rx="17" ry="11" fill="none" stroke="${MU}" stroke-width="1.2"/><circle cx="${x}" cy="${y}" r="6" fill="${IC}"/>${lab?`<text x="${x}" y="${y+27}" text-anchor="middle" font-size="10" fill="${TX}">${lab}</text>`:""}</g>`;
+const orbE=(x,y,cls)=>`<g class="${cls}"><circle cx="${x+17}" cy="${y}" r="3.5" fill="${EC}"/></g>`;
+const plus=(x,y,cls)=>`<g class="${cls}"><text x="${x}" y="${y-14}" text-anchor="middle" font-size="13" font-weight="700" fill="${IC}">+</text></g>`;
+const fl=(x,y,cls)=>`<g class="${cls}"><circle cx="${x}" cy="${y}" r="15" fill="${PH}" opacity=".45"/></g>`;
+const wave=(x,y,len,cls,st="")=>{let d=`M${x},${y}`;for(let i=1;i<=len;i++)d+=` q3,${i%2?-7:7} 6,0`;return `<g class="${cls}" style="${st}"><path d="${d}" fill="none" stroke="${PH}" stroke-width="2"/></g>`};
+const cath=(lab="катод")=>`<rect x="6" y="14" width="16" height="92" fill="#5A6B78"/><line x1="22" y1="14" x2="22" y2="106" stroke="#9FB4C0" stroke-width="2"/><text x="14" y="116" text-anchor="middle" font-size="9.5" fill="${TX}">${lab}</text>`;
+const efield=`<g><line x1="190" y1="14" x2="240" y2="14" stroke="${MU}" stroke-width="1.2"/><path d="M240,14 l-6,-3 v6z" fill="${MU}"/><text x="186" y="18" text-anchor="end" font-size="10" fill="${MU}">E</text></g>`;
+const lbl=(x,y,t,c=TX)=>`<text x="${x}" y="${y}" font-size="10" fill="${c}" text-anchor="middle">${t}</text>`;
+function svgMech(k){const A="an ";let b="";
+ if(k==="imp")b=efield+el_(20,60,A+"a-mv","--d:92px")+atom(130,60,"молекула")+orbE(130,60,A+"a-h2")+fl(130,60,A+"a-fl")+plus(130,60,A+"a-s2")+el_(135,60,A+"a-out","--dx:95px;--dy:-30px")+el_(135,60,A+"a-out","--dx:100px;--dy:26px")+lbl(230,28,"2 e⁻",EC)+lbl(20,46,"e⁻",EC);
+ if(k==="step")b=efield+el_(20,40,A+"a-mv1","--d:94px")+el_(20,82,A+"a-mv2","--d:94px")+atom(130,60,"")+`<g class="${A}a-s25h"><ellipse cx="130" cy="60" rx="26" ry="17" fill="none" stroke="${PH}" stroke-width="1.4" stroke-dasharray="3 2"/></g>`+orbE(130,60,A+"a-h65")+fl(130,60,A+"a-f25")+fl(130,60,A+"a-f65")+plus(130,60,A+"a-s65")+el_(136,60,A+"a-o65","--dx:95px;--dy:-28px")+el_(136,60,A+"a-o65","--dx:100px;--dy:26px")+lbl(130,104,"удар 1: возбуждение → удар 2: ионизация");
+ if(k==="photo")b=wave(10,60,14,A+"a-mv","--d:90px")+lbl(40,42,"h·ν",PH)+atom(130,60,"")+orbE(130,60,A+"a-h2")+fl(130,60,A+"a-fl")+plus(130,60,A+"a-s2")+el_(135,60,A+"a-out","--dx:100px;--dy:-26px")+lbl(130,104,"фотон → электрон + ион");
+ if(k==="therm"){b=`<g class="${A}a-gl"><rect x="0" y="0" width="260" height="120" fill="#C8372B" opacity=".28"/></g>`;[[60,40],[110,78],[160,38],[205,80],[70,88],[150,95]].forEach(([x,y],i)=>b+=`<g class="${A}a-jig" style="animation-delay:-${i*0.13}s">${atom(x,y)}</g>`);b+=el_(160,38,A+"a-out","--dx:70px;--dy:-14px")+plus(160,38,A+"a-s2")+lbl(130,14,"T ≈ 10⁴ К: столкновения горячих частиц",PH)}
+ if(k==="ionem")b=cath()+`<g class="${A}a-mv" style="--d:-150px"><circle cx="180" cy="50" r="7" fill="${IC}"/><text x="180" y="54" text-anchor="middle" font-size="11" font-weight="700" fill="#15212A">+</text></g>`+fl(26,50,A+"a-fl")+el_(28,50,A+"a-out","--dx:150px;--dy:30px")+lbl(180,34,"ион",IC)+lbl(150,104,"ион бьёт катод → вторичный электрон");
+ if(k==="phem")b=cath()+`<g class="${A}a-mv" style="--d:-150px">${wave(176,46,10,"")}</g>`+lbl(200,34,"h·ν",PH)+fl(26,50,A+"a-fl")+el_(28,50,A+"a-out","--dx:150px;--dy:32px")+lbl(150,104,"фотон → электрон из катода");
+ if(k==="thmem")b=`<g class="${A}a-gl"><rect x="2" y="10" width="24" height="100" fill="#FF6A2B" opacity=".55"/></g>`+cath("катод")+[0,1,2].map(i=>el_(28,40+i*20,A+"a-out",`--dx:${150+i*20}px;--dy:${-10+i*10}px;animation-delay:-${i}s`)).join("")+lbl(150,104,"горячий металл испускает электроны");
+ if(k==="field")b=cath()+`<path d="M22,52 L40,60 L22,68 Z" fill="#9FB4C0"/>`+[-24,-12,0,12,24].map(dy=>`<path d="M40,60 Q100,${60+dy*1.4} 240,${60+dy*3.2}" fill="none" stroke="${MU}" stroke-width=".9" stroke-dasharray="3 3"/>`).join("")+el_(40,60,A+"a-out","--dx:180px;--dy:0px")+lbl(60,40,"остриё",TX)+lbl(150,104,"E ≈ 10⁷–10⁸ В/см у острия: туннелирование");
+ if(k==="rec")b=`<g class="${A}a-mv" style="--d:60px"><circle cx="60" cy="60" r="7" fill="${IC}"/><text x="60" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#15212A">+</text></g>`+el_(190,60,A+"a-mv","--d:-60px")+`<g class="${A}a-s2">${atom(125,60)}</g>`+wave(140,40,10,A+"a-out","--dx:60px;--dy:-20px")+lbl(60,44,"ион",IC)+lbl(190,44,"e⁻",EC)+lbl(130,104,"ион + электрон → атом + фотон");
+ if(k==="att")b=el_(20,60,A+"a-mv","--d:105px")+`<g><circle cx="138" cy="60" r="10" fill="#7D8FA0"/><circle cx="156" cy="60" r="10" fill="#7D8FA0"/></g>`+`<g class="${A}a-s2"><circle cx="147" cy="60" r="26" fill="none" stroke="#C39BFF" stroke-width="2"/><text x="147" y="28" text-anchor="middle" font-size="12" font-weight="700" fill="#C39BFF">O₂⁻</text></g>`+lbl(147,88,"O₂")+lbl(130,108,"электрон захвачен: отрицательный ион");
+ return `<svg viewBox="0 0 260 120" role="img" aria-label="Анимированная схема">${b}</svg>`}
+function t1(){const grp=[["Объёмная","Объёмная ионизация — в газе"],["С поверхности","Эмиссия электронов с катода"],["Обратный процесс","Процессы, убирающие электроны"]];
+ $("#t1").innerHTML=`<div class="card"><h2>Как газ получает свободные заряды</h2><p>Нажмите на карточку — откроется подробная схема с условием и примером из практики. Энергии ионизации: N₂ — 15,5 эВ, O₂ — 12,5 эВ, H₂O — 12,7 эВ; возбуждения: N₂ — 6,1 эВ, O₂ — 7,9 эВ (табл. 1.1 учебника).</p>
+ <div class="fml"><span>Ударная ионизация: <i>e·E·λ ≥ W</i><sub>и</sub></span><span>Фотоионизация: <i>h·ν ≥ W</i><sub>и</sub></span><span>Эмиссия: энергия воздействия <i>≥ W</i><sub>вых</sub> ≈ 4,5 эВ</span><small>W<sub>и</sub> — энергия ионизации, W<sub>вых</sub> — работа выхода</small></div></div>
+ ${grp.map(([g,t])=>`<h3>${t}</h3><div class="mech">${MECH.filter(m=>m.g===g).map(m=>`<button class="mc" data-k="${m.k}"><span class="grp">${m.g}</span><b>${m.t}</b>${svgMech(m.k)}<span class="cond">Условие: ${m.c}</span></button>`).join("")}</div>`).join("")}
+ <div class="card"><h3>Таблица энергий (табл. 1.1 и 1.2 учебника)</h3><div style="overflow-x:auto"><table style="border-collapse:collapse;font-size:14.5px;min-width:460px"><tr>${["Газ","Возбуждение, эВ","Ионизация, эВ","Диссоциация, эВ"].map(t=>`<th style="text-align:left;border-bottom:1px solid var(--line);padding:4px 10px">${t}</th>`).join("")}</tr>${[["N₂","6,1","15,5","9,77"],["N","6,3","14,5","—"],["O₂","7,9","12,5","5,17"],["O","9,1","13,6","—"],["H₂O","7,6","12,7","—"]].map(r=>`<tr>${r.map(c=>`<td style="padding:4px 10px;border-bottom:1px solid var(--line)" class="mono">${c}</td>`).join("")}</tr>`).join("")}</table></div></div>`;
+ $$("#t1 .mc").forEach(b=>b.onclick=()=>{const m=MECH.find(x=>x.k===b.dataset.k);dlg._from=b;openDlg(`<span class="tag">${m.g}</span><h2 id="dlgt">${m.t}</h2>${svgMech(m.k)}<div class="fml"><span>Условие: ${m.c.replace(/<\/?i>/g,"")}</span></div><p>${m.d}</p><div class="warn"><b>Где встречается.</b> ${m.ex}</div>`)})}
+
+/* ---------- энергия электрона ---------- */
+const T2={g:"air",E:80,p:760,run:true,trace:[],x:0,W:0,nc:0,ne:0,ni:0,l:0};let C2,r2=Math.random;
+const PRE2=[["Шина КРУ, 80 кВ/см",{g:"air",E:80,p:760}],["Перед пробоем 1 см, 35 кВ/см",{g:"air",E:35,p:760}],["Разрядник, 100 мм рт. ст.",{g:"air",E:30,p:100}],["Аргон, 50 мм рт. ст.",{g:"ar",E:10,p:50}]];
+function p2(){const G=GAS[T2.g],lam=1/(G.A*T2.p),We=G.B/G.A,Wm=T2.E*1000*lam;return {G,lam,We,Wm,P:Math.exp(-We/Wm),Pe:Math.exp(-G.We/Wm),al:alphaOf(T2.g,T2.p,T2.E)}}
+function t2(){$("#t2").innerHTML=`<div class="lab"><div class="side card">
+ <div><span class="lbl">Готовые случаи</span><div class="grid2" id="pre2">${PRE2.map(([t],i)=>`<button data-i="${i}">${t}</button>`).join("")}</div></div>
+ <div><span class="lbl">Газ</span>${seg("g2",Object.entries(GAS).map(([k,v])=>[k,v.n]),T2.g)}</div>
+ ${rng("E2","Напряжённость E, кВ/см","E",2,120,1,T2.E)}${rng("p2","Давление p, мм рт. ст.","p",10,1520,10,T2.p)}
+ <div class="btns"><button class="btn" id="run2">Пауза</button><button class="btn ghost" id="rst2">Сбросить счёт</button></div>
+ <div class="reads">${rd("lam2","Длина пробега λ","lam")}${rd("wm2","Энергия за пробег eEλ")}${rd("pi2","Ионизирующих ударов","weff")}${rd("al2","α по Таунсенду, 1/см","alpha")}</div></div>
+ <div class="card"><div class="fml"><span><i>W</i> = <i>e·E·λ</i></span><span><i>P</i><sub>и</sub> = <i>e</i><sup>−W<sub>и</sub>/(eEλ)</sup></span><span><i>α</i> = <span class="frac"><span>1</span><span><i>λ</i></span></span>·<i>e</i><sup>−W<sub>и</sub>/(eEλ)</sup> = <i>A·p·e</i><sup>−B·p/E</sup></span><small>P<sub>и</sub> — доля пробегов длиннее x<sub>и</sub> = W<sub>и</sub>/(eE)</small></div>
+ <div class="scr"><div class="scrh"><span><b>Энергия одного электрона на пути вдоль поля</b></span><span><span class="lg"><i style="background:#FFD54A"></i>возбуждение</span><span class="lg"><i style="background:#FF8A3D"></i>W<sub>и</sub> табл.</span><span class="lg"><i style="background:#FF4D4D"></i>W<sub>и</sub> эфф. ${qb("weff")}</span></span></div><div id="c2"></div></div>
+ <div class="reads">${rd("nc2","Ударов")}${rd("ne2","Возбуждений (вспышки)")}${rd("ni2","Ионизаций (новые e⁻)")}${rd("as2","α по счёту, 1/см","alpha")}</div>
+ <div class="log" id="log2"></div></div></div>`;
+ bindSeg("g2",v=>{T2.g=v;rst2()});$("#E2").oninput=e=>{T2.E=+e.target.value;rst2()};$("#p2").oninput=e=>{T2.p=+e.target.value;rst2()};
+ $$("#pre2 button").forEach(b=>b.onclick=()=>{Object.assign(T2,PRE2[+b.dataset.i][1]);$("#E2").value=T2.E;$("#p2").value=T2.p;$$("#g2 button").forEach(x=>x.classList.toggle("on",x.dataset.v===T2.g));rst2()});
+ $("#run2").onclick=()=>{T2.run=!T2.run;$("#run2").textContent=T2.run?"Пауза":"Пуск"};$("#rst2").onclick=rst2;
+ C2=canvasBox($("#c2"),300,draw2);C2.fit();rst2();requestAnimationFrame(loop2)}
+function rst2(){Object.assign(T2,{trace:[],x:0,W:0,nc:0,ne:0,ni:0,l:0,path:0});upd2()}
+function step2(){const q=p2();const l=-Math.log(1-r2())*q.lam;const W=T2.E*1000*l;const x0=T2.x;T2.x+=l/q.lam;T2.path+=l;T2.nc++;let ev="el";if(W>=q.We){T2.ni++;ev="ion"}else if(W>=q.G.We){T2.ne++;ev="exc"}T2.trace.push({x0,x1:T2.x,W,ev});const span=60;while(T2.trace.length&&T2.trace[0].x1<T2.x-span)T2.trace.shift()}
+let last2=0;function loop2(t){if(curTab==="t2"&&T2.run&&t-last2>60){last2=t;step2();for(let i=0;i<400;i++){const q=p2();const l=-Math.log(1-r2())*q.lam,W=T2.E*1000*l;T2.nc++;T2.path+=l;if(W>=q.We)T2.ni++;else if(W>=q.G.We)T2.ne++}draw2();upd2()}requestAnimationFrame(loop2)}
+function upd2(){const q=p2();$("#E2o").textContent=T2.E+" кВ/см";$("#p2o").textContent=T2.p+" мм рт. ст.";$("#lam2").textContent=fx(q.lam*1e4,2)+" мкм";$("#wm2").textContent=fx(q.Wm,1)+" эВ";$("#pi2").textContent=fN(q.P*100,2)+" %";$("#al2").textContent=fN(q.al,2);
+ $("#nc2").textContent=fN(T2.nc,2);$("#ne2").textContent=fN(T2.ne,2);$("#ni2").textContent=fN(T2.ni,2);$("#as2").textContent=T2.path>0?fN(T2.ni/T2.path,2):"—";
+ const r=q.Wm/q.We;$("#log2").innerHTML=`${q.G.n[0].toUpperCase()+q.G.n.slice(1)}, E/p = ${fx(T2.E*1000/T2.p,0)} В/(см·мм рт. ст.). За средний пробег электрон набирает <b>${fx(q.Wm,1)} эВ</b> — ${r<1?`в ${fx(1/r,1)} раза меньше`:"больше"} эффективной энергии ионизации ${fx(q.We,1)} эВ. Ионизует лишь доля ударов P<sub>и</sub> = ${fN(q.P*100,2)} %, поэтому α = P<sub>и</sub>/λ = ${fN(q.al,2)} 1/см. ${T2.p>=600&&T2.E<40?"При атмосферном давлении нужно очень сильное поле: ионизация — редкое событие.":T2.p<300?"При пониженном давлении пробег длиннее — электрон легко набирает энергию.":""}`}
+function draw2(){if(!C2)return;const {ctx,w,h}=C2,q=p2(),L=46,R=12,T=12,B=28,W=w-L-R,H=h-T-B,ymax=Math.max(30,q.We*1.35),x1=Math.max(60,T2.x),x0=x1-60,X=x=>L+(x-x0)/60*W,Y=v=>T+H-Math.min(v,ymax)/ymax*H;
+ ctx.clearRect(0,0,w,h);ctx.fillStyle="#0D171E";ctx.fillRect(0,0,w,h);ctx.font="11px IBM Plex Mono, monospace";ctx.fillStyle="#9FB4C0";ctx.strokeStyle="#253844";ctx.textAlign="right";
+ for(let v=0;v<=ymax;v+=ymax>40?10:5){ctx.beginPath();ctx.moveTo(L,Y(v)+.5);ctx.lineTo(L+W,Y(v)+.5);ctx.stroke();ctx.fillText(v+"",L-5,Y(v)+4)}ctx.save();ctx.translate(11,T+H/2);ctx.rotate(-Math.PI/2);ctx.textAlign="center";ctx.fillText("энергия, эВ",0,0);ctx.restore();
+ ctx.textAlign="center";ctx.fillText("путь электрона, в средних длинах пробега λ",L+W/2,h-6);
+ const hl=(v,c,d,t)=>{ctx.strokeStyle=c;ctx.setLineDash(d);ctx.lineWidth=1.4;ctx.beginPath();ctx.moveTo(L,Y(v));ctx.lineTo(L+W,Y(v));ctx.stroke();ctx.setLineDash([]);ctx.fillStyle=c;ctx.textAlign="left";ctx.fillText(t,L+4,Y(v)-4)};
+ hl(q.G.We,"#FFD54A",[5,4],"возбуждение "+fx(q.G.We,1)+" эВ");hl(q.G.Wi,"#FF8A3D",[5,4],"Wи табл. "+fx(q.G.Wi,1)+" эВ");hl(q.We,"#FF4D4D",[],"Wи эфф. = B/A = "+fx(q.We,1)+" эВ");
+ ctx.lineWidth=1.8;for(const s of T2.trace){if(s.x1<x0)continue;const xa=Math.max(x0,s.x0),fa=(xa-s.x0)/(s.x1-s.x0);ctx.strokeStyle="#4FB3FF";ctx.beginPath();ctx.moveTo(X(xa),Y(s.W*fa));ctx.lineTo(X(s.x1),Y(s.W));ctx.lineTo(X(s.x1),Y(0));ctx.stroke();
+  if(s.ev!=="el"){ctx.beginPath();ctx.arc(X(s.x1),Y(Math.min(s.W,ymax)),s.ev==="ion"?7:4.5,0,7);ctx.fillStyle=s.ev==="ion"?"#FF4D4D":"#FFD54A";ctx.fill();if(s.ev==="ion"){ctx.fillStyle="#E8F1F5";ctx.textAlign="center";ctx.fillText("+e⁻",X(s.x1),Y(Math.min(s.W,ymax))-11)}}}}
+
+/* ---------- лавина ---------- */
+const T3={g:"air",E:42,p:760,S:1.2,eta:0,n0:1,x:1.2,play:false};let C3,G3;
+function p3(x){const al=alphaOf(T3.g,T3.p,T3.E),ae=al-T3.eta,n0=T3.n0;const ex=v=>Math.abs(ae)<1e-9?1+ae*v:Math.exp(ae*v);const k=Math.abs(ae)<1e-9?x:(ex(x)-1)/ae;
+ const ne=n0*ex(x),np=n0*al*k,nn=n0*T3.eta*k,kh=Math.abs(ae)<1e-9?x/2:(ex(x/2)-1)/ae,npRear=n0*al*kh;const xs=Math.max(1e-6,1/Math.max(ae,1e-6));const kf=Math.abs(ae)<1e-9?Math.min(x,xs):(ex(x)-ex(Math.max(0,x-xs)))/ae,npHead=n0*al*kf;
+ const E=T3.E*1e5,r=Math.sqrt(4*1.0*x/(T3.E*1000))*1e-2,Eq=r>0?8.988e9*1.602e-19*ne/(r*r):0,ve=3.2e5*(T3.E*1000/T3.p),t=x/ve,vi=2*(760/T3.p)*T3.E*1000;return {al,ae,ne,np,nn,npRear,npHead,cg:ae>0?Math.min(x,1/ae):x/2,r,Eq,Er:Eq/E,t,dxi:vi*t}}
+function xcrit(){const al=alphaOf(T3.g,T3.p,T3.E)-T3.eta;if(al<=0)return null;let lo=0,hi=50;if(p3(hi).Er<1)return null;for(let i=0;i<60;i++){const m=(lo+hi)/2;if(p3(m).Er>=1)hi=m;else lo=m}return hi}
+function t3(){$("#t3").innerHTML=`<div class="lab"><div class="side card">
+ <div><span class="lbl">Газ</span>${seg("g3",Object.entries(GAS).map(([k,v])=>[k,v.n]),T3.g)}</div>
+ ${rng("E3","Напряжённость E, кВ/см","E",10,120,0.5,T3.E)}${rng("p3","Давление p, мм рт. ст.","p",50,1520,10,T3.p)}${rng("S3","Промежуток S, см","S",0.1,3,0.05,T3.S)}${rng("eta3","Прилипание η, 1/см","eta",0,20,0.5,T3.eta)}
+ <div><span class="lbl">Начальных электронов n<sub>0</sub> ${qb("n0")}</span>${seg("n03",[[1,"1"],[10,"10"],[100,"100"]],T3.n0)}</div>
+ ${rng("x3","Где сейчас головка, x","head",0,1,0.001,1)}
+ <div class="btns"><button class="btn" id="pl3">▶ Пустить лавину</button></div></div>
+ <div class="card"><div class="fml"><span><i>n</i><sub>e</sub> = <i>n</i><sub>0</sub>·<i>e</i><sup>(α−η)x</sup></span><span><i>N</i><sub>+</sub> = <i>n</i><sub>0</sub>·<span class="frac"><span><i>α</i></span><span><i>α − η</i></span></span>·(<i>e</i><sup>(α−η)x</sup> − 1)</span><span><i>α</i> = <i>A·p·e</i><sup>−B·p/E</sup></span><span><i>E</i><sub>q</sub> = <span class="frac"><span><i>e·n</i><sub>e</sub></span><span>4πε<sub>0</sub><i>r</i>²</span></span></span></div>
+ <div class="scr"><div class="scrh"><span><b>Промежуток катод — анод</b> · радиус лавины на рисунке увеличен</span><span><span class="lg"><i style="background:#4FB3FF"></i>электроны</span><span class="lg"><i style="background:#FF8A3D"></i>положит. ионы</span><span class="lg"><i style="background:#C39BFF"></i>отрицат. ионы</span></span></div><div id="c3"></div></div>
+ <div class="reads">${rd("al3","α, 1/см","alpha")}${rd("ae3","α − η, 1/см","aeff")}${rd("ax3","(α − η)·x")}${rd("ne3","Электронов в головке","head")}${rd("np3","Положит. ионов в хвосте","tail")}${rd("nh3","Ионов у головки (последние 1/α)","cg")}${rd("nr3","Ионов в задней половине","cg")}${rd("nn3","Отрицат. ионов","eta")}${rd("cg3","Центр ионов позади головки","cg")}${rd("r3","Радиус головки r","head")}${rd("eq3","Поле головки E<sub>q</sub>","eq")}${rd("t3t","Время пробега","ve")}</div>
+ <div class="scr"><div class="scrh"><span><b>Рост лавины: lg n по пути x</b></span><span><span class="lg"><i style="background:#4FB3FF"></i>электроны</span><span class="lg"><i style="background:#FF8A3D"></i>ионы</span><span class="lg"><i style="background:#FFD54A"></i>10⁸ — порог стримера</span></span></div><div id="g3c"></div></div>
+ <div class="log" id="log3"></div></div></div>`;
+ bindSeg("g3",v=>{T3.g=v;upd3()});bindSeg("n03",v=>{T3.n0=+v;upd3()});
+ [["E3","E"],["p3","p"],["S3","S"],["eta3","eta"]].forEach(([id,k])=>$("#"+id).oninput=e=>{T3[k]=+e.target.value;if(k==="S")T3.x=Math.min(T3.x,T3.S);upd3()});
+ $("#x3").oninput=e=>{T3.x=+e.target.value*T3.S;T3.play=false;$("#pl3").textContent="▶ Пустить лавину";upd3()};
+ $("#pl3").onclick=()=>{T3.play=!T3.play;if(T3.play&&T3.x>=T3.S*0.999)T3.x=0;$("#pl3").textContent=T3.play?"❚❚ Пауза":"▶ Пустить лавину";if(T3.play)anim3()};
+ C3=canvasBox($("#c3"),230,draw3);G3=canvasBox($("#g3c"),210,drawG3);C3.fit();G3.fit();upd3()}
+let lt3=0;function anim3(t){if(!T3.play)return;if(!t){requestAnimationFrame(anim3);return}if(!lt3)lt3=t;const dt=Math.min(50,t-lt3);lt3=t;T3.x=Math.min(T3.S,T3.x+T3.S*dt/4000);if(T3.x>=T3.S){T3.play=false;$("#pl3").textContent="▶ Пустить лавину"}upd3();if(T3.play)requestAnimationFrame(anim3);else lt3=0}
+function upd3(){const v=p3(T3.x),xc=xcrit();$("#E3o").textContent=fx(T3.E,1)+" кВ/см";$("#p3o").textContent=T3.p+" мм рт. ст.";$("#S3o").textContent=fx(T3.S,2)+" см";$("#eta3o").textContent=fx(T3.eta,1);$("#x3o").textContent=fx(T3.x*10,1)+" мм";$("#x3").value=T3.S?T3.x/T3.S:0;
+ $("#al3").textContent=fN(v.al,2);$("#ae3").textContent=fN(v.ae,2);$("#ax3").textContent=fx(v.ae*T3.x,2);$("#ne3").textContent=fN(v.ne);$("#np3").textContent=fN(v.np);$("#nh3").textContent=fN(v.npHead)+(v.np>0?" ("+fx(v.npHead/v.np*100,0)+" %)":"");const fr=v.np>0?v.npRear/v.np*100:0;$("#nr3").textContent=fN(v.npRear)+(v.np>0?" ("+(fr<0.01?"< 0,01":fx(fr,fr<1?2:0))+" %)":"");$("#nn3").textContent=fN(v.nn);
+ $("#cg3").textContent=fx(v.cg*10,2)+" мм";$("#r3").textContent=fx(v.r*1e3,3)+" мм";$("#eq3").textContent=fN(v.Eq/1e5,2)+" кВ/см";$("#eq3w").classList.toggle("hot",v.Er>=1);$("#t3t").textContent=fN(v.t*1e9,2)+" нс";
+ const st=v.Er>=1;$("#log3").innerHTML=v.ae<=0?`<b>α − η ≤ 0: лавина не растёт.</b> Прилипание забирает электроны быстрее, чем рождает ионизация, — электроотрицательный газ «гасит» разряд. Поднимите E или уменьшите η.`:
+ `Головка на ${fx(T3.x*10,1)} мм от катода: <b>${fN(v.ne)} электронов</b>, позади — ${fN(v.np)} положительных ионов. Почти все ионы родились у самой головки: в задней половине лавины их лишь ${(()=>{const f=v.npRear/Math.max(v.np,1e-9)*100;return f<0.01?"меньше 0,01":fx(f,f<1?2:1)})()} %. Поле заряда головки ${fN(v.Eq/1e5,2)} кВ/см — ${st?`<b style="color:var(--hot)">сравнялось с внешним (${fx(T3.E,1)} кВ/см) и превысило его: лавина превращается в стример — лекция 3.</b> Дальше этой точки формулы лавины уже неприменимы.`:`${fx(v.Er*100,v.Er<0.01?3:1)} % от внешнего ${fx(T3.E,1)} кВ/см.`} ${xc!==null&&xc<=T3.S?`Критическая длина лавины x<sub>кр</sub> ≈ ${fx(xc*10,1)} мм < S — разряд пойдёт в стримерной форме.`:xc!==null?`До стримера нужен путь ${fx(xc*10,1)} мм — больше промежутка.`:""} За время пробега ${fN(v.t*1e9,2)} нс ионы сдвинулись лишь на ${fx(v.dxi*1e4,1)} мкм.`;
+ draw3();drawG3()}
+function draw3(){if(!C3)return;const {ctx,w,h}=C3,v=p3(T3.x),L=46,R=46,W=w-L-R,cy=h/2,X=x=>L+x/T3.S*W;ctx.clearRect(0,0,w,h);ctx.fillStyle="#0D171E";ctx.fillRect(0,0,w,h);
+ ctx.fillStyle="#5A6B78";ctx.fillRect(L-18,16,14,h-32);ctx.fillRect(L+W+4,16,14,h-32);ctx.font="12px IBM Plex Sans, sans-serif";ctx.fillStyle="#CFE0EA";ctx.textAlign="center";ctx.fillText("катод −",L-11,12);ctx.fillText("анод +",L+W+11,12);
+ ctx.strokeStyle="#253844";for(let i=1;i<10;i++){const x=L+W*i/10;ctx.beginPath();ctx.moveTo(x,20);ctx.lineTo(x,h-20);ctx.stroke()}ctx.fillStyle="#9FB4C0";ctx.font="11px IBM Plex Mono, monospace";ctx.fillText(fx(T3.S*10,1)+" мм",L+W/2,h-6);
+ ctx.strokeStyle="#9FB4C0";ctx.fillStyle="#9FB4C0";ctx.beginPath();ctx.moveTo(L+30,h-22);ctx.lineTo(L+76,h-22);ctx.stroke();ctx.beginPath();ctx.moveTo(L+76,h-22);ctx.lineTo(L+70,h-25);ctx.lineTo(L+70,h-19);ctx.fill();ctx.fillText("E",L+20,h-18);
+ if(T3.x<=0||v.ae<=0&&T3.x<=0)return;const Rmax=Math.min(h*0.36,60),rv=x=>4+Rmax*Math.sqrt(Math.max(0,x)/Math.max(T3.S,0.1)),hx=X(T3.x),rr=rv(T3.x);
+ const rnd=mulb(77),ae=v.ae,N=Math.min(900,30+Math.round(Math.log10(Math.max(v.np,1)+1)*110));const samp=()=>{const u=rnd();if(ae<=1e-6)return u*T3.x;const a=Math.exp(-ae*T3.x);return T3.x+Math.log(u*(1-a)+a)/ae};
+ const fn=T3.eta/Math.max(v.al,1e-9);for(let i=0;i<N;i++){const xx=samp(),r=rv(xx)*Math.sqrt(rnd()),th=rnd()*6.283;ctx.fillStyle=rnd()<fn/(1+fn)?"rgba(195,155,255,.85)":"rgba(255,138,61,.8)";ctx.fillRect(X(xx)+r*Math.cos(th)*0.35-1,cy+r*Math.sin(th)-1,2.2,2.2)}
+ const ne=Math.min(500,20+Math.round(Math.log10(v.ne+1)*60));const gr=ctx.createRadialGradient(hx+rr*0.25,cy,1,hx+rr*0.25,cy,rr);gr.addColorStop(0,"rgba(79,179,255,.55)");gr.addColorStop(1,"rgba(79,179,255,0)");ctx.fillStyle=gr;ctx.beginPath();ctx.arc(hx+rr*0.25,cy,rr,0,7);ctx.fill();
+ for(let i=0;i<ne;i++){const r=rr*Math.sqrt(rnd()),th=rnd()*6.283;ctx.fillStyle="#4FB3FF";ctx.fillRect(hx+rr*0.25+r*Math.cos(th)*0.6-1,cy+r*Math.sin(th)-1,2.4,2.4)}
+ const lab=(x,y,t,c)=>{ctx.fillStyle=c;ctx.font="12px IBM Plex Sans, sans-serif";ctx.textAlign="center";ctx.fillText(t,x,y)};
+ lab(Math.min(L+W-70,Math.max(L+70,hx)),Math.max(16,cy-rr-8),"головка: "+fN(v.ne)+" e⁻","#8FD0FF");if(T3.x>T3.S*0.18)lab(Math.max(L+50,X(T3.x*0.5)),cy+rv(T3.x*0.5)+16,"хвост: "+fN(v.np)+" ионов","#FFB07A");
+ if(v.ae>0&&1/v.ae<T3.x){const xc=X(T3.x-1/v.ae);ctx.strokeStyle="rgba(255,213,74,.7)";ctx.setLineDash([3,3]);ctx.beginPath();ctx.moveTo(xc,cy-rr-2);ctx.lineTo(xc,cy+rr+2);ctx.stroke();ctx.setLineDash([]);lab(xc,Math.min(h-24,cy+rr+18),"центр ионов","#FFD54A")}
+ if(v.Er>=1){ctx.strokeStyle="#FF4D4D";ctx.lineWidth=2;ctx.beginPath();ctx.arc(hx+rr*0.25,cy,rr+6,0,7);ctx.stroke();ctx.lineWidth=1;lab(Math.min(L+W-90,Math.max(L+90,hx)),32,"поле головки ≥ E → стример","#FF6B6B")}}
+function mulb(a){return ()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function drawG3(){if(!G3)return;const {ctx,w,h}=G3,L=46,R=14,T=12,B=28,W=w-L-R,H=h-T-B;const pe=x=>Math.log10(Math.max(1e-3,p3(x).ne)),pi=x=>Math.log10(Math.max(1e-3,p3(x).np)+1e-9);
+ const ym=Math.max(10,Math.ceil(Math.max(pe(T3.S),pi(T3.S))+1)),y0=Math.min(0,Math.floor(pe(T3.S)));const X=x=>L+x/T3.S*W,Y=v=>T+H-(v-y0)/(ym-y0)*H;ctx.clearRect(0,0,w,h);ctx.fillStyle="#0D171E";ctx.fillRect(0,0,w,h);
+ ctx.font="11px IBM Plex Mono, monospace";ctx.strokeStyle="#253844";ctx.fillStyle="#9FB4C0";ctx.textAlign="right";const st=ym-y0>16?4:2;for(let v=y0;v<=ym;v+=st){ctx.beginPath();ctx.moveTo(L,Y(v)+.5);ctx.lineTo(L+W,Y(v)+.5);ctx.stroke();ctx.fillText("10"+String(v).split("").map(c=>SUP[c]).join(""),L-5,Y(v)+4)}
+ ctx.textAlign="center";for(let i=0;i<=5;i++){const x=T3.S*i/5;ctx.fillText(fx(x*10,1),X(x),h-14)}ctx.fillText("x, мм",L+W/2,h-2);
+ ctx.strokeStyle="#FFD54A";ctx.setLineDash([5,4]);ctx.beginPath();ctx.moveTo(L,Y(8));ctx.lineTo(L+W,Y(8));ctx.stroke();ctx.setLineDash([]);
+ const line=(f,c)=>{ctx.strokeStyle=c;ctx.lineWidth=2;ctx.beginPath();for(let i=0;i<=200;i++){const x=T3.S*i/200,y=Y(Math.max(y0,Math.min(ym,f(x))));i?ctx.lineTo(X(x),y):ctx.moveTo(X(x),y)}ctx.stroke();ctx.lineWidth=1};line(pi,"#FF8A3D");line(pe,"#4FB3FF");
+ ctx.strokeStyle="#E8F1F5";ctx.beginPath();ctx.moveTo(X(T3.x),T);ctx.lineTo(X(T3.x),T+H);ctx.stroke();ctx.beginPath();ctx.arc(X(T3.x),Y(Math.max(y0,Math.min(ym,pe(T3.x)))),5,0,7);ctx.fillStyle="#4FB3FF";ctx.fill()}
+
+/* ---------- самостоятельность ---------- */
+const T4={g:"air",p:760,S:1,U:30,gam:0.01,eta:0,ion:true,I0:1};let C4s,C4b,C4c,A4={t0:0,on:false};
+const mu4=U=>{const a=alphaOf(T4.g,T4.p,U/T4.S)-T4.eta;return T4.gam*(Math.exp(a*T4.S)-1)};
+function Ub4(){let lo=0.01,hi=3000;if(mu4(hi)<1)return null;for(let i=0;i<80;i++){const m=(lo+hi)/2;if(mu4(m)>=1)hi=m;else lo=m}return hi}
+const pasch=(g,pS,gam)=>{const G=GAS[g],d=Math.log(G.A*pS)-Math.log(Math.log(1+1/gam));return d>0?G.B*pS/d/1000:null};
+const cur4=U=>{const a=alphaOf(T4.g,T4.p,U/T4.S)-T4.eta,m=mu4(U);return m>=1?Infinity:T4.I0*Math.exp(a*T4.S)/(1-m)};
+function gens4(){const a=alphaOf(T4.g,T4.p,T4.U/T4.S)-T4.eta,M=Math.exp(a*T4.S),m=mu4(T4.U),out=[];let n=1;for(let k=1;k<=5;k++){out.push({k,n,ne:n*M,ni:n*(M-1),sec:n*m});n*=m;if(n<0.005||n>1e7)break}return {a,M,m,out}}
+function t4(){$("#t4").innerHTML=`<div class="lab"><div class="side card">
+ <div><span class="lbl">Газ</span>${seg("g4",Object.entries(GAS).map(([k,v])=>[k,v.n]),T4.g)}</div>
+ ${rng("U4","Напряжение источника U, кВ","E",0.5,60,0.1,T4.U)}${rng("S4","Промежуток S, см","S",0.1,3,0.05,T4.S)}${rng("p4","Давление p, мм рт. ст.","p",50,1520,10,T4.p)}
+ <div><span class="lbl">Коэффициент γ (материал катода) ${qb("gamma")}</span>${seg("gm4",[[1e-4,"10⁻⁴"],[1e-3,"10⁻³"],[1e-2,"10⁻²"],[1e-1,"10⁻¹"]],T4.gam)}</div>
+ ${rng("eta4","Прилипание η, 1/см","eta",0,10,0.5,T4.eta)}
+ <div><span class="lbl">Ультрафиолетовая лампа у катода ${qb("I0")}</span>${seg("io4",[[1,"включена"],[0,"выключена"]],1)}</div>
+ <div class="btns"><button class="btn" id="go4">Поднять до U<sub>пр</sub></button><button class="btn ghost" id="pl4">▶ Пустить один электрон</button></div></div>
+ <div class="card">
+ <div class="warn"><b>Опыт Таунсенда.</b> Плоский промежуток S в газе подключён к источнику U через резистор, ток в цепи показывает микроамперметр. Ультрафиолетовая лампа выбивает из катода фотоэлектроны — это ток I<sub>0</sub> = 1 пА. Вопрос опыта: при каком напряжении промежуток перестанет нуждаться в лампе?</div>
+ <div class="scr"><div class="scrh"><span><b>Схема опыта и судьба одного электрона</b></span><span><span class="lg"><i style="background:#4FB3FF"></i>электроны</span><span class="lg"><i style="background:#FF8A3D"></i>положит. ионы</span><span class="lg"><i style="background:#B98BFF"></i>ультрафиолет</span></span></div><div id="c4s"></div></div>
+ <div id="st4" style="display:flex;flex-direction:column;gap:6px"></div>
+ <div class="fml"><span><i>μ</i> = <i>γ</i>·(<i>e</i><sup>(α−η)S</sup> − 1)</span><span>самостоятельный, если <i>μ</i> ≥ 1</span><span><i>I</i> = <span class="frac"><span><i>I</i><sub>0</sub>·<i>e</i><sup>(α−η)S</sup></span><span>1 − <i>μ</i></span></span></span><small>μ — сколько новых электронов в среднем даёт одна лавина</small></div>
+ <div class="reads">${rd("E4","E = U/S")}${rd("a4","(α − η)·S","alpha")}${rd("n4","Электронов в лавине","head")}${rd("m4","μ — новых электронов","self")}${rd("i4","Ток в цепи (прибор)","tc")}${rd("u4","U<sub>пр</sub> этого промежутка","pas")}</div>
+ <div class="scr"><div class="scrh"><span><b>Что показывает микроамперметр при подъёме U</b> ${qb("tc")}</span><span>ток в пА, логарифмическая шкала</span></div><div id="c4b"></div></div>
+ <div class="scr"><div class="scrh"><span><b>Кривая Пашена: держит промежуток или пробьётся</b> ${qb("pas")}</span><span>точка — ваш промежуток при текущем U</span></div><div id="c4c"></div></div>
+ <div class="log" id="log4"></div></div></div>`;
+ bindSeg("g4",v=>{T4.g=v;upd4()});bindSeg("gm4",v=>{T4.gam=+v;upd4()});bindSeg("io4",v=>{T4.ion=v==="1";upd4()});
+ [["U4","U"],["S4","S"],["p4","p"],["eta4","eta"]].forEach(([id,k])=>$("#"+id).oninput=e=>{T4[k]=+e.target.value;upd4()});
+ $("#go4").onclick=()=>{const u=Ub4();if(u&&u<=60){T4.U=Math.min(60,Math.ceil(u*10)/10);$("#U4").value=T4.U;upd4();play4()}else $("#log4").innerHTML="При этих условиях U<sub>пр</sub> больше 60 кВ — уменьшите промежуток или давление."};
+ $("#pl4").onclick=play4;
+ C4s=canvasBox($("#c4s"),230,drawS4);C4b=canvasBox($("#c4b"),230,drawB4);C4c=canvasBox($("#c4c"),250,drawC4);C4s.fit();C4b.fit();C4c.fit();upd4();play4()}
+function play4(){A4={t0:performance.now(),on:true};requestAnimationFrame(an4)}
+function an4(){if(!A4.on)return;drawS4();if(curTab==="t4")requestAnimationFrame(an4)}
+const PH4=2600;
+function upd4(){const E=T4.U/T4.S,g=gens4(),u=Ub4(),I=cur4(T4.U);$("#U4o").textContent=fx(T4.U,1)+" кВ";$("#S4o").textContent=fx(T4.S,2)+" см";$("#p4o").textContent=T4.p+" мм рт. ст.";$("#eta4o").textContent=fx(T4.eta,1);
+ $("#E4").textContent=fx(E,1)+" кВ/см";$("#a4").textContent=fx(g.a*T4.S,2);$("#n4").textContent=fN(g.M);$("#m4").textContent=fN(g.m,3);$("#u4").textContent=u?fx(u,1)+" кВ":"—";
+ $("#i4").textContent=g.m>=1?"растёт → пробой":!T4.ion?"0 (лампа выключена)":fN(I)+" пА";$("#i4w").classList.toggle("hot",g.m>=1);
+ $("#st4").innerHTML=g.out.map(o=>`<div class="rd" style="flex-direction:row;flex-wrap:wrap;gap:4px 14px;align-items:baseline"><span style="font-weight:600;color:var(--ink)">Поколение ${o.k}:</span><span>${o.k===1?"1 фотоэлектрон":fN(o.n,3)+" электрона"} → лавина <b style="font-size:14px">${fN(o.ne)}</b> e⁻ у анода</span><span>→ <b style="font-size:14px">${fN(o.ni)}</b> ионов идут к катоду</span><span>→ выбивают γ·N<sub>+</sub> = <b style="font-size:14px;color:${g.m>=1?"var(--hot)":"var(--ink)"}">${fN(o.sec,3)}</b> новых электрона</span></div>`).join("")+`<div class="${g.m>=1?"bad":"good"}">${g.m>=1?`<b>μ = ${fN(g.m,3)} ≥ 1 — разряд самостоятельный.</b> Каждая лавина рождает больше одной новой: ток растёт без лампы, наступает пробой.`:`<b>μ = ${fN(g.m,3)} < 1 — разряд несамостоятельный.</b> Каждое следующее поколение слабее: без лампы цепочка оборвётся через ${Math.max(1,Math.ceil(Math.log(0.01)/Math.log(Math.max(g.m,1e-9))))} поколения(й).`}</div>`;
+ $("#log4").innerHTML=`<b>Как читать графики.</b> Верхний — показания прибора при плавном подъёме напряжения от нуля: сначала ток равен фототоку лампы (участок I), затем растёт по экспоненте за счёт ударной ионизации (II), потом ещё быстрее за счёт вторичных электронов с катода (III) и при U<sub>пр</sub> уходит в бесконечность — это пробой (IV). Нижний — кривая Пашена для того же газа и γ: над кривой промежуток пробивается, под ней держит. ${u?`Сейчас U = ${fx(T4.U,1)} кВ, U<sub>пр</sub> = ${fx(u,1)} кВ: ${T4.U>=u?"<b style=\"color:var(--hot)\">точка над кривой — пробой</b>":`запас ${fx((u/T4.U-1)*100,0)} %`}.`:""}`;
+ drawB4();drawC4();if(!A4.on)drawS4()}
+function drawS4(){if(!C4s)return;const {ctx,w,h}=C4s,g=gens4(),cx0=150,cx1=w-90,top=40,bot=h-50,cy=(top+bot)/2;ctx.clearRect(0,0,w,h);ctx.fillStyle="#0D171E";ctx.fillRect(0,0,w,h);
+ ctx.strokeStyle="#9FB4C0";ctx.lineWidth=1.6;ctx.beginPath();ctx.moveTo(cx0-6,cy);ctx.lineTo(60,cy);ctx.lineTo(60,h-18);ctx.lineTo(w-30,h-18);ctx.lineTo(w-30,cy);ctx.lineTo(cx1+6,cy);ctx.stroke();
+ ctx.fillStyle="#0D171E";ctx.beginPath();ctx.arc(60,cy+30,16,0,7);ctx.fill();ctx.stroke();ctx.fillStyle="#E8F1F5";ctx.font="12px IBM Plex Sans, sans-serif";ctx.textAlign="center";ctx.fillText("U",60,cy+34);ctx.fillText(fx(T4.U,1)+" кВ",60,cy+62);
+ const mx=(w+cx1)/2+10;ctx.fillStyle="#0D171E";ctx.beginPath();ctx.arc(w-30,cy+40,17,0,7);ctx.fill();ctx.stroke();ctx.fillStyle="#E8F1F5";ctx.fillText("μA",w-30,cy+44);
+ const I=cur4(T4.U),lv=g.m>=1?1:!T4.ion?0:Math.min(1,Math.log10(Math.max(1,I))/8);ctx.strokeStyle="#FFD54A";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(w-30,cy+52);const an=-Math.PI*0.85+lv*Math.PI*0.7;ctx.lineTo(w-30+12*Math.cos(an),cy+52+12*Math.sin(an));ctx.stroke();
+ ctx.fillStyle="#9FB4C0";ctx.font="11px IBM Plex Mono, monospace";ctx.textAlign="right";ctx.fillText(g.m>=1?"I → ∞":!T4.ion?"I = 0":"I = "+fN(I)+" пА",w-8,h-26);ctx.textAlign="center";
+ ctx.fillStyle="#5A6B78";ctx.fillRect(cx0-12,top,12,bot-top);ctx.fillRect(cx1,top,12,bot-top);ctx.fillStyle="#CFE0EA";ctx.font="12px IBM Plex Sans, sans-serif";ctx.fillText("катод −",cx0-6,top-8);ctx.fillText("анод +",cx1+6,top-8);ctx.fillStyle="#9FB4C0";ctx.font="11px IBM Plex Mono, monospace";ctx.fillText("S = "+fx(T4.S*10,1)+" мм",(cx0+cx1)/2,bot+16);
+ if(T4.ion){ctx.fillStyle="#B98BFF";ctx.beginPath();ctx.arc(cx0-60,top+6,9,0,7);ctx.fill();ctx.font="11px IBM Plex Sans, sans-serif";ctx.fillText("УФ-лампа",cx0-60,top-10);ctx.strokeStyle="rgba(185,139,255,.6)";ctx.lineWidth=1.2;for(let i=0;i<3;i++){ctx.beginPath();ctx.moveTo(cx0-50,top+8+i*6);ctx.lineTo(cx0-14,top+18+i*14);ctx.stroke()}}
+ if(!A4.on)return;const t=performance.now()-A4.t0,k=Math.floor(t/PH4),f=(t%PH4)/PH4,gen=g.out[k];if(!gen){A4.on=false;return}
+ const R=mulb(k*31+7),M=g.M;ctx.font="12px IBM Plex Sans, sans-serif";ctx.fillStyle="#E8F1F5";ctx.textAlign="left";ctx.fillText("Поколение "+gen.k,cx0+8,top+14);
+ if(f<0.45){const x=cx0+(cx1-cx0)*(f/0.45),nn=gen.n*Math.exp(Math.log(Math.max(M,1.0001))*(f/0.45)),rr=4+20*(f/0.45),cnt=Math.min(160,Math.max(1,Math.round(Math.log10(nn+1)*40)));
+  for(let i=0;i<cnt*0.6;i++){const xx=cx0+(x-cx0)*Math.pow(R(),0.3),r=rr*(xx-cx0)/(x-cx0+1e-9)*Math.sqrt(R()),th=R()*6.283;ctx.fillStyle="rgba(255,138,61,.8)";ctx.fillRect(xx+r*Math.cos(th)*0.3,cy+r*Math.sin(th),2,2)}
+  for(let i=0;i<cnt;i++){const r=rr*Math.sqrt(R()),th=R()*6.283;ctx.fillStyle="#4FB3FF";ctx.fillRect(x+r*Math.cos(th)*0.5,cy+r*Math.sin(th),2.4,2.4)}
+  ctx.fillStyle="#8FD0FF";ctx.textAlign="center";ctx.fillText(fN(nn)+" e⁻",Math.min(cx1-30,x),cy-rr-8)}
+ else if(f<0.85){const q=(f-0.45)/0.4,cnt=Math.min(140,Math.max(1,Math.round(Math.log10(gen.ni+1)*40)));for(let i=0;i<cnt;i++){const x0=cx0+(cx1-cx0)*Math.pow(R(),0.25),x=x0-(x0-cx0)*q,th=R()*6.283,r=22*Math.sqrt(R());ctx.fillStyle="rgba(255,138,61,.85)";ctx.fillRect(x+r*Math.cos(th)*0.3,cy+r*Math.sin(th),2.2,2.2)}
+  ctx.fillStyle="#FFB07A";ctx.textAlign="center";ctx.fillText(fN(gen.ni)+" ионов идут к катоду",(cx0+cx1)/2,bot-8);ctx.fillStyle="#8FD0FF";ctx.fillText("электроны ушли в анод",cx1-70,top+14)}
+ else{const q=(f-0.85)/0.15;ctx.fillStyle="rgba(255,213,74,"+(0.6*(1-q))+")";ctx.beginPath();ctx.arc(cx0,cy,26+20*q,0,7);ctx.fill();const ns=Math.min(12,Math.max(0,Math.round(gen.sec)));for(let i=0;i<Math.max(ns,gen.sec>=0.01?1:0);i++){ctx.fillStyle=ns?"#4FB3FF":"rgba(79,179,255,.45)";ctx.beginPath();ctx.arc(cx0+8+q*20,cy-30+i*6,3.5,0,7);ctx.fill()}
+  ctx.fillStyle="#E8F1F5";ctx.textAlign="left";ctx.fillText("γ·N₊ = "+fN(gen.sec,3)+" новых электрона",cx0+30,cy+40)}}
+function drawB4(){if(!C4b)return;const {ctx,w,h}=C4b,u=Ub4(),Um=Math.min(60,u?Math.ceil(u*1.08/5)*5:60),L=52,R=14,T=14,B=30,W=w-L-R,H=h-T-B,ymax=9,X=U=>L+U/Um*W,Y=v=>T+H-Math.max(0,Math.min(v,ymax))/ymax*H;ctx.clearRect(0,0,w,h);ctx.fillStyle="#0D171E";ctx.fillRect(0,0,w,h);ctx.font="11px IBM Plex Mono, monospace";
+ const lgI=U=>{const I=cur4(U);return isFinite(I)?Math.log10(Math.max(1,I)):ymax};let U1=0,U2=0;for(let i=1;i<=600;i++){const U=Um*i/600;if(!U1&&lgI(U)>0.05)U1=U;if(!U2&&mu4(U)>0.05)U2=U}U1=U1||Um;U2=U2||(u||Um);
+ const zones=[[0,U1,"I","лампа: I = I₀","rgba(79,179,255,.07)"],[U1,U2,"II","ударная ионизация: экспонента","rgba(255,213,74,.07)"],[U2,u||Um,"III","+ вторичные с катода","rgba(255,138,61,.09)"],[u||Um,Um,"IV","пробой","rgba(255,77,77,.16)"]];
+ zones.forEach(([a,b,n,t,c])=>{if(b<=a)return;ctx.fillStyle=c;ctx.fillRect(X(a),T,X(b)-X(a),H);ctx.fillStyle="#CFE0EA";ctx.textAlign="center";if(X(b)-X(a)>22){ctx.font="13px IBM Plex Sans, sans-serif";ctx.fillText(n,(X(a)+X(b))/2,T+16);ctx.font="11px IBM Plex Sans, sans-serif";if(X(b)-X(a)>110)ctx.fillText(t,(X(a)+X(b))/2,T+32)}});
+ ctx.font="11px IBM Plex Mono, monospace";ctx.strokeStyle="#253844";ctx.fillStyle="#9FB4C0";ctx.textAlign="right";for(let v=0;v<=ymax;v+=3){ctx.beginPath();ctx.moveTo(L,Y(v)+.5);ctx.lineTo(L+W,Y(v)+.5);ctx.stroke();ctx.fillText(["1 пА","1 нА","1 мкА","1 мА"][v/3],L-5,Y(v)+4)}
+ ctx.textAlign="center";for(let i=0;i<=5;i++){const U=Um*i/5;ctx.fillText(fx(U,U<10?1:0),X(U),h-14)}ctx.fillText("напряжение источника U, кВ",L+W/2,h-2);
+ ctx.strokeStyle="#4FB3FF";ctx.lineWidth=2.2;ctx.beginPath();for(let i=0;i<=600;i++){const U=Um*i/600,y=Y(lgI(U));i?ctx.lineTo(X(U),y):ctx.moveTo(X(U),y);if(mu4(U)>=1)break}ctx.stroke();ctx.lineWidth=1;
+ if(u&&u<=Um){ctx.strokeStyle="#FF6B5B";ctx.setLineDash([4,3]);ctx.beginPath();ctx.moveTo(X(u),T);ctx.lineTo(X(u),T+H);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle="#FF6B5B";ctx.textAlign="right";ctx.fillText("Uпр = "+fx(u,1)+" кВ",X(u)-4,T+H-6)}
+ const Uc=Math.min(T4.U,Um);ctx.beginPath();ctx.arc(X(Uc),Y(lgI(Uc)),6,0,7);ctx.fillStyle=mu4(T4.U)>=1?"#FF4D4D":"#FFD54A";ctx.fill()}
+function drawC4(){if(!C4c)return;const {ctx,w,h}=C4c,L=52,R=14,T=14,B=30,W=w-L-R,H=h-T-B,lx0=-1,lx1=3,X=v=>L+(Math.log10(v)-lx0)/(lx1-lx0)*W;const pS=T4.p*T4.S,Uc=pasch(T4.g,pS,T4.gam);
+ let ym=Math.max(T4.U*1.25,(Uc||10)*1.4,10);ym=ym>80?Math.ceil(ym/20)*20:ym>40?Math.ceil(ym/10)*10:Math.ceil(ym/5)*5;const Y=v=>T+H-Math.min(v,ym)/ym*H;ctx.clearRect(0,0,w,h);ctx.fillStyle="#0D171E";ctx.fillRect(0,0,w,h);
+ const pts=[];for(let i=0;i<=400;i++){const x=Math.pow(10,lx0+(lx1-lx0)*i/400),U=pasch(T4.g,x,T4.gam);if(U&&U>0)pts.push([x,U])}
+ ctx.fillStyle="rgba(255,77,77,.13)";ctx.beginPath();ctx.moveTo(X(pts[0][0]),T);pts.forEach(([x,u])=>ctx.lineTo(X(x),Y(u)));ctx.lineTo(L+W,T);ctx.closePath();ctx.fill();
+ ctx.fillStyle="rgba(30,138,76,.16)";ctx.beginPath();ctx.moveTo(X(pts[0][0]),T+H);pts.forEach(([x,u])=>ctx.lineTo(X(x),Y(u)));ctx.lineTo(L+W,T+H);ctx.closePath();ctx.fill();ctx.fillStyle="rgba(30,138,76,.16)";ctx.fillRect(L,T,X(pts[0][0])-L,H);
+ ctx.font="11px IBM Plex Mono, monospace";ctx.strokeStyle="#253844";ctx.fillStyle="#9FB4C0";ctx.textAlign="center";[0.1,1,10,100,1000].forEach(v=>{ctx.beginPath();ctx.moveTo(X(v)+.5,T);ctx.lineTo(X(v)+.5,T+H);ctx.stroke();ctx.fillText(String(v).replace(".",","),X(v),h-14)});ctx.fillText("p·S, мм рт. ст.·см (логарифмическая шкала)",L+W/2,h-2);
+ ctx.textAlign="right";const stp=ym>80?20:ym>40?10:5;for(let v=0;v<=ym;v+=stp){ctx.beginPath();ctx.moveTo(L,Y(v)+.5);ctx.lineTo(L+W,Y(v)+.5);ctx.stroke();ctx.fillText(v+" кВ",L-5,Y(v)+4)}
+ ctx.strokeStyle="#FFD54A";ctx.lineWidth=2.2;ctx.beginPath();pts.forEach(([x,u],i)=>i?ctx.lineTo(X(x),Y(u)):ctx.moveTo(X(x),Y(u)));ctx.stroke();ctx.lineWidth=1;
+ let mn=pts[0];pts.forEach(q=>{if(q[1]<mn[1])mn=q});ctx.font="12px IBM Plex Sans, sans-serif";ctx.fillStyle="#FF9A8F";ctx.textAlign="left";ctx.fillText("ПРОБОЙ — над кривой",L+W*0.06,T+18);ctx.fillStyle="#7FD49E";ctx.textAlign="right";ctx.fillText("ДЕРЖИТ — под кривой",L+W-6,T+H-8);
+ ctx.fillStyle="#FFD54A";ctx.textAlign="center";ctx.fillText("минимум Пашена ≈ "+fx(mn[1]*1000,0)+" В",X(mn[0])+40,Math.max(T+34,Y(mn[1])-10));
+ ctx.strokeStyle="rgba(232,241,245,.5)";ctx.setLineDash([3,3]);ctx.beginPath();ctx.moveTo(X(pS),T);ctx.lineTo(X(pS),T+H);ctx.stroke();ctx.setLineDash([]);
+ if(Uc){ctx.beginPath();ctx.arc(X(pS),Y(Uc),4,0,7);ctx.fillStyle="#FFD54A";ctx.fill()}const br=Uc&&T4.U>=Uc;ctx.beginPath();ctx.arc(X(pS),Y(T4.U),7,0,7);ctx.fillStyle=br?"#FF4D4D":"#4FE08A";ctx.fill();ctx.strokeStyle="#0D171E";ctx.lineWidth=2;ctx.stroke();ctx.lineWidth=1;
+ ctx.fillStyle="#E8F1F5";ctx.textAlign=X(pS)>L+W*0.7?"right":"left";ctx.fillText("ваш промежуток: p·S = "+fN(pS)+", U = "+fx(T4.U,1)+" кВ",X(pS)+(X(pS)>L+W*0.7?-12:12),Math.max(T+50,Y(T4.U)-8))}
+
+/* ---------- задачи ---------- */
+const done5={};
+function t5(){$("#t5").innerHTML=`<div class="card"><h2>Задачи с объектов</h2><p>Решите задачу и введите ответ. Знаки «?» рядом с условием — подсказки: наведите мышь или нажмите. Допуск ответа — 2–3 %.</p><div class="dots" id="dt5">${TASKS.map(t=>`<i data-k="${t.id}"></i>`).join("")}</div></div>`+TASKS.map((t,i)=>`<div class="task" id="${t.id}"><h3><span class="mono">${i+1}</span>${t.t}</h3><p>${t.x}</p><div class="chips">${t.h.map((x,j)=>`<span class="chip" tabindex="0" data-tipt="${x.replace(/"/g,"&quot;")}">? подсказка ${j+1}</span>`).join("")}</div><div class="ans"><input inputmode="decimal" aria-label="Ответ"><span class="u">${t.u}</span><button class="btn">Проверить</button><button class="btn ghost">Решение</button></div><div class="fb"></div></div>`).join("");
+ TASKS.forEach(t=>{const box=$("#"+t.id),inp=box.querySelector("input"),[b1,b2]=box.querySelectorAll(".ans button"),fb=box.querySelector(".fb");
+  const chk=()=>{const v=parseFloat(inp.value.replace(/\s/g,"").replace(",","."));if(!isFinite(v)){fb.innerHTML=`<div class="warn">Введите число.</div>`;return}const ok=Math.abs(v-t.a)<=Math.abs(t.a)*t.tol;fb.innerHTML=ok?`<div class="good"><b>Верно.</b> ${t.s}</div>`:`<div class="bad"><b>Пока не так.</b> Проверьте единицы и порядок величины, загляните в подсказки.</div>`;if(ok){done5[t.id]=1;$(`#dt5 i[data-k="${t.id}"]`).className="ok"}};
+  b1.onclick=chk;inp.onkeydown=e=>{if(e.key==="Enter")chk()};b2.onclick=()=>{fb.innerHTML=`<div class="warn"><b>Решение.</b> ${t.s}</div>`}})}
+
+/* ---------- тест ---------- */
+function shuf(a,seed){let s=(Math.imul(seed+11,2654435761)>>>0)^0x9E3779B9;const r=()=>{s^=s<<13;s>>>=0;s^=s>>>17;s^=s<<5;s>>>=0;return s/4294967296};for(let k=0;k<7;k++)r();const o=a.map((x,i)=>[x,i]);for(let i=o.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[o[i],o[j]]=[o[j],o[i]]}return o}
+const LET="АБВГД";
+function t6(){$("#t6").innerHTML=`<div class="card"><h2>Тест: 15 вопросов</h2><p>Выберите один вариант в каждом вопросе и нажмите «Проверить» внизу.</p></div>`+TEST.map((q,i)=>`<div class="tq" id="q6_${i}"><div class="qq">${i+1}. ${q.q}</div>${shuf(q.o,i).map(([t,j],k)=>`<label><input type="radio" name="r6_${i}" value="${j}"><span><b>${LET[k]})</b> ${t}</span></label>`).join("")}<div class="ex" hidden></div></div>`).join("")+`<div class="card"><div class="btns"><button class="btn" id="ck6">Проверить</button><button class="btn ghost" id="rs6">Начать заново</button></div><div id="res6"></div></div>`;
+ $("#ck6").onclick=()=>{let s=0;TEST.forEach((q,i)=>{const box=$("#q6_"+i),sel=box.querySelector("input:checked");box.querySelectorAll("label").forEach(l=>{l.classList.remove("right","wrong");const v=+l.querySelector("input").value;if(v===q.a)l.classList.add("right");else if(sel&&+sel.value===v)l.classList.add("wrong")});if(sel&&+sel.value===q.a)s++;const ex=box.querySelector(".ex");ex.hidden=false;ex.innerHTML=q.e});const g=s>=13?"отлично":s>=10?"хорошо":s>=8?"удовлетворительно":"повторите материал";$("#res6").innerHTML=`<div class="${s>=10?"good":s>=8?"warn":"bad"}"><b>${s} из 15</b> — ${g}.</div>`};
+ $("#rs6").onclick=t6}
+
+const built={},FIT={t2:()=>C2&&C2.fit(),t3:()=>{C3&&C3.fit();G3&&G3.fit()},t4:()=>{C4s&&C4s.fit();C4b&&C4b.fit();C4c&&C4c.fit();play4()}};
+function onTab(t){if(!built[t]){built[t]=1;({t1,t2,t3,t4,t5,t6})[t]()}else if(FIT[t])FIT[t]()}
+onTab("t1");
+
+</script>
+<a href="../" title="Все материалы" style="position:fixed;right:10px;bottom:10px;z-index:99999;background:rgba(31,95,175,.92);color:#fff;font:600 13px system-ui,sans-serif;padding:6px 11px;border-radius:999px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.25)">⌂ Все материалы</a><script>addEventListener("load",function(){var h=location.hash.slice(1),b=h&&document.querySelector("[data-tab="+h+"]");if(b)b.click()})</script></html>

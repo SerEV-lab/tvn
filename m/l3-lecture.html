@@ -1,0 +1,1079 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Лекция 3. Стример, лидер, искровой разряд</title><style>:root{--ink:#16202c;--muted:#5b6675;--line:#d9dde3;--acc:#1f5faf;--bg:#fff;--soft:#f3f5f8}
+@media (prefers-color-scheme:dark){:root{--ink:#e6eaf0;--muted:#9aa6b5;--line:#33404f;--acc:#7fb3f0;--bg:#121820;--soft:#1b2430}img{background:#fff}}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 "PT Serif",Georgia,"Times New Roman",serif}
+.bar{position:sticky;top:0;display:flex;justify-content:space-between;gap:12px;padding:10px 16px;background:var(--soft);border-bottom:1px solid var(--line);font:600 14px system-ui,-apple-system,"Segoe UI",sans-serif;z-index:5}
+.bar a{color:var(--acc);text-decoration:none}.bar .pdf{border:1px solid var(--acc);border-radius:999px;padding:2px 12px}
+main{max-width:820px;margin:0 auto;padding:16px 16px 64px}
+h1,h2,h3,h4{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.25;margin:1.6em 0 .5em}
+h1{font-size:1.5em}h2{font-size:1.25em}h3{font-size:1.08em}
+p{margin:.5em 0}img{max-width:100%;height:auto;display:block;margin:12px auto;border-radius:6px}
+figure{margin:16px 0}figcaption{text-align:center;color:var(--muted);font-size:.9em}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:.92em;display:block;overflow-x:auto}
+td,th{border:1px solid var(--line);padding:6px 8px;vertical-align:top}th{background:var(--soft);text-align:left}
+math{font-size:1.08em}math[display=block]{overflow-x:auto;overflow-y:hidden;margin:10px 0}
+blockquote{margin:12px 0;padding:8px 14px;border-left:4px solid var(--acc);background:var(--soft)}
+@media print{.bar{display:none}body{font-size:12pt}main{max-width:none;padding:0}table{display:table}img{background:none}}
+</style></head><body><nav class="bar"><a href="../">← Техника высоких напряжений</a><a class="pdf" href="l3-lecture.pdf" download>Скачать PDF</a></nav><main><p>Техника высоких напряжений</p>
+<p><strong>Конспект лекции</strong></p>
+<p><strong>Лекция 3. Стример, лидер, искровой разряд</strong></p>
+<p><em>Как лавина превращается в канал и сколько длится пробой ·
+материал для студентов</em></p>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><p><strong>О чём лекция.</strong> В лекции 2 лавина при αx ≈ 20
+становилась стримером. Теперь — что дальше: как растёт стример, почему
+знак острия меняет пробивное напряжение в 2–2,5 раза, зачем длинным
+промежуткам горячий лидер и сколько времени занимает пробой.</p>
+<p><strong>Интерактив.</strong> «Стример, лидер, искровой разряд» на
+сайте курса: вкладки 1–4 повторяют разделы конспекта, вкладка 5 —
+реальные случаи, 6 — задачи, 7 — тест. Задачи с разбором — в пособии
+студента к лекции 3.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>После лекции вы сможете:</strong></p>
+<ol type="1">
+<li><p>объяснить критерий перехода лавины в стример и рассчитать
+критическую длину лавины;</p></li>
+<li><p>описать шаг положительного и отрицательного стримера и роль
+фотоионизации;</p></li>
+<li><p>оценить пробивное напряжение острие — плоскость при обеих
+полярностях, с поправкой на высоту;</p></li>
+<li><p>объяснить полярный эффект через объёмный заряд ионов;</p></li>
+<li><p>объяснить, как появляется лидер, и рассчитать U<sub>50</sub> по
+Галле;</p></li>
+<li><p>разложить время разряда на t<sub>с</sub> и t<sub>ф</sub> и
+прочитать вольт-секундную характеристику.</p></li>
+</ol>
+<h2>1. Обозначения и сокращения</h2>
+<table>
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 60%" />
+<col style="width: 21%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Обозначение</strong></th>
+<th><strong>Смысл</strong></th>
+<th><strong>Единица</strong></th>
+</tr>
+<tr class="odd">
+<th>E</th>
+<th>напряжённость электрического поля</th>
+<th>кВ/см</th>
+</tr>
+<tr class="header">
+<th>E<sub>s</sub></th>
+<th>поле устойчивости стримера (+: ≈ 4,7; −: ≈ 11,7 при δ = 1)</th>
+<th>кВ/см</th>
+</tr>
+<tr class="odd">
+<th>E<sub>q</sub></th>
+<th>поле объёмного заряда головки лавины или стримера</th>
+<th>кВ/см</th>
+</tr>
+<tr class="header">
+<th>E<sub>L</sub></th>
+<th>продольный градиент в канале лидера</th>
+<th>кВ/см</th>
+</tr>
+<tr class="odd">
+<th>E<sub>max</sub></th>
+<th>наибольшая напряжённость у острия</th>
+<th>кВ/см</th>
+</tr>
+<tr class="header">
+<th>α</th>
+<th>коэффициент ударной ионизации</th>
+<th>1/см</th>
+</tr>
+<tr class="odd">
+<th>x<sub>кр</sub></th>
+<th>критическая длина лавины (переход в стример)</th>
+<th>см</th>
+</tr>
+<tr class="header">
+<th>U, U<sub>m</sub></th>
+<th>напряжение; амплитуда импульса</th>
+<th>кВ</th>
+</tr>
+<tr class="odd">
+<th>U<sub>з</sub></th>
+<th>напряжение зажигания (начала ионизации у острия)</th>
+<th>кВ</th>
+</tr>
+<tr class="header">
+<th>U<sub>пр</sub>, U<sub>50</sub></th>
+<th>пробивное напряжение; 50-процентное разрядное напряжение</th>
+<th>кВ</th>
+</tr>
+<tr class="odd">
+<th>U<sub>0</sub></th>
+<th>статическое пробивное напряжение</th>
+<th>кВ</th>
+</tr>
+<tr class="header">
+<th>d</th>
+<th>расстояние острие (стержень) — плоскость</th>
+<th>см, м</th>
+</tr>
+<tr class="odd">
+<th>r</th>
+<th>радиус острия</th>
+<th>мм, см</th>
+</tr>
+<tr class="header">
+<th>L, L<sub>s</sub></th>
+<th>длина лидера; длина стримерной зоны</th>
+<th>м</th>
+</tr>
+<tr class="odd">
+<th>v</th>
+<th>скорость стримера, лидера</th>
+<th>м/с, см/мкс</th>
+</tr>
+<tr class="header">
+<th>T</th>
+<th>температура газа в канале</th>
+<th>К</th>
+</tr>
+<tr class="odd">
+<th>δ</th>
+<th>относительная плотность воздуха</th>
+<th>—</th>
+</tr>
+<tr class="header">
+<th>H</th>
+<th>высота над уровнем моря</th>
+<th>м</th>
+</tr>
+<tr class="odd">
+<th>t<sub>с</sub>, t<sub>ф</sub>, t<sub>р</sub></th>
+<th>статистическое время запаздывания, время формирования, время
+разряда</th>
+<th>мкс</th>
+</tr>
+<tr class="header">
+<th>D</th>
+<th>постоянная промежутка в критерии площадей</th>
+<th>кВ·мкс</th>
+</tr>
+<tr class="odd">
+<th>k</th>
+<th>коэффициент промежутка в формуле Галле</th>
+<th>—</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 76%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Сокращение</strong></th>
+<th><strong>Расшифровка</strong></th>
+</tr>
+<tr class="odd">
+<th>ВЛ, ПС, ОРУ</th>
+<th>воздушная линия; подстанция; открытое распределительное
+устройство</th>
+</tr>
+<tr class="header">
+<th>КРУ</th>
+<th>комплектное распределительное устройство</th>
+</tr>
+<tr class="odd">
+<th>ОПН</th>
+<th>ограничитель перенапряжений нелинейный</th>
+</tr>
+<tr class="header">
+<th>ПЧ</th>
+<th>преобразователь частоты</th>
+</tr>
+<tr class="odd">
+<th>КИ, ГИ</th>
+<th>коммутационный импульс (фронт сотни мкс); грозовой импульс 1,2/50
+мкс</th>
+</tr>
+<tr class="header">
+<th>УФ</th>
+<th>ультрафиолетовое излучение</th>
+</tr>
+<tr class="odd">
+<th>КЗ</th>
+<th>короткое замыкание</th>
+</tr>
+<tr class="header">
+<th>NERC</th>
+<th>Североамериканская корпорация по надёжности электроснабжения</th>
+</tr>
+<tr class="odd">
+<th>UCTE</th>
+<th>Союз по координации передачи электроэнергии (Европа), ныне
+ENTSO-E</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<h2>2. От лавины к стримеру</h2>
+<h3>2.1. Критерий перехода</h3>
+<p>В лекции 2 лавина росла как n = e<sup>αx</sup>, и её положительные
+ионы копились у головки. Пока число электронов мало, поле их заряда
+E<sub>q</sub> ничтожно по сравнению с внешним E. Но рост
+экспоненциальный: на пути в несколько миллиметров число электронов
+доходит до 10<sup>8</sup>, и поле головки сравнивается с внешним полем.
+С этого момента лавина перестаёт быть «пробной частицей» в заданном
+поле: она сама меняет поле вокруг себя.</p>
+<p>Условие перехода лавины в стример (критерий Ретера — Мика):</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mi>α</mi><mi>x</mi></mrow><mrow><mi>к</mi><mi>р</mi></mrow></msub><mo>≈</mo><mn>18</mn><mi>…</mi><mn>20</mn><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><msub><mi>n</mi><mrow><mi>к</mi><mi>р</mi></mrow></msub><mo>=</mo><msup><mi>e</mi><msub><mrow><mi>α</mi><mi>x</mi></mrow><mrow><mi>к</mi><mi>р</mi></mrow></msub></msup><mo>≈</mo><msup><mn>10</mn><mn>8</mn></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">{\alpha x}_{кр} \approx 18\ldots 20,\ \ n_{кр} = e^{{\alpha x}_{кр}} \approx 10^{8}.</annotation></semantics></math>
+(1)</p>
+<p>Из него критическая длина лавины</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mi>к</mi><mi>р</mi></mrow></msub><mo>=</mo><mfrac><mn>20</mn><mi>α</mi></mfrac><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mi>α</mi><mo>=</mo><mi>A</mi><mo>⋅</mo><mi>p</mi><mo>⋅</mo><msup><mi>e</mi><mrow><mo>−</mo><mfrac><mrow><mi>B</mi><mo>⋅</mo><mi>p</mi></mrow><mi>E</mi></mfrac></mrow></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">x_{кр} = \frac{20}{\alpha},\ \ \alpha = A \cdot p \cdot e^{- \frac{B \cdot p}{E}}.</annotation></semantics></math>
+(2)</p>
+<p>Пример. Воздух, 760 мм рт. ст., E = 40 кВ/см: α =
+15·760·e<sup>−365·760/40000</sup> = 11,1 1/см, x<sub>кр</sub> = 20/11,1
+= 1,80 см. Если промежуток короче x<sub>кр</sub>, лавина дойдёт до анода
+раньше, чем станет стримером, и пробой развивается по механизму
+Таунсенда (с участием катода). Если длиннее — по стримерному
+механизму.</p>
+<p><img
+src="l3-lecture/media/1ee77beb25223c52ba1ff93e377473a4729ed7d6.webp"
+title="Рост лавины при 30, 40 и 50 кВ/см и порог αx = 20"
+style="width:5.70833in;height:2.9375in"
+alt="Рост лавины при 30, 40 и 50 кВ/см и порог αx = 20" /></p>
+<p><strong>Рис. 1.</strong> Рост лавины при 30, 40 и 50 кВ/см и порог αx
+= 20</p>
+<h3>2.2. Почему одной теории Таунсенда мало</h3>
+<p>Теория Таунсенда (лекция 2) хорошо описывает разряд при малых p·S.
+Для промежутков длиной от сантиметра при атмосферном давлении опыт ей
+противоречит:</p>
+<table>
+<colgroup>
+<col style="width: 32%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Наблюдение</strong></th>
+<th><strong>Ожидание по Таунсенду</strong></th>
+<th><strong>Опыт</strong></th>
+</tr>
+<tr class="odd">
+<th>Время пробоя промежутка 1 см</th>
+<th>несколько пробегов ионов до катода, ≥ 10<sup>−5</sup> с</th>
+<th>10<sup>−8</sup>–10<sup>−7</sup> с</th>
+</tr>
+<tr class="header">
+<th>Влияние материала катода (γ)</th>
+<th>заметное</th>
+<th>практически нет</th>
+</tr>
+<tr class="odd">
+<th>Форма канала</th>
+<th>диффузное свечение всего промежутка</th>
+<th>тонкий извилистый ветвистый канал</th>
+</tr>
+<tr class="header">
+<th>Место начала разряда</th>
+<th>у катода</th>
+<th>может начаться в середине промежутка</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p>Объяснение даёт стримерная теория (Ретер, Лёб, Мик): разряд
+развивается сам, за счёт поля объёмного заряда и фотоионизации, без
+ожидания вторичных электронов с катода.</p>
+<h2>3. Механизм стримера</h2>
+<h3>3.1. Положительный стример</h3>
+<p>Положительный стример растёт от анода к катоду, навстречу электронам.
+Его головка — объёмный положительный заряд ионов, оставшихся от лавины.
+Один «шаг» стримера состоит из трёх стадий:</p>
+<ol type="1">
+<li><p><strong>Головка излучает.</strong> В сильном поле головки
+молекулы азота возбуждаются и излучают ультрафиолет. Фотоны ионизируют
+кислород впереди головки — появляются затравочные электроны
+(фотоионизация).</p></li>
+<li><p><strong>Вторичные лавины.</strong> Затравочные электроны дрейфуют
+к положительной головке и в её поле (120–160 кВ/см — в десятки раз
+больше внешнего) размножаются лавинами. За каждой лавиной остаётся хвост
+положительных ионов.</p></li>
+<li><p><strong>Новая головка.</strong> Электроны лавин входят в головку
+и нейтрализуют её — она становится частью канала с квазинейтральной
+плазмой. Хвосты ионов образуют новую положительную головку ближе к
+катоду.</p></li>
+</ol>
+<p><img
+src="l3-lecture/media/e2fe64995c716ebf9eec1f69528f217360c48e92.png"
+title="Интерактив, вкладка 1: шаг положительного стримера — головка, фотоны, вторичные лавины"
+style="width:6.10417in;height:1.33333in"
+alt="Интерактив, вкладка 1: шаг положительного стримера — головка, фотоны, вторичные лавины" /></p>
+<p><strong>Рис. 2.</strong> Интерактив, вкладка 1: шаг положительного
+стримера — головка, фотоны, вторичные лавины</p>
+<p>Цикл повторяется, и головка движется со скоростью от ≈ 10<sup>5</sup>
+м/с у самых тонких стримеров до ≈ 4·10<sup>6</sup> м/с при высоком
+напряжении — на порядки быстрее дрейфа электронов. Диаметр стримера — от
+0,2 мм до нескольких миллиметров. Газ в канале почти не нагревается: это
+«холодная» плазма.</p>
+<h3>3.2. Отрицательный стример</h3>
+<p>Отрицательный стример растёт от катода к аноду, вместе с электронами.
+Его головка — избыток электронов. Электроны головки сами дрейфуют
+вперёд, к аноду, и размножаются лавинами, которые бегут
+<strong>от</strong> головки. Заряд головки при этом расплывается, её
+поле слабее — 100–120 кВ/см. Поэтому отрицательный стример легче
+затухает и требует более сильного внешнего поля.</p>
+<p><img
+src="l3-lecture/media/5b7200b34c4d19c5cd51a9e4943a54ff40bb6ba3.png"
+title="Интерактив, вкладка 1: отрицательный стример — головка из электронов расплывается"
+style="width:6.10417in;height:1.33333in"
+alt="Интерактив, вкладка 1: отрицательный стример — головка из электронов расплывается" /></p>
+<p><strong>Рис. 3.</strong> Интерактив, вкладка 1: отрицательный стример
+— головка из электронов расплывается</p>
+<h3>3.3. Сравнение</h3>
+<table>
+<colgroup>
+<col style="width: 27%" />
+<col style="width: 36%" />
+<col style="width: 36%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Положительный (+)</strong></th>
+<th><strong>Отрицательный (−)</strong></th>
+</tr>
+<tr class="odd">
+<th>Направление роста</th>
+<th>к катоду</th>
+<th>к аноду</th>
+</tr>
+<tr class="header">
+<th>Головка</th>
+<th>положительные ионы, компактная</th>
+<th>электроны, расплывается</th>
+</tr>
+<tr class="odd">
+<th>Поле головки</th>
+<th>120–160 кВ/см</th>
+<th>100–120 кВ/см</th>
+</tr>
+<tr class="header">
+<th>Поле устойчивости E<sub>s</sub> при δ = 1</th>
+<th>≈ 4,7 кВ/см</th>
+<th>≈ 11,7 кВ/см</th>
+</tr>
+<tr class="odd">
+<th>Скорость</th>
+<th>10<sup>5</sup>…4·10<sup>6</sup> м/с</th>
+<th>на 20–25 % меньше</th>
+</tr>
+<tr class="header">
+<th>Диаметр</th>
+<th>от 0,2 мм</th>
+<th>толще: ≈ 1–2 мм при 40–80 кВ</th>
+</tr>
+<tr class="odd">
+<th>Вид</th>
+<th>тонкие ветвящиеся нити</th>
+<th>короткие толстые кисти</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p>Числа: поля устойчивости — расчёт и сравнение с опытом в работе «On
+propagation of positive and negative streamers in air in uniform
+electric fields» (arXiv:2305.09560); скорости и диаметры — измерения
+Бриельса и др. (2008, arXiv:0805.1376).</p>
+<h2>4. Поле устойчивости и длина стримеров</h2>
+<p>Стример — проводник, но не идеальный: вдоль его канала есть
+продольное поле. Если внешнее поле меньше определённого значения,
+стример теряет головку и гаснет. Это значение называют полем
+устойчивости стримера E<sub>s</sub>. В воздухе при нормальных
+условиях</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mrow><mi>s</mi><mo>+</mo></mrow></msub><mo>≈</mo><mn>4</mn><mo>,</mo><mn>7</mn><mspace width="0.222em"></mspace><mi>к</mi><mi>В</mi><mi>/</mi><mi>с</mi><mi>м</mi><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><msub><mi>E</mi><mrow><mi>s</mi><mo>−</mo></mrow></msub><mo>≈</mo><mn>11</mn><mo>,</mo><mn>7</mn><mspace width="0.222em"></mspace><mi>к</mi><mi>В</mi><mi>/</mi><mi>с</mi><mi>м</mi><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><msub><mi>E</mi><mi>s</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>δ</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msub><mi>E</mi><mi>s</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>⋅</mo><mi>δ</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">E_{s +} \approx 4,7\ кВ/см,\ \ E_{s -} \approx 11,7\ кВ/см,\ \ E_{s}(\delta) = E_{s}(1) \cdot \delta.</annotation></semantics></math>
+(3)</p>
+<p>Отсюда простая оценка длины стримерной зоны в резко неоднородном
+промежутке: стримеры растут от острия, пока падение напряжения на них не
+«съест» приложенное напряжение:</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mi>s</mi></msub><mo>≈</mo><mfrac><mi>U</mi><msub><mi>E</mi><mi>s</mi></msub></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">L_{s} \approx \frac{U}{E_{s}}.</annotation></semantics></math>
+(4)</p>
+<p>Если L<sub>s</sub> ≥ d, стримеры дорастают до плоскости, по каналу
+идёт ток, и промежуток пробивается. Оценка пробивного напряжения
+промежутков острие — плоскость длиной до ≈ 1 м:</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mrow><mi>п</mi><mi>р</mi></mrow></msub><mo>≈</mo><msub><mi>E</mi><mi>s</mi></msub><mo>⋅</mo><mi>d</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">U_{пр} \approx E_{s} \cdot d.</annotation></semantics></math>
+(5)</p>
+<p>Пример. d = 20 см, δ = 1: при положительном острие U<sub>пр</sub> ≈
+4,7·20 = 94 кВ, при отрицательном ≈ 11,7·20 = 234 кВ. Эти оценки
+согласуются с опорными данными для постоянного напряжения в промежутке
+стержень — плоскость: ≈ 4,5–5 кВ/см при положительном и ≈ 10 кВ/см при
+отрицательном стержне.</p>
+<p>С высотой плотность воздуха падает:</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mo>=</mo><mfrac><mi>p</mi><mn>760</mn></mfrac><mo>⋅</mo><mfrac><mn>293</mn><mi>T</mi></mfrac><mo>≈</mo><msup><mi>e</mi><mrow><mo>−</mo><mfrac><mi>H</mi><mn>8150</mn></mfrac></mrow></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">\delta = \frac{p}{760} \cdot \frac{293}{T} \approx e^{- \frac{H}{8150}}.</annotation></semantics></math>
+(6)</p>
+<p>На высоте 400 м (рудники Хибин) δ = 0,952: поля устойчивости и
+пробивные напряжения на 5 % меньше, чем на уровне моря.</p>
+<p><img
+src="l3-lecture/media/d6452cacbc76a41e4eb613a0cbe8b7dc4d2ed152.webp"
+title="Длина стримерной зоны L ≈ U/Es для положительного и отрицательного острия, d = 20 см"
+style="width:5.70833in;height:2.9375in"
+alt="Длина стримерной зоны L ≈ U/Es для положительного и отрицательного острия, d = 20 см" /></p>
+<p><strong>Рис. 4.</strong> Длина стримерной зоны L ≈ U/E<sub>s</sub>
+для положительного и отрицательного острия, d = 20 см</p>
+<p><img
+src="l3-lecture/media/d0033bb8b1a3c3b7141d4026ce6ec5726cb5142f.webp"
+title="Интерактив, вкладка 1: 60 кВ, 20 см, острие «+» — стримеры 12,8 см"
+style="width:6.10417in;height:1.58333in"
+alt="Интерактив, вкладка 1: 60 кВ, 20 см, острие «+» — стримеры 12,8 см" /></p>
+<p><strong>Рис. 5.</strong> Интерактив, вкладка 1: 60 кВ, 20 см, острие
+«+» — стримеры 12,8 см</p>
+<p><img
+src="l3-lecture/media/bcc9cf7379a24907b99e50850bb66858c55210a2.webp"
+title="То же при отрицательном острие — стримеры 5,1 см"
+style="width:6.10417in;height:1.58333in"
+alt="То же при отрицательном острие — стримеры 5,1 см" /></p>
+<p><strong>Рис. 6.</strong> То же при отрицательном острие — стримеры
+5,1 см</p>
+<h2>5. Полярный эффект</h2>
+<h3>5.1. Поле у острия и напряжение зажигания</h3>
+<p>Наибольшая напряжённость у острия радиусом r на расстоянии d от
+плоскости (лекция 1):</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mo>max</mo></msub><mo>≈</mo><mfrac><mrow><mn>2</mn><mi>U</mi></mrow><mrow><mi>r</mi><mo>⋅</mo><mi>l</mi><mi>n</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>4</mn><mi>d</mi><mi>/</mi><mi>r</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">E_{\max} \approx \frac{2U}{r \cdot ln(4d/r)}.</annotation></semantics></math>
+(7)</p>
+<p>Ионизация у острия начинается, когда E<sub>max</sub> достигает
+начальной напряжённости. В учебной модели интерактива взята формула типа
+Пика для малого радиуса:</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mi>з</mi></msub><mo>=</mo><mn>30</mn><mo>⋅</mo><mi>δ</mi><mo>⋅</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mspace width="0.222em"></mspace><mo>+</mo><mspace width="0.222em"></mspace><mfrac><mrow><mn>0</mn><mo>,</mo><mn>3</mn></mrow><msqrt><mrow><mi>δ</mi><mo>⋅</mo><mi>r</mi></mrow></msqrt></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.222em"></mspace><mi>к</mi><mi>В</mi><mi>/</mi><mi>с</mi><mi>м</mi><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><msub><mi>U</mi><mi>з</mi></msub><mo>=</mo><mfrac><mrow><msub><mi>E</mi><mi>з</mi></msub><mo>⋅</mo><mi>r</mi><mo>⋅</mo><mi>l</mi><mi>n</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>4</mn><mi>d</mi><mi>/</mi><mi>r</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mn>2</mn></mfrac><mo>,</mo></mrow><annotation encoding="application/x-tex">E_{з} = 30 \cdot \delta \cdot (1\  + \ \frac{0,3}{\sqrt{\delta \cdot r}})\ кВ/см,\ \ U_{з} = \frac{E_{з} \cdot r \cdot ln(4d/r)}{2},</annotation></semantics></math>
+(8)</p>
+<p>где r в сантиметрах. У отрицательного острия корона начинается
+примерно на 10 % раньше (так принято в модели). Напряжение зажигания
+почти не зависит от d — его задаёт радиус острия.</p>
+<h3>5.2. Роль объёмного заряда</h3>
+<p>Электроны движутся быстро и за доли микросекунды уходят из зоны
+ионизации. Положительные ионы в сотни раз медленнее и остаются облаком.
+Это облако искажает поле — по-разному при разной полярности.</p>
+<table>
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 39%" />
+<col style="width: 39%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Острие +</strong></th>
+<th><strong>Острие −</strong></th>
+</tr>
+<tr class="odd">
+<th>Куда уходят электроны</th>
+<th>в острие</th>
+<th>от острия, прилипают к O<sub>2</sub> и образуют ионы
+O<sub>2</sub><sup>−</sup></th>
+</tr>
+<tr class="header">
+<th>Где облако «+»</th>
+<th>перед острием, вытянуто в промежуток</th>
+<th>тонким слоем у самого острия</th>
+</tr>
+<tr class="odd">
+<th>Поле у острия</th>
+<th>ослаблено</th>
+<th>усилено</th>
+</tr>
+<tr class="header">
+<th>Поле в промежутке</th>
+<th>усилено: облако работает как продолжение острия</th>
+<th>ослаблено облаком O<sub>2</sub><sup>−</sup></th>
+</tr>
+<tr class="odd">
+<th>Итог</th>
+<th>корона позже, пробой раньше</th>
+<th>корона раньше (импульсы Тричела), пробой позже</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><img
+src="l3-lecture/media/bc213a2ad8d467eb6f51a375161545d04e2134f6.png"
+title="Интерактив, вкладка 2: объёмный заряд у положительного и отрицательного острия"
+style="width:6.10417in;height:1.42708in"
+alt="Интерактив, вкладка 2: объёмный заряд у положительного и отрицательного острия" /></p>
+<p><strong>Рис. 7.</strong> Интерактив, вкладка 2: объёмный заряд у
+положительного и отрицательного острия</p>
+<p><img
+src="l3-lecture/media/a4f02347e6880c1d6db822f607d2303b7252e6e4.png"
+title="Интерактив, вкладка 2: поле вдоль оси без заряда и с зарядом при обеих полярностях (качественно)"
+style="width:6.10417in;height:1.27083in"
+alt="Интерактив, вкладка 2: поле вдоль оси без заряда и с зарядом при обеих полярностях (качественно)" /></p>
+<p><strong>Рис. 8.</strong> Интерактив, вкладка 2: поле вдоль оси без
+заряда и с зарядом при обеих полярностях (качественно)</p>
+<p><img
+src="l3-lecture/media/ebb0856c53d132f493ca9857a29f05142be7c4c3.webp"
+title="Напряжения зажигания и пробоя от расстояния: r = 1 мм, δ = 1 (учебная модель)"
+style="width:5.70833in;height:3.10417in"
+alt="Напряжения зажигания и пробоя от расстояния: r = 1 мм, δ = 1 (учебная модель)" /></p>
+<p><strong>Рис. 9.</strong> Напряжения зажигания и пробоя от расстояния:
+r = 1 мм, δ = 1 (учебная модель)</p>
+<h3>5.3. Где это важно</h3>
+<ol type="1">
+<li><p>При переменном напряжении резко неоднородный промежуток
+пробивается в тот полупериод, когда острие положительно.</p></li>
+<li><p>Внешнюю изоляцию испытывают импульсами обеих полярностей; для
+воздушных промежутков опаснее положительная.</p></li>
+<li><p>В звене постоянного тока преобразователя частоты острая кромка у
+шины «+» опаснее: зазоры проверяют по худшей полярности.</p></li>
+<li><p>На отрицательной острой кромке корона начинается раньше: треск и
+помехи появляются при невысоком напряжении.</p></li>
+</ol>
+<h2>6. Лидер в длинных промежутках</h2>
+<h3>6.1. Насыщение прочности</h3>
+<p>Если бы промежутки любой длины пробивались одними стримерами,
+пробивное напряжение росло бы линейно: 4,7 кВ/см · d. Опыт показывает
+иное. Для промежутка стержень — плоскость при положительном
+коммутационном импульсе с критическим фронтом используют формулу
+Галле:</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mn>50</mn></msub><mo>=</mo><mfrac><mrow><mn>3400</mn><mo>⋅</mo><mi>k</mi></mrow><mrow><mn>1</mn><mspace width="0.222em"></mspace><mo>+</mo><mspace width="0.222em"></mspace><mfrac><mn>8</mn><mi>d</mi></mfrac></mrow></mfrac><mi>к</mi><mi>В</mi><mo>,</mo></mrow><annotation encoding="application/x-tex">U_{50} = \frac{3400 \cdot k}{1\  + \ \frac{8}{d}}кВ,</annotation></semantics></math>
+(9)</p>
+<p>где d — в метрах, k — коэффициент промежутка (1 для стержня над
+плоскостью; больше для других конфигураций). При d = 1 м U<sub>50</sub>
+= 378 кВ (378 кВ/м), при 3 м — 927 кВ (309 кВ/м), при 10 м — 1889 кВ
+(189 кВ/м). Каждый следующий метр добавляет всё меньше: прочность
+насыщается. Причина — лидер.</p>
+<p><img
+src="l3-lecture/media/e7cf05c90ab7f03784048d819f45abe955e9b833.webp"
+title="Формула Галле и линейная оценка «только стримеры»"
+style="width:5.70833in;height:3.10417in"
+alt="Формула Галле и линейная оценка «только стримеры»" /></p>
+<p><strong>Рис. 10.</strong> Формула Галле и линейная оценка «только
+стримеры»</p>
+<h3>6.2. Как стебель становится лидером</h3>
+<p>Токи многих стримеров, стартующих от стержня, сходятся в общий канал
+— стебель. Он нагревается. В холодном воздухе свободные электроны за
+10<sup>−8</sup>–10<sup>−7</sup> с прилипают к молекулам кислорода, и
+канал теряет проводимость. При температуре выше ≈ 1500–2000 К электроны
+отрываются от отрицательных ионов O<sup>−</sup> быстрее, чем прилипают:
+канал остаётся проводящим и продолжает греться. Такой горячий канал
+называют лидером.</p>
+<p>Интерферометрия лидера показала канал диаметром 1–2 мм с температурой
+газа 2000–3500 К; область выше 1500 К — около 1 мм в диаметре (CIGRE
+ISH2015, доклад 466).</p>
+<p><img
+src="l3-lecture/media/c9643be4826ad6deec9f05dec8b2bff37c92af20.webp"
+title="Температура газа в канале на разных стадиях разряда"
+style="width:5.70833in;height:2.77083in"
+alt="Температура газа в канале на разных стадиях разряда" /></p>
+<p><strong>Рис. 11.</strong> Температура газа в канале на разных стадиях
+разряда</p>
+<h3>6.3. Структура и рост лидера</h3>
+<p>Лидер — хорошо проводящий канал, на котором теряется мало напряжения:
+его продольный градиент E<sub>L</sub> в несколько раз меньше, чем в
+стримерной зоне. Поэтому лидер переносит потенциал стержня вглубь
+промежутка. Перед его головкой всегда идёт стримерная зона длиной</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mi>s</mi></msub><mo>=</mo><mfrac><mrow><mi>U</mi><mspace width="0.222em"></mspace><mo>−</mo><mspace width="0.222em"></mspace><msub><mi>E</mi><mi>L</mi></msub><mo>⋅</mo><mi>L</mi></mrow><msub><mi>E</mi><mi>s</mi></msub></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">L_{s} = \frac{U\  - \ E_{L} \cdot L}{E_{s}}.</annotation></semantics></math>
+(10)</p>
+<p>Когда стримерная зона достигает плоскости, наступает финальный
+скачок:</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo>+</mo><msub><mi>L</mi><mi>s</mi></msub><mo>≥</mo><mi>d</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">L + L_{s} \geq d.</annotation></semantics></math>
+(11)</p>
+<p>В учебной модели интерактива: E<sub>s</sub> = 3,8 кВ/см в стримерной
+зоне длинного промежутка, E<sub>L</sub> = 1,5 кВ/см, скорость лидера 3
+см/мкс, лидер растёт, пока потенциал его головки выше 800 кВ. Параметры
+подобраны так, что порог пробоя модели на 1–10 м отличается от формулы
+Галле не больше чем на ≈ 10 %.</p>
+<p><img
+src="l3-lecture/media/8f1e9beaf71d48308fb6870b9b8cfcc9258b5f3a.png"
+title="Интерактив, вкладка 3: напряжение, длина лидера и стримерной зоны во времени, d = 4 м"
+style="width:6.10417in;height:1.27083in"
+alt="Интерактив, вкладка 3: напряжение, длина лидера и стримерной зоны во времени, d = 4 м" /></p>
+<p><strong>Рис. 12.</strong> Интерактив, вкладка 3: напряжение, длина
+лидера и стримерной зоны во времени, d = 4 м</p>
+<p><img
+src="l3-lecture/media/c0166ea626caa9bf9a2409f3594f6558f809fe81.webp"
+title="Развитие лидера в промежутке 4 м при U = 1140 кВ (учебная модель): пробой на 203 мкс"
+style="width:5.70833in;height:3.10417in"
+alt="Развитие лидера в промежутке 4 м при U = 1140 кВ (учебная модель): пробой на 203 мкс" /></p>
+<p><strong>Рис. 13.</strong> Развитие лидера в промежутке 4 м при U =
+1140 кВ (учебная модель): пробой на 203 мкс</p>
+<p><img
+src="l3-lecture/media/3bc8b3375082881abf76aca0ede291ad2b8279a2.webp"
+title="Интерактив, вкладка 3: курсор на канале лидера — ≈ 2170 К"
+style="width:6.10417in;height:1.52083in"
+alt="Интерактив, вкладка 3: курсор на канале лидера — ≈ 2170 К" /></p>
+<p><strong>Рис. 14.</strong> Интерактив, вкладка 3: курсор на канале
+лидера — ≈ 2170 К</p>
+<p><img
+src="l3-lecture/media/f20380e7156a9441efa3864f1df97cd25d00af4b.webp"
+title="Курсор в стримерной зоне — ≈ 320 К: газ почти не нагрет"
+style="width:6.10417in;height:1.52083in"
+alt="Курсор в стримерной зоне — ≈ 320 К: газ почти не нагрет" /></p>
+<p><strong>Рис. 15.</strong> Курсор в стримерной зоне — ≈ 320 К: газ
+почти не нагрет</p>
+<p>Скорость положительного лидера в лабораторных промежутках — порядка
+10<sup>4</sup> м/с (1–3 см/мкс), на два порядка меньше скорости
+стримера. В опыте с промежутком 1 м при импульсе 404 кВ лидер удлинялся
+не медленнее 1,3·10<sup>4</sup> м/с (arXiv:1806.02788).</p>
+<h3>6.4. Главный разряд — искра</h3>
+<p>После финального скачка по каналу идёт главный разряд: ток нарастает
+до сотен ампер и больше, газ нагревается до 10<sup>4</sup> К и выше,
+ионизуется термически — канал проводит почти как металл. Давление в
+канале резко растёт и порождает ударную волну: в лаборатории это щелчок,
+у молнии — гром. При мощном источнике искра переходит в дугу.</p>
+<p><img
+src="l3-lecture/media/6ccfecc385e151cfb3a213eb77bc2174dff593d8.png"
+title="Интерактив, вкладка 3: канал главного разряда, ≈ 20 000 К (оценка модели)"
+style="width:6.10417in;height:1.52083in"
+alt="Интерактив, вкладка 3: канал главного разряда, ≈ 20 000 К (оценка модели)" /></p>
+<p><strong>Рис. 16.</strong> Интерактив, вкладка 3: канал главного
+разряда, ≈ 20 000 К (оценка модели)</p>
+<h3>6.5. Лидер молнии</h3>
+<p>Нисходящий отрицательный лидер молнии растёт не плавно, а ступенями:
+перед головкой образуется отдельный светящийся участок —
+пространственный стебель; он растёт в обе стороны и соединяется с
+каналом. Ступени — десятки метров, паузы 20–50 мкс, средняя скорость ≈
+2·10<sup>5</sup> м/с, ток каждой ступени не меньше 1 кА. После касания
+земли обратный удар раскаляет канал до ≈ 30 000 К при давлении 10 атм и
+больше (Раков, Уман).</p>
+<p><img
+src="l3-lecture/media/27d3a47bb2d02d6a32ddedcfc3919bcbdd90fb30.webp"
+title="Ступенчатый лидер молнии и лабораторный лидер"
+style="width:5.51042in;height:2.67708in"
+alt="Ступенчатый лидер молнии и лабораторный лидер" /></p>
+<p><strong>Рис. 17.</strong> Ступенчатый лидер молнии и лабораторный
+лидер</p>
+<p><img
+src="l3-lecture/media/c6d3a23eaa0faf9522db14082f3c9e7009d55966.png"
+title="Интерактив, вкладка 3, режим «молния»: лидер на полпути к земле"
+style="width:6.10417in;height:1.52083in"
+alt="Интерактив, вкладка 3, режим «молния»: лидер на полпути к земле" /></p>
+<p><strong>Рис. 18.</strong> Интерактив, вкладка 3, режим «молния»:
+лидер на полпути к земле</p>
+<table>
+<colgroup>
+<col style="width: 27%" />
+<col style="width: 36%" />
+<col style="width: 36%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Лабораторный лидер (+)</strong></th>
+<th><strong>Лидер молнии (−)</strong></th>
+</tr>
+<tr class="odd">
+<th>Рост</th>
+<th>почти непрерывный</th>
+<th>ступенями</th>
+</tr>
+<tr class="header">
+<th>Скорость</th>
+<th>≈ 10<sup>4</sup> м/с</th>
+<th>≈ 2·10<sup>5</sup> м/с в среднем</th>
+</tr>
+<tr class="odd">
+<th>Масштаб</th>
+<th>метры</th>
+<th>километры</th>
+</tr>
+<tr class="header">
+<th>После касания</th>
+<th>главный разряд</th>
+<th>обратный удар, ≈ 30 000 К</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<h3>6.6. Какой импульс опаснее</h3>
+<p>На грозовом импульсе (1,2/50 мкс) лидер не успевает пройти длинный
+промежуток: при 3 см/мкс за 50 мкс он пройдёт лишь 1,5 м, поэтому нужно
+большее напряжение. На коммутационном импульсе с фронтом в сотни
+микросекунд лидер успевает дойти до плоскости на фронте — пробивное
+напряжение минимально. При ещё более длинном фронте объёмный заряд
+стримеров успевает экранировать стержень, и прочность снова растёт.
+Отсюда U-образная зависимость U<sub>50</sub> от длительности фронта и
+понятие критического фронта (МЭК 60071-2). Поэтому изоляцию линий
+сверхвысокого напряжения выбирают по коммутационным перенапряжениям.</p>
+<h2>7. Время разряда</h2>
+<h3>7.1. Составляющие</h3>
+<p>Пробой не наступает в тот момент, когда напряжение превысило
+статическое пробивное U<sub>0</sub>. Нужно время на две вещи:</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>t</mi><mi>р</mi></msub><mo>=</mo><msub><mi>t</mi><mi>с</mi></msub><mo>+</mo><msub><mi>t</mi><mi>ф</mi></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">t_{р} = t_{с} + t_{ф}.</annotation></semantics></math>
+(12)</p>
+<p><strong>Статистическое время запаздывания t<sub>с</sub></strong> —
+ожидание «эффективного» электрона в месте, где с него начнётся лавина.
+Оно случайно. Если электроны появляются со средней частотой
+1/t̄<sub>с</sub>, вероятность того, что эффективный электрон ещё не
+появился за время t,</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>t</mi><mi>с</mi></msub><mo>&gt;</mo><mspace width="0.222em"></mspace><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msup><mi>e</mi><mrow><mo>−</mo><mi>t</mi><mi>/</mi><msub><mrow><mi>t</mi><mover><mrow></mrow><mo accent="true">‾</mo></mover></mrow><mi>с</mi></msub></mrow></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">P(t_{с} &gt; \ t) = e^{- t/{t\bar{}}_{с}}.</annotation></semantics></math>
+(13)</p>
+<p>Среднее t̄<sub>с</sub> уменьшают облучением промежутка ультрафиолетом
+или радиоактивным препаратом. В резко неоднородном поле корона сама даёт
+электроны, поэтому t<sub>с</sub> мало.</p>
+<p><strong>Время формирования t<sub>ф</sub></strong> — от первой лавины
+до замыкания канала: стримеры, лидер, финальный скачок. Чем выше
+перенапряжение над U<sub>0</sub>, тем оно меньше.</p>
+<h3>7.2. Критерий площадей</h3>
+<p>Инженерная модель (критерий равных площадей Кинда): пробой наступает,
+когда площадь между кривой напряжения и уровнем U<sub>0</sub> достигла
+постоянной промежутка D:</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∫</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>u</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.222em"></mspace><mo>−</mo><mspace width="0.222em"></mspace><msub><mi>U</mi><mn>0</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>d</mi><mi>t</mi><mo>=</mo><mi>D</mi><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mi>и</mi><mi>н</mi><mi>т</mi><mi>е</mi><mi>г</mi><mi>р</mi><mi>а</mi><mi>л</mi><mspace width="0.222em"></mspace><mi>о</mi><mi>т</mi><mspace width="0.222em"></mspace><msub><mi>t</mi><mn>0</mn></msub><mo>+</mo><msub><mi>t</mi><mi>с</mi></msub><mspace width="0.222em"></mspace><mi>д</mi><mi>о</mi><mspace width="0.222em"></mspace><msub><mi>t</mi><mi>р</mi></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">\int(u(t)\  - \ U_{0})dt = D,\ \ интеграл\ от\ t_{0} + t_{с}\ до\ t_{р}.</annotation></semantics></math>
+(14)</p>
+<p>Для прямоугольного импульса напряжения U получаем</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>t</mi><mi>ф</mi></msub><mo>=</mo><mfrac><mi>D</mi><mrow><mi>U</mi><mspace width="0.222em"></mspace><mo>−</mo><mspace width="0.222em"></mspace><msub><mi>U</mi><mn>0</mn></msub></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">t_{ф} = \frac{D}{U\  - \ U_{0}}.</annotation></semantics></math>
+(15)</p>
+<p>Малое D — однородное поле (шаровой промежуток), большое — резко
+неоднородное (стержень). В интерактиве: шаровой промежуток D = 2 кВ·мкс,
+стержень — плоскость D = 60 кВ·мкс, U<sub>0</sub> = 100 кВ. Грозовой
+импульс 1,2/50 мкс задан формулой</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msub><mi>U</mi><mi>m</mi></msub><mo>⋅</mo><mi>k</mi><mo>⋅</mo><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>e</mi><mrow><mo>−</mo><mi>t</mi><mi>/</mi><msub><mi>τ</mi><mn>1</mn></msub></mrow></msup><mo>−</mo><msup><mi>e</mi><mrow><mo>−</mo><mi>t</mi><mi>/</mi><msub><mi>τ</mi><mn>2</mn></msub></mrow></msup><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><msub><mi>τ</mi><mn>1</mn></msub><mo>=</mo><mspace width="0.222em"></mspace><mn>68</mn><mo>,</mo><mn>2</mn><mspace width="0.222em"></mspace><mi>м</mi><mi>к</mi><mi>с</mi><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>τ</mi><mn>2</mn></msub><mo>=</mo><mspace width="0.222em"></mspace><mn>0</mn><mo>,</mo><mn>405</mn><mspace width="0.222em"></mspace><mi>м</mi><mi>к</mi><mi>с</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">u(t) = U_{m} \cdot k \cdot (e^{- t/\tau_{1}} - e^{- t/\tau_{2}}),\ \ \tau_{1} = \ 68,2\ мкс,\ \tau_{2} = \ 0,405\ мкс.</annotation></semantics></math>
+(16)</p>
+<p>Обозначение 1,2/50 мкс читают так. «1,2» — условная длительность
+фронта T<sub>1</sub>: её находят по моментам, когда напряжение достигает
+30 % и 90 % амплитуды:</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>T</mi><mn>1</mn></msub><mo>=</mo><mn>1</mn><mo>,</mo><mn>67</mn><mo>⋅</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>t</mi><mn>90</mn></msub><mo>−</mo><msub><mi>t</mi><mn>30</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mn>1</mn><mo>,</mo><mn>67</mn><mo>⋅</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>86</mn><mspace width="0.222em"></mspace><mo>−</mo><mspace width="0.222em"></mspace><mn>0</mn><mo>,</mo><mn>14</mn><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.222em"></mspace><mo>≈</mo><mspace width="0.222em"></mspace><mn>1</mn><mo>,</mo><mn>2</mn><mspace width="0.222em"></mspace><mi>м</mi><mi>к</mi><mi>с</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">T_{1} = 1,67 \cdot (t_{90} - t_{30})\  = \ 1,67 \cdot (0,86\  - \ 0,14)\  \approx \ 1,2\ мкс.</annotation></semantics></math>
+(17)</p>
+<p>Сам максимум наступает позже, около 2,1 мкс. «50» — время
+T<sub>2</sub>, за которое напряжение спадает до половины амплитуды. В
+интерактиве это видно на верхнем графике «Весь импульс» с отметками 100
+%, 50 % и 50 мкс.</p>
+<p><img
+src="l3-lecture/media/6ab58b72ab422078f68ce7d357c37cd4a2e83efc.png"
+title="Интерактив, вкладка 4: весь импульс 270 кВ, шаровой промежуток — импульс срезан пробоем на ≈ 0,3 мкс"
+style="width:6.10417in;height:1.33333in"
+alt="Интерактив, вкладка 4: весь импульс 270 кВ, шаровой промежуток — импульс срезан пробоем на ≈ 0,3 мкс" /></p>
+<p><strong>Рис. 19.</strong> Интерактив, вкладка 4: весь импульс 270 кВ,
+шаровой промежуток — импульс срезан пробоем на ≈ 0,3 мкс</p>
+<p><img
+src="l3-lecture/media/a530964d3ca8d20f59b346b4780d2c3834b0dfb8.png"
+title="То же, начало импульса 0–5 мкс крупно: пробой при ≈ 50 % амплитуды, ещё на фронте"
+style="width:6.10417in;height:1.33333in"
+alt="То же, начало импульса 0–5 мкс крупно: пробой при ≈ 50 % амплитуды, ещё на фронте" /></p>
+<p><strong>Рис. 20.</strong> То же, начало импульса 0–5 мкс крупно:
+пробой при ≈ 50 % амплитуды, ещё на фронте</p>
+<p>Если амплитуда велика, площадь D набирается быстро и пробой
+происходит на фронте, при напряжении заметно ниже амплитуды: импульс
+«срезан». Чем ниже амплитуда, тем позже пробой; при амплитуде ниже
+порога площадь не набирается, и импульс проходит целиком.</p>
+<p><img
+src="l3-lecture/media/aa3af8447043dfc585958af9581214354bd8cd1d.webp"
+title="Критерий площадей: Um = 180 кВ, стержень, tс = 0,3 мкс"
+style="width:5.70833in;height:2.9375in"
+alt="Критерий площадей: Um = 180 кВ, стержень, tс = 0,3 мкс" /></p>
+<p><strong>Рис. 21.</strong> Критерий площадей: U<sub>m</sub> = 180 кВ,
+стержень, t<sub>с</sub> = 0,3 мкс</p>
+<p><img
+src="l3-lecture/media/99d798170ea52ddcbdee48023cf8a06a0b6f5e5a.png"
+title="Интерактив: тот же случай — стержень, 180 кВ, начало импульса крупно"
+style="width:6.10417in;height:1.33333in"
+alt="Интерактив: тот же случай — стержень, 180 кВ, начало импульса крупно" /></p>
+<p><strong>Рис. 22.</strong> Интерактив: тот же случай — стержень, 180
+кВ, начало импульса крупно</p>
+<h3>7.3. Вольт-секундная характеристика</h3>
+<p>Подавая импульсы разной амплитуды и отмечая для каждого напряжение
+пробоя и время до него, получают вольт-секундную характеристику. При
+пробое на фронте берут напряжение в момент пробоя, на хвосте —
+амплитуду. Для однородного поля она пологая, для резко неоднородного —
+крутая. Отношение наименьшей амплитуды, пробивающей промежуток, к
+U<sub>0</sub> — импульсный коэффициент: у шаров ≈ 1,02, у стержня
+больше.</p>
+<p><img
+src="l3-lecture/media/02c0da9fdbdc8e59f070ded8f43ce2566a1deea3.webp"
+title="Вольт-секундные характеристики шарового и стержневого промежутков (учебная модель)"
+style="width:5.70833in;height:3.10417in"
+alt="Вольт-секундные характеристики шарового и стержневого промежутков (учебная модель)" /></p>
+<p><strong>Рис. 23.</strong> Вольт-секундные характеристики шарового и
+стержневого промежутков (учебная модель)</p>
+<p><img
+src="l3-lecture/media/ec9fafcc33421ca82726dbd77f1aee24037cee3f.png"
+title="Интерактив, вкладка 4: 30 импульсов по 180 кВ на стержневой промежуток — точки опытов и средняя характеристика"
+style="width:6.10417in;height:1.64583in"
+alt="Интерактив, вкладка 4: 30 импульсов по 180 кВ на стержневой промежуток — точки опытов и средняя характеристика" /></p>
+<p><strong>Рис. 24.</strong> Интерактив, вкладка 4: 30 импульсов по 180
+кВ на стержневой промежуток — точки опытов и средняя характеристика</p>
+<h3>7.4. Координация</h3>
+<p>Защитный аппарат должен пробиваться раньше защищаемой изоляции при
+любой форме волны, то есть его вольт-секундная характеристика должна
+лежать ниже характеристики изоляции на всём диапазоне времён. У
+стержневого промежутка характеристика крутая: при крутых фронтах она
+пересекает пологую характеристику изоляции, и изоляция пробивается
+первой. Поэтому оборудование защищают ограничителями перенапряжений
+(лекция 17).</p>
+<p><img
+src="l3-lecture/media/1bd3b7cd9a192cf2ebb98b3294b71a354ce16aab.webp"
+title="Пересечение характеристик изоляции (U0 = 150 кВ, D = 8) и стержневого промежутка (U0 = 110 кВ, D = 60)"
+style="width:5.70833in;height:3.10417in"
+alt="Пересечение характеристик изоляции (U0 = 150 кВ, D = 8) и стержневого промежутка (U0 = 110 кВ, D = 60)" /></p>
+<p><strong>Рис. 25.</strong> Пересечение характеристик изоляции
+(U<sub>0</sub> = 150 кВ, D = 8) и стержневого промежутка (U<sub>0</sub>
+= 110 кВ, D = 60)</p>
+<h2>8. Реальные случаи</h2>
+<p>Случаи 1–5 описаны в открытых источниках, случай 6 — типовая учебная
+ситуация. Все они есть во вкладке 5 интерактива с вопросом и
+разбором.</p>
+<h3>8.1. Италия, 28 сентября 2003: дуга на дерево</h3>
+<table>
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 78%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Что случилось</th>
+<th>Около 03:00 линия 400 кВ Mettlen–Lavorgo (Лукманьер), по которой
+энергия шла из Швейцарии в Италию, отключилась: в пролёте возникла дуга
+на дерево. Нагрузка перешла на соседние линии, через ≈ 20 минут они тоже
+отключились, Италия отделилась от энергосистемы Европы. Без света
+остались около 56 млн человек, на полуострове — до 12 часов.</th>
+</tr>
+<tr class="odd">
+<th>Физика</th>
+<th>Дерево — заземлённый электрод с острыми ветками. Когда зазор
+сократился, напряжения линии хватило на стримеры и лидер; после
+замыкания ток КЗ поддержал дугу.</th>
+</tr>
+<tr class="header">
+<th>Урок</th>
+<th>Минимальный зазор до растительности — расчётная величина, его
+считают по формулам пробоя длинных промежутков (Галле).</th>
+</tr>
+<tr class="odd">
+<th>Источник</th>
+<th>Википедия, «2003 Italy blackout»; итоговый отчёт UCTE, апрель
+2004</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<h3>8.2. США и Канада, 14 августа 2003: деревья под линиями 345 кВ</h3>
+<table>
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 78%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Что случилось</th>
+<th>В 14:02 отключилась линия Stuart–Atlanta: деревья высотой 9–11 м под
+проводом на высоте ≈ 12 м. По той же причине отключились Star–South
+Canton (14:27, окончательно 15:42), Harding–Chamberlin (15:05),
+Hanna–Juniper (15:32) — при нагрузке в пределах нормального режима.
+Каскад оставил без света около 50 млн человек.</th>
+</tr>
+<tr class="odd">
+<th>Физика</th>
+<th>Промежуток «провод — ветка» резко неоднородный: ветка — острие.
+Расследование: «прямая причина — разросшиеся деревья», провисание лишь
+немного помогло. На деревьях — следы тока КЗ.</th>
+</tr>
+<tr class="header">
+<th>Урок</th>
+<th>После аварии введён стандарт NERC FAC-003 с минимальным расстоянием
+до растительности.</th>
+</tr>
+<tr class="odd">
+<th>Источник</th>
+<th>NERC, отчёт о деревьях в аварии 14 августа 2003</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<h3>8.3. Сколько нужно до дерева: формула Галле в стандарте</h3>
+<table>
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 78%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Что случилось</th>
+<th>Для линии 345 кВ (наибольшее 362 кВ, кратность коммутационных
+перенапряжений 2,0) NERC получил минимальный зазор 3,53 фута (≈ 1,08 м)
+на высоте 3000 футов, а повторный расчёт PNNL по Галле с теми же
+допущениями — 6,1 фута (≈ 1,86 м).</th>
+</tr>
+<tr class="odd">
+<th>Физика</th>
+<th>Длинный воздушный промежуток пробивается через лидер; расчётный
+случай — положительный коммутационный импульс с критическим
+фронтом.</th>
+</tr>
+<tr class="header">
+<th>Урок</th>
+<th>Инженерная формула даёт ответ, сильно зависящий от допущений:
+коэффициента промежутка, высоты, кратности перенапряжений.</th>
+</tr>
+<tr class="odd">
+<th>Источник</th>
+<th>PNNL-21220, 2012</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<h3>8.4. Лидер в промежутке 1 м: ударная волна</h3>
+<table>
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 78%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Что случилось</th>
+<th>Промежуток стержень — плоскость 1 м, положительный импульс 404 кВ с
+фронтом 250 мкс. Интерферометр Маха — Цендера: лидер удлинялся не
+медленнее 1,3·10<sup>4</sup> м/с, от канала расходилась ударная волна со
+скоростью ≈ 319 м/с.</th>
+</tr>
+<tr class="odd">
+<th>Физика</th>
+<th>Газ в канале лидера быстро нагревается до тысяч кельвинов, давление
+растёт — возникает ударная волна, как гром у молнии.</th>
+</tr>
+<tr class="header">
+<th>Урок</th>
+<th>Лидер — горячий канал, и это видно напрямую.</th>
+</tr>
+<tr class="odd">
+<th>Источник</th>
+<th>«Shock Wave in Leader Discharge Observed Using Mach-Zehnder
+Interferometry», arXiv:1806.02788</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<h3>8.5. Ступенчатый лидер молнии</h3>
+<table>
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 78%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Что случилось</th>
+<th>Высокоскоростная съёмка: ступени по десятки метров, паузы 20–50 мкс,
+средняя скорость ≈ 2·10<sup>5</sup> м/с, ток ступени ≥ 1 кА. Обратный
+удар раскаляет канал до ≈ 30 000 К при давлении ≥ 10 атм.</th>
+</tr>
+<tr class="odd">
+<th>Физика</th>
+<th>Отрицательный лидер растёт скачками через пространственный стебель;
+положительный лабораторный — почти непрерывно.</th>
+</tr>
+<tr class="header">
+<th>Урок</th>
+<th>Молния — тот же лидерный механизм в километровом масштабе.</th>
+</tr>
+<tr class="odd">
+<th>Источник</th>
+<th>Rakov V. A., Uman M. A. Lightning: Physics and Effects, разд.
+4.7–4.12</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<h3>8.6. Защитный промежуток не успел (типовая ситуация)</h3>
+<table>
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 78%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Что случилось</th>
+<th>Трансформатор 10 кВ подстанции рудника защищён стержневым искровым
+промежутком с пробивным напряжением ниже испытательного напряжения
+трансформатора. Волна с очень крутым фронтом пробила изоляцию
+трансформатора раньше, чем сработал промежуток.</th>
+</tr>
+<tr class="odd">
+<th>Физика</th>
+<th>У стержневого промежутка крутая вольт-секундная характеристика: на
+коротких временах он требует напряжения выше, чем выдерживает
+изоляция.</th>
+</tr>
+<tr class="header">
+<th>Урок</th>
+<th>Оборудование защищают ОПН с пологой характеристикой.</th>
+</tr>
+<tr class="odd">
+<th>Источник</th>
+<th>Типовая учебная ситуация, принцип координации по МЭК 60071</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<h2>9. Вопросы для самопроверки</h2>
+<ol type="1">
+<li><p>Что даёт стримеру затравочные электроны впереди головки?</p></li>
+<li><p>Почему отрицательному стримеру нужно большее поле, чем
+положительному?</p></li>
+<li><p>Почему корона раньше загорается у отрицательного острия, а пробой
+раньше наступает у положительного?</p></li>
+<li><p>Как оценить пробивное напряжение промежутка острие — плоскость
+длиной 30 см на высоте 400 м?</p></li>
+<li><p>Что показывает формула Галле и почему прочность длинных
+промежутков насыщается?</p></li>
+<li><p>При какой температуре стебель стримеров становится лидером и
+почему?</p></li>
+<li><p>Что такое финальный скачок?</p></li>
+<li><p>Чем ступенчатый лидер молнии отличается от
+лабораторного?</p></li>
+<li><p>Почему длинным промежуткам опаснее положительный коммутационный
+импульс?</p></li>
+<li><p>Из чего складывается время разряда и как на него влияет
+облучение?</p></li>
+<li><p>Почему стержневой искровой промежуток плохо защищает от волн с
+крутым фронтом?</p></li>
+</ol>
+<h2>10. Источники</h2>
+<ol type="1">
+<li><p>Важов В. Ф., Лавринович В. А. Техника высоких напряжений:
+учебник. — Томск: ТПУ, 2014. — Разд. 1.1–1.2.</p></li>
+<li><p>Райзер Ю. П. Физика газового разряда. — М.: Наука.</p></li>
+<li><p>Базелян Э. М., Райзер Ю. П. Искровой разряд. — М.: МФТИ,
+1997.</p></li>
+<li><p>On propagation of positive and negative streamers in air in
+uniform electric fields. — arXiv:2305.09560.</p></li>
+<li><p>Briels T. M. P. et al. Positive and negative streamers in ambient
+air: measuring diameter, velocity and dissipated energy. —
+arXiv:0805.1376, 2008.</p></li>
+<li><p>Gallet G., Leroy G., Lacey R., Kromer I. General expression for
+positive switching impulse strength valid up to extra long air gaps. —
+IEEE Trans. PAS, 1975.</p></li>
+<li><p>Applicability of the Gallet Equation to the Vegetation Clearances
+of NERC Reliability Standard FAC-003-2. — PNNL-21220, 2012.</p></li>
+<li><p>Time-resolved measurements on thermal parameters of leader
+discharges using a Mach-Zehnder interferometer. — CIGRE ISH2015, доклад
+466.</p></li>
+<li><p>Shock Wave in Leader Discharge Observed Using Mach-Zehnder
+Interferometry. — arXiv:1806.02788.</p></li>
+<li><p>Rakov V. A., Uman M. A. Lightning: Physics and Effects. —
+Cambridge University Press, 2003. — Разд. 4.</p></li>
+<li><p>NERC. Final report on the August 14, 2003 blackout: vegetation
+(trees) investigation.</p></li>
+<li><p>2003 Italy blackout. — Wikipedia; UCTE. Final Report of the
+Investigation Committee on the 28 September 2003 Blackout in Italy,
+2004.</p></li>
+<li><p>МЭК 60071-2. Координация изоляции. Часть 2. Руководство по
+применению.</p></li>
+</ol>
+</main></body></html>

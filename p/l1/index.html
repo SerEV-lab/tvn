@@ -1,0 +1,441 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Лекция 1. Электрическое поле в изоляционных промежутках — презентация</title><link rel="stylesheet" href="../fonts/fonts.css"><style>*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#0e131a;overflow:hidden}
+#stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+#deck{width:1920px;height:1080px;position:relative;flex:none;transform-origin:center center}
+#deck>section{position:absolute;inset:0;width:1920px;height:1080px;overflow:hidden}
+body:not(.print) #deck>section:not(.on){display:none!important}
+section ul,section ol{padding-left:1.2em}section li{margin:.25em 0}
+section table{border-collapse:collapse;width:100%}
+section th,section td{text-align:left;vertical-align:top;padding:.45em .6em;border-bottom:1px solid rgba(128,128,128,.35)}
+section th{font-weight:600;border-bottom:2px solid currentColor}
+section img{display:block}
+#ui{position:fixed;left:0;right:0;bottom:0;display:flex;gap:6px;align-items:center;justify-content:center;padding:8px;font:600 14px system-ui,sans-serif;z-index:9;opacity:.9}
+#ui a,#ui button{background:rgba(20,29,43,.85);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:7px 14px;font:inherit;text-decoration:none;cursor:pointer}
+#ui span{background:rgba(20,29,43,.85);color:#fff;border-radius:999px;padding:7px 12px;min-width:76px;text-align:center}
+body.print{overflow:visible;background:#fff}body.print #stage{position:static;display:block}
+body.print #deck{transform:none!important;height:auto}
+body.print #deck>section{position:relative!important;page-break-after:always;break-after:page}
+body.print #ui{display:none}
+@page{size:1920px 1080px;margin:0}</style></head><body><div id="stage"><div id="deck"><section id="cover" data-transition="fade" style="background:#0E1420;color:#EEF1F5;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:40px">
+<img src="img/3f1e7112c7.webp" alt="3D-модель: острие над заземлённой плоскостью, цветной разрез поля и силовые линии" style="position:absolute;left:880px;top:0px;width:1040px;height:1080px;object-fit:cover">
+<div style="position:absolute;left:820px;top:0px;width:200px;height:1080px;background:linear-gradient(90deg, #0E1420 0%, rgba(14,20,32,0) 100%)"></div>
+<p style="width:700px;font-family:'IBM Plex Mono', monospace;font-size:26px;color:#F4A93B;letter-spacing:2px;text-transform:uppercase">Техника высоких напряжений · Лекция 1</p>
+<h1 style="width:700px;font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:88px;font-weight:700;line-height:1.05;color:#F4F6FA">Электрическое поле в изоляционных промежутках</h1>
+<p style="width:680px;font-size:34px;line-height:1.4;color:#BFC9D6">Напряжённость поля, степень неоднородности и от чего она зависит</p>
+<p style="width:700px;font-size:26px;line-height:1.4;color:#8D9AAD">Лекция · опыты на 3D-модели «Электроды 3D» · практическое занятие · тест</p>
+
+</section>
+<section id="plan" data-transition="fade" style="background:#F2F4F7;color:#18232F;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px"><p style="font-family:'IBM Plex Mono', monospace;font-size:24px;color:#2457C5;letter-spacing:2px;text-transform:uppercase">Введение</p><h2 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:64px;font-weight:700;line-height:1.1;color:#14213D">План лекции</h2></div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:24px">
+<div style="display:flex;flex-direction:column;gap:12px;background:#FBFCFD;border:1px solid #D3DAE2;border-radius:16px;padding:32px"><p style="font-family:'IBM Plex Mono', monospace;font-size:44px;font-weight:500;color:#2457C5">01</p><p style="font-size:32px;line-height:1.3">Напряжённость и потенциал</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FBFCFD;border:1px solid #D3DAE2;border-radius:16px;padding:32px"><p style="font-family:'IBM Plex Mono', monospace;font-size:44px;font-weight:500;color:#2457C5">02</p><p style="font-size:32px;line-height:1.3">Однородное и неоднородное поле</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FBFCFD;border:1px solid #D3DAE2;border-radius:16px;padding:32px"><p style="font-family:'IBM Plex Mono', monospace;font-size:44px;font-weight:500;color:#2457C5">03</p><p style="font-size:32px;line-height:1.3">Радиус кривизны</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FBFCFD;border:1px solid #D3DAE2;border-radius:16px;padding:32px"><p style="font-family:'IBM Plex Mono', monospace;font-size:44px;font-weight:500;color:#2457C5">04</p><p style="font-size:32px;line-height:1.3">Типовые системы электродов</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FBFCFD;border:1px solid #D3DAE2;border-radius:16px;padding:32px"><p style="font-family:'IBM Plex Mono', monospace;font-size:44px;font-weight:500;color:#2457C5">05</p><p style="font-size:32px;line-height:1.3">Заземление и полярность</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FBFCFD;border:1px solid #D3DAE2;border-radius:16px;padding:32px"><p style="font-family:'IBM Plex Mono', monospace;font-size:44px;font-weight:500;color:#2457C5">06</p><p style="font-size:32px;line-height:1.3">Как снизить неоднородность</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FBFCFD;border:1px solid #D3DAE2;border-radius:16px;padding:32px"><p style="font-family:'IBM Plex Mono', monospace;font-size:44px;font-weight:500;color:#2457C5">07</p><p style="font-size:32px;line-height:1.3">Опыты на 3D-модели</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#2457C5;border-radius:16px;padding:32px"><p style="font-family:'IBM Plex Mono', monospace;font-size:44px;font-weight:500;color:#F4A93B">→</p><p style="font-size:32px;line-height:1.3;color:#F4F6FA">Затем: 10 задач и тест</p></div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#6A7484">Лекция 1 · Электрическое поле в изоляционных промежутках</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#6A7484;text-align:right">2</p>
+
+</section>
+<section id="why" data-transition="fade" style="background:#2457C5;color:#F4F6FA;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:56px">
+<p style="font-family:'IBM Plex Mono', monospace;font-size:26px;color:#F4A93B;letter-spacing:2px;text-transform:uppercase">Главная мысль лекции</p>
+<h2 style="width:1500px;font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:80px;font-weight:700;line-height:1.1;color:#F4F6FA">Пробой начинается там, где напряжённость максимальна, а не там, где она велика «в среднем»</h2>
+<p style="width:1400px;font-size:36px;line-height:1.4;color:#DCE5F7">Одно и то же напряжение безопасно у гладкого шара и опасно у острой кромки. Поэтому главная задача расчёта — найти Emax и место, где она возникает.</p>
+
+</section>
+<section id="edef" data-transition="fade" data-section="Напряжённость, потенциал, однородное и неоднородное поле" style="background:#F2F4F7;color:#18232F;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px"><p style="font-family:'IBM Plex Mono', monospace;font-size:24px;color:#2457C5;letter-spacing:2px;text-transform:uppercase">Основные понятия</p><h2 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:64px;font-weight:700;line-height:1.1;color:#14213D">Напряжённость и потенциал</h2></div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:32px">
+<div style="display:flex;flex-direction:column;gap:24px;background:#FBFCFD;border:1px solid #D3DAE2;border-radius:16px;padding:40px"><h3 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:40px;font-weight:700;color:#14213D">Напряжённость</h3><img src="img/ad41a31e74.webp" alt="E равно F, делённое на q" style="width:174px;height:150px;object-fit:contain"><p style="font-size:28px;line-height:1.4;color:#4A5568">Сила, действующая на единичный заряд. Единицы: В/м, в ТВН — кВ/см. 1 кВ/см = 100 кВ/м.</p></div>
+<div style="display:flex;flex-direction:column;gap:24px;background:#FBFCFD;border:1px solid #D3DAE2;border-radius:16px;padding:40px"><h3 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:40px;font-weight:700;color:#14213D">Связь с потенциалом</h3><img src="img/ee325f0ba4.webp" alt="E равно минус d фи по dx" style="width:275px;height:150px;object-fit:contain"><p style="font-size:28px;line-height:1.4;color:#4A5568">E направлена в сторону убывания потенциала φ. Напряжение U = φ1 − φ2.</p></div>
+<div style="display:flex;flex-direction:column;gap:24px;background:#FBFCFD;border:1px solid #D3DAE2;border-radius:16px;padding:40px"><h3 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:40px;font-weight:700;color:#14213D">Напряжение</h3><img src="img/b38f24b59d.webp" alt="U равно интегралу от 0 до d от E(x) dx" style="width:422px;height:150px;object-fit:contain"><p style="font-size:28px;line-height:1.4;color:#4A5568">Площадь под графиком E(x) вдоль оси промежутка равна U. Где E больше — в другом месте она меньше.</p></div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#6A7484">Лекция 1 · Электрическое поле в изоляционных промежутках</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#6A7484;text-align:right">4</p>
+
+</section>
+<section id="lines" data-transition="fade" style="background:#F2F4F7;color:#18232F;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px"><p style="font-family:'IBM Plex Mono', monospace;font-size:24px;color:#2457C5;letter-spacing:2px;text-transform:uppercase">Основные понятия</p><h2 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:64px;font-weight:700;line-height:1.1;color:#14213D">Силовые линии и эквипотенциали</h2></div>
+<div style="display:flex;gap:48px;align-items:start">
+<div style="flex:1;display:flex;flex-direction:column;gap:28px">
+<p style="font-size:30px;line-height:1.4"><b>Силовая линия</b> — касательная к ней совпадает с направлением E. Выходит из «+», входит в «−» или в землю.</p>
+<p style="font-size:30px;line-height:1.4"><b>Эквипотенциаль</b> — линия равного потенциала. Силовые линии всегда перпендикулярны эквипотенциалям.</p>
+<p style="font-size:30px;line-height:1.4"><b>Гуще линии, ближе эквипотенциали — сильнее поле.</b> Поверхность металла — эквипотенциаль: E перпендикулярна ей, внутри металла E = 0.</p>
+</div>
+<img src="img/acb5ff1fab.webp" alt="Два шара с питанием плюс-минус 50 кВ: цветной разрез поля, белые эквипотенциали и силовые линии со стрелками" style="width:860px;height:499px;object-fit:contain;border-radius:16px;background:#0E1420">
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#6A7484">Лекция 1 · Электрическое поле в изоляционных промежутках</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#6A7484;text-align:right">5</p>
+
+</section>
+<section id="uniform" data-transition="fade" style="background:#F2F4F7;color:#18232F;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px"><p style="font-family:'IBM Plex Mono', monospace;font-size:24px;color:#2457C5;letter-spacing:2px;text-transform:uppercase">Однородное поле</p><h2 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:64px;font-weight:700;line-height:1.1;color:#14213D">Плоскость — плоскость: эталон</h2></div>
+<div style="display:flex;gap:48px;align-items:start">
+<div style="flex:1;display:flex;flex-direction:column;gap:28px">
+<img src="img/f494574121.webp" alt="E равно U, делённое на d" style="width:209px;height:160px;object-fit:contain">
+<p style="font-size:30px;line-height:1.4">E одинакова во всём промежутке: <b>Emax = Eср, kн = 1</b>.</p>
+<p style="font-size:30px;line-height:1.4">U = 50 кВ, d = 2 см → E = 25 кВ/см. При U = 60 кВ E = 30 кВ/см — воздух пробивается.</p>
+<p style="font-size:30px;line-height:1.4;color:#4A5568">Края электродов скругляют (профиль Роговского), чтобы поле на краях не усиливалось.</p>
+</div>
+<img src="img/fc53f2a87f.webp" alt="Два плоских электрода: разрез поля окрашен одним цветом, силовые линии параллельны" style="width:860px;height:499px;object-fit:contain;border-radius:16px;background:#0E1420">
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#6A7484">Лекция 1 · Электрическое поле в изоляционных промежутках</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#6A7484;text-align:right">6</p>
+
+</section>
+<section id="nonuni" data-transition="fade" style="background:#F2F4F7;color:#18232F;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px"><p style="font-family:'IBM Plex Mono', monospace;font-size:24px;color:#2457C5;letter-spacing:2px;text-transform:uppercase">Неоднородное поле</p><h2 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:64px;font-weight:700;line-height:1.1;color:#14213D">Средняя, наибольшая и коэффициент неоднородности</h2></div>
+<div style="display:flex;gap:48px;align-items:start">
+<div style="width:700px;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;gap:40px;align-items:center"><img src="img/029465fc81.webp" alt="E ср равно U, делённое на d" style="width:217px;height:130px;object-fit:contain"><img src="img/9c321102ed.webp" alt="k н равно E max, делённое на E ср" style="width:260px;height:140px;object-fit:contain"></div>
+<p style="font-size:30px;line-height:1.4"><b>Eср</b> — какой была бы E, если бы поле было однородным.</p>
+<p style="font-size:30px;line-height:1.4"><b>Emax</b> — у электрода с наименьшим радиусом кривизны.</p>
+<p style="font-size:30px;line-height:1.4"><b>kн</b> зависит только от геометрии: при росте U вдвое Emax и Eср растут вдвое.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<img src="img/dea2b0b1d5.webp" alt="График напряжённости вдоль оси шар — плоскость: 26,8 кВ/см у шара, падает к плоскости; пунктиры E ср = 10 и E0 = 30 кВ/см" style="width:916px;height:370px;object-fit:contain;border-radius:16px;background:#FBFCFD">
+<p style="font-size:26px;line-height:1.4;color:#4A5568">Шар — плоскость: r = 5 см, d = 10 см, U = 100 кВ. Eср = 10 кВ/см, у шара Emax = 26,8 кВ/см, у плоскости 5,4 кВ/см. kн = 2,68.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#6A7484">Лекция 1 · Электрическое поле в изоляционных промежутках</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#6A7484;text-align:right">7</p>
+
+</section>
+<section id="classes" data-transition="fade" style="background:#F2F4F7;color:#18232F;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px"><p style="font-family:'IBM Plex Mono', monospace;font-size:24px;color:#2457C5;letter-spacing:2px;text-transform:uppercase">Неоднородное поле</p><h2 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:64px;font-weight:700;line-height:1.1;color:#14213D">Классификация полей по kн</h2></div>
+<table style="font-family:'IBM Plex Sans', Arial, sans-serif;font-size:30px;color:#18232F;background:#FBFCFD">
+<tr><th style="width:26%">Поле</th><th style="width:12%">kн</th><th style="width:30%">Пример</th><th style="width:32%">Как развивается разряд</th></tr>
+<tr><td>Однородное</td><td>1</td><td>Плоскость — плоскость</td><td>Пробой сразу</td></tr>
+<tr><td>Слабонеоднородное</td><td>&lt; 2</td><td>Шары при d &lt; r, кабель</td><td>Пробой почти сразу</td></tr>
+<tr><td>Неоднородное</td><td>2…4</td><td>Шар — плоскость, d ≈ 2r</td><td>Промежуточный случай</td></tr>
+<tr style="background:#FDF1DC"><td>Резконеоднородное</td><td>&gt; 4</td><td>Острие, провод над землёй</td><td>Сначала корона, потом пробой</td></tr>
+</table>
+<p style="font-size:26px;line-height:1.4;color:#4A5568">Границы условны и в учебниках немного различаются. Корона и пробой газов — темы следующих лекций.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#6A7484">Лекция 1 · Электрическое поле в изоляционных промежутках</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#6A7484;text-align:right">8</p>
+
+</section>
+<section id="radius" data-transition="fade" data-section="Радиус кривизны и усиление поля" style="background:#F2F4F7;color:#18232F;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px"><p style="font-family:'IBM Plex Mono', monospace;font-size:24px;color:#2457C5;letter-spacing:2px;text-transform:uppercase">Радиус кривизны</p><h2 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:64px;font-weight:700;line-height:1.1;color:#14213D">Чем меньше радиус, тем сильнее поле</h2></div>
+<div style="display:flex;gap:48px;align-items:start">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.4"><b>Радиус кривизны</b> — радиус окружности, прилегающей к поверхности: у плоскости бесконечен, у шара равен r, у острия — доли миллиметра.</p>
+<p style="font-size:30px;line-height:1.4;color:#4A5568">Уединённый шар под потенциалом U:</p>
+<img src="img/fa7e91d115.webp" alt="E от ро равно U r делить на ро в квадрате; E max равно U делить на r" style="width:700px;height:172px;object-fit:contain">
+<p style="font-size:30px;line-height:1.4;color:#4A5568">С заземлённым концентрическим шаром R = r + d:</p>
+<img src="img/90ef668451.webp" alt="E max равно U умножить на (r плюс d), делить на r d" style="width:426px;height:130px;object-fit:contain">
+</div>
+<div style="width:560px;display:flex;flex-direction:column;gap:24px;background:#0E1420;border-radius:16px;padding:48px">
+<p style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:160px;font-weight:700;line-height:1;color:#F4A93B">×100</p>
+<p style="font-size:32px;line-height:1.4;color:#EEF1F5">Шар радиусом 1 мм имеет у поверхности поле в 100 раз сильнее, чем шар 10 см при том же потенциале.</p>
+<p style="font-size:26px;line-height:1.4;color:#BFC9D6">Поэтому заусенцы, острые кромки и тонкие провода — источники короны и частичных разрядов.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#6A7484">Лекция 1 · Электрическое поле в изоляционных промежутках</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#6A7484;text-align:right">9</p>
+
+</section>
+<section id="radiusexp" data-transition="fade" style="background:#F2F4F7;color:#18232F;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:12px"><p style="font-family:'IBM Plex Mono', monospace;font-size:24px;color:#2457C5;letter-spacing:2px;text-transform:uppercase">Опыт 2 на модели</p><h2 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:64px;font-weight:700;line-height:1.1;color:#14213D">Меняем только радиус шара</h2></div>
+<div style="display:flex;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px"><img src="img/6c22004cbc.webp" alt="Шар радиусом 20 см над плоскостью: поле умеренное, E max 13,6 кВ/см" style="width:808px;height:469px;object-fit:contain;border-radius:16px;background:#0E1420"><p style="font-size:30px;line-height:1.3"><b>r = 20 см:</b> Emax = 13,6 кВ/см, kн = 1,36</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px"><img src="img/8a5e0ba5c1.webp" alt="Шар радиусом 0,5 см над плоскостью: поле сосредоточено у маленького шара, E max 205 кВ/см" style="width:808px;height:469px;object-fit:contain;border-radius:16px;background:#0E1420"><p style="font-size:30px;line-height:1.3"><b>r = 0,5 см:</b> Emax = 205 кВ/см, kн = 20,5</p></div>
+</div>
+<p style="font-size:28px;line-height:1.4;color:#4A5568">U = 100 кВ, d = 10 см: Eср = 10 кВ/см в обоих случаях, а Emax отличается в 15 раз.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#6A7484">Лекция 1 · Электрическое поле в изоляционных промежутках</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#6A7484;text-align:right">10</p>
+
+</section>
+<section id="sp" data-transition="fade" data-section="Типовые системы электродов и расчётные формулы" style="background:#F2F4F7;color:#18232F;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px"><p style="font-family:'IBM Plex Mono', monospace;font-size:24px;color:#2457C5;letter-spacing:2px;text-transform:uppercase">Типовые системы · 1</p><h2 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:64px;font-weight:700;line-height:1.1;color:#14213D">Шар — плоскость</h2></div>
+<div style="display:flex;gap:48px;align-items:start">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<img src="img/8697317ab7.webp" alt="E max примерно 0,9 U (r плюс d) делить на r d" style="width:640px;height:161px;object-fit:contain">
+<p style="font-size:30px;line-height:1.4">Поправка 0,9 к формуле сферического конденсатора.</p>
+<p style="font-size:30px;line-height:1.4">Точное решение — <b>метод зеркальных изображений</b>: плоскость заменяют зеркальным шаром с потенциалом −U.</p>
+<p style="font-size:30px;line-height:1.4">r = 5 см, d = 10 см, U = 100 кВ → 27,0 кВ/см (точно 26,8).</p>
+</div>
+<img src="img/648d491350.webp" alt="Шар над плоскостью: эквипотенциали сгущаются под шаром, E max 26,8 кВ/см в нижней точке" style="width:860px;height:499px;object-fit:contain;border-radius:16px;background:#0E1420">
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#6A7484">Лекция 1 · Электрическое поле в изоляционных промежутках</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#6A7484;text-align:right">11</p>
+
+</section>
+<section id="ss" data-transition="fade" style="background:#F2F4F7;color:#18232F;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px"><p style="font-family:'IBM Plex Mono', monospace;font-size:24px;color:#2457C5;letter-spacing:2px;text-transform:uppercase">Типовые системы · 2</p><h2 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:64px;font-weight:700;line-height:1.1;color:#14213D">Шар — шар: шаровой разрядник</h2></div>
+<div style="display:flex;gap:48px;align-items:start">
+<div style="flex:1;display:flex;flex-direction:column;gap:28px">
+<p style="font-size:30px;line-height:1.4">При <b>симметричном питании ±U/2</b> плоскость между шарами имеет потенциал 0 и работает как заземлённая плоскость.</p>
+<p style="font-size:30px;line-height:1.4">Каждая половина — шар — плоскость с напряжением U/2 и расстоянием d/2:</p>
+<img src="img/df2a5458ee.webp" alt="E max примерно 0,9 (U/2)(r плюс d/2) делить на r d/2" style="width:740px;height:150px;object-fit:contain">
+</div>
+<div style="width:620px;display:flex;flex-direction:column;gap:20px;background:#FBFCFD;border:1px solid #D3DAE2;border-radius:16px;padding:40px">
+<h3 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:40px;font-weight:700;color:#14213D">Зачем это знать</h3>
+<p style="font-size:28px;line-height:1.4;color:#4A5568">Шаровыми разрядниками измеряют высокое напряжение в лабораториях. Таблицы пробивных напряжений (IEC 60052) составлены для схемы с одним заземлённым шаром.</p>
+<p style="font-size:28px;line-height:1.4;color:#4A5568">Если заземлить один шар, поле становится несимметричным — разберём на слайде про заземление.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#6A7484">Лекция 1 · Электрическое поле в изоляционных промежутках</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#6A7484;text-align:right">12</p>
+
+</section>
+<section id="hp" data-transition="fade" style="background:#F2F4F7;color:#18232F;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px"><p style="font-family:'IBM Plex Mono', monospace;font-size:24px;color:#2457C5;letter-spacing:2px;text-transform:uppercase">Типовые системы · 3</p><h2 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:64px;font-weight:700;line-height:1.1;color:#14213D">Острие — плоскость</h2></div>
+<div style="display:flex;gap:48px;align-items:start">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<img src="img/a63a3376c5.webp" alt="E max примерно 2U делить на r ln(4d/r)" style="width:560px;height:173px;object-fit:contain">
+<p style="font-size:30px;line-height:1.4">Формула Коэльо — Дебо (r ≪ d). Точное решение — острие в виде гиперболоида вращения.</p>
+<p style="font-size:30px;line-height:1.4">r = 0,5 см, d = 10 см, U = 60 кВ: Eср = 6 кВ/см, а <b>Emax = 55,8 кВ/см</b>, kн ≈ 9,3.</p>
+<p style="font-size:30px;line-height:1.4;color:#4A5568">Поле резко падает уже в нескольких r от вершины.</p>
+</div>
+<img src="img/3f1e7112c7.webp" alt="Острие над плоскостью: эквипотенциали сгущаются у вершины, E max 55,8 кВ/см" style="width:860px;height:499px;object-fit:contain;border-radius:16px;background:#0E1420">
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#6A7484">Лекция 1 · Электрическое поле в изоляционных промежутках</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#6A7484;text-align:right">13</p>
+
+</section>
+<section id="wp" data-transition="fade" style="background:#F2F4F7;color:#18232F;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px"><p style="font-family:'IBM Plex Mono', monospace;font-size:24px;color:#2457C5;letter-spacing:2px;text-transform:uppercase">Типовые системы · 4</p><h2 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:64px;font-weight:700;line-height:1.1;color:#14213D">Провод над землёй</h2></div>
+<div style="display:flex;gap:48px;align-items:start">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<img src="img/84c0f377e4.webp" alt="E max примерно U делить на r ln(2h/r)" style="width:560px;height:172px;object-fit:contain">
+<p style="font-size:28px;line-height:1.4;color:#4A5568">h = r + d — высота оси провода. Провод r = 1,2 см на высоте 10 м:</p>
+<table style="font-family:'IBM Plex Sans', Arial, sans-serif;font-size:28px;color:#18232F;background:#FBFCFD">
+<tr><th style="width:24%">Линия</th><th style="width:26%">U фазн.</th><th style="width:50%">Emax</th></tr>
+<tr><td>220 кВ</td><td>180 кВ</td><td>20,2 кВ/см — норма</td></tr>
+<tr style="background:#FDF1DC"><td>500 кВ</td><td>408 кВ</td><td>45,9 кВ/см — корона</td></tr>
+</table>
+<p style="font-size:28px;line-height:1.4">Поэтому на линиях 330 кВ и выше фазу <b>расщепляют</b> на несколько проводов.</p>
+</div>
+<img src="img/a91f2ab72a.webp" alt="Провод над землёй: поле сосредоточено у поверхности провода, E max 46,5 кВ/см" style="width:860px;height:499px;object-fit:contain;border-radius:16px;background:#0E1420">
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#6A7484">Лекция 1 · Электрическое поле в изоляционных промежутках</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#6A7484;text-align:right">14</p>
+
+</section>
+<section id="cx" data-transition="fade" style="background:#F2F4F7;color:#18232F;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px"><p style="font-family:'IBM Plex Mono', monospace;font-size:24px;color:#2457C5;letter-spacing:2px;text-transform:uppercase">Типовые системы · 5</p><h2 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:64px;font-weight:700;line-height:1.1;color:#14213D">Коаксиальные цилиндры: кабель</h2></div>
+<div style="display:flex;gap:48px;align-items:start">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;gap:40px;align-items:center"><img src="img/91f60c4b98.webp" alt="E от ро равно U делить на ро ln(R/r)" style="width:400px;height:136px;object-fit:contain"><img src="img/fc11e8f58e.webp" alt="r опт равно R/e, примерно 0,37 R" style="width:300px;height:86px;object-fit:contain"></div>
+<p style="font-size:30px;line-height:1.4">Emax — у жилы, у экрана поле в R/r раз слабее.</p>
+<p style="font-size:30px;line-height:1.4">Тонкая жила — малый радиус кривизны; толстая — тонкий слой изоляции. Между ними оптимум <b>r = R/e</b>.</p>
+<p style="font-size:30px;line-height:1.4;color:#4A5568">r = 1,5 см, d = 3 см, U = 100 кВ: 60,7 кВ/см у жилы, 20,2 у экрана.</p>
+</div>
+<img src="img/30142343a8.webp" alt="Кабель в разрезе: поле максимально у жилы и убывает к экрану" style="width:860px;height:499px;object-fit:contain;border-radius:16px;background:#0E1420">
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#6A7484">Лекция 1 · Электрическое поле в изоляционных промежутках</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#6A7484;text-align:right">15</p>
+
+</section>
+<section id="summary" data-transition="fade" style="background:#F2F4F7;color:#18232F;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px"><p style="font-family:'IBM Plex Mono', monospace;font-size:24px;color:#2457C5;letter-spacing:2px;text-transform:uppercase">Типовые системы · сводка</p><h2 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:64px;font-weight:700;line-height:1.1;color:#14213D">Расчётные формулы</h2></div>
+<table style="font-family:'IBM Plex Sans', Arial, sans-serif;font-size:30px;color:#18232F;background:#FBFCFD">
+<tr><th style="width:34%">Система</th><th style="width:38%">Emax</th><th style="width:28%">kн</th></tr>
+<tr><td>Плоскость — плоскость</td><td>U/d</td><td>1</td></tr>
+<tr><td>Шар — плоскость</td><td>0,9·U·(r + d)/(r·d)</td><td>0,9·(r + d)/r</td></tr>
+<tr><td>Шар — шар, ±U/2</td><td>0,9·(U/2)·(r + d/2)/(r·d/2)</td><td>0,9·(r + d/2)/r</td></tr>
+<tr><td>Острие — плоскость</td><td>2U/(r·ln(4d/r))</td><td>2d/(r·ln(4d/r))</td></tr>
+<tr><td>Провод, h = r + d</td><td>U/(r·ln(2h/r))</td><td>d/(r·ln(2h/r))</td></tr>
+<tr><td>Кабель, R = r + d</td><td>U/(r·ln(R/r))</td><td>d/(r·ln(R/r))</td></tr>
+</table>
+<p style="font-size:26px;line-height:1.4;color:#4A5568">U — напряжение (амплитуда), d — промежуток, r — радиус кривизны острого электрода. Во всех формулах kн не зависит от U.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#6A7484">Лекция 1 · Электрическое поле в изоляционных промежутках</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#6A7484;text-align:right">16</p>
+
+</section>
+<section id="ground" data-transition="fade" data-section="Заземление, плавающие электроды и полярность" style="background:#F2F4F7;color:#18232F;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px"><p style="font-family:'IBM Plex Mono', monospace;font-size:24px;color:#2457C5;letter-spacing:2px;text-transform:uppercase">Заземление</p><h2 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:64px;font-weight:700;line-height:1.1;color:#14213D">Одно напряжение — разное поле</h2></div>
+<div style="display:flex;gap:48px;align-items:start">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:28px;line-height:1.4;color:#4A5568">Два шара r = 5 см, d = 10 см, между ними 100 кВ. E у поверхности, кВ/см:</p>
+<table style="font-family:'IBM Plex Sans', Arial, sans-serif;font-size:28px;color:#18232F;background:#FBFCFD">
+<tr><th style="width:52%">Схема</th><th style="width:24%">Шар 1</th><th style="width:24%">Шар 2</th></tr>
+<tr><td>Питание ±U/2</td><td>17,7</td><td>17,7</td></tr>
+<tr style="background:#FDF1DC"><td>Шар 2 заземлён</td><td>23,4</td><td>12,0</td></tr>
+<tr><td>Шар 2 не подключён</td><td>20,4</td><td>6,1</td></tr>
+</table>
+<p style="font-size:28px;line-height:1.4">Заземлённый шар «делит» силовые линии с окружающей землёй: у шара под напряжением E растёт на <b>32 %</b>.</p>
+</div>
+<img src="img/3432879ae4.webp" alt="Шар 1 под 100 кВ, шар 2 заземлён: поле несимметрично, E max 23,4 кВ/см у шара 1" style="width:860px;height:499px;object-fit:contain;border-radius:16px;background:#0E1420">
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#6A7484">Лекция 1 · Электрическое поле в изоляционных промежутках</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#6A7484;text-align:right">17</p>
+
+</section>
+<section id="floating" data-transition="fade" style="background:#0E1420;color:#EEF1F5;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px"><p style="font-family:'IBM Plex Mono', monospace;font-size:24px;color:#F4A93B;letter-spacing:2px;text-transform:uppercase">Техника безопасности</p><h2 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:64px;font-weight:700;line-height:1.1;color:#F4F6FA">Незаземлённая деталь опасна</h2></div>
+<div style="display:flex;gap:48px;align-items:start">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:140px;font-weight:700;line-height:1;color:#F4A93B">+25 кВ</p>
+<p style="font-size:30px;line-height:1.4;color:#EEF1F5">столько принимает ни к чему не подключённый шар рядом с электродом 100 кВ.</p>
+<p style="font-size:28px;line-height:1.4;color:#BFC9D6">Его заряд равен нулю, но поле разделяет на нём заряды. Всё металлическое в зоне высокого напряжения заземляют.</p>
+</div>
+<img src="img/8dc659e1cf.webp" alt="Шар 2 не подключён и приобрёл потенциал плюс 25 кВ" style="width:860px;height:499px;object-fit:contain;border-radius:16px;background:#0E1420">
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#8D9AAD">Лекция 1 · Электрическое поле в изоляционных промежутках</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#8D9AAD;text-align:right">18</p>
+
+</section>
+<section id="polarity" data-transition="fade" style="background:#F2F4F7;color:#18232F;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px"><p style="font-family:'IBM Plex Mono', monospace;font-size:24px;color:#2457C5;letter-spacing:2px;text-transform:uppercase">Полярность</p><h2 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:64px;font-weight:700;line-height:1.1;color:#14213D">Что меняется при смене знака напряжения</h2></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:32px">
+<div style="display:flex;flex-direction:column;gap:20px;background:#FBFCFD;border:1px solid #D3DAE2;border-radius:16px;padding:48px">
+<h3 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:44px;font-weight:700;color:#14213D">Поле — то же</h3>
+<p style="font-size:30px;line-height:1.4;color:#4A5568">Те же эквипотенциали и та же Emax. Меняется только направление силовых линий: стрелки разворачиваются.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:20px;background:#FDF1DC;border:1px solid #E8C98A;border-radius:16px;padding:48px">
+<h3 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:44px;font-weight:700;color:#14213D">Разряд — другой</h3>
+<p style="font-size:30px;line-height:1.4;color:#4A5568">В резконеоднородном поле процессы у острия «+» и «−» различаются: это полярный эффект. Разберём в лекциях о разряде в газах.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#6A7484">Лекция 1 · Электрическое поле в изоляционных промежутках</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#6A7484;text-align:right">19</p>
+
+</section>
+<section id="reduce" data-transition="fade" data-section="Снижение неоднородности и условие ионизации" style="background:#F2F4F7;color:#18232F;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px"><p style="font-family:'IBM Plex Mono', monospace;font-size:24px;color:#2457C5;letter-spacing:2px;text-transform:uppercase">Проектирование</p><h2 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:64px;font-weight:700;line-height:1.1;color:#14213D">Как снизить Emax</h2></div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:32px">
+<div style="display:flex;flex-direction:column;gap:16px;background:#FBFCFD;border:1px solid #D3DAE2;border-radius:16px;padding:36px"><h3 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:36px;font-weight:700;color:#14213D">Больше радиус</h3><p style="font-size:28px;line-height:1.4;color:#4A5568">Скругление кромок, зачистка заусенцев, шаровые наконечники выводов.</p></div>
+<div style="display:flex;flex-direction:column;gap:16px;background:#FBFCFD;border:1px solid #D3DAE2;border-radius:16px;padding:36px"><h3 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:36px;font-weight:700;color:#14213D">Экраны</h3><p style="font-size:28px;line-height:1.4;color:#4A5568">Экранные кольца на гирляндах и арматуре, тороиды на испытательных установках.</p></div>
+<div style="display:flex;flex-direction:column;gap:16px;background:#FBFCFD;border:1px solid #D3DAE2;border-radius:16px;padding:36px"><h3 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:36px;font-weight:700;color:#14213D">Расщепление фазы</h3><p style="font-size:28px;line-height:1.4;color:#4A5568">Пучок проводов на ЛЭП 330 кВ и выше работает как провод большого радиуса.</p></div>
+<div style="display:flex;flex-direction:column;gap:16px;background:#FBFCFD;border:1px solid #D3DAE2;border-radius:16px;padding:36px"><h3 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:36px;font-weight:700;color:#14213D">Оптимальные размеры</h3><p style="font-size:28px;line-height:1.4;color:#4A5568">Радиус жилы r ≈ R/e, разумный выбор расстояний.</p></div>
+<div style="display:flex;flex-direction:column;gap:16px;background:#FBFCFD;border:1px solid #D3DAE2;border-radius:16px;padding:36px"><h3 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:36px;font-weight:700;color:#14213D">Профиль электродов</h3><p style="font-size:28px;line-height:1.4;color:#4A5568">Электроды Роговского дают однородное поле в испытательной ячейке.</p></div>
+<div style="display:flex;flex-direction:column;gap:16px;background:#FBFCFD;border:1px solid #D3DAE2;border-radius:16px;padding:36px"><h3 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:36px;font-weight:700;color:#14213D">Заземление</h3><p style="font-size:28px;line-height:1.4;color:#4A5568">Никаких плавающих металлических частей в зоне высокого напряжения.</p></div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#6A7484">Лекция 1 · Электрическое поле в изоляционных промежутках</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#6A7484;text-align:right">20</p>
+
+</section>
+<section id="e0" data-transition="fade" style="background:#2457C5;color:#F4F6FA;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:48px">
+<p style="font-family:'IBM Plex Mono', monospace;font-size:26px;color:#F4A93B;letter-spacing:2px;text-transform:uppercase">Первая проверка любой конструкции</p>
+<div style="display:flex;background:#F4F6FA;border-radius:20px;padding:48px 64px;align-self:start"><img src="img/f5b5ec6ec7.webp" alt="E max больше или равно E0, примерно 30 кВ/см" style="width:1090px;height:149px;object-fit:contain"></div>
+<p style="width:1450px;font-size:36px;line-height:1.4;color:#F4F6FA">Если у поверхности электрода Emax достигла E₀, воздух там начинает ионизироваться: свечение, треск, корона.</p>
+<p style="width:1450px;font-size:28px;line-height:1.4;color:#DCE5F7">E₀ ≈ 30 кВ/см — прочность воздуха в однородном поле при нормальных условиях (20 °C, 101,3 кПа), амплитуда. Точное значение зависит от радиуса, давления и температуры — уточним в теме «Корона».</p>
+
+</section>
+<section id="model" data-transition="fade" data-section="3D-модель, опыты и практическое занятие" style="background:#F2F4F7;color:#18232F;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px"><p style="font-family:'IBM Plex Mono', monospace;font-size:24px;color:#2457C5;letter-spacing:2px;text-transform:uppercase">Цифровая лаборатория</p><h2 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:64px;font-weight:700;line-height:1.1;color:#14213D">Модель «Электроды 3D»</h2></div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:32px">
+<div style="display:flex;flex-direction:column;gap:16px;background:#FBFCFD;border:1px solid #D3DAE2;border-radius:16px;padding:40px"><p style="font-family:'IBM Plex Mono', monospace;font-size:28px;color:#2457C5">Вкладка 1</p><h3 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:40px;font-weight:700;color:#14213D">Эксперимент</h3><p style="font-size:28px;line-height:1.4;color:#4A5568">6 систем электродов, U, r, d, подключение, полярность. Расчёт по шагам и график E вдоль оси.</p></div>
+<div style="display:flex;flex-direction:column;gap:16px;background:#FBFCFD;border:1px solid #D3DAE2;border-radius:16px;padding:40px"><p style="font-family:'IBM Plex Mono', monospace;font-size:28px;color:#2457C5">Вкладка 2</p><h3 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:40px;font-weight:700;color:#14213D">Задачи</h3><p style="font-size:28px;line-height:1.4;color:#4A5568">10 задач из практики: ввод и проверка ответа, подсказка, решение, открытие в лаборатории.</p></div>
+<div style="display:flex;flex-direction:column;gap:16px;background:#FBFCFD;border:1px solid #D3DAE2;border-radius:16px;padding:40px"><p style="font-family:'IBM Plex Mono', monospace;font-size:28px;color:#2457C5">Вкладка 3</p><h3 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:40px;font-weight:700;color:#14213D">Тест</h3><p style="font-size:28px;line-height:1.4;color:#4A5568">5 вариантов по 10 вопросов, оценка и разбор ошибок.</p></div>
+</div>
+<p style="font-size:28px;line-height:1.4"><b>Слои сцены:</b> цветной разрез, эквипотенциали, силовые линии, свечение, цвет поверхности. Щелчок по разрезу — зонд показывает E и φ в точке.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#6A7484">Лекция 1 · Электрическое поле в изоляционных промежутках</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#6A7484;text-align:right">22</p>
+
+</section>
+<section id="experiments" data-transition="fade" style="background:#F2F4F7;color:#18232F;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px"><p style="font-family:'IBM Plex Mono', monospace;font-size:24px;color:#2457C5;letter-spacing:2px;text-transform:uppercase">Демонстрация</p><h2 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:64px;font-weight:700;line-height:1.1;color:#14213D">Шесть опытов на модели</h2></div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px">
+<div style="display:flex;flex-direction:column;gap:12px;background:#FBFCFD;border:1px solid #D3DAE2;border-radius:16px;padding:32px"><h3 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:34px;font-weight:700;color:#14213D">1. Однородное поле</h3><p style="font-size:26px;line-height:1.4;color:#4A5568">Меняем U и d.</p><p style="font-size:26px;line-height:1.4">E = U/d, kн = 1; при 60 кВ на 2 см E = E₀.</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FBFCFD;border:1px solid #D3DAE2;border-radius:16px;padding:32px"><h3 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:34px;font-weight:700;color:#14213D">2. Радиус кривизны</h3><p style="font-size:26px;line-height:1.4;color:#4A5568">Шар: r от 20 до 0,5 см.</p><p style="font-size:26px;line-height:1.4">Emax 13,6 → 205 кВ/см, Eср не меняется.</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FBFCFD;border:1px solid #D3DAE2;border-radius:16px;padding:32px"><h3 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:34px;font-weight:700;color:#14213D">3. Острие</h3><p style="font-size:26px;line-height:1.4;color:#4A5568">Включаем «Свечение».</p><p style="font-size:26px;line-height:1.4">Поле у вершины, kн ≈ 9, Emax &gt; E₀.</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FBFCFD;border:1px solid #D3DAE2;border-radius:16px;padding:32px"><h3 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:34px;font-weight:700;color:#14213D">4. Заземление</h3><p style="font-size:26px;line-height:1.4;color:#4A5568">Схема второго шара.</p><p style="font-size:26px;line-height:1.4">17,7 / 23,4 / 20,4 кВ/см; плавающий шар ≈ 25 кВ.</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FBFCFD;border:1px solid #D3DAE2;border-radius:16px;padding:32px"><h3 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:34px;font-weight:700;color:#14213D">5. Провод и кабель</h3><p style="font-size:26px;line-height:1.4;color:#4A5568">Меняем r при R = const.</p><p style="font-size:26px;line-height:1.4">Минимум Emax при r ≈ R/e.</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FBFCFD;border:1px solid #D3DAE2;border-radius:16px;padding:32px"><h3 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:34px;font-weight:700;color:#14213D">6. Полярность</h3><p style="font-size:26px;line-height:1.4;color:#4A5568">«+» / «−».</p><p style="font-size:26px;line-height:1.4">Меняются только стрелки силовых линий.</p></div>
+</div>
+<p style="font-size:26px;line-height:1.4;color:#4A5568">Результаты студенты записывают в таблицу чек-листа (раздел 3).</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#6A7484">Лекция 1 · Электрическое поле в изоляционных промежутках</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#6A7484;text-align:right">23</p>
+
+</section>
+<section id="practice" data-transition="fade" style="background:#F2F4F7;color:#18232F;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:12px"><p style="font-family:'IBM Plex Mono', monospace;font-size:24px;color:#2457C5;letter-spacing:2px;text-transform:uppercase">Практическое занятие 1</p><h2 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:64px;font-weight:700;line-height:1.1;color:#14213D">10 задач по ситуациям из практики</h2></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px 48px">
+<p style="font-size:28px;line-height:1.3"><span style="color:#2457C5">01</span>  Испытательная ячейка с плоскими электродами</p>
+<p style="font-size:28px;line-height:1.3"><span style="color:#2457C5">06</span>  Поле в изоляции кабеля 10 кВ</p>
+<p style="font-size:28px;line-height:1.3"><span style="color:#2457C5">02</span>  Заусенец на шине распредустройства</p>
+<p style="font-size:28px;line-height:1.3"><span style="color:#2457C5">07</span>  Шаровой разрядник: один шар заземлён</p>
+<p style="font-size:28px;line-height:1.3"><span style="color:#2457C5">03</span>  Шаровой наконечник вывода</p>
+<p style="font-size:28px;line-height:1.3"><span style="color:#2457C5">08</span>  Подбор радиуса экрана</p>
+<p style="font-size:28px;line-height:1.3"><span style="color:#2457C5">04</span>  Экранное кольцо вместо головки болта</p>
+<p style="font-size:28px;line-height:1.3"><span style="color:#2457C5">09</span>  Незаземлённая деталь рядом с высоким напряжением</p>
+<p style="font-size:28px;line-height:1.3"><span style="color:#2457C5">05</span>  Почему провода ЛЭП 500 кВ расщепляют</p>
+<p style="font-size:28px;line-height:1.3"><span style="color:#2457C5">10</span>  Сравнение неоднородности полей</p>
+</div>
+<div style="display:flex;gap:24px">
+<p style="flex:1;font-size:26px;line-height:1.4;background:#FBFCFD;border:1px solid #D3DAE2;border-radius:12px;padding:24px">Ответ принимается с точностью 3 %. Каждую задачу можно открыть в 3D-модели.</p>
+<p style="flex:1;font-size:26px;line-height:1.4;background:#FBFCFD;border:1px solid #D3DAE2;border-radius:12px;padding:24px">Оценка: 9–10 задач — «отлично», 7–8 — «хорошо», 5–6 — «удовлетворительно».</p>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#6A7484">Лекция 1 · Электрическое поле в изоляционных промежутках</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#6A7484;text-align:right">24</p>
+
+</section>
+<section id="example" data-transition="fade" style="background:#F2F4F7;color:#18232F;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px"><p style="font-family:'IBM Plex Mono', monospace;font-size:24px;color:#2457C5;letter-spacing:2px;text-transform:uppercase">Разбор задачи 2</p><h2 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:64px;font-weight:700;line-height:1.1;color:#14213D">Заусенец на шине</h2></div>
+<div style="display:flex;gap:48px;align-items:start">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:28px;line-height:1.4;color:#4A5568">После резки на кромке шины остался заусенец; в ячейке треск, датчик фиксирует частичные разряды.</p>
+<p style="font-size:28px;line-height:1.4"><b>Дано:</b> острие r = 0,05 см, после зачистки r = 0,5 см; d = 5 см; U = 20 кВ.</p>
+<img src="img/a63a3376c5.webp" alt="E max примерно 2U делить на r ln(4d/r)" style="width:480px;height:148px;object-fit:contain">
+<p style="font-size:28px;line-height:1.4;font-family:'IBM Plex Mono', monospace">2·20/(0,05·ln 400) = 133,5<br>2·20/(0,5·ln 40) = 21,7</p>
+</div>
+<div style="width:640px;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px;background:#FBE9E7;border-radius:16px;padding:32px"><p style="font-size:26px;color:#8A2A20">Заусенец</p><p style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:80px;font-weight:700;line-height:1;color:#B3261E">133,5 кВ/см</p><p style="font-size:26px;color:#8A2A20">в 4,5 раза выше E₀ — разряды</p></div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#E6F4EC;border-radius:16px;padding:32px"><p style="font-size:26px;color:#1B5E3A">После скругления</p><p style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:80px;font-weight:700;line-height:1;color:#1E7A44">21,7 кВ/см</p><p style="font-size:26px;color:#1B5E3A">ниже E₀ — разрядов нет</p></div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#6A7484">Лекция 1 · Электрическое поле в изоляционных промежутках</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#6A7484;text-align:right">25</p>
+
+</section>
+<section id="checklist" data-transition="fade" data-section="Самопроверка и выводы" style="background:#F2F4F7;color:#18232F;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px"><p style="font-family:'IBM Plex Mono', monospace;font-size:24px;color:#2457C5;letter-spacing:2px;text-transform:uppercase">Чек-лист студента</p><h2 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:64px;font-weight:700;line-height:1.1;color:#14213D">Готов ли я к тесту</h2></div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:32px">
+<div style="display:flex;flex-direction:column;gap:16px;background:#FBFCFD;border:1px solid #D3DAE2;border-radius:16px;padding:36px"><div style="display:flex;gap:16px;align-items:center"><x-icon name="Book" style="color:#2457C5;width:44px;height:44px"></x-icon><h3 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:40px;font-weight:700;color:#14213D">Знаю</h3></div>
+<ul style="font-size:28px;line-height:1.4;color:#18232F"><li>E, φ, U и их связь</li><li>Eср, Emax, kн</li><li>Классы полей по kн</li><li>Радиус кривизны</li><li>E₀ ≈ 30 кВ/см</li><li>Заземление, плавающий электрод</li></ul></div>
+<div style="display:flex;flex-direction:column;gap:16px;background:#FBFCFD;border:1px solid #D3DAE2;border-radius:16px;padding:36px"><div style="display:flex;gap:16px;align-items:center"><x-icon name="Tool" style="color:#2457C5;width:44px;height:44px"></x-icon><h3 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:40px;font-weight:700;color:#14213D">Умею</h3></div>
+<ul style="font-size:28px;line-height:1.4;color:#18232F"><li>Считать Emax для 6 систем</li><li>Находить kн</li><li>Переводить U ном в фазную амплитуду</li><li>Сравнивать Emax с E₀ и делать вывод</li></ul></div>
+<div style="display:flex;flex-direction:column;gap:16px;background:#FBFCFD;border:1px solid #D3DAE2;border-radius:16px;padding:36px"><div style="display:flex;gap:16px;align-items:center"><x-icon name="CheckCircle" style="color:#2457C5;width:44px;height:44px"></x-icon><h3 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:40px;font-weight:700;color:#14213D">Сделал</h3></div>
+<ul style="font-size:28px;line-height:1.4;color:#18232F"><li>6 опытов, таблица заполнена</li><li>10 задач практического занятия</li><li>Пользовался зондом и графиком</li><li>Тест: 9–10 — «5», 7–8 — «4», 6 — «3»</li></ul></div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#6A7484">Лекция 1 · Электрическое поле в изоляционных промежутках</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#6A7484;text-align:right">26</p>
+
+</section>
+<section id="questions" data-transition="fade" style="background:#F2F4F7;color:#18232F;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px"><p style="font-family:'IBM Plex Mono', monospace;font-size:24px;color:#2457C5;letter-spacing:2px;text-transform:uppercase">Самопроверка</p><h2 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:64px;font-weight:700;line-height:1.1;color:#14213D">Контрольные вопросы</h2></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px 56px">
+<p style="font-size:28px;line-height:1.4"><span style="color:#2457C5">1.</span> Почему пробой начинается там, где E максимальна, а не там, где она средняя?</p>
+<p style="font-size:28px;line-height:1.4"><span style="color:#2457C5">5.</span> При каком радиусе жилы поле в кабеле минимально и почему есть оптимум?</p>
+<p style="font-size:28px;line-height:1.4"><span style="color:#2457C5">2.</span> Что означает площадь под графиком E(x) вдоль оси?</p>
+<p style="font-size:28px;line-height:1.4"><span style="color:#2457C5">6.</span> Как изменится поле двух шаров, если один из них заземлить?</p>
+<p style="font-size:28px;line-height:1.4"><span style="color:#2457C5">3.</span> Почему kн не зависит от напряжения?</p>
+<p style="font-size:28px;line-height:1.4"><span style="color:#2457C5">7.</span> Почему опасна незаземлённая деталь рядом с электродом?</p>
+<p style="font-size:28px;line-height:1.4"><span style="color:#2457C5">4.</span> Почему у острия поле сильнее, чем у шара, при тех же U и d?</p>
+<p style="font-size:28px;line-height:1.4"><span style="color:#2457C5">8.</span> Назовите три способа уменьшить Emax.</p>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#6A7484">Лекция 1 · Электрическое поле в изоляционных промежутках</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#6A7484;text-align:right">27</p>
+
+</section>
+<section id="conclusions" data-transition="fade" style="background:#0E1420;color:#EEF1F5;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px"><p style="font-family:'IBM Plex Mono', monospace;font-size:24px;color:#F4A93B;letter-spacing:2px;text-transform:uppercase">Итоги</p><h2 style="font-family:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;font-size:64px;font-weight:700;line-height:1.1;color:#F4F6FA">Выводы</h2></div>
+<div style="display:flex;flex-direction:column;gap:24px">
+<p style="font-size:32px;line-height:1.4"><span style="color:#F4A93B">1</span>   Прочность изоляции определяет Emax, а не средняя U/d.</p>
+<p style="font-size:32px;line-height:1.4"><span style="color:#F4A93B">2</span>   kн = Emax/Eср зависит только от геометрии электродов.</p>
+<p style="font-size:32px;line-height:1.4"><span style="color:#F4A93B">3</span>   Меньше радиус кривизны — сильнее поле у поверхности.</p>
+<p style="font-size:32px;line-height:1.4"><span style="color:#F4A93B">4</span>   Схема подключения меняет поле; незаземлённые детали приобретают опасный потенциал.</p>
+<p style="font-size:32px;line-height:1.4"><span style="color:#F4A93B">5</span>   Если Emax ≥ E₀ ≈ 30 кВ/см — ионизация. Снижаем радиусами, экранами, расщеплением, размерами.</p>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#8D9AAD">Лекция 1 · Электрическое поле в изоляционных промежутках</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#8D9AAD;text-align:right">28</p>
+
+</section>
+</div></div><div id="ui"><a href="../../">⌂</a><button id="pv" aria-label="Назад">←</button><span id="cnt"></span><button id="nx" aria-label="Вперёд">→</button><button id="fsb" aria-label="Во весь экран">⛶</button><a href="l1.pdf" download>PDF</a></div><script>var D=document.getElementById('deck'),S=[].slice.call(D.children),i=0,n=S.length,C=document.getElementById('cnt');
+function fit(){var k=Math.min(innerWidth/1920,(innerHeight-(innerWidth<700?0:0))/1080);D.style.transform='scale('+k+')'}
+function go(j){i=Math.max(0,Math.min(n-1,j));S.forEach(function(s,k){s.classList.toggle('on',k===i)});C.textContent=(i+1)+' / '+n;try{history.replaceState(null,'','#'+(i+1))}catch(e){}}
+if(location.search.indexOf('print')>=0){document.body.classList.add('print')}else{
+addEventListener('resize',fit);fit();go((parseInt(location.hash.slice(1))||1)-1);
+addEventListener('keydown',function(e){if(['ArrowRight','PageDown',' ','Enter'].indexOf(e.key)>=0){go(i+1);e.preventDefault()}else if(['ArrowLeft','PageUp','Backspace'].indexOf(e.key)>=0){go(i-1);e.preventDefault()}else if(e.key==='Home')go(0);else if(e.key==='End')go(n-1);else if(e.key==='f')fs()});
+var x0=null;addEventListener('touchstart',function(e){x0=e.touches[0].clientX},{passive:true});addEventListener('touchend',function(e){if(x0===null)return;var dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>40)go(i+(dx<0?1:-1));x0=null});
+document.getElementById('stage').addEventListener('click',function(e){if(e.target.closest('a'))return;go(i+(e.clientX>innerWidth/3?1:-1))});
+document.getElementById('pv').onclick=function(){go(i-1)};document.getElementById('nx').onclick=function(){go(i+1)};
+document.getElementById('fsb').onclick=fs}
+function fs(){var d=document.documentElement;if(!document.fullscreenElement){d.requestFullscreen&&d.requestFullscreen()}else{document.exitFullscreen()}}</script></body></html>

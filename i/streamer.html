@@ -1,0 +1,691 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Стример, лидер, искра</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;700&family=IBM+Plex+Sans:wght@400;600&display=swap">
+<style>
+/* Лабораторный стол: светлые панели, тёмные экраны приборов; акцент — синий, импульсы — тёплый/холодный по полярности */
+:root{
+  --bg:#D8DFE2; --panel:#F3F6F6; --ink:#15212A; --muted:#51606C; --line:#BFCACF; --well:#E6ECEE;
+  --accent:#1F5FAF; --accent-ink:#FFFFFF; --soft:#E2ECF8; --hot:#C8372B; --ok:#1E8A4C; --warn:#A8670F;
+  --scr:#0D171E; --scr2:#16242D; --grid:#253844; --scrtxt:#9FB4C0; --pos:#FF8A3D; --neg:#4FB3FF; --spark:#FFD54A;
+  --cu:#B8743A; --ins:#C9D8B5; --ins2:#E3D7A6;
+  --f-disp:"IBM Plex Sans Condensed","Arial Narrow",Arial,sans-serif;
+  --f-body:"IBM Plex Sans",Arial,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  color-scheme:light;
+}
+[hidden]{display:none!important}
+html,body{background:var(--bg);color:var(--ink)}
+body{margin:0;font-family:var(--f-body);font-size:16px;line-height:1.5;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+.wrap{max-width:1380px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+h1,h2,h3{font-family:var(--f-disp);font-weight:700;line-height:1.1;margin:0;text-wrap:balance}
+h1{font-size:clamp(26px,3.2vw,36px)}
+h2{font-size:23px}
+h3{font-size:18px}
+p{margin:0}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+sub,sup{font-size:.72em}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 93%,transparent);backdrop-filter:blur(6px);padding-top:12px;padding-bottom:10px;border-bottom:1px solid var(--line);margin-left:calc(-1*max(16px,env(safe-area-inset-left,0px)));margin-right:calc(-1*max(16px,env(safe-area-inset-right,0px)));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.topin{max-width:1380px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap}
+.tabs{display:flex;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:4px;overflow-x:auto;max-width:100%}
+.tabs button{border:0;background:transparent;border-radius:7px;padding:8px 13px;font-weight:600;white-space:nowrap;color:var(--muted)}
+.tabs button.on{background:var(--accent);color:var(--accent-ink)}
+.tabs button span{font-family:var(--f-mono);font-weight:400;margin-right:6px;opacity:.8}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.q{display:inline-flex;align-items:center;justify-content:center;width:19px;height:19px;border-radius:50%;border:1.4px solid var(--accent);color:var(--accent);background:var(--panel);font:700 12px/1 var(--f-body);cursor:help;padding:0;margin:0 3px;vertical-align:middle;flex:none}
+.q:hover,.q.on{background:var(--accent);color:var(--accent-ink)}
+svg .sq{cursor:help}
+svg .sq circle{fill:var(--panel);stroke:var(--accent);stroke-width:1.4}
+svg .sq text{fill:var(--accent);font:700 11px var(--f-body)}
+svg .sq:hover circle,svg .sq.on circle{fill:var(--accent)}
+svg .sq:hover text,svg .sq.on text{fill:var(--accent-ink)}
+#tip{box-sizing:border-box;position:fixed;z-index:60;width:max-content;max-width:min(380px,calc(100vw - 16px));background:#15212A;color:#EEF3F6;font-size:14.5px;line-height:1.45;padding:10px 12px;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.3)}
+#tip b{color:#FFD27A}
+#tip .x{float:right;margin:-4px -4px 0 8px;border:0;background:none;color:#9FB4C0;font-size:18px;line-height:1;padding:0 4px}
+.concepts{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.cpt{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:4px}
+.cpt b{font-family:var(--f-disp);font-size:16.5px}
+.cpt b .q{float:right}
+.cpt p{font-size:13.5px;color:var(--muted)}
+.lab{display:grid;grid-template-columns:310px minmax(0,1fr);gap:16px;align-items:start}
+.lab.rev{grid-template-columns:minmax(0,1fr) 330px}
+.side{display:flex;flex-direction:column;gap:14px}
+.lbl{font-size:13px;font-weight:600;color:var(--muted);display:block;margin-bottom:5px}
+.seg{display:flex;flex-wrap:wrap;gap:4px}
+.seg button{border:1px solid var(--line);background:var(--well);border-radius:6px;padding:6px 10px;font-size:13.5px}
+.seg button.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.grid2 button{border:1px solid var(--line);background:var(--well);border-radius:8px;padding:7px 9px;text-align:left;font-size:13.5px;line-height:1.25}
+.grid2 button.on{border-color:var(--accent);background:var(--soft);box-shadow:inset 0 0 0 1px var(--accent);font-weight:600}
+.rng .tp{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.rng output{font-family:var(--f-mono);font-size:15px;font-weight:500}
+.rng input{width:100%;accent-color:var(--accent)}
+.btns{display:flex;flex-wrap:wrap;gap:6px}
+.btn{border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);border-radius:7px;padding:8px 14px;font-weight:600;font-size:14.5px}
+.btn.ghost{background:var(--panel);color:var(--accent)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.reads{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:6px}
+.rd{background:var(--well);border:1px solid var(--line);border-radius:7px;padding:6px 9px;display:flex;flex-direction:column;gap:1px;min-width:0}
+.rd span{font-size:12px;color:var(--muted);display:block;line-height:1.35}
+.rd b{font-family:var(--f-mono);font-weight:500;font-size:16px;font-variant-numeric:tabular-nums}
+.rd.hot b{color:var(--hot)} .rd.ok b{color:var(--ok)}
+.scr{background:var(--scr);border-radius:8px;border:1px solid #071016;position:relative;min-width:0}
+.scr canvas{display:block;width:100%}
+.scrh{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 10px 0;color:var(--scrtxt);font-family:var(--f-mono);font-size:12px;flex-wrap:wrap}
+.scrh b{color:#E8F1F5;font-weight:500}
+.scrh .seg button{background:#1E2E38;border-color:#33495A;color:#CFE0EA;padding:3px 9px;font-size:12px}
+.scrh .seg button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.lg{display:inline-flex;align-items:center;gap:5px;margin-right:10px}
+.lg i{display:inline-block;width:14px;height:3px;border-radius:2px}
+.two{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:12px}
+.fig{background:var(--well);border:1px solid var(--line);border-radius:8px;padding:6px;min-width:0}
+.fig svg{display:block;width:100%;height:auto}
+.fig svg text{font-family:var(--f-body);fill:#15212A}
+.fig .cap{font-size:12.5px;color:var(--muted);padding:2px 4px 0}
+.log{background:var(--well);border-left:4px solid var(--accent);border-radius:6px;padding:8px 12px;font-size:14.5px;min-height:44px}
+.list{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:5px;font-size:14.5px}
+.info h3{margin-bottom:2px}
+.info p{font-size:14.5px}
+.tabp{display:flex;flex-direction:column;gap:12px}
+.tag{display:inline-block;align-self:flex-start;font-family:var(--f-mono);font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:1px 6px}
+.warn{background:#FCEFD8;border:1px solid #E8C27A;color:#5C3B05;border-radius:7px;padding:8px 12px;font-size:14.5px}
+.good{background:#E1F3E7;border:1px solid #9BD1AE;color:#134A2A;border-radius:7px;padding:8px 12px;font-size:14.5px}
+.bad{background:#F9E2DF;border:1px solid #E3A49B;color:#6B1A11;border-radius:7px;padding:8px 12px;font-size:14.5px}
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;font-size:14px}
+.steps li{display:flex;gap:8px;align-items:flex-start}
+.steps li i{flex:none;width:18px;height:18px;border-radius:50%;border:1.5px solid var(--line);margin-top:2px;display:inline-flex;align-items:center;justify-content:center;font-style:normal;font-size:11px;color:#fff}
+.steps li.done i{background:var(--ok);border-color:var(--ok)}
+.steps li.done i::after{content:"✓"}
+.case{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:14px;align-items:start}
+.opts{display:flex;flex-direction:column;gap:6px}
+.opts button{text-align:left;border:1px solid var(--line);background:var(--well);border-radius:7px;padding:8px 10px;font-size:14.5px;line-height:1.35}
+.opts button.sel{border-color:var(--accent);background:var(--soft)}
+.opts button.right{border-color:var(--ok);background:#E1F3E7}
+.opts button.wrong{border-color:var(--hot);background:#F9E2DF}
+.opts button:disabled{cursor:default;color:var(--ink)}
+.dots{display:flex;gap:5px;flex-wrap:wrap}
+.dots i{width:12px;height:12px;border-radius:50%;background:var(--line)}
+.dots i.cur{background:var(--accent)} .dots i.ok{background:var(--ok)} .dots i.half{background:var(--warn)} .dots i.no{background:var(--hot)}
+.task{border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.task h3{display:flex;gap:10px;align-items:baseline}
+.task h3 .mono{color:var(--muted);font-size:14px}
+.task p{font-size:15.5px;max-width:80ch}
+.ans{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.ans input{width:140px;font:inherit;font-family:var(--f-mono);padding:7px 10px;border:1px solid var(--line);border-radius:7px;background:#fff;color:var(--ink)}
+.ans .u{color:var(--muted);font-family:var(--f-mono)}
+.tq{border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:12px 16px;display:flex;flex-direction:column;gap:8px}
+.tq .qq{font-weight:600}
+.tq label{display:flex;gap:8px;align-items:flex-start;padding:5px 8px;border-radius:6px;border:1px solid transparent;font-size:15px;cursor:pointer}
+.tq label:hover{background:var(--well)}
+.tq label.right{border-color:var(--ok);background:#E1F3E7}
+.tq label.wrong{border-color:var(--hot);background:#F9E2DF}
+.tq input{margin-top:5px;accent-color:var(--accent)}
+.tq .ex{font-size:14px;color:var(--muted)}
+.circ{overflow-x:auto}
+.circ svg{min-width:640px}
+.circ svg text{font-family:var(--f-body);font-size:12.5px;fill:var(--ink)}
+.circ .el{cursor:pointer}
+.circ .el:hover .hl,.circ .el:focus-visible .hl{stroke:var(--accent);stroke-dasharray:4 3;fill:var(--soft);fill-opacity:.5}
+.circ .hl{fill:transparent;stroke:transparent;stroke-width:1.5}
+.sw{display:flex;align-items:center;gap:8px;font-size:14px}
+.sw button{min-width:110px}
+@media (max-width:1050px){.concepts{grid-template-columns:repeat(3,minmax(0,1fr))}.two,.case{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:820px){.lab,.lab.rev{grid-template-columns:minmax(0,1fr)}.concepts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.cpt p{display:none}.cpt{padding:8px 10px}.cpt b{font-size:15px}}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.mech{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.mc{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:6px;cursor:pointer;text-align:left;font:inherit;color:inherit}
+.mc:hover,.mc:focus-visible{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.mc b{font-family:var(--f-disp);font-size:16.5px}
+.mc .grp{font-family:var(--f-mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.mc svg{width:100%;height:auto;background:#0D171E;border-radius:7px;display:block}
+.mc .cond{font-size:13.5px;line-height:1.4}
+.mc .cond i{font-style:normal;font-family:var(--f-mono);color:var(--accent);font-size:13px}
+.fml{font-family:"IBM Plex Sans",Georgia,serif;font-size:19px;background:var(--well);border-left:4px solid var(--accent);border-radius:6px;padding:8px 14px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px}
+.fml i{font-family:Georgia,"Times New Roman",serif;font-size:21px}
+.fml small{font-family:var(--f-body);font-size:13px;color:var(--muted)}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 3px;line-height:1.15}
+.frac>span:first-child{border-bottom:1.4px solid currentColor;padding:0 3px}
+.frac>span:last-child{padding:0 3px}
+#dlg{position:fixed;inset:0;z-index:70;background:rgba(13,23,30,.55);display:flex;align-items:center;justify-content:center;padding:16px}
+#dlg[hidden]{display:none!important}
+#dlg .box{background:var(--panel);border-radius:12px;max-width:760px;width:100%;max-height:calc(100vh - 32px);overflow:auto;padding:18px;display:flex;flex-direction:column;gap:12px;position:relative}
+#dlg .x{position:absolute;top:8px;right:10px;border:0;background:none;font-size:26px;line-height:1;color:var(--muted);padding:4px 8px}
+#dlg svg{width:100%;height:auto;background:#0D171E;border-radius:8px}
+.gen{display:flex;gap:4px;align-items:flex-end;height:150px}
+.chip{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--accent);color:var(--accent);background:var(--panel);border-radius:14px;padding:2px 10px;font-size:13px;cursor:help}
+.chip:hover,.chip.on{background:var(--accent);color:#fff}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+@keyframes mvR{0%{transform:translateX(0);opacity:1}45%{transform:translateX(var(--d,70px));opacity:1}50%,100%{transform:translateX(var(--d,70px));opacity:0}}
+@keyframes out1{0%,48%{transform:translate(0,0);opacity:0}52%{opacity:1}100%{transform:translate(var(--dx,70px),var(--dy,-24px));opacity:1}}
+@keyframes flash{0%,45%{opacity:0}50%{opacity:1}75%,100%{opacity:0}}
+@keyframes show2{0%,48%{opacity:0}52%,100%{opacity:1}}
+@keyframes hide2{0%,48%{opacity:1}52%,100%{opacity:0}}
+@keyframes jig{0%,100%{transform:translate(0,0)}25%{transform:translate(3px,-2px)}50%{transform:translate(-2px,3px)}75%{transform:translate(2px,2px)}}
+@keyframes glow{0%,100%{opacity:.35}50%{opacity:1}}
+.an{animation-duration:3.2s;animation-iteration-count:infinite;animation-timing-function:linear;transform-box:fill-box}
+.a-mv{animation-name:mvR}.a-out{animation-name:out1}.a-fl{animation-name:flash}.a-s2{animation-name:show2}.a-h2{animation-name:hide2}.a-jig{animation-name:jig;animation-duration:.5s}.a-gl{animation-name:glow;animation-duration:1.6s}
+@keyframes mv1{0%{transform:translateX(0);opacity:1}25%{transform:translateX(var(--d,70px));opacity:1}27%,100%{transform:translateX(var(--d,70px));opacity:0}}
+@keyframes mv2{0%,38%{transform:translateX(0);opacity:0}40%{opacity:1}63%{transform:translateX(var(--d,70px));opacity:1}65%,100%{transform:translateX(var(--d,70px));opacity:0}}
+@keyframes s25{0%,24%{opacity:0}27%,100%{opacity:1}}
+@keyframes s25h{0%,24%{opacity:0}27%,63%{opacity:1}66%,100%{opacity:0}}
+@keyframes s65{0%,63%{opacity:0}66%,100%{opacity:1}}
+@keyframes h65{0%,63%{opacity:1}66%,100%{opacity:0}}
+@keyframes out65{0%,63%{transform:translate(0,0);opacity:0}66%{opacity:1}100%{transform:translate(var(--dx,70px),var(--dy,-24px));opacity:1}}
+@keyframes fl65{0%,62%{opacity:0}66%{opacity:1}85%,100%{opacity:0}}
+@keyframes fl25{0%,22%{opacity:0}26%{opacity:1}40%,100%{opacity:0}}
+.a-mv1{animation-name:mv1}.a-mv2{animation-name:mv2}.a-s25{animation-name:s25}.a-s25h{animation-name:s25h}.a-s65{animation-name:s65}.a-h65{animation-name:h65}.a-o65{animation-name:out65}.a-f65{animation-name:fl65}.a-f25{animation-name:fl25}
+@media (prefers-reduced-motion:reduce){.an{animation:none}}
+@media (max-width:560px){.fml{font-size:17px}.fml i{font-size:19px}}
+</style>
+<style>
+.cases{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.cs{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;cursor:pointer;text-align:left;font:inherit;color:inherit}
+.cs:hover,.cs.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--soft)}
+.cs b{font-size:15.5px}.cs .tag{align-self:flex-start}
+.cs.done{border-left:5px solid var(--ok)}
+.phase{display:flex;gap:6px;flex-wrap:wrap}.phase span{font:12.5px var(--mono,monospace);padding:3px 8px;border-radius:12px;background:var(--well);color:var(--muted)}.phase span.on{background:var(--accent);color:#fff}
+.stat{font-weight:600}.stat.ok{color:var(--ok)}.stat.hot{color:var(--hot)}.stat.w{color:var(--warn)}
+.pol2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:820px){.pol2{grid-template-columns:1fr}}
+.cmpw{overflow-x:auto}.cmp{width:100%;min-width:560px;border-collapse:collapse;font-size:14px}.cmp td,.cmp th{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}.cmp th{background:var(--well)}
+</style>
+<div class="wrap">
+<header class="top"><div class="topin">
+ <div><div class="eyebrow">Техника высоких напряжений · лекция 3 · физика разряда</div><h1>Стример, лидер, искровой разряд</h1></div>
+ <nav class="tabs" role="tablist" aria-label="Разделы">
+  <button role="tab" data-tab="t1" class="on"><span>1</span>Стример</button>
+  <button role="tab" data-tab="t2"><span>2</span>Полярный эффект</button>
+  <button role="tab" data-tab="t3"><span>3</span>Лидер и нагрев</button>
+  <button role="tab" data-tab="t4"><span>4</span>Время разряда</button>
+  <button role="tab" data-tab="t5"><span>5</span>Реальные случаи</button>
+  <button role="tab" data-tab="t6"><span>6</span>Задачи</button>
+  <button role="tab" data-tab="t7"><span>7</span>Тест</button>
+ </nav>
+</div></header>
+
+<section class="concepts" aria-label="Ключевые понятия">
+ <div class="cpt"><b>Стример <button class="q" data-tip="streamer" aria-label="Справка">?</button></b><p>Холодный канал, растущий сам за счёт поля головки и фотонов</p></div>
+ <div class="cpt"><b>Лидер <button class="q" data-tip="leader" aria-label="Справка">?</button></b><p>Горячий проводящий канал длинных промежутков</p></div>
+ <div class="cpt"><b>Полярный эффект <button class="q" data-tip="polar" aria-label="Справка">?</button></b><p>Знак острия меняет пробивное напряжение в 2–2,5 раза</p></div>
+ <div class="cpt"><b>Время разряда <button class="q" data-tip="tdis" aria-label="Справка">?</button></b><p>t<sub>р</sub> = t<sub>с</sub> + t<sub>ф</sub>: ожидание электрона и формирование канала</p></div>
+ <div class="cpt"><b>Плотность воздуха δ <button class="q" data-tip="delta" aria-label="Справка">?</button></b><p>С высотой падает — падает и прочность</p></div>
+</section>
+
+<section id="t1" class="tabp"></section>
+<section id="t2" class="tabp" hidden></section>
+<section id="t3" class="tabp" hidden></section>
+<section id="t4" class="tabp" hidden></section>
+<section id="t5" class="tabp" hidden></section>
+<section id="t6" class="tabp" hidden></section>
+<section id="t7" class="tabp" hidden></section>
+</div>
+<div id="tip" role="tooltip" hidden></div>
+<div id="dlg" hidden role="dialog" aria-modal="true" aria-labelledby="dlgt"><div class="box"><button class="x" aria-label="Закрыть">×</button><div id="dlgc"></div></div></div>
+<script>
+const fx=(v,n=1)=>(+v).toFixed(n).replace(".",",").replace("-","−");
+const ES={"+":4.7,"-":11.7};
+const ALT=[[0,"0 м (уровень моря)"],[400,"400 м (Хибины)"],[1000,"1000 м"],[3000,"3000 м"]];
+const deltaH=H=>Math.exp(-H/8150);
+const TIPS={
+streamer:"<b>Стример</b> — тонкий ионизированный канал, который растёт из головки лавины сам: поле объёмного заряда головки сравнимо с внешним, а фотоны из головки рождают впереди новые электроны. Растёт со скоростью 10⁵–10⁶ м/с, газ в нём почти не нагрет.",
+leader:"<b>Лидер</b> — горячий проводящий канал, который вырастает из стебля стримеров, когда ток нескольких стримеров нагревает газ выше ≈ 1500–2000 К. Впереди лидера всегда идёт зона стримеров. Нужен в промежутках длиной от ≈ 1 м.",
+polar:"<b>Полярный эффект</b> — в резко неоднородном поле разряд зависит от знака острия. При положительном острие пробивное напряжение ниже, при отрицательном ниже напряжение зажигания короны. Причина — объёмный заряд ионов у острия.",
+tdis:"<b>Время разряда</b> t<sub>р</sub> = t<sub>с</sub> + t<sub>ф</sub>: статистическое время ожидания эффективного электрона плюс время формирования канала. Поэтому короткий импульс пробивает промежуток только при напряжении выше статического.",
+delta:"<b>Относительная плотность воздуха δ</b> = (p/760)·(293/T). С высотой δ ≈ e<sup>−H/8150</sup>. Поля устойчивости стримеров и пробивные напряжения пропорциональны δ.",
+es:"<b>Поле устойчивости стримера E<sub>s</sub></b> — наименьшее внешнее поле, в котором стример ещё растёт, не затухая. В воздухе при δ = 1: ≈ 4,7 кВ/см для положительного и ≈ 11,7 кВ/см для отрицательного стримера.",
+crit:"<b>Критерий перехода лавины в стример</b> (Ретер, Мик): αx<sub>кр</sub> ≈ 18–20, в головке ≈ 10⁸ электронов. Тогда поле заряда головки сравнимо с внешним полем.",
+etip:"<b>Поле у острия</b> для промежутка острие — плоскость: E<sub>max</sub> ≈ 2U / (r·ln(4d/r)) — формула из лекции 1.",
+ui:"<b>Напряжение зажигания</b> — при нём у острия начинается ионизация (корона, первые стримеры). Учебная модель: поле у острия достигает 30·δ·(1 + 0,3/√(δr)) кВ/см; у отрицательного острия на 10 % раньше.",
+ubr:"<b>Напряжение прорастания стримеров</b> до плоскости: U ≈ E<sub>s</sub>·d. Для промежутков до ≈ 1 м это и есть пробивное напряжение.",
+lst:"<b>Длина стримерной зоны</b> L<sub>s</sub> ≈ U / E<sub>s</sub>: стримеры растут, пока падение напряжения на них E<sub>s</sub>·L<sub>s</sub> не съест приложенное напряжение.",
+vst:"<b>Скорость стримера</b> в воздухе — от ≈ 10⁵ м/с у самых тонких до ≈ 4·10⁶ м/с при высоком напряжении (Бриельс и др., 2008). Отрицательные стримеры примерно на 20–25 % медленнее.",
+head:"<b>Головка стримера</b>: радиус 0,1–1,5 мм, поле 120–160 кВ/см у положительного и 100–120 кВ/см у отрицательного — в десятки раз больше внешнего.",
+photo:"<b>Фотоионизация</b>: возбуждённый азот в головке излучает ультрафиолет, который ионизирует кислород впереди. Так появляются затравочные электроны для вторичных лавин.",
+sc:"<b>Объёмный заряд</b>: электроны быстро уходят, а медленные положительные ионы остаются у острия облаком. Это облако усиливает поле в одном месте и ослабляет в другом.",
+gallet:"<b>Формула Галле</b> (Gallet и др., 1975): U<sub>50</sub> = 3400·k / (1 + 8/d) кВ, d в метрах, k = 1 для стержня над плоскостью. Положительный коммутационный импульс с критическим фронтом. Видно насыщение: на 10 м — лишь 1,9 МВ.",
+el:"<b>Градиент в канале лидера</b> E<sub>L</sub> — в несколько раз меньше, чем в стримерной зоне: горячий канал хорошо проводит. В учебной модели 1,5 кВ/см.",
+vl:"<b>Скорость положительного лидера</b> в лабораторных промежутках — порядка 10⁴ м/с (1–3 см/мкс). В промежутке 1 м при 404 кВ измерено не менее 1,3·10⁴ м/с.",
+tch:"<b>Температура канала</b>: стример — почти комнатная; лидер — 2000–3500 К (интерферометрия, канал Ø 1–2 мм); главный разряд — 10⁴ К и выше, у обратного удара молнии ≈ 30 000 К.",
+step:"<b>Ступенчатый лидер молнии</b>: ступени по десятки метров, паузы 20–50 мкс, средняя скорость ≈ 2·10⁵ м/с, ток ступени ≥ 1 кА (Раков, Уман).",
+jump:"<b>Финальный скачок</b>: когда стримерная зона лидера достигает плоскости, канал за микросекунды замыкает промежуток, по нему идёт главный разряд — ток сотни ампер и больше, канал раскаляется до 10⁴ К.",
+ts:"<b>Статистическое время запаздывания t<sub>с</sub></b> — ожидание «эффективного» электрона, с которого начнётся лавина. Случайно; среднее уменьшают облучением (ультрафиолет, радиоактивный препарат).",
+tf:"<b>Время формирования t<sub>ф</sub></b> — от первой лавины до замыкания канала. В модели — по критерию площадей: ∫(u − U<sub>0</sub>)dt = D.",
+d0:"<b>Критерий равных площадей</b> (Кинд): пробой наступает, когда площадь между кривой напряжения и уровнем U<sub>0</sub> достигает постоянной промежутка D, кВ·мкс. Малое D — однородное поле, большое D — резко неоднородное.",
+vtc:"<b>Вольт-секундная характеристика</b> — зависимость напряжения пробоя от времени до пробоя при импульсах разной амплитуды. Для однородного поля пологая, для стержня — крутая.",
+coord:"<b>Координация</b>: защитный аппарат должен срабатывать раньше изоляции при любой форме волны. Его вольт-секундная характеристика должна лежать ниже характеристики изоляции на всём диапазоне времён.",
+uv:"<b>Облучение</b> сокращает статистическое время: в промежутке всегда есть начальные электроны. Без него при малой площади электродов разброс пробивного напряжения на импульсе велик.",
+thr:"<b>Порог модели</b> — наименьшая амплитуда импульса, при которой в учебной модели интерактива промежуток пробивается: лидер успевает дорасти так, что его стримерная зона касается плоскости. Ниже порога лидер останавливается, и разряд гаснет. <b>U<sub>50</sub> по Галле</b> — то же из опыта: при этой амплитуде пробивается половина импульсов. Модель подобрана так, что порог близок к U<sub>50</sub> (в пределах ≈ 10 %).",
+u0:"<b>U<sub>0</sub></b> — статическое пробивное напряжение: наименьшее напряжение, при котором промежуток пробивается при сколь угодно долгом воздействии."
+};
+const CASES=[
+{id:"c1",t:"Италия без света, 28 сентября 2003",tag:"ВЛ 400 кВ · дерево",
+ x:"Около 03:00 линия 400 кВ Mettlen–Lavorgo (Лукманьер), по которой Швейцария передавала энергию в Италию, отключилась: в пролёте возникла дуга на дерево. Нагрузка перешла на соседние линии, через ≈ 20 минут они тоже отключились, Италия отделилась от энергосистемы Европы. Без света остались около 56 млн человек, на полуострове — до 12 часов.",
+ q:"Что физически произошло в пролёте?",o:["Пробился фарфор изолятора","Расстояние провод — дерево стало меньше пробивного для воздуха: от провода выросли стримеры и лидер, канал замкнулся, перешёл в дугу","Молния ударила в дерево","Сработала защита от перегрузки, дуги не было","Провод оборвался и упал на землю"],a:1,
+ e:"Дерево — заземлённый электрод с острыми ветками, провод — высоковольтный. Когда зазор сокращается (дерево растёт, провод провисает от нагрева), напряжение линии становится достаточным для стримеров и лидера — промежуток перекрывается, ток короткого замыкания поддерживает дугу. Для таких зазоров и считают минимальное расстояние до растительности по формуле Галле.",
+ src:"Википедия, «2003 Italy blackout»; отчёт UCTE, 2004"},
+{id:"c2",t:"США и Канада, 14 августа 2003",tag:"ВЛ 345 кВ · деревья",
+ x:"В 14:02 отключилась линия 345 кВ Stuart–Atlanta: деревья высотой 30–35 футов (9–11 м) под проводом на высоте 39 футов (≈ 12 м). По той же причине отключились Star–South Canton (в 14:27, окончательно в 15:42), Harding–Chamberlin (15:05) и Hanna–Juniper (15:32) — при нагрузке в пределах нормального режима. Начался каскад, без света остались около 50 млн человек.",
+ q:"Почему линии отключались при нормальной нагрузке?",o:["Перегрузка по току выше допустимой","Провода нагрелись, провисли, и зазор до разросшихся деревьев стал меньше пробивного","Гроза над Огайо","Отказ выключателей","Пробой кабельных муфт"],a:1,
+ e:"Расследование NERC: «прямая причина — разросшиеся деревья», провисание лишь немного помогло. На деревьях нашли следы тока КЗ и обугленные ветки. Промежуток «провод — ветка» резко неоднородный: ветка работает как острие, разряд развивается от провода к ней при напряжении, гораздо меньшем, чем для однородного промежутка той же длины.",
+ src:"NERC/FERC, отчёт о деревьях в аварии 14 августа 2003"},
+{id:"c3",t:"Какой зазор до дерева нужен линии 345 кВ",tag:"формула Галле",
+ x:"После аварии 2003 года NERC ввёл стандарт FAC-003 с минимальным расстоянием от провода до растительности. Его рассчитывают по формуле Галле для пробоя длинного промежутка стержень — плоскость при коммутационном импульсе. Для 345 кВ (наибольшее 362 кВ, кратность перенапряжений 2,0) на высоте 3000 футов NERC получил 3,53 фута, а повторный расчёт PNNL по Галле с теми же допущениями — 6,1 фута.",
+ q:"Почему для зазора до дерева берут именно коммутационный импульс положительной полярности?",o:["Он самый короткий","Для длинных воздушных промежутков он даёт наименьшее пробивное напряжение: положительный лидер развивается легче всего","Так проще считать","Грозовые перенапряжения на ВЛ 345 кВ не бывают","Отрицательная полярность опаснее, но её не нормируют"],a:1,
+ e:"Длинный промежуток пробивается через лидер. Положительный лидер растёт непрерывно и легче отрицательного, а при фронте 100–300 мкс он успевает пройти промежуток — у кривой U<sub>50</sub>(фронт) минимум. Отсюда критический положительный коммутационный импульс в расчётах. Расхождение 3,5 и 6,1 фута показывает, как сильно ответ зависит от допущений: коэффициента промежутка, высоты, кратности перенапряжений.",
+ src:"PNNL-21220, «Applicability of the Gallet Equation to the Vegetation Clearances of NERC Reliability Standard FAC-003-2», 2012"},
+{id:"c4",t:"Лидер в промежутке 1 м",tag:"лаборатория",
+ x:"На промежуток стержень — плоскость 1 м подали положительный импульс 404 кВ (фронт 250 мкс). Интерферометр Маха — Цендера снял канал лидера: он удлинялся со скоростью не менее 1,3·10⁴ м/с, по воздуху от канала расходилась ударная волна со скоростью ≈ 319 м/с.",
+ q:"Что это значит для понимания лидера?",o:["Лидер холодный, как стример","Канал лидера горячий: быстрый нагрев газа создаёт ударную волну — тот же механизм, что у грома","Ударная волна — признак отрицательной полярности","Лидер движется со скоростью звука","Ударная волна гасит разряд"],a:1,
+ e:"Стример нагревает газ слабо. Лидер — канал, в котором газ нагрет до тысяч кельвинов за микросекунды, давление в нём резко растёт и порождает ударную волну. В молнии то же самое в огромном масштабе — это гром. Скорость удлинения лидера 10⁴ м/с на два порядка меньше скорости стримера.",
+ src:"«Shock Wave in Leader Discharge Observed Using Mach-Zehnder Interferometry», arXiv:1806.02788"},
+{id:"c5",t:"Ступенчатый лидер молнии",tag:"молния",
+ x:"Высокоскоростные камеры показывают: лидер нисходящей отрицательной молнии движется к земле ступенями по десятки метров с паузами 20–50 мкс, средняя скорость ≈ 2·10⁵ м/с, ток каждой ступени не меньше 1 кА. После касания канал раскаляется обратным ударом до ≈ 30 000 К при давлении 10 атм и больше.",
+ q:"Чем ступенчатый лидер молнии отличается от лабораторного положительного?",o:["Ничем","Отрицательный лидер растёт скачками: впереди образуется «пространственный стебель», который соединяется с каналом; положительный растёт почти непрерывно","Ступенчатый лидер холодный","Лабораторный лидер быстрее в 100 раз","Ступенчатый лидер не несёт заряда"],a:1,
+ e:"Отрицательный лидер не может расти так же плавно, как положительный: впереди его головки образуется отдельный светящийся участок (пространственный стебель), который растёт в обе стороны и затем соединяется с основным каналом — получается ступень. Средняя скорость молниевого лидера на порядок выше, чем у лабораторного, потому что выше потенциал и ток.",
+ src:"Раков В. А., Уман М. А. Lightning: Physics and Effects, разд. 4.7–4.12"},
+{id:"c6",t:"Защитный искровой промежуток не успел",tag:"вольт-секундная",
+ x:"Трансформатор 10 кВ на подстанции рудника защищён стержневым искровым промежутком с пробивным напряжением ниже испытательного напряжения трансформатора. При близком ударе молнии в линию пришла волна с очень крутым фронтом — пробилась изоляция трансформатора, а промежуток сработал позже.",
+ q:"Почему защита не сработала, хотя её статическое пробивное напряжение ниже?",o:["Промежуток был загрязнён","У стержневого промежутка крутая вольт-секундная характеристика: на коротких временах ему нужно большее напряжение, чем изоляции трансформатора","Волна была отрицательной","Трансформатор был перегружен","Молния ударила прямо в трансформатор"],a:1,
+ e:"Резко неоднородному промежутку нужно время на развитие стримеров и лидера (большое D), поэтому при крутом фронте его пробивное напряжение растёт сильнее, чем у изоляции с более однородным полем. Характеристики пересекаются — на коротких временах защита «опаздывает». Поэтому для защиты оборудования применяют ОПН с пологой характеристикой, а не искровые промежутки. Это типовая ситуация из учебной практики, а не конкретная авария."
+ ,src:"Типовая ситуация; принцип координации по МЭК 60071"}];
+const a1=15*760*Math.exp(-365*760/40000);
+const gal=d=>3400/(1+8/d);
+const TASKS=[
+{id:"k1",t:"Где лавина станет стримером",x:"В зазоре между шинами КРУ поле почти однородное, E = 40 кВ/см, воздух при 760 мм рт. ст. На каком расстоянии от катода лавина превратится в стример? Критерий: αx<sub>кр</sub> = 20. Ответ в сантиметрах.",h:["α = A·p·e<sup>−B·p/E</sup>, A = 15, B = 365 — E в В/см","α ≈ "+fx(a1,1)+" 1/см","x<sub>кр</sub> = 20/α"],a:20/a1,tol:0.03,s:`α = 15·760·e<sup>−365·760/40000</sup> = ${fx(a1,1)} 1/см; x<sub>кр</sub> = 20/${fx(a1,1)} = <b>${fx(20/a1,2)} см</b>. Если зазор меньше — пробой идёт по механизму Таунсенда, если больше — стримерный.`},
+{id:"k2",t:"Дотянется ли положительный стример",x:"Острая кромка на шине под положительным напряжением, до заземлённой стенки шкафа 30 см, δ = 1. При каком напряжении стримеры дорастут до стенки? Ответ в кВ.",h:["U ≈ E<sub>s</sub>·d","E<sub>s+</sub> = 4,7 кВ/см"],a:4.7*30,tol:0.02,s:"U ≈ 4,7·30 = <b>141 кВ</b>. Для промежутков до ≈ 1 м это и есть оценка пробивного напряжения при положительном острие."},
+{id:"k3",t:"А если острие отрицательное",x:"Тот же промежуток 30 см, но острие под отрицательным напряжением. Во сколько раз больше напряжения нужно стримерам, чтобы дорасти до стенки?",h:["E<sub>s−</sub> = 11,7 кВ/см","Отношение U<sub>−</sub>/U<sub>+</sub> = E<sub>s−</sub>/E<sub>s+</sub>"],a:11.7/4.7,tol:0.02,s:"U<sub>−</sub> = 11,7·30 = 351 кВ, отношение 351/141 = <b>2,49</b>. Это и есть полярный эффект: положительное острие пробивается при напряжении в 2–2,5 раза меньшем."},
+{id:"k4",t:"Подстанция в Хибинах",x:"Тот же промежуток 30 см с положительным острием, но подстанция на высоте 400 м. Оцените напряжение прорастания стримеров. Ответ в кВ.",h:["δ = e<sup>−H/8150</sup>","E<sub>s</sub> пропорционально δ"],a:4.7*Math.exp(-400/8150)*30,tol:0.02,s:`δ = e<sup>−400/8150</sup> = ${fx(Math.exp(-400/8150),3)}; U = 4,7·${fx(Math.exp(-400/8150),3)}·30 = <b>${fx(4.7*Math.exp(-400/8150)*30,1)} кВ</b> — на 5 % меньше, чем на уровне моря.`},
+{id:"k5",t:"Пробивное напряжение длинного промежутка",x:"Стержень над плоскостью, d = 3 м, положительный коммутационный импульс с критическим фронтом. Найдите U<sub>50</sub> по формуле Галле. Ответ в кВ.",h:["U<sub>50</sub> = 3400/(1 + 8/d)","d в метрах"],a:gal(3),tol:0.02,s:`U<sub>50</sub> = 3400/(1 + 8/3) = <b>${fx(gal(3),0)} кВ</b>.`},
+{id:"k6",t:"Насыщение прочности",x:"Найдите среднюю пробивную напряжённость стержень — плоскость для d = 10 м по формуле Галле. Ответ в кВ/м.",h:["E<sub>ср</sub> = U<sub>50</sub>/d","U<sub>50</sub>(10 м) ≈ 1889 кВ"],a:gal(10)/10,tol:0.02,s:`U<sub>50</sub> = 3400/1,8 = ${fx(gal(10),0)} кВ, E<sub>ср</sub> = <b>${fx(gal(10)/10,0)} кВ/м</b>. Для d = 1 м — ${fx(gal(1),0)} кВ/м: в длинном промежутке каждый метр «держит» вдвое меньше, потому что лидер проводит напряжение электрода вглубь промежутка.`},
+{id:"k7",t:"Время роста лидера",x:"Лидер в лабораторном промежутке растёт со скоростью 3 см/мкс. Сколько времени ему нужно, чтобы пройти 2,4 м до финального скачка? Ответ в мкс.",h:["t = L/v","3 см/мкс = 3·10⁴ м/с"],a:80,tol:0.02,s:"t = 240 см / 3 см/мкс = <b>80 мкс</b>. Поэтому на коротком грозовом импульсе длинному промежутку нужно большее напряжение, а опаснее всего для него коммутационный импульс с фронтом в сотни мкс."},
+{id:"k8",t:"Сколько идёт ступенчатый лидер",x:"Нижняя граница грозового облака на высоте 3 км. Средняя скорость ступенчатого лидера 2·10⁵ м/с. Сколько миллисекунд он идёт до земли?",h:["t = H/v"],a:15,tol:0.02,s:"t = 3000/2·10⁵ = 0,015 с = <b>15 мс</b>. Ступеней по 10 м с паузой 50 мкс — около 300."},
+{id:"k9",t:"Время пробоя по критерию площадей",x:"Промежуток: U<sub>0</sub> = 100 кВ, D = 60 кВ·мкс. Подано прямоугольное напряжение 140 кВ, среднее статистическое время 0,5 мкс. Найдите среднее время до пробоя. Ответ в мкс.",h:["t<sub>ф</sub> = D/(U − U<sub>0</sub>)","t<sub>р</sub> = t<sub>с</sub> + t<sub>ф</sub>"],a:2,tol:0.02,s:"t<sub>ф</sub> = 60/(140 − 100) = 1,5 мкс; t<sub>р</sub> = 0,5 + 1,5 = <b>2,0 мкс</b>."},
+{id:"k10",t:"Зазор до дерева по Галле",x:"Линия 345 кВ, наибольшее рабочее 362 кВ, кратность коммутационных перенапряжений 2,0. Коэффициент промежутка «провод — дерево» примите k = 1,3. Найдите расстояние, при котором U<sub>50</sub> равно амплитуде перенапряжения. Ответ в метрах.",h:["U<sub>ф.max</sub> = 362·√2/√3·2,0","1 + 8/d = 3400·k / U"],a:8/(3400*1.3/(362*Math.SQRT2/Math.sqrt(3)*2)-1),tol:0.03,s:`U = 362·√2/√3·2,0 = ${fx(362*Math.SQRT2/Math.sqrt(3)*2,0)} кВ; 1 + 8/d = 4420/${fx(362*Math.SQRT2/Math.sqrt(3)*2,0)} = ${fx(4420/(362*Math.SQRT2/Math.sqrt(3)*2),2)}; d = <b>${fx(8/(3400*1.3/(362*Math.SQRT2/Math.sqrt(3)*2)-1),2)} м</b> (≈ 4 фута). NERC дал 3,53 фута с поправками на высоту и другие допущения.`}];
+const TEST=[
+{q:"При каком условии лавина переходит в стример?",o:["αx ≈ 1","αx ≈ 18–20, в головке ≈ 10⁸ электронов","Когда лавина дошла до анода","Когда γ > 1","Когда E > 30 кВ/см"],a:1,e:"Критерий Ретера — Мика: поле заряда головки сравнимо с внешним при αx ≈ 18–20."},
+{q:"Что даёт стримеру затравочные электроны впереди головки?",o:["Эмиссия с катода","Фотоионизация ультрафиолетом из головки","Тепловая ионизация","Космические лучи","Ионы, догоняющие головку"],a:1,e:"Возбуждённый азот в головке излучает ультрафиолет, он ионизирует кислород впереди."},
+{q:"Куда движется положительный стример?",o:["К аноду, вместе с электронами","К катоду, навстречу электронам вторичных лавин","Стоит на месте","Вдоль поверхности электрода","Перпендикулярно полю"],a:1,e:"Положительный (катодонаправленный) стример растёт к катоду: электроны вторичных лавин втягиваются в головку, ионы остаются и образуют новую головку."},
+{q:"Поле устойчивости положительного стримера в воздухе при δ = 1 примерно равно…",o:["0,5 кВ/см","4,7 кВ/см","11,7 кВ/см","30 кВ/см","100 кВ/см"],a:1,e:"≈ 4,7 кВ/см у положительного и ≈ 11,7 кВ/см у отрицательного."},
+{q:"Почему отрицательному стримеру нужно большее поле?",o:["Он тяжелее","Электроны из его головки уходят вперёд, заряд головки расплывается, поле у головки слабее","Он движется против поля","Отрицательные ионы не излучают","Так принято в стандартах"],a:1,e:"Головка отрицательного стримера расширяется: электроны дрейфуют вперёд, поле в головке меньше, стример легче затухает."},
+{q:"Промежуток стержень — плоскость 20 см. При какой полярности стержня пробивное напряжение меньше?",o:["При отрицательной","При положительной","Одинаково","Зависит только от влажности","При переменном напряжении — всегда больше"],a:1,e:"Полярный эффект: при положительном стержне ≈ 4,7·20 ≈ 94 кВ, при отрицательном ≈ 234 кВ."},
+{q:"А при какой полярности острия раньше загорается корона?",o:["При положительной","При отрицательной","Одинаково","Корона на острие не загорается","Только при переменном"],a:1,e:"У отрицательного острия облако положительных ионов прижато к острию и усиливает поле — корона (импульсы Тричела) начинается раньше."},
+{q:"Чем лидер отличается от стримера?",o:["Лидер холодный, стример горячий","Канал лидера нагрет до тысяч кельвинов и хорошо проводит; стример почти холодный","Лидер существует только в вакууме","Лидер быстрее стримера в 100 раз","Ничем, это синонимы"],a:1,e:"Лидер — горячий проводящий канал (2000–3500 К), стример — холодная плазма. Лидер медленнее: ≈ 10⁴ м/с."},
+{q:"Какая температура нужна, чтобы стебель стримеров превратился в лидер?",o:["≈ 400 К","≈ 1500–2000 К и выше","≈ 30 000 К","≈ 100 К","Температура не важна"],a:1,e:"Выше ≈ 1500–2000 К электроны отрываются от отрицательных ионов кислорода, канал перестаёт терять проводимость."},
+{q:"Что показывает формула Галле U₅₀ = 3400/(1 + 8/d)?",o:["Линейный рост прочности с длиной","Насыщение: каждый следующий метр промежутка добавляет всё меньше","Прочность не зависит от длины","Пробивное напряжение элегаза","Время разряда"],a:1,e:"При d = 1 м — 378 кВ/м, при d = 10 м — 189 кВ/м: лидер переносит потенциал электрода вглубь промежутка."},
+{q:"Почему для длинных воздушных промежутков опаснее всего коммутационный импульс положительной полярности?",o:["Он самый мощный","Положительный лидер успевает пройти промежуток за время фронта, пробивное напряжение минимально","Он самый короткий","Грозовых импульсов не бывает","Из-за нагрева проводов"],a:1,e:"При фронте сотни микросекунд лидер успевает развиться — кривая U₅₀(фронт) имеет минимум."},
+{q:"Ступенчатый лидер молнии:",o:["растёт непрерывно со скоростью света","растёт скачками по десятки метров с паузами 20–50 мкс, в среднем ≈ 2·10⁵ м/с","холодный, как стример","всегда положительный","длится несколько секунд"],a:1,e:"Раков, Уман: ступени десятки метров, паузы 20–50 мкс, 2·10⁵ м/с."},
+{q:"Из чего складывается время разряда?",o:["Только из времени формирования","Из статистического времени запаздывания и времени формирования","Из времени фронта импульса","Из времени горения дуги","Из постоянной времени RC"],a:1,e:"t<sub>р</sub> = t<sub>с</sub> + t<sub>ф</sub>."},
+{q:"Зачем облучают шаровой разрядник при измерении импульсного напряжения?",o:["Чтобы повысить пробивное напряжение","Чтобы сократить статистическое время запаздывания и уменьшить разброс","Чтобы охладить шары","Чтобы снять заряд","Чтобы изменить полярность"],a:1,e:"Облучение даёт начальные электроны — статистическое время мало, разброс уменьшается."},
+{q:"Почему стержневой искровой промежуток плохо защищает изоляцию от волн с крутым фронтом?",o:["Он слишком мал","У него крутая вольт-секундная характеристика: на коротких временах нужно напряжение выше, чем выдерживает изоляция","Он всегда отрицательный","Он не проводит ток","Он срабатывает слишком рано"],a:1,e:"Характеристики промежутка и изоляции пересекаются — при крутом фронте изоляция пробивается раньше. Нужен ОПН."}];
+
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const SUP={"0":"⁰","1":"¹","2":"²","3":"³","4":"⁴","5":"⁵","6":"⁶","7":"⁷","8":"⁸","9":"⁹","-":"⁻"};
+const fN=(n,d=2)=>{if(!isFinite(n))return "∞";const a=Math.abs(n);if(a<1e4)return a>=100?Math.round(n).toLocaleString("ru-RU").replace(/ /g," "):fx(n,a<10?d:1);const e=Math.floor(Math.log10(a)),m=n/Math.pow(10,e);return fx(m,d)+"·10"+String(e).split("").map(c=>SUP[c]).join("")};
+const qb=k=>`<button class="q" data-tip="${k}" aria-label="Справка">?</button>`;
+const tip=$("#tip");let tipFor=null,tipPin=false;
+function showTip(el,pin){const k=el.dataset.tip;const t=TIPS[k]||el.dataset.tipt;if(!t)return;tipFor=el;tipPin=!!pin;$$(".q.on,.chip.on").forEach(x=>x.classList.remove("on"));el.classList.add("on");
+ tip.innerHTML=(pin?'<button class="x" aria-label="Закрыть">×</button>':"")+t;tip.hidden=false;
+ const r=el.getBoundingClientRect(),w=tip.offsetWidth,h=tip.offsetHeight;let x=Math.min(Math.max(8,r.left+r.width/2-w/2),innerWidth-w-8),y=r.bottom+8;if(y+h>innerHeight-8)y=Math.max(8,r.top-h-8);tip.style.left=x+"px";tip.style.top=y+"px";
+ const xb=tip.querySelector(".x");if(xb)xb.onclick=e=>{e.stopPropagation();hideTip()}}
+function hideTip(){tip.hidden=true;if(tipFor)tipFor.classList.remove("on");tipFor=null;tipPin=false}
+document.addEventListener("mouseover",e=>{if(tipPin)return;const el=e.target.closest&&e.target.closest("[data-tip],[data-tipt]");if(el)showTip(el,false)});
+document.addEventListener("mouseout",e=>{if(tipPin)return;const el=e.target.closest&&e.target.closest("[data-tip],[data-tipt]");if(el&&!(e.relatedTarget&&el.contains(e.relatedTarget)))hideTip()});
+document.addEventListener("click",e=>{const el=e.target.closest&&e.target.closest("[data-tip],[data-tipt]");if(el){e.preventDefault();if(tipFor===el&&tipPin)hideTip();else showTip(el,true)}else if(!tip.contains(e.target))hideTip()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){hideTip();closeDlg()}});
+addEventListener("scroll",()=>{if(!tip.hidden)hideTip()},true);
+const dlg=$("#dlg");function openDlg(h){$("#dlgc").innerHTML=h;dlg.hidden=false;dlg.querySelector(".x").focus()}
+function closeDlg(){if(!dlg.hidden){dlg.hidden=true;const f=dlg._from;if(f)f.focus()}}
+dlg.querySelector(".x").onclick=closeDlg;dlg.addEventListener("click",e=>{if(e.target===dlg)closeDlg()});
+let curTab="t1";
+$$(".tabs button").forEach(b=>b.onclick=()=>{curTab=b.dataset.tab;$$(".tabs button").forEach(x=>x.classList.toggle("on",x===b));$$(".tabp").forEach(s=>s.hidden=s.id!==curTab);hideTip();onTab(curTab)});
+function canvasBox(el,h,draw){const cv=document.createElement("canvas");el.appendChild(cv);const o={cv,ctx:cv.getContext("2d"),w:0,h};
+ const fit=()=>{const w=Math.max(200,el.clientWidth);const dpr=Math.min(2,devicePixelRatio||1);o.w=w;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);cv.style.height=h+"px";o.ctx.setTransform(dpr,0,0,dpr,0,0);draw&&draw()};
+ o.fit=fit;new ResizeObserver(()=>{if(Math.abs(el.clientWidth-o.w)>1)fit()}).observe(el);return o}
+const rng=(id,lab,tk,min,max,step,val,unit)=>`<div class="rng"><div class="tp"><span class="lbl">${lab} ${tk?qb(tk):""}</span><output id="${id}o"></output></div><input type="range" id="${id}" min="${min}" max="${max}" step="${step}" value="${val}" aria-label="${lab.replace(/<[^>]+>/g,"")}">${unit?"":""}</div>`;
+const seg=(id,opts,val)=>`<div class="seg" id="${id}">${opts.map(([v,t])=>`<button data-v="${v}" class="${String(v)===String(val)?"on":""}">${t}</button>`).join("")}</div>`;
+function bindSeg(id,cb){$$("#"+id+" button").forEach(b=>b.onclick=()=>{$$("#"+id+" button").forEach(x=>x.classList.toggle("on",x===b));cb(b.dataset.v)})}
+const rd=(id,lab,tk)=>`<div class="rd" id="${id}w"><span>${lab} ${tk?qb(tk):""}</span><b id="${id}"></b></div>`;
+
+const RNG=s=>{s=s>>>0||1;return()=>{s^=s<<13;s>>>=0;s^=s>>>17;s^=s<<5;s>>>=0;return s/4294967296}};
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const CP="#FF8A3D",CN="#4FB3FF",CY="#FFD54A",CG="#9FB4C0",CT="#CFE0EA",CV="#C39BFF";
+function gapPhys(o){const d=deltaH(o.H),rc=o.r/10,ln=Math.log(4*o.d/rc),Etip=2*o.U/(rc*ln),Ei=30*d*(1+0.3/Math.sqrt(d*rc))*(o.pol==="-"?0.9:1),Ui=Ei*rc*ln/2,Es=ES[o.pol]*d,Ubr=Es*o.d,L=o.U>=Ui?Math.min(o.d,o.U/Es):0,br=o.U>=Ui&&o.U>=Ubr;
+ const k=clamp((o.U/Ubr-0.3)/2.7,0,1),v=(1e5+3.9e6*k)*(o.pol==="-"?0.78:1);return {d,rc,Etip,Ei,Ui,Es,Ubr,L,br,v}}
+const T1={pol:"+",U:60,d:20,r:1,H:0,ph:0,grow:0,last:0,run:true,spd:0.5,cyc:0};
+let C1m=null,C1g=null,trees1={};
+function mkTrees(pol){const r=RNG(pol==="+"?17:29),out=[];const n=pol==="+"?11:6;
+ for(let i=0;i<n;i++){const ang=(r()-0.5)*(pol==="+"?1.1:1.5);const pts=[[0,0]];let y=0,a=ang*0.25;for(let s=1;s<=60;s++){a+=(r()-0.5)*0.22;a*=0.9;y+=Math.sin(a+ang*0.35)*0.022;pts.push([s/60,y])}out.push({pts,w:pol==="+"?0.9+r()*0.6:2.2+r()*1.4,len:0.55+r()*0.45,br:Math.floor(15+r()*35)})}
+ out[0].len=1;out[0].pts=out[0].pts.map(([x,y])=>[x,y*0.35]);return out}
+function t1(){$("#t1").innerHTML=`<div class="lab"><div class="side card">
+ <div><span class="lbl">Полярность острия ${qb("polar")}</span>${seg("pol1",[["+","положительное (+)"],["-","отрицательное (−)"]],T1.pol)}</div>
+ ${rng("U1","Напряжение U, кВ","ubr",5,300,1,T1.U)}${rng("d1","Расстояние до плоскости d, см","",5,60,1,T1.d)}
+ <div><span class="lbl">Радиус острия r ${qb("etip")}</span>${seg("r1",[[0.5,"0,5 мм"],[1,"1 мм"],[2,"2 мм"],[5,"5 мм"]],T1.r)}</div>
+ <div><span class="lbl">Высота над уровнем моря ${qb("delta")}</span>${seg("h1",ALT.map(([h,t])=>[h,t]),T1.H)}</div>
+ <div><span class="lbl">Скорость показа</span>${seg("sp1",[[0.25,"очень медленно"],[0.5,"медленно"],[1,"обычно"]],T1.spd)}</div>
+ <div class="btns"><button class="btn" id="go1" data-tipt="Стримеры вырастают заново от острия, анимация головки — с первой фазы">↻ Пустить ещё раз</button><button class="btn ghost" id="pp1" data-tipt="Остановить обе анимации, чтобы рассмотреть картинку">❚❚ Пауза</button><button class="btn ghost" id="st1" data-tipt="На паузе: перейти к следующей фазе шага стримера">Следующая фаза ▶</button></div>
+ <div class="reads">${rd("et1","Поле у острия","etip")}${rd("ui1","Зажигание U<sub>з</sub>","ui")}${rd("es1","Поле устойчивости E<sub>s</sub>","es")}${rd("ub1","Прорастание U = E<sub>s</sub>·d","ubr")}${rd("ls1","Длина стримеров","lst")}${rd("v1","Скорость","vst")}</div></div>
+ <div class="card">
+ <div class="scr"><div class="scrh"><span><b>Как движется головка стримера</b> · увеличено в тысячи раз</span><span><span class="lg"><i style="background:${CP}"></i>положит. ионы</span><span class="lg"><i style="background:${CN}"></i>электроны</span><span class="lg"><i style="background:${CY}"></i>фотоны</span></span></div><div id="c1m"></div></div>
+ <div class="phase" id="ph1"><span>1. Головка излучает</span><span>2. Вторичные лавины</span><span>3. Головка сдвинулась</span></div>
+ <div class="log" id="cap1"></div>
+ <div class="scr"><div class="scrh"><span><b>Промежуток острие — плоскость</b> · <span id="g1h"></span></span><span id="g1s"></span></div><div id="c1g"></div></div>
+ <div class="log" id="log1"></div>
+ <div class="cmpw"><table class="cmp"><tr><th></th><th>Положительный стример</th><th>Отрицательный стример</th></tr>
+ <tr><td>Куда растёт</td><td>к катоду, навстречу электронам вторичных лавин</td><td>к аноду, вместе с электронами</td></tr>
+ <tr><td>Головка</td><td>положительный заряд ионов, компактная, поле 120–160 кВ/см</td><td>электроны, расплывается, поле 100–120 кВ/см</td></tr>
+ <tr><td>Поле устойчивости при δ = 1 ${qb("es")}</td><td>≈ 4,7 кВ/см</td><td>≈ 11,7 кВ/см</td></tr>
+ <tr><td>Скорость ${qb("vst")}</td><td>10⁵ … 4·10⁶ м/с</td><td>на 20–25 % меньше</td></tr>
+ <tr><td>Вид</td><td>тонкие ветвящиеся нити, далеко прорастают</td><td>толстые короткие кисти, свечение у острия</td></tr></table></div>
+ </div></div>`;
+ bindSeg("pol1",v=>{T1.pol=v;restart1()});bindSeg("sp1",v=>{T1.spd=+v});bindSeg("r1",v=>{T1.r=+v;restart1()});bindSeg("h1",v=>{T1.H=+v;restart1()});
+ $("#U1").oninput=e=>{T1.U=+e.target.value;upd1();T1.grow=Math.min(T1.grow,0.2)};$("#d1").oninput=e=>{T1.d=+e.target.value;restart1()};
+ $("#go1").onclick=restart1;$("#st1").onclick=()=>{if(T1.run){T1.run=false;$("#pp1").textContent="▶ Продолжить"}T1.ph=T1.ph<0.3?0.32:T1.ph<0.75?0.78:0.02;if(T1.ph<0.1)T1.cyc++;T1.ci=null;drawM1()};$("#pp1").onclick=()=>{T1.run=!T1.run;$("#pp1").textContent=T1.run?"❚❚ Пауза":"▶ Продолжить";if(T1.run)requestAnimationFrame(an1)};
+ trees1={"+":mkTrees("+"),"-":mkTrees("-")};C1m=canvasBox($("#c1m"),210,drawM1);C1g=canvasBox($("#c1g"),250,drawG1);C1m.fit();C1g.fit();restart1();requestAnimationFrame(an1)}
+function restart1(){T1.grow=0;T1.ph=0;T1.cyc=0;T1.ci=null;upd1()}
+function upd1(){const g=gapPhys(T1);$("#U1o").textContent=T1.U+" кВ";$("#d1o").textContent=T1.d+" см";
+ $("#et1").textContent=fx(g.Etip,0)+" кВ/см";$("#ui1").textContent=fx(g.Ui,1)+" кВ";$("#es1").textContent=fx(g.Es,2)+" кВ/см";$("#ub1").textContent=fx(g.Ubr,0)+" кВ";$("#ls1").textContent=g.L?fx(g.L,1)+" см":"—";$("#v1").textContent=g.L?fN(g.v,1)+" м/с":"—";
+ $("#ub1w").classList.toggle("hot",g.br);
+ const st=T1.U<g.Ui?["нет ионизации","w"]:g.br?["пробой","hot"]:["корона: стримеры не дорастают","ok"];
+ $("#g1h").textContent=`d = ${T1.d} см, r = ${fx(T1.r,1)} мм, острие ${T1.pol==="+"?"положительное":"отрицательное"}`;$("#g1s").innerHTML=`<span class="stat ${st[1]}">${st[0]}</span>`;
+ const p=T1.pol==="+";
+ $("#log1").innerHTML=T1.U<g.Ui?`Поле у острия ${fx(g.Etip,0)} кВ/см ниже порога ${fx(g.Ei,0)} кВ/см: лавины затухают, не дорастая до стримера. Поднимите U выше <b>${fx(g.Ui,1)} кВ</b>.`
+ :g.br?`Стримеры прорастают на всю длину: U = ${T1.U} кВ ≥ E<sub>s</sub>·d = ${fx(g.Es,2)}·${T1.d} = <b>${fx(g.Ubr,0)} кВ</b>. По стримерному каналу пойдёт ток, он нагреется — промежуток пробит. Время прорастания ≈ ${fN(T1.d/100/g.v*1e9,2)} нс.`
+ :`Корона горит, стримеры растут на ${fx(g.L,1)} см и гаснут: на каждом сантиметре стримера «теряется» E<sub>s</sub> = ${fx(g.Es,2)} кВ/см. До плоскости нужно <b>${fx(g.Ubr,0)} кВ</b>${p?"":` — в ${fx(11.7/4.7,1)} раза больше, чем при положительном острие`}.`;
+ drawG1()}
+function an1(t){if(!T1.run)return;if(curTab!=="t1"){T1.last=0;return}const dt=T1.last?Math.min(60,t-T1.last):16;T1.last=t;const q=dt*T1.spd;T1.ph+=q/5000;if(T1.ph>=1){T1.ph-=1;T1.cyc++}T1.grow=Math.min(1.6,T1.grow+q/5000);drawM1();drawG1();requestAnimationFrame(an1)}
+function drawM1(){if(!C1m)return;const {ctx,w,h}=C1m,p=T1.pol==="+",ph=T1.ph,yc=h/2+6;ctx.clearRect(0,0,w,h);ctx.fillStyle="#0D171E";ctx.fillRect(0,0,w,h);
+ const step=Math.min(150,w*0.17),x0=60,cyc=T1.cyc%3,hx0=x0+140+cyc*step*0.55,adv=ph<0.75?0:(ph-0.75)/0.25,hx=hx0+step*(p?1:0.8)*adv;
+ ctx.font="12px IBM Plex Mono, monospace";ctx.fillStyle=CG;ctx.textAlign="left";
+ ctx.fillText(p?"анод (+)":"катод (−)",8,18);ctx.textAlign="right";ctx.fillText(p?"→ к катоду":"→ к аноду",w-8,18);
+ ctx.strokeStyle=CG;ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(w-150,30);ctx.lineTo(w-100,30);ctx.stroke();ctx.beginPath();ctx.moveTo(w-100,30);ctx.lineTo(w-107,26);ctx.lineTo(w-107,34);ctx.fill();ctx.fillStyle=CG;ctx.textAlign="left";ctx.fillText("E",w-165,34);
+ const rad=p?13:22;
+ const gr=ctx.createLinearGradient(x0,0,hx,0);gr.addColorStop(0,"rgba(195,155,255,.08)");gr.addColorStop(1,"rgba(195,155,255,.45)");ctx.fillStyle=gr;ctx.fillRect(x0,yc-(p?7:12),hx-x0,p?14:24);
+ ctx.fillStyle="#5A6B78";ctx.fillRect(0,yc-26,x0,52);
+ ctx.fillStyle=CT;ctx.font="11px IBM Plex Mono, monospace";ctx.textAlign="left";ctx.fillText("канал: плазма, газ холодный",x0+6,yc+(p?24:30));
+ const R=RNG(cyc*7+(p?1:2)),seeds=[0,1,2].map(i=>[hx0+step*(0.45+0.4*R()),yc+(R()-0.5)*70]);
+ if(ph<0.3){const k=ph/0.3;ctx.strokeStyle=CY;ctx.lineWidth=1.6;seeds.forEach(([sx,sy])=>{ctx.beginPath();const n=18;for(let i=0;i<=n*k;i++){const f=i/n,x=hx0+(sx-hx0)*f,y=yc+(sy-yc)*f+Math.sin(i*1.9)*3;i?ctx.lineTo(x,y):ctx.moveTo(x,y)}ctx.stroke()})}
+ if(ph>=0.25&&ph<0.8){const k=clamp((ph-0.28)/0.47,0,1);seeds.forEach(([sx,sy],j)=>{const tx=p?hx0+rad*0.6:sx+step*0.5,ty=p?yc+(sy-yc)*0.25:sy;const cx=sx+(tx-sx)*k,cy=sy+(ty-sy)*k,n=Math.round(1+k*14);
+  for(let i=0;i<n;i++){const f=i/Math.max(1,n),bx=sx+(cx-sx)*f,by=sy+(cy-sy)*f+((i*37)%9-4)*f*0.8;ctx.fillStyle=CP;ctx.beginPath();ctx.arc(bx,by,1.8,0,7);ctx.fill()}
+  for(let i=0;i<n;i++){const a=i*2.4,rr=2+Math.sqrt(i)*1.6;ctx.fillStyle=CN;ctx.beginPath();ctx.arc(cx+Math.cos(a)*rr*0.6,cy+Math.sin(a)*rr*0.6,2.2,0,7);ctx.fill()}})}
+ const hr=rad*(p?1:1+0.25*adv);ctx.fillStyle=p?"rgba(255,138,61,.28)":"rgba(79,179,255,.22)";ctx.beginPath();ctx.arc(hx,yc,hr+6,0,7);ctx.fill();
+ ctx.fillStyle=p?CP:CN;ctx.font=`700 ${p?14:13}px IBM Plex Sans, sans-serif`;ctx.textAlign="center";const sg=p?"+":"−";[[0,0],[-7,-6],[-7,6],[5,-7],[5,7],[-12,0],[9,0]].forEach(([a,b])=>ctx.fillText(sg,hx+a*(p?1:1.5),yc+b*(p?1:1.5)+5));
+ if(!p&&ph<0.7){for(let i=0;i<8;i++){const a=i/8*Math.PI*1.2-Math.PI*0.6,rr=hr+6+ph*40;ctx.fillStyle="rgba(79,179,255,.7)";ctx.beginPath();ctx.arc(hx+Math.cos(a)*rr,yc+Math.sin(a)*rr*0.8,1.8,0,7);ctx.fill()}}
+ ctx.font="12px IBM Plex Sans, sans-serif";ctx.fillStyle=CT;ctx.textAlign="center";ctx.fillText(p?"головка: положительный заряд":"головка: электроны, расплывается",hx,yc-hr-14);
+ const i=ph<0.3?0:ph<0.75?1:2;if(T1.ci===i+T1.pol)return;T1.ci=i+T1.pol;$$("#ph1 span").forEach((s,j)=>s.classList.toggle("on",j===i));
+ $("#cap1").innerHTML=p?["Поле головки в десятки раз больше внешнего. Возбуждённый азот в головке излучает ультрафиолет ${q} — фотоны ионизируют кислород впереди и дают <b>затравочные электроны</b>.","Затравочные электроны дрейфуют <b>к головке</b> (она положительная) и размножаются лавинами в её сильном поле. За каждой лавиной остаётся хвост положительных ионов.","Электроны лавин входят в головку и нейтрализуют её — она становится частью проводящего канала. Хвосты ионов образуют <b>новую головку ближе к катоду</b>: стример шагнул вперёд."][i]:["Головка состоит из электронов. Они сами уходят вперёд по полю, к аноду, — заряд головки расплывается, поле у неё слабее, чем у положительной. Фотоны тоже дают затравочные электроны впереди.","Электроны из головки и затравочные электроны впереди размножаются лавинами, которые бегут <b>от головки</b> к аноду. Позади остаются медленные ионы.","Головка смещается к аноду, но шагу мешает расплывание: стримеру нужно <b>в 2–2,5 раза большее внешнее поле</b>, чтобы не затухнуть."][i];
+ $("#cap1").innerHTML=$("#cap1").innerHTML.replace("${q}",qb("photo"))}
+function drawG1(){if(!C1g)return;const {ctx,w,h}=C1g,g=gapPhys(T1),p=T1.pol==="+",x0=70,x1=w-36,yc=h/2,W=x1-x0;ctx.clearRect(0,0,w,h);ctx.fillStyle="#0D171E";ctx.fillRect(0,0,w,h);
+ ctx.strokeStyle="#253844";ctx.lineWidth=1;ctx.font="11px IBM Plex Mono, monospace";ctx.fillStyle=CG;ctx.textAlign="center";const stp=T1.d>30?10:5;for(let c=0;c<=T1.d;c+=stp){const x=x0+c/T1.d*W;ctx.beginPath();ctx.moveTo(x+.5,h-22);ctx.lineTo(x+.5,h-16);ctx.stroke();ctx.fillText(c+" см",x,h-5)}
+ ctx.fillStyle="#7E8F9B";ctx.beginPath();ctx.moveTo(0,yc-22);ctx.lineTo(x0-26,yc-22);ctx.lineTo(x0,yc);ctx.lineTo(x0-26,yc+22);ctx.lineTo(0,yc+22);ctx.fill();
+ ctx.fillStyle="#5A6B78";ctx.fillRect(x1,12,14,h-40);ctx.fillStyle=CT;ctx.font="12px IBM Plex Sans, sans-serif";ctx.textAlign="left";ctx.fillText(p?"+ острие":"− острие",8,yc-30);ctx.textAlign="right";ctx.fillText("плоскость ⏚",w-4,h-30);
+ if(T1.U>=g.Ui){const k=clamp(T1.U/g.Ui-1,0,1.5);const rg=ctx.createRadialGradient(x0,yc,1,x0,yc,14+k*(p?16:26));rg.addColorStop(0,"rgba(200,170,255,.95)");rg.addColorStop(1,"rgba(160,120,255,0)");ctx.fillStyle=rg;ctx.beginPath();ctx.arc(x0,yc,14+k*(p?16:26),0,7);ctx.fill()}
+ if(g.L>0){const f=clamp(T1.grow,0,1)*g.L/T1.d,trees=trees1[T1.pol],fl=0.75+0.25*Math.sin(performance.now()/90);
+  trees.forEach((tr,j)=>{const lim=Math.min(f*(g.br?1:tr.len),1);ctx.strokeStyle=p?`rgba(205,175,255,${0.55*fl})`:`rgba(150,190,255,${0.45*fl})`;ctx.lineWidth=tr.w;ctx.beginPath();tr.pts.forEach(([s,y],i)=>{if(s>lim)return;const X=x0+s*W,Y=yc+y*W*(p?0.9:0.55);i?ctx.lineTo(X,Y):ctx.moveTo(X,Y)});ctx.stroke();
+})
+  if(g.br&&T1.grow>1){const k=clamp((T1.grow-1)/0.4,0,1);ctx.strokeStyle=`rgba(255,250,230,${0.4+0.6*k})`;ctx.lineWidth=2+3*k;ctx.shadowColor="#FFF1B0";ctx.shadowBlur=18*k;ctx.beginPath();trees[0].pts.forEach(([s,y],i)=>{const X=x0+s*W,Y=yc+y*W*0.9*0.35;i?ctx.lineTo(X,Y):ctx.moveTo(X,Y)});ctx.stroke();ctx.shadowBlur=0;
+   ctx.fillStyle="#FFF1B0";ctx.font="700 15px IBM Plex Sans, sans-serif";ctx.textAlign="center";ctx.fillText("ПРОБОЙ",x0+W/2,24)}
+  if(!g.br){const xl=x0+g.L/T1.d*W;ctx.setLineDash([4,4]);ctx.strokeStyle="rgba(255,213,74,.6)";ctx.beginPath();ctx.moveTo(xl,18);ctx.lineTo(xl,h-26);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle=CY;ctx.font="11px IBM Plex Mono, monospace";ctx.textAlign="center";ctx.fillText("L ≈ U/E_s = "+fx(g.L,1)+" см",xl,16)}
+  const fr=clamp(T1.grow,0,1),Tf=(g.br?T1.d:g.L)/100/g.v,tr=fr*Tf*1e9;ctx.fillStyle=CT;ctx.font="12px IBM Plex Mono, monospace";ctx.textAlign="left";ctx.fillText(`реальное время роста: ${fN(tr,1)} нс · на экране замедлено в ${fN(5/T1.spd/Tf,1)} раз`,x0+8,h-30)}}
+
+const T2={U:60,d:20,r:1,H:0};
+let C2p=null,C2n=null,C2e=null,C2u=null;
+function t2(){$("#t2").innerHTML=`<div class="lab"><div class="side card">
+ ${rng("U2","Напряжение U, кВ","",5,300,1,T2.U)}${rng("d2","Расстояние d, см","",5,60,1,T2.d)}
+ <div><span class="lbl">Радиус острия r</span>${seg("r2",[[0.5,"0,5 мм"],[1,"1 мм"],[2,"2 мм"],[5,"5 мм"]],T2.r)}</div>
+ <div><span class="lbl">Высота ${qb("delta")}</span>${seg("h2",ALT,T2.H)}</div>
+ <div class="reads">${rd("ui2p","Зажигание, +","ui")}${rd("ui2n","Зажигание, −","ui")}${rd("ub2p","Пробой, +","ubr")}${rd("ub2n","Пробой, −","ubr")}</div>
+ <div class="log">Сравните: <b>корона</b> раньше загорается у отрицательного острия, а <b>пробой</b> раньше наступает у положительного. Обе особенности — от облака медленных положительных ионов ${qb("sc")}.</div></div>
+ <div class="card">
+ <div class="pol2"><div class="scr"><div class="scrh"><span><b>Острие +</b></span><span id="s2p"></span></div><div id="c2p"></div></div><div class="scr"><div class="scrh"><span><b>Острие −</b></span><span id="s2n"></span></div><div id="c2n"></div></div></div>
+ <div class="pol2"><div class="log" id="l2p"></div><div class="log" id="l2n"></div></div>
+ <div class="scr"><div class="scrh"><span><b>Поле вдоль оси от острия к плоскости</b> · качественно</span><span><span class="lg"><i style="background:#9FB4C0"></i>без объёмного заряда</span><span class="lg"><i style="background:${CP}"></i>острие +</span><span class="lg"><i style="background:${CN}"></i>острие −</span></span></div><div id="c2e"></div></div>
+ <div class="scr"><div class="scrh"><span><b>Напряжения зажигания и пробоя от расстояния</b></span><span><span class="lg"><i style="background:${CP}"></i>+</span><span class="lg"><i style="background:${CN}"></i>−</span><span class="lg">— пробой, - - зажигание</span></span></div><div id="c2u"></div></div>
+ </div></div>`;
+ bindSeg("r2",v=>{T2.r=+v;upd2()});bindSeg("h2",v=>{T2.H=+v;upd2()});
+ $("#U2").oninput=e=>{T2.U=+e.target.value;upd2()};$("#d2").oninput=e=>{T2.d=+e.target.value;upd2()};
+ C2p=canvasBox($("#c2p"),200,()=>drawP2(C2p,"+"));C2n=canvasBox($("#c2n"),200,()=>drawP2(C2n,"-"));C2e=canvasBox($("#c2e"),200,drawE2);C2u=canvasBox($("#c2u"),230,drawU2);[C2p,C2n,C2e,C2u].forEach(c=>c.fit());upd2()}
+const g2=pol=>gapPhys({pol,U:T2.U,d:T2.d,r:T2.r,H:T2.H});
+function upd2(){$("#U2o").textContent=T2.U+" кВ";$("#d2o").textContent=T2.d+" см";const P=g2("+"),N=g2("-");
+ $("#ui2p").textContent=fx(P.Ui,1)+" кВ";$("#ui2n").textContent=fx(N.Ui,1)+" кВ";$("#ub2p").textContent=fx(P.Ubr,0)+" кВ";$("#ub2n").textContent=fx(N.Ubr,0)+" кВ";
+ const st=g=>T2.U<g.Ui?["тихо","w"]:g.br?["пробой","hot"]:["корона","ok"];
+ [["p",P],["n",N]].forEach(([k,g])=>{const s=st(g);$("#s2"+k).innerHTML=`<span class="stat ${s[1]}">${s[0]}</span>`});
+ $("#l2p").innerHTML=T2.U<P.Ui?`Ниже зажигания (${fx(P.Ui,1)} кВ): ионизации нет.`:P.br?`Электроны уходят в острие, облако <b>положительных ионов</b> остаётся перед ним и работает как продолжение острия — поле дальше в промежутке усиливается. Стримеры дорастают до плоскости: <b>пробой</b>.`:`Облако положительных ионов «удлиняет» острие: стримеры растут на ${fx(P.L,1)} см. До пробоя нужно ${fx(P.Ubr,0)} кВ.`;
+ $("#l2n").innerHTML=T2.U<N.Ui?`Ниже зажигания (${fx(N.Ui,1)} кВ): ионизации нет.`:N.br?`Даже с тормозящим облаком отрицательных ионов стримеры дошли до плоскости: <b>пробой</b>.`:`Тонкий слой положительных ионов прижат к острию и усиливает поле у него — корона горит уже с ${fx(N.Ui,1)} кВ. Но дальше облако <b>отрицательных ионов</b> ослабляет поле: стримеры лишь ${fx(N.L,1)} см, до пробоя нужно ${fx(N.Ubr,0)} кВ.`;
+ [C2p,C2n,C2e,C2u].forEach(c=>c&&c.fit())}
+function drawP2(c,pol){if(!c)return;const {ctx,w,h}=c,g=g2(pol),p=pol==="+",x0=50,x1=w-26,yc=h/2,W=x1-x0;ctx.clearRect(0,0,w,h);ctx.fillStyle="#0D171E";ctx.fillRect(0,0,w,h);
+ ctx.fillStyle="#7E8F9B";ctx.beginPath();ctx.moveTo(0,yc-16);ctx.lineTo(x0-18,yc-16);ctx.lineTo(x0,yc);ctx.lineTo(x0-18,yc+16);ctx.lineTo(0,yc+16);ctx.fill();ctx.fillStyle="#5A6B78";ctx.fillRect(x1,10,12,h-20);
+ ctx.fillStyle=CT;ctx.font="700 15px IBM Plex Sans, sans-serif";ctx.textAlign="center";ctx.fillText(p?"+":"−",14,yc+5);
+ if(T2.U<g.Ui)return;const k=clamp(T2.U/g.Ui-1,0,3),R=RNG(p?5:9);
+ if(p){const rx=Math.min(W*0.5,20+k*45);for(let i=0;i<60;i++){const a=R()*Math.PI-Math.PI/2,rr=Math.sqrt(R())*rx;ctx.fillStyle=CP;ctx.font="700 11px IBM Plex Sans";ctx.fillText("+",x0+Math.cos(a)*rr+4,yc+Math.sin(a)*rr*0.6+4)}
+  ctx.strokeStyle=CN;ctx.lineWidth=1.2;for(let i=0;i<5;i++){const y=yc+(i-2)*12,x=x0+rx*0.7;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x0+6,yc+(i-2)*3);ctx.stroke()}
+  ctx.fillStyle=CT;ctx.font="11px IBM Plex Sans";ctx.textAlign="left";ctx.fillText("электроны → в острие",x0+rx*0.6,yc-rx*0.6-8)}
+ else{for(let i=0;i<26;i++){const a=R()*Math.PI-Math.PI/2,rr=4+R()*10;ctx.fillStyle=CP;ctx.font="700 10px IBM Plex Sans";ctx.fillText("+",x0+Math.cos(a)*rr+3,yc+Math.sin(a)*rr*0.7+4)}
+  const rx=Math.min(W*0.6,30+k*55);for(let i=0;i<55;i++){const a=R()*Math.PI-Math.PI/2,rr=18+Math.sqrt(R())*rx;ctx.fillStyle=CN;ctx.font="700 12px IBM Plex Sans";ctx.fillText("−",x0+Math.cos(a)*rr+4,yc+Math.sin(a)*rr*0.65+4)}
+  ctx.fillStyle=CT;ctx.font="11px IBM Plex Sans";ctx.textAlign="left";ctx.fillText("отриц. ионы O₂⁻ уходят к плоскости",x0+30,h-12)}
+ if(g.L>0){ctx.strokeStyle=p?"rgba(205,175,255,.55)":"rgba(150,190,255,.45)";const tr=trees1[pol]||mkTrees(pol);tr.forEach(t=>{const lim=g.br?1:Math.min(1,g.L/T2.d*t.len);ctx.lineWidth=t.w*0.8;ctx.beginPath();t.pts.forEach(([s,y],i)=>{if(s>lim)return;const X=x0+s*W,Y=yc+y*W*(p?0.9:0.55);i?ctx.lineTo(X,Y):ctx.moveTo(X,Y)});ctx.stroke()})}
+ if(g.br){ctx.fillStyle="#FFF1B0";ctx.font="700 14px IBM Plex Sans";ctx.textAlign="center";ctx.fillText("ПРОБОЙ",x0+W/2,20)}}
+function e2(x,pol){const P=g2("+"),rc=T2.r/10,d=T2.d,E0=2*T2.U/((rc+2*x)*Math.log(4*d/rc));if(!pol)return E0;const g=g2(pol);if(T2.U<g.Ui)return E0;const k=clamp(T2.U/g.Ui-1,0,3),w=Math.max(0.3,Math.min(d*0.35,0.4+k*1.6));
+ return pol==="+"?E0*(1-0.55*Math.exp(-Math.pow(x/(0.35*w),2)))+0.12*k*T2.U/d*Math.exp(-Math.pow((x-1.3*w)/w,2))*2:E0*(1+0.5*Math.exp(-Math.pow(x/(0.12*w),2)))-0.08*k*T2.U/d*Math.exp(-Math.pow((x-1.4*w)/(0.9*w),2))*2}
+function drawE2(){if(!C2e)return;const {ctx,w,h}=C2e,L=54,R=14,T=12,B=24,W=w-L-R,H=h-T-B,d=T2.d,xs=x=>L+Math.log10(1+x/0.05)/Math.log10(1+d/0.05)*W;ctx.clearRect(0,0,w,h);ctx.fillStyle="#0D171E";ctx.fillRect(0,0,w,h);
+ let ym=0;for(let i=0;i<=200;i++){const x=d*Math.pow(i/200,2);ym=Math.max(ym,e2(x,""),e2(x,"+"),e2(x,"-"))}ym=Math.min(ym,4*e2(0.3*d,"")+200);const Y=v=>T+H-Math.max(0,Math.min(1,Math.log10(1+v)/Math.log10(1+ym)))*H;
+ ctx.font="11px IBM Plex Mono, monospace";ctx.fillStyle=CG;ctx.strokeStyle="#253844";ctx.textAlign="right";[1,3,10,30,100,300,1000].filter(v=>v<=ym).forEach(v=>{ctx.beginPath();ctx.moveTo(L,Y(v)+.5);ctx.lineTo(L+W,Y(v)+.5);ctx.stroke();ctx.fillText(v+"",L-6,Y(v)+4)});
+ ctx.textAlign="center";[0,0.5,2,5,d].filter((v,i,a)=>v<=d&&a.indexOf(v)===i).forEach(v=>{ctx.fillText(fx(v,v<1?1:0)+" см",xs(v),h-6)});ctx.save();ctx.translate(12,T+H/2);ctx.rotate(-Math.PI/2);ctx.fillText("E, кВ/см",0,0);ctx.restore();
+ [["","#9FB4C0",[5,4]],["+",CP,[]],["-",CN,[]]].forEach(([p,col,dash])=>{ctx.strokeStyle=col;ctx.lineWidth=2;ctx.setLineDash(dash);ctx.beginPath();for(let i=0;i<=240;i++){const x=d*Math.pow(i/240,2),X=xs(x),Yv=Y(e2(x,p));i?ctx.lineTo(X,Yv):ctx.moveTo(X,Yv)}ctx.stroke()});ctx.setLineDash([]);
+ [["+",CP],["-",CN]].forEach(([p,col])=>{const yy=Y(ES[p]*deltaH(T2.H));ctx.strokeStyle=col;ctx.globalAlpha=0.5;ctx.setLineDash([2,4]);ctx.beginPath();ctx.moveTo(L,yy);ctx.lineTo(L+W,yy);ctx.stroke();ctx.setLineDash([]);ctx.globalAlpha=1;ctx.fillStyle=col;ctx.textAlign="right";ctx.fillText("E_s"+(p==="+"?"+":"−"),L+W-4,yy-4)})}
+function drawU2(){if(!C2u)return;const {ctx,w,h}=C2u,L=54,R=14,T=12,B=24,W=w-L-R,H=h-T-B,dm=60,um=Math.max(750,T2.U*1.15),X=d=>L+d/dm*W,Y=u=>T+H-u/um*H;ctx.clearRect(0,0,w,h);ctx.fillStyle="#0D171E";ctx.fillRect(0,0,w,h);
+ ctx.font="11px IBM Plex Mono, monospace";ctx.fillStyle=CG;ctx.strokeStyle="#253844";ctx.textAlign="right";for(let u=0;u<=um;u+=100){ctx.beginPath();ctx.moveTo(L,Y(u)+.5);ctx.lineTo(L+W,Y(u)+.5);ctx.stroke();ctx.fillText(u+"",L-6,Y(u)+4)}
+ ctx.textAlign="center";for(let d=0;d<=dm;d+=10){ctx.fillText(d+" см",X(d),h-6)}ctx.save();ctx.translate(12,T+H/2);ctx.rotate(-Math.PI/2);ctx.fillText("U, кВ",0,0);ctx.restore();
+ [["+",CP],["-",CN]].forEach(([p,col])=>{const o=d=>gapPhys({pol:p,U:0,d,r:T2.r,H:T2.H});ctx.strokeStyle=col;ctx.lineWidth=2;ctx.beginPath();for(let d=2;d<=dm;d+=1){const v=o(d).Ubr;d>2?ctx.lineTo(X(d),Y(Math.min(v,um))):ctx.moveTo(X(d),Y(v))}ctx.stroke();
+  ctx.setLineDash([5,4]);ctx.beginPath();for(let d=2;d<=dm;d+=1){const v=o(d).Ui;d>2?ctx.lineTo(X(d),Y(v)):ctx.moveTo(X(d),Y(v))}ctx.stroke();ctx.setLineDash([])});
+ ctx.fillStyle=CY;ctx.beginPath();ctx.arc(X(T2.d),Y(T2.U),5,0,7);ctx.fill();ctx.fillStyle=CT;ctx.textAlign="left";ctx.fillText(`${T2.U} кВ, ${T2.d} см`,X(T2.d)+8,Y(T2.U)-6)}
+
+const LM={Esz:380,EL:150,Uc:800,v:3e4,a:1/3150,b:1/90};LM.tp=Math.log(LM.b/LM.a)/(LM.b-LM.a);
+const uSI=(t,U)=>U*(Math.exp(-LM.a*t)-Math.exp(-LM.b*t))/(Math.exp(-LM.a*LM.tp)-Math.exp(-LM.b*LM.tp));
+function simL(U,d,full){const N=300,tf=new Float32Array(N).fill(-1);let L=0,tb=-1;const tr=[];for(let t=0;t<=4000;t+=1){const u=uSI(t,U),tip=u-LM.EL*L,Ls=Math.max(0,tip/LM.Esz);
+ if(full)tr.push([t,u,L,Math.min(d-L,Ls)]);if(L+Ls>=d){tb=t;break}if(tip>=LM.Uc){const L2=Math.min(d,L+LM.v*1e-6);if(full)for(let i=Math.floor(L/d*N);i<Math.min(N,Math.floor(L2/d*N));i++)if(tf[i]<0)tf[i]=t;L=L2}}
+ return {tb,tf,tr,N}}
+function thrL(d){let lo=50,hi=6000;for(let i=0;i<26;i++){const m=(lo+hi)/2;if(simL(m,d,false).tb<0)lo=m;else hi=m}return hi}
+const T3={mode:"lab",d:4,U:1110,k:"1.02",t:0,play:false,sim:null,mx:-1,my:-1,thr:0,lt:0};
+let C3=null,C3b=null,C3z=null;
+const tmap=T=>{const st=[[293,[20,40,70]],[1000,[90,40,120]],[1500,[170,40,60]],[2000,[230,90,30]],[3500,[255,190,40]],[10000,[255,245,170]],[30000,[255,255,255]]];if(T<=st[0][0])return `rgb(${st[0][1]})`;for(let i=1;i<st.length;i++)if(T<=st[i][0]){const f=(T-st[i-1][0])/(st[i][0]-st[i-1][0]),a=st[i-1][1],b=st[i][1];return `rgb(${a.map((v,j)=>Math.round(v+(b[j]-v)*f))})`}return "rgb(255,255,255)"};
+function t3(){$("#t3").innerHTML=`<div class="lab"><div class="side card">
+ <div><span class="lbl">Что смотрим</span>${seg("m3",[["lab","Лабораторный лидер (+)"],["lt","Ступенчатый лидер молнии (−)"]],T3.mode)}</div>
+ <div id="lab3">${rng("d3","Длина промежутка d, м","gallet",1,10,0.5,T3.d)}${rng("U3","Амплитуда импульса U, кВ","",200,3000,10,T3.U)}
+ <div><span class="lbl">Быстро выбрать амплитуду ${qb("thr")}</span>${seg("amp3",[["0.92","ниже порога: выдержит"],["1.02","чуть выше порога"],["1.25","на 25 % выше"],["g","U₅₀ по Галле"]],"1.02")}</div></div>
+ ${rng("tt3","Время t","",0,1,0.001,0)}
+ <div class="btns"><button class="btn" id="pl3">▶ Пустить</button><button class="btn ghost" id="rs3" data-tipt="Вернуть время к нулю">⟲ Сначала</button></div>
+ <div class="reads" id="rd3"></div>
+ <div class="log">Наведите курсор на канал — увидите температуру в этой точке. Толщина канала на рисунке увеличена: реальный диаметр 1–2 мм ${qb("tch")}.</div></div>
+ <div class="card">
+ <div class="scr"><div class="scrh"><span id="h3"><b>Промежуток стержень — плоскость</b></span><span id="s3"></span></div><div id="c3"></div></div>
+ <div class="scr" id="z3w" hidden><div class="scrh"><span><b>Головка лидера крупно</b> · последние 60 м</span><span id="z3s"></span></div><div id="c3z"></div></div>
+ <div class="phase" id="ph3"><span>1. Стримерная корона</span><span>2. Растёт лидер</span><span>3. Финальный скачок</span><span>4. Главный разряд</span></div>
+ <div class="log" id="log3"></div>
+ <div class="scr" id="b3w"><div class="scrh"><span><b>Напряжение и рост каналов</b></span><span><span class="lg"><i style="background:${CY}"></i>u(t), кВ</span><span class="lg"><i style="background:${CP}"></i>длина лидера</span><span class="lg"><i style="background:${CV}"></i>+ стримерная зона</span></span></div><div id="c3b"></div></div>
+ <div class="cmpw"><table class="cmp"><tr><th></th><th>Стример ${qb("streamer")}</th><th>Лидер ${qb("leader")}</th><th>Главный разряд (искра) ${qb("jump")}</th></tr>
+ <tr><td>Температура газа</td><td>≈ комнатная, нагрев на десятки К</td><td>2000–3500 К (стебель — от 1500–2000 К)</td><td>10⁴ К и выше; обратный удар молнии ≈ 30 000 К</td></tr>
+ <tr><td>Почему проводит</td><td>свежая ударная ионизация в головке</td><td>горячий газ: электроны отрываются от O⁻ и не прилипают</td><td>термоионизация, канал как металл</td></tr>
+ <tr><td>Скорость</td><td>10⁵–10⁶ м/с</td><td>≈ 10⁴ м/с (лаборатория); ≈ 2·10⁵ м/с ступенчатый лидер молнии</td><td>—, ток нарастает за микросекунды</td></tr>
+ <tr><td>Градиент в канале</td><td>4,7 кВ/см (+), 11,7 кВ/см (−)</td><td>в несколько раз меньше ${qb("el")}</td><td>десятки В/см</td></tr>
+ <tr><td>Где нужен</td><td>промежутки до ≈ 1 м</td><td>промежутки от ≈ 1 м, молния</td><td>завершает любой пробой</td></tr></table></div>
+ </div></div>`;
+ bindSeg("m3",v=>{T3.mode=v;T3.t=0;T3.play=false;sim3()});
+ const go3=()=>{T3.t=0;sim3();if(!T3.play){T3.play=true;$("#pl3").textContent="❚❚ Пауза";T3.lt=0;requestAnimationFrame(an3)}};
+ const setK=()=>{T3.U=T3.k==="g"?Math.round(gal(T3.d)/10)*10:Math.round(T3.thr*(+T3.k)/10)*10;$("#U3").value=T3.U};
+ $("#d3").oninput=e=>{T3.d=+e.target.value;T3.thr=thrL(T3.d);setK();T3.t=0;sim3()};$("#d3").onchange=go3;
+ $("#U3").oninput=e=>{T3.U=+e.target.value;$$("#amp3 button").forEach(b=>b.classList.remove("on"));T3.t=0;sim3()};$("#U3").onchange=go3;
+ bindSeg("amp3",v=>{T3.k=v;setK();go3()});$("#rs3").onclick=()=>{T3.t=0;T3.play=false;$("#pl3").textContent="▶ Пустить";upd3()};
+ $("#tt3").oninput=e=>{T3.t=+e.target.value;T3.play=false;$("#pl3").textContent="▶ Пустить";upd3()};
+ $("#pl3").onclick=()=>{T3.play=!T3.play;if(T3.play&&T3.t>=0.999)T3.t=0;$("#pl3").textContent=T3.play?"❚❚ Пауза":"▶ Пустить";T3.lt=0;if(T3.play)requestAnimationFrame(an3)};
+ C3=canvasBox($("#c3"),240,draw3);C3b=canvasBox($("#c3b"),200,drawB3);C3z=canvasBox($("#c3z"),170,drawZ3);
+ C3.cv.addEventListener("mousemove",e=>{const r=C3.cv.getBoundingClientRect();T3.mx=e.clientX-r.left;T3.my=e.clientY-r.top;draw3()});C3.cv.addEventListener("mouseleave",()=>{T3.mx=-1;draw3()});
+ C3.cv.addEventListener("touchstart",e=>{const r=C3.cv.getBoundingClientRect(),q=e.touches[0];T3.mx=q.clientX-r.left;T3.my=q.clientY-r.top;draw3()},{passive:true});
+ T3.thr=thrL(T3.d);sim3();C3.fit();C3b.fit();T3.play=true;$("#pl3").textContent="❚❚ Пауза";T3.lt=0;requestAnimationFrame(an3)}
+const LT={H:3000,step:10,dt:50,tot:15000};
+function sim3(){const lab=T3.mode==="lab";$("#lab3").hidden=!lab;$("#z3w").hidden=lab;$("#b3w").hidden=!lab;
+ if(lab){$("#d3o").textContent=fx(T3.d,1)+" м";$("#U3o").textContent=T3.U+" кВ";T3.sim=simL(T3.U,T3.d,true);T3.thr=thrL(T3.d);T3.tEnd=T3.sim.tb>=0?T3.sim.tb+60:Math.min(4000,T3.sim.tr.length-1)}
+ else{T3.tEnd=LT.tot+400;const r=RNG(41),pts=[[0,0]];let y=0;for(let x=10;x<=LT.H;x+=10){y+=(r()-0.5)*14;y*=0.985;pts.push([x,y])}T3.lpath=pts;const brs=[];for(let i=0;i<9;i++){const s=Math.floor(20+r()*240),pb=[[pts[s][0],pts[s][1]]];let yy=pts[s][1];const dir=r()<0.5?-1:1;for(let k=1;k<12+r()*18;k++){yy+=dir*(1+r()*2.5);pb.push([pts[s][0]+k*10,yy])}brs.push(pb)}T3.lbr=brs;C3z.fit()}
+ upd3()}
+function an3(t){if(!T3.play)return;if(!T3.lt)T3.lt=t;const dt=Math.min(60,t-T3.lt);T3.lt=t;T3.t=Math.min(1,T3.t+dt/9000);if(T3.t>=1){T3.play=false;$("#pl3").textContent="▶ Пустить"}upd3();if(T3.play)requestAnimationFrame(an3);else T3.lt=0}
+function st3(){const lab=T3.mode==="lab";const tt=T3.t*T3.tEnd;if(!lab){const tipx=Math.min(LT.H,Math.floor(Math.min(tt,LT.tot)/LT.dt)*LT.step),rs=tt>LT.tot;return {tt,tipx,rs}}
+ const s=T3.sim,i=Math.min(s.tr.length-1,Math.floor(tt)),row=s.tr[i]||[0,0,0,0],br=s.tb>=0&&tt>=s.tb;return {tt,u:br?Math.max(0,row[1]*(1-(tt-s.tb)/8)):row[1],L:br?T3.d:row[2],Ls:br?0:row[3],br,row}}
+function Tat3(xm,rmm,S){const s=T3.sim,d=T3.d,N=s.N;if(S.br){const a=2;return {T:293+(20000-293)*Math.exp(-Math.pow(rmm/a,2)),z:"канал главного разряда"}}
+ if(xm<=S.L){const i=Math.min(N-1,Math.floor(xm/d*N)),tf=s.tf[i]<0?S.tt:s.tf[i],age=Math.max(0,S.tt-tf),Tc=1800+1700*(1-Math.exp(-age/150)),a=0.5+0.5*(1-Math.exp(-age/150));return {T:293+(Tc-293)*Math.exp(-Math.pow(rmm/a,2)),z:"канал лидера",Tc,age}}
+ if(xm<=S.L+S.Ls){const f=(xm-S.L)/Math.max(1e-6,S.Ls),spread=(0.08+0.32*f)*S.Ls*1000;if(Math.abs(rmm)<=spread)return {T:293+40*(1-f),z:"стримерная зона"}}
+ return {T:293,z:"невозмущённый воздух"}}
+const zoneTxt=(T,z)=>z==="канал главного разряда"?"термоионизация, канал проводит как металл":z==="стримерная зона"?"холодная плазма стримеров: газ почти не нагрет":z==="невозмущённый воздух"?"обычный воздух, свободных электронов почти нет":T<1000?"молекулы целы; свободные электроны быстро прилипают к O₂":T<1500?"нагрев идёт, но электроны ещё прилипают — проводимость не держится":T<2000?"порог: начинается отрыв электронов от O⁻":T<5000?"горячий газ: электроны не прилипают, канал проводит":"заметная термоионизация";
+function upd3(){const lab=T3.mode==="lab",S=st3();$("#ph3").hidden=!lab;if(lab){const s0=T3.sim,i=S.br?3:(s0.tb>=0&&S.tt>=s0.tb-3)?2:S.L>0?1:0;$$("#ph3 span").forEach((x,j)=>x.classList.toggle("on",j===i))}$("#tt3").value=T3.t;$("#tt3o").textContent=lab?fx(S.tt,0)+" мкс":(S.tt<1000?fx(S.tt,0)+" мкс":fx(S.tt/1000,2)+" мс");
+ if(lab){const s=T3.sim,ok=s.tb>=0;$("#h3").innerHTML=`<b>Стержень — плоскость ${fx(T3.d,1)} м</b> · положительный коммутационный импульс, фронт ≈ ${fx(LM.tp,0)} мкс`;
+  $("#s3").innerHTML=S.br?`<span class="stat hot">пробой при t = ${s.tb} мкс</span>`:ok?`<span class="stat w">лидер растёт</span>`:`<span class="stat ok">${S.tt>1500?"разряд погас — промежуток выдержал":"лидер растёт"}</span>`;
+  if(T3.rdm!=="lab"){T3.rdm="lab";$("#rd3").innerHTML=[rd("ga3","U₅₀ по Галле","gallet"),rd("th3","Порог модели"),rd("ut3","u(t)"),rd("ll3","Лидер L"),rd("lz3","Стримерная зона","lst"),rd("vl3","Скорость лидера","vl")].join("")}
+  $("#ga3").textContent=fx(gal(T3.d),0)+" кВ";$("#th3").textContent=fx(T3.thr,0)+" кВ";$("#ut3").textContent=fx(S.u,0)+" кВ";$("#ll3").textContent=fx(S.L,2)+" м";$("#lz3").textContent=fx(S.Ls,2)+" м";$("#vl3").textContent="3 см/мкс";
+  $("#log3").innerHTML=S.br?`Стримерная зона лидера коснулась плоскости — <b>финальный скачок</b> ${qb("jump")}: за микросекунды канал замыкает промежуток, ток растёт до сотен ампер, газ разогревается до ≈ 20 000 К. Это и есть искра. Пробой на ${s.tb} мкс — ${s.tb<LM.tp?"ещё на фронте импульса":"уже после максимума"}.`
+  :S.L>0?`Лидер длиной ${fx(S.L,2)} м несёт потенциал стержня вглубь промежутка: на нём теряется лишь ${fx(LM.EL/10,1)} кВ/см, а впереди стримерная зона ${fx(S.Ls,2)} м с градиентом ${fx(LM.Esz/100,1)} кВ/см. Пробой — когда L + L<sub>s</sub> = d.`
+  :S.tt<5?`Импульс только начинается.`:`Пока напряжение мало, от стержня растут только стримеры (${fx(S.Ls,2)} м). Лидер стартует, когда потенциал головки превысит ${LM.Uc} кВ (учебная модель).`;
+  drawB3()}
+ else{$("#h3").innerHTML=`<b>Облако → земля, ${LT.H/1000} км</b> · нисходящий отрицательный лидер`;$("#s3").innerHTML=S.rs?`<span class="stat hot">обратный удар</span>`:`<span class="stat w">ступень ${Math.round(S.tipx/LT.step)} из ${LT.H/LT.step}</span>`;
+  if(T3.rdm!=="lt"){T3.rdm="lt";$("#rd3").innerHTML=[rd("lh3","Пройдено"),rd("lv3","Средняя скорость","step"),rd("ls3","Ступень · пауза","step"),rd("lr3","Канал после удара","tch")].join("")}
+  $("#lh3").textContent=fx(S.tipx,0)+" м";$("#lv3").textContent="2·10⁵ м/с";$("#ls3").textContent="10 м · 50 мкс";$("#lr3").textContent=S.rs?"≈ 30 000 К":"—";
+  $("#log3").innerHTML=S.rs?`Лидер коснулся земли (точнее, встречного лидера от заземлённого предмета). По каналу идёт <b>обратный удар</b>: ток десятки кА, канал за микросекунды разогревается до ≈ 30 000 К при давлении ≥ 10 атм — ударная волна слышна как гром.`:`Отрицательный лидер не растёт плавно: перед головкой появляется отдельный светящийся участок — <b>пространственный стебель</b>. Он растёт в обе стороны и соединяется с каналом — получается ступень ≈ 10 м, потом пауза 20–50 мкс. Средняя скорость ≈ 2·10⁵ м/с — на порядок выше, чем у лабораторного лидера.`;
+  drawZ3()}
+ draw3()}
+function draw3(){if(!C3||!T3.sim&&T3.mode==="lab"||T3.mode==="lt"&&!T3.lpath)return;const {ctx,w,h}=C3,lab=T3.mode==="lab",S=st3(),x0=56,x1=w-24,W=x1-x0,yc=h/2-6,pxmm=6;ctx.clearRect(0,0,w,h);ctx.fillStyle="#0D171E";ctx.fillRect(0,0,w,h);
+ ctx.font="11px IBM Plex Mono, monospace";ctx.fillStyle=CG;ctx.textAlign="center";ctx.strokeStyle="#253844";
+ if(lab){const d=T3.d,X=m=>x0+m/d*W;for(let m=0;m<=d;m+=d>5?2:1){ctx.beginPath();ctx.moveTo(X(m)+.5,h-26);ctx.lineTo(X(m)+.5,h-20);ctx.stroke();ctx.fillText(m+" м",X(m),h-8)}
+  ctx.fillStyle="#7E8F9B";ctx.fillRect(0,yc-10,x0-10,20);ctx.beginPath();ctx.arc(x0-10,yc,10,-Math.PI/2,Math.PI/2);ctx.fill();ctx.fillStyle="#5A6B78";ctx.fillRect(x1,10,12,h-46);
+  if(S.Ls>0){const xs=X(S.L),xe=X(Math.min(d,S.L+S.Ls)),R=RNG(5);ctx.strokeStyle="rgba(195,155,255,.45)";ctx.lineWidth=1;for(let i=0;i<26;i++){const ang=(R()-0.5)*0.9;ctx.beginPath();ctx.moveTo(xs,yc);let x=xs,y=yc;const n=10;for(let k=1;k<=n;k++){x=xs+(xe-xs)*k/n*(0.6+0.4*R());y=yc+Math.tan(ang)*(x-xs)*0.55+(R()-0.5)*4;ctx.lineTo(x,y)}ctx.stroke()}}
+  if(S.L>0||S.br){const xe=X(S.br?d:S.L);for(let x=x0;x<=xe;x+=2){const m=(x-x0)/W*d,T0=Tat3(m,0,S),a=S.br?2:(T0.z==="канал лидера"?0.5+0.5*(1-Math.exp(-(T0.age||0)/150)):0.5);
+   const hh=Math.max(2,a*pxmm*2.2);const g=ctx.createLinearGradient(0,yc-hh,0,yc+hh);g.addColorStop(0,"rgba(0,0,0,0)");g.addColorStop(0.5,tmap(T0.T));g.addColorStop(1,"rgba(0,0,0,0)");ctx.fillStyle=g;ctx.fillRect(x,yc-hh,2.2,hh*2)}
+   if(S.br){ctx.shadowColor="#FFF1B0";ctx.shadowBlur=20;ctx.strokeStyle="rgba(255,255,240,.9)";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x0,yc);ctx.lineTo(x1,yc);ctx.stroke();ctx.shadowBlur=0}}
+  if(T3.mx>=x0&&T3.mx<=x1){const m=(T3.mx-x0)/W*d,r=(T3.my-yc)/pxmm,q=Tat3(m,Math.abs(r),S);hover3(ctx,w,h,T3.mx,T3.my,[`x = ${fx(m,2)} м от стержня, r = ${fx(Math.abs(r),1)} мм от оси`,`T ≈ ${q.T>=10000?Math.round(q.T/100)*100:Math.round(q.T/10)*10} К · ${q.z}`,zoneTxt(q.T,q.z)])}}
+ else{const H=LT.H,X=m=>x0+m/H*W;for(let m=0;m<=H;m+=500){ctx.beginPath();ctx.moveTo(X(m)+.5,h-26);ctx.lineTo(X(m)+.5,h-20);ctx.stroke();ctx.fillText(m+" м",X(m),h-8)}
+  ctx.fillStyle="#3A4652";ctx.beginPath();ctx.ellipse(x0-30,yc,40,80,0,0,7);ctx.fill();ctx.fillStyle=CT;ctx.fillText("облако",x0-30,yc+4);ctx.fillStyle="#3E5A3A";ctx.fillRect(x1,10,14,h-46);
+  const sc=W/H*1,path=T3.lpath,lim=S.tipx,col=S.rs?"rgba(255,255,245,1)":"rgba(255,170,90,.9)";ctx.strokeStyle=col;ctx.lineWidth=S.rs?3:1.6;if(S.rs){ctx.shadowColor="#fff";ctx.shadowBlur=24}ctx.beginPath();path.forEach(([x,y],i)=>{if(x>lim)return;const X1=X(x),Y1=yc+y*sc*3;i?ctx.lineTo(X1,Y1):ctx.moveTo(X1,Y1)});ctx.stroke();ctx.shadowBlur=0;
+  ctx.lineWidth=1;ctx.strokeStyle=S.rs?"rgba(255,255,245,.35)":"rgba(255,170,90,.45)";T3.lbr.forEach(b=>{ctx.beginPath();b.forEach(([x,y],i)=>{if(x>lim)return;const X1=X(x),Y1=yc+y*sc*3;i?ctx.lineTo(X1,Y1):ctx.moveTo(X1,Y1)});ctx.stroke()});
+  if(T3.mx>=x0&&T3.mx<=x1){const m=(T3.mx-x0)/W*H,near=path.find(p=>Math.abs(p[0]-m)<6),on=near&&m<=lim&&Math.abs(T3.my-(yc+near[1]*sc*3))<8;hover3(ctx,w,h,T3.mx,T3.my,[`${fx(m,0)} м от облака`,on?(S.rs?"T ≈ 30 000 К · канал обратного удара":"канал лидера: горячий (тысячи К), точных измерений мало"):"воздух ≈ 293 К"])}}}
+function hover3(ctx,w,h,mx,my,lines){ctx.strokeStyle="rgba(255,255,255,.5)";ctx.setLineDash([3,3]);ctx.beginPath();ctx.moveTo(mx,0);ctx.lineTo(mx,h-30);ctx.stroke();ctx.setLineDash([]);ctx.font="12px IBM Plex Sans, sans-serif";const bw=Math.max(...lines.map(l=>ctx.measureText(l).width))+16,bh=lines.length*17+10;let bx=mx+12,by=my+12;if(bx+bw>w-4)bx=mx-bw-12;if(by+bh>h-4)by=my-bh-12;ctx.fillStyle="rgba(10,18,24,.92)";ctx.fillRect(bx,by,bw,bh);ctx.strokeStyle="#FFD54A";ctx.strokeRect(bx+.5,by+.5,bw,bh);ctx.fillStyle="#E8F1F5";ctx.textAlign="left";lines.forEach((l,i)=>ctx.fillText(l,bx+8,by+20+i*17))}
+function drawB3(){if(!C3b||T3.mode!=="lab"||!T3.sim)return;const {ctx,w,h}=C3b,s=T3.sim,L=54,R=50,T=12,B=24,W=w-L-R,H=h-T-B,te=T3.tEnd,um=Math.max(T3.U*1.1,500),X=t=>L+t/te*W,Y=u=>T+H-u/um*H,Yl=f=>T+H-f*H;ctx.clearRect(0,0,w,h);ctx.fillStyle="#0D171E";ctx.fillRect(0,0,w,h);
+ ctx.font="11px IBM Plex Mono, monospace";ctx.fillStyle=CG;ctx.strokeStyle="#253844";ctx.textAlign="right";const us=um>2000?500:um>1000?250:100;for(let u=0;u<=um;u+=us){ctx.beginPath();ctx.moveTo(L,Y(u)+.5);ctx.lineTo(L+W,Y(u)+.5);ctx.stroke();ctx.fillText(u+"",L-6,Y(u)+4)}
+ ctx.textAlign="left";[0,0.5,1].forEach(f=>ctx.fillText(Math.round(f*100)+" % d",L+W+4,Yl(f)+4));ctx.textAlign="center";const ts=te>2000?500:te>800?200:100;for(let t=0;t<=te;t+=ts)ctx.fillText(t+" мкс",X(t),h-6);
+ ctx.strokeStyle=CY;ctx.lineWidth=2;ctx.beginPath();s.tr.forEach(([t,u],i)=>i?ctx.lineTo(X(t),Y(u)):ctx.moveTo(X(t),Y(u)));ctx.stroke();
+ ctx.fillStyle="rgba(195,155,255,.35)";ctx.beginPath();s.tr.forEach(([t,u,Lm,Ls],i)=>{const y=Yl((Lm+Ls)/T3.d);i?ctx.lineTo(X(t),y):ctx.moveTo(X(t),y)});for(let i=s.tr.length-1;i>=0;i--){const [t,u,Lm]=s.tr[i];ctx.lineTo(X(t),Yl(Lm/T3.d))}ctx.fill();
+ ctx.strokeStyle=CP;ctx.lineWidth=2.5;ctx.beginPath();s.tr.forEach(([t,u,Lm],i)=>i?ctx.lineTo(X(t),Yl(Lm/T3.d)):ctx.moveTo(X(t),Yl(Lm/T3.d)));ctx.stroke();
+ if(s.tb>=0){ctx.strokeStyle=CN;ctx.setLineDash([4,3]);ctx.beginPath();ctx.moveTo(X(s.tb),T);ctx.lineTo(X(s.tb),T+H);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle=CN;ctx.fillText("пробой",X(s.tb),T+10)}
+ const tt=T3.t*te;ctx.strokeStyle="#fff";ctx.globalAlpha=0.6;ctx.beginPath();ctx.moveTo(X(tt),T);ctx.lineTo(X(tt),T+H);ctx.stroke();ctx.globalAlpha=1}
+function drawZ3(){if(!C3z||T3.mode!=="lt"||!T3.lpath)return;const {ctx,w,h}=C3z,S=st3(),span=60,tip=S.tipx,x0=10,X=m=>x0+(m-(tip-span+18))/span*(w-20),yc=h/2;ctx.clearRect(0,0,w,h);ctx.fillStyle="#0D171E";ctx.fillRect(0,0,w,h);
+ const ph=(Math.min(S.tt,LT.tot)%LT.dt)/LT.dt;ctx.strokeStyle=S.rs?"#fff":"rgba(255,170,90,.95)";ctx.lineWidth=4;ctx.beginPath();T3.lpath.forEach(([x,y],i)=>{if(x>tip||x<tip-span+18)return;const X1=X(x),Y1=yc+y*1.2;ctx.lineTo(X1,Y1)});ctx.stroke();
+ if(!S.rs){const sx=tip+4,ex=tip+4+6*ph;ctx.strokeStyle=`rgba(255,213,74,${0.3+0.6*ph})`;ctx.lineWidth=3;const y0=T3.lpath[Math.min(T3.lpath.length-1,Math.round(tip/10)+1)][1];ctx.beginPath();ctx.moveTo(X(sx),yc+y0*1.2);ctx.lineTo(X(ex),yc+y0*1.2);ctx.stroke();
+  ctx.strokeStyle="rgba(195,155,255,.5)";ctx.lineWidth=1;const R=RNG(Math.round(tip));for(let i=0;i<14;i++){const a=(R()-0.5)*1.4;ctx.beginPath();ctx.moveTo(X(ex),yc+y0*1.2);ctx.lineTo(X(ex+8+R()*8),yc+y0*1.2+Math.tan(a)*40);ctx.stroke()}
+  ctx.fillStyle=CY;ctx.font="11px IBM Plex Sans";ctx.textAlign="center";ctx.fillText("пространственный стебель",X(sx+3),yc+y0*1.2-14)}
+ ctx.fillStyle=CG;ctx.font="11px IBM Plex Mono, monospace";ctx.textAlign="center";for(let m=Math.ceil((tip-span+18)/10)*10;m<=tip+18;m+=10)ctx.fillText(m+" м",X(m),h-6);
+ $("#z3s").textContent=S.rs?"канал раскалён обратным ударом":ph<0.85?"пауза: впереди формируется стебель":"скачок: стебель соединился с каналом"}
+
+const GAPS={sph:{n:"шаровой (поле почти однородное)",U0:100,D:2,uv:0.02,no:2.0},rod:{n:"стержень — плоскость",U0:100,D:60,uv:0.05,no:0.4}};
+const LIk=(()=>{let m=0;for(let t=0;t<10;t+=0.001)m=Math.max(m,Math.exp(-t/68.2)-Math.exp(-t/0.405));return 1/m})();
+const uLI=(t,Um)=>t<=0?0:Um*LIk*(Math.exp(-t/68.2)-Math.exp(-t/0.405));
+function shot(g,Um,tsm,r){const DT=t=>t<4?0.004:t<20?0.02:0.1;let t=0,t0=-1;while(t<100){if(uLI(t,Um)>g.U0){t0=t;break}t+=DT(t)}if(t0<0)return {Um,no:true,why:"напряжение не достигло U₀"};
+ const ts=r?-tsm*Math.log(1-r()):tsm,t1=t0+ts;if(uLI(t1,Um)<=g.U0)return {Um,no:true,t0,ts,why:"эффективный электрон появился, когда напряжение уже упало ниже U₀"};
+ let A=0;t=t1;while(t<200){const u=uLI(t,Um);if(u<=g.U0)return {Um,no:true,t0,ts,why:"площадь не набралась: напряжение упало ниже U₀"};const dt=DT(t);A+=(u-g.U0)*dt;if(A>=g.D)break;t+=dt}
+ const tb=t,ub=uLI(tb,Um),tc=Math.log(68.2/0.405)/(1/0.405-1/68.2);return {Um,t0,ts,t1,tb,tf:tb-t1,ub,vt:tb<tc?ub:Um,ok:true}}
+const VTC={};function vtCurve(g,tsm){const key=g.U0+"_"+g.D+"_"+tsm;if(VTC[key])return VTC[key];const out=[];VTC[key]=out;for(let k=1.0;k<=4.5;k*=1.01){const s=shot(g,g.U0*k,tsm,null);if(s.ok)out.push([s.tb,s.vt])}return out}
+const T4={g:"sph",uv:"on",Um:150,shots:[],last:null,coord:"off"};
+const T50=(()=>{let tp=0,m=0;for(let t=0;t<10;t+=0.001){const v=Math.exp(-t/68.2)-Math.exp(-t/0.405);if(v>m){m=v;tp=t}}let t=tp;while(LIk*(Math.exp(-t/68.2)-Math.exp(-t/0.405))>0.5)t+=0.01;const f=x=>LIk*(Math.exp(-x/68.2)-Math.exp(-x/0.405));let t3=0,t9=0;while(f(t3)<0.3)t3+=0.0005;while(f(t9)<0.9)t9+=0.0005;return {tp,t50:t,t30:t3,t90:t9,T1:1.67*(t9-t3)}})();
+let C4a=null,C4z=null,C4b=null;
+function t4(){$("#t4").innerHTML=`<div class="lab"><div class="side card">
+ <div class="log"><b>Как работать.</b> 1) Выберите промежуток и амплитуду. 2) «Подать один импульс» — на графиках видно, когда и при каком напряжении промежуток пробился. 3) «Подать 30 импульсов» — каждый пробой ставит точку на вольт-секундной характеристике, видно разброс. 4) «Стереть точки» — начать заново.</div>
+ <div><span class="lbl">Промежуток ${qb("d0")}</span>${seg("g4",[["sph","Шаровой: D = 2 кВ·мкс"],["rod","Стержень: D = 60 кВ·мкс"]],T4.g)}</div>
+ <div><span class="lbl">Облучение ультрафиолетом ${qb("uv")}</span>${seg("uv4",[["on","включено"],["off","выключено"]],T4.uv)}</div>
+ ${rng("Um4","Амплитуда импульса U<sub>m</sub>, кВ","",90,400,1,T4.Um)}
+ <div class="btns"><button class="btn" id="sh4" data-tipt="Один импульс 1,2/50 мкс с выбранной амплитудой. Время ожидания электрона t<sub>с</sub> каждый раз случайное.">⚡ Подать один импульс</button><button class="btn ghost" id="sr4" data-tipt="30 импульсов подряд с той же амплитудой: каждый пробой — точка на вольт-секундной характеристике. Видно, как разбросаны времена пробоя.">Подать 30 импульсов</button><button class="btn ghost" id="cl4" data-tipt="Убрать все точки с вольт-секундной характеристики">Стереть точки</button></div>
+ <div><span class="lbl">Показать координацию ${qb("coord")}</span>${seg("co4",[["off","нет"],["on","изоляция и защитный промежуток"]],T4.coord)}</div>
+ <div class="reads">${rd("t04","t₀: напряжение превысило U₀","u0")}${rd("ts4","t<sub>с</sub>: ожидание электрона","ts")}${rd("tf4","t<sub>ф</sub>: формирование канала","tf")}${rd("tb4","t<sub>р</sub>: время до пробоя","tdis")}${rd("ub4","Напряжение в момент пробоя")}${rd("kk4","Импульсный коэффициент","d0")}</div></div>
+ <div class="card">
+ <div class="fml"><span><i>t</i><sub>р</sub> = <i>t</i><sub>с</sub> + <i>t</i><sub>ф</sub></span><span>∫ (<i>u</i> − <i>U</i><sub>0</sub>) d<i>t</i> = <i>D</i> &nbsp;— от <i>t</i><sub>0</sub> + <i>t</i><sub>с</sub> до <i>t</i><sub>р</sub></span><span><i>U</i><sub>0</sub> = 100 кВ, импульс 1,2/50 мкс</span></div>
+ <div class="scr"><div class="scrh"><span><b>Весь импульс 1,2/50 мкс</b> · 0–100 мкс</span><span><span class="lg"><i style="background:${CY}"></i>u(t)</span><span class="lg"><i style="background:rgba(255,213,74,.4)"></i>без пробоя</span></span></div><div id="c4a"></div></div>
+ <div class="scr"><div class="scrh"><span><b>Начало импульса крупно</b> · 0–5 мкс: здесь решается, будет ли пробой</span><span><span class="lg"><i style="background:rgba(255,213,74,.45)"></i>площадь над U₀</span><span class="lg"><i style="background:${CN}"></i>t₀, t₀+t_с</span></span></div><div id="c4z"></div></div>
+ <div class="log" id="log4"></div>
+ <div class="scr"><div class="scrh"><span><b>Вольт-секундная характеристика</b> ${qb("vtc")} · точки — опыты, линия — среднее</span><span id="s4"></span></div><div id="c4b"></div></div>
+ </div></div>`;
+ bindSeg("g4",v=>{T4.g=v;T4.shots=[];T4.last=null;upd4()});bindSeg("uv4",v=>{T4.uv=v;T4.shots=[];T4.last=null;upd4()});bindSeg("co4",v=>{T4.coord=v;upd4()});
+ $("#Um4").oninput=e=>{T4.Um=+e.target.value;T4.last=null;upd4()};
+ const R=RNG(Date.now()%9973+1),fire=()=>{const g=GAPS[T4.g],s=shot(g,T4.Um,T4.uv==="on"?g.uv:g.no,R);T4.shots.push(s);T4.last=s};
+ $("#sh4").onclick=()=>{fire();upd4()};$("#sr4").onclick=()=>{for(let i=0;i<30;i++)fire();upd4()};$("#cl4").onclick=()=>{T4.shots=[];T4.last=null;upd4()};
+ C4a=canvasBox($("#c4a"),210,drawA4);C4z=canvasBox($("#c4z"),210,drawZ4);C4b=canvasBox($("#c4b"),260,drawB4);upd4();C4a.fit();C4z.fit();C4b.fit()}
+function upd4(){const g=GAPS[T4.g],tsm=T4.uv==="on"?g.uv:g.no,s=T4.last;T4.cur=vtCurve(g,tsm);
+ let lo=1,hi=4.5,k50=null;if(shot(g,g.U0*hi,tsm,null).ok){for(let i=0;i<22;i++){const m=(lo+hi)/2;if(shot(g,g.U0*m,tsm,null).ok)hi=m;else lo=m}k50=hi}T4.k50=k50;
+ $("#Um4o").textContent=T4.Um+" кВ = "+fx(T4.Um/100,2)+"·U₀";$("#kk4").textContent=k50?fx(k50,2):"—";
+ $("#t04").textContent=s&&s.t0>=0?fx(s.t0,2)+" мкс":"—";$("#ts4").textContent=s&&s.ts!=null?fx(s.ts,2)+" мкс":"—";$("#tf4").textContent=s&&s.ok?fx(s.tf,2)+" мкс":"—";$("#tb4").textContent=s&&s.ok?fx(s.tb,2)+" мкс":"—";$("#ub4").textContent=s&&s.ok?`${fx(s.ub,0)} кВ (${fx(s.ub/s.Um*100,0)} % U_m)`:"—";
+ const n=T4.shots.length,ok=T4.shots.filter(x=>x.ok);$("#s4").textContent=n?`импульсов ${n}, пробоев ${ok.length}`:"";
+ $("#log4").innerHTML=!s?`Импульс 1,2/50 мкс: «1,2» — условная длительность фронта, её считают по точкам 30 % и 90 % амплитуды: T₁ = 1,67·(t₉₀ − t₃₀) = 1,67·(${fx(T50.t90,2)} − ${fx(T50.t30,2)}) = ${fx(T50.T1,2)} мкс; сам максимум — около ${fx(T50.tp,1)} мкс. «50» — время, за которое напряжение спадает до половины амплитуды (верхний график, отметка 50 мкс). Статическое пробивное напряжение U₀ = 100 кВ, но короткий импульс пробивает промежуток только при U<sub>m</sub> ≥ ${k50?fx(k50*100,0):"—"} кВ: <b>импульсный коэффициент ${k50?fx(k50,2):"—"}</b>. Нажмите «Подать один импульс».`
+ :s.ok?`Напряжение превысило U₀ на ${fx(s.t0,2)} мкс. Эффективный электрон появился через t<sub>с</sub> = ${fx(s.ts,2)} мкс, канал сформировался за t<sub>ф</sub> = ${fx(s.tf,2)} мкс. <b>Пробой на ${fx(s.tb,2)} мкс</b> при u = ${fx(s.ub,0)} кВ — это ${fx(s.ub/s.Um*100,0)} % от амплитуды ${s.Um} кВ${s.tb<T50.tp?": импульс срезан ещё на фронте, до максимума он не дошёл":": уже после максимума"}. После пробоя напряжение на промежутке падает почти до нуля — «срезанный импульс».${T4.uv==="off"&&T4.g==="sph"?" Без облучения t<sub>с</sub> случайно и велико — подайте 30 импульсов и сравните разброс.":""}`
+ :`<b>Пробоя нет</b>: ${s.why}. Импульс прошёл целиком.`;
+ drawA4();drawZ4();drawB4()}
+function axes4(ctx,w,h,L,T,W,H,X,Y,um,te,ts,lab){ctx.clearRect(0,0,w,h);ctx.fillStyle="#0D171E";ctx.fillRect(0,0,w,h);ctx.font="11px IBM Plex Mono, monospace";ctx.fillStyle=CG;ctx.strokeStyle="#253844";ctx.textAlign="right";const us=um>300?100:50;for(let u=0;u<=um;u+=us){ctx.beginPath();ctx.moveTo(L,Y(u)+.5);ctx.lineTo(L+W,Y(u)+.5);ctx.stroke();ctx.fillText(u+"",L-6,Y(u)+4)}
+ ctx.textAlign="center";for(let k=0;k<6&&W>0&&W/(te/ts)<38;k++)ts*=2;for(let t=0;t<=te+1e-9;t+=ts){ctx.beginPath();ctx.moveTo(X(t)+.5,T);ctx.lineTo(X(t)+.5,T+H);ctx.stroke();ctx.fillText(fx(t,ts<1?1:0),X(t),h-6)}ctx.textAlign="left";ctx.fillText("кВ",4,T+8);ctx.fillText(lab,L+W+6,h-6)}
+function wave4(ctx,X,Y,Um,te,s,col,wd){ctx.strokeStyle=col;ctx.lineWidth=wd;ctx.beginPath();const tend=s&&s.ok?Math.min(s.tb,te):te;for(let i=0;i<=800;i++){const t=i/800*tend;i?ctx.lineTo(X(t),Y(uLI(t,Um))):ctx.moveTo(X(t),Y(0))}if(s&&s.ok&&s.tb<te){ctx.lineTo(X(Math.min(te,s.tb+te*0.004)),Y(0));ctx.lineTo(X(te),Y(0))}ctx.stroke()}
+function drawA4(){if(!C4a)return;const {ctx,w,h}=C4a,g=GAPS[T4.g],s=T4.last,L=46,R=52,T=14,B=24,W=w-L-R,H=h-T-B,te=100,Um=T4.Um,um=Math.max(200,Um*1.12),X=t=>L+t/te*W,Y=u=>T+H-u/um*H;axes4(ctx,w,h,L,T,W,H,X,Y,um,te,10,"мкс");
+ ctx.textAlign="left";ctx.fillStyle=CG;[0,50,100].forEach(p=>{ctx.fillText(p+" %",L+W+6,Y(Um*p/100)+4)});
+ ctx.setLineDash([6,4]);ctx.strokeStyle=CG;ctx.beginPath();ctx.moveTo(L,Y(g.U0));ctx.lineTo(L+W,Y(g.U0));ctx.stroke();ctx.strokeStyle="rgba(255,213,74,.5)";[Um,Um/2].forEach(v=>{ctx.beginPath();ctx.moveTo(L,Y(v));ctx.lineTo(L+W,Y(v));ctx.stroke()});ctx.beginPath();ctx.moveTo(X(T50.t50),Y(Um/2));ctx.lineTo(X(T50.t50),T+H);ctx.stroke();ctx.setLineDash([]);
+ ctx.fillStyle=CG;ctx.fillText("U₀ = 100 кВ",X(72),Y(g.U0)-5);ctx.fillStyle=CY;ctx.fillText(`U_m = ${Um} кВ`,X(14),Y(Um)-5);ctx.fillText("0,5·U_m",X(52),Y(Um/2)-5);ctx.textAlign="center";ctx.fillText(`${fx(T50.t50,0)} мкс`,X(T50.t50),T+H-4);
+ if(s&&s.ok){ctx.strokeStyle="rgba(255,213,74,.35)";ctx.setLineDash([3,3]);ctx.lineWidth=1.5;ctx.beginPath();for(let i=0;i<=400;i++){const t=i/400*te;i?ctx.lineTo(X(t),Y(uLI(t,Um))):ctx.moveTo(X(t),Y(0))}ctx.stroke();ctx.setLineDash([])}
+ wave4(ctx,X,Y,Um,te,s,CY,2.2);if(s&&s.ok){ctx.fillStyle="#FFF1B0";ctx.font="700 12px IBM Plex Sans";ctx.textAlign="left";ctx.fillText("⚡ пробой — импульс срезан",X(s.tb)+8,Y(s.ub)+16)}}
+function drawZ4(){if(!C4z)return;const {ctx,w,h}=C4z,g=GAPS[T4.g],s=T4.last,L=46,R=52,T=14,B=24,W=w-L-R,H=h-T-B,te=5,Um=T4.Um,um=Math.max(200,Um*1.12),X=t=>L+t/te*W,Y=u=>T+H-u/um*H;axes4(ctx,w,h,L,T,W,H,X,Y,um,te,0.5,"мкс");
+ ctx.textAlign="left";ctx.fillStyle=CG;[0,50,100].forEach(p=>{ctx.fillText(p+" %",L+W+6,Y(Um*p/100)+4)});
+ ctx.setLineDash([6,4]);ctx.strokeStyle=CG;ctx.beginPath();ctx.moveTo(L,Y(g.U0));ctx.lineTo(L+W,Y(g.U0));ctx.stroke();ctx.setLineDash([]);ctx.fillStyle=CG;ctx.fillText("U₀",L+4,Y(g.U0)-4);
+ ctx.strokeStyle="rgba(255,213,74,.35)";ctx.setLineDash([3,3]);ctx.beginPath();for(let i=0;i<=400;i++){const t=i/400*te;i?ctx.lineTo(X(t),Y(uLI(t,Um))):ctx.moveTo(X(t),Y(0))}ctx.stroke();ctx.setLineDash([]);
+ if(s&&s.ok&&s.tb<=te){ctx.fillStyle="rgba(255,213,74,.38)";ctx.beginPath();ctx.moveTo(X(s.t1),Y(g.U0));for(let t=s.t1;t<=s.tb;t+=0.002)ctx.lineTo(X(t),Y(uLI(t,Um)));ctx.lineTo(X(s.tb),Y(g.U0));ctx.fill()}
+ wave4(ctx,X,Y,Um,te,s,CY,2.2);ctx.strokeStyle=CY;ctx.setLineDash([2,4]);ctx.beginPath();ctx.moveTo(X(T50.tp),T);ctx.lineTo(X(T50.tp),T+H);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle=CY;ctx.textAlign="center";ctx.fillText("максимум ≈ "+fx(T50.tp,1)+" мкс",X(T50.tp),T+10);
+ if(s&&s.t0>=0){[[s.t0,"t₀"],[s.t0+(s.ts||0),"t₀+t_с"]].forEach(([t,l],k)=>{if(t>te)return;ctx.strokeStyle=CN;ctx.setLineDash([3,3]);ctx.beginPath();ctx.moveTo(X(t),T);ctx.lineTo(X(t),T+H);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle=CN;ctx.textAlign="center";ctx.fillText(l,X(t),T+24+k*14)});
+  if(s.ok&&s.tb<=te){ctx.fillStyle="#FFF1B0";ctx.font="700 12px IBM Plex Sans";ctx.textAlign="left";ctx.fillText(`⚡ пробой: ${fx(s.tb,2)} мкс, ${fx(s.ub,0)} кВ`,X(s.tb)+8,Y(s.ub)+4)}
+  if(s.ok&&s.tb>te){ctx.fillStyle="#FFF1B0";ctx.textAlign="right";ctx.fillText(`пробой позже, на ${fx(s.tb,1)} мкс →`,L+W-4,T+14)}}}
+function drawB4(){if(!C4b)return;const {ctx,w,h}=C4b,L=50,R=14,T=12,B=24,W=w-L-R,H=h-T-B,t1=0.1,t2=50,um=450,X=t=>L+Math.log(t/t1)/Math.log(t2/t1)*W,Y=u=>T+H-u/um*H;ctx.clearRect(0,0,w,h);ctx.fillStyle="#0D171E";ctx.fillRect(0,0,w,h);
+ ctx.font="11px IBM Plex Mono, monospace";ctx.fillStyle=CG;ctx.strokeStyle="#253844";ctx.textAlign="right";for(let u=0;u<=um;u+=50){ctx.beginPath();ctx.moveTo(L,Y(u)+.5);ctx.lineTo(L+W,Y(u)+.5);ctx.stroke();ctx.fillText(u+"",L-6,Y(u)+4)}
+ ctx.textAlign="center";[0.1,0.2,0.5,1,2,5,10,20,50].forEach(t=>{ctx.beginPath();ctx.moveTo(X(t)+.5,T);ctx.lineTo(X(t)+.5,T+H);ctx.stroke();ctx.fillText(fx(t,t<1?1:0),X(t),h-6)});ctx.fillText("время до пробоя, мкс (лог.)",L+W/2,T+H-4);
+ const line=(pts,col,wd,dash)=>{ctx.strokeStyle=col;ctx.lineWidth=wd;ctx.setLineDash(dash||[]);ctx.beginPath();pts.filter(p=>p[0]>=t1&&p[0]<=t2).forEach(([t,u],i)=>i?ctx.lineTo(X(t),Y(u)):ctx.moveTo(X(t),Y(u)));ctx.stroke();ctx.setLineDash([])};
+ if(T4.coord==="on"){const ins={U0:150,D:8},gp={U0:110,D:60},a=vtCurve(ins,0.05),b=vtCurve(gp,0.2);line(a,"#7CD992",2.5);line(b,CP,2.5);
+  const ai=t=>{const s2=a.slice().sort((x,y)=>x[0]-y[0]);if(t<s2[0][0]||t>s2[s2.length-1][0])return null;for(let i=1;i<s2.length;i++)if(s2[i][0]>=t){const [t0,u0]=s2[i-1],[t1_,u1]=s2[i],f=(Math.log(t)-Math.log(t0))/(Math.log(t1_)-Math.log(t0)||1);return u0+(u1-u0)*f}return null};let cx=null;for(const [t,u] of b){const q=ai(t);if(q!=null&&u>q&&(!cx||t>cx[0]))cx=[t,u]}
+  ctx.fillStyle="#7CD992";ctx.textAlign="left";ctx.fillText("изоляция (U₀ = 150 кВ, D = 8)",X(8),Y(165));ctx.fillStyle=CP;ctx.fillText("стержневой промежуток (U₀ = 110 кВ, D = 60)",X(3),Y(118)+16);
+  if(cx){ctx.fillStyle="rgba(200,55,43,.18)";ctx.fillRect(L,T,X(cx[0])-L,H);ctx.fillStyle="#FF8F80";ctx.textAlign="left";ctx.fillText("здесь защита опаздывает",L+6,T+14)}}
+ else{const g=GAPS[T4.g];line(vtCurve(g,T4.uv==="on"?g.uv:g.no),CY,2);ctx.strokeStyle=CG;ctx.setLineDash([6,4]);ctx.beginPath();ctx.moveTo(L,Y(g.U0));ctx.lineTo(L+W,Y(g.U0));ctx.stroke();ctx.setLineDash([]);
+  T4.shots.filter(s=>s.ok).forEach(s=>{ctx.fillStyle=s===T4.last?"#fff":CN;ctx.beginPath();ctx.arc(X(Math.max(t1,s.tb)),Y(s.vt),s===T4.last?5:3.2,0,7);ctx.fill()})}}
+
+const done5={};
+function t5(){$("#t5").innerHTML=`<div class="card"><h2>Реальные случаи</h2><p>Шесть историй — от аварий в энергосистемах до лабораторных измерений. Выберите случай, прочитайте и ответьте на вопрос: что здесь произошло с точки зрения физики разряда.</p><div class="dots" id="dt5">${CASES.map(c=>`<i data-k="${c.id}"></i>`).join("")}</div></div>
+ <div class="cases">${CASES.map((c,i)=>`<button class="cs" data-i="${i}"><span class="tag">${c.tag}</span><b>${i+1}. ${c.t}</b></button>`).join("")}</div><div id="cs5"></div>`;
+ $$("#t5 .cs").forEach(b=>b.onclick=()=>{$$("#t5 .cs").forEach(x=>x.classList.toggle("on",x===b));show5(+b.dataset.i)});show5(0);$("#t5 .cs").classList.add("on")}
+function show5(i){const c=CASES[i];$("#cs5").innerHTML=`<div class="card"><span class="tag">${c.tag}</span><h2 style="margin:4px 0 0">${c.t}</h2><p>${c.x}</p><div class="lbl">${c.q}</div><div class="opts" id="o5">${shuf(c.o,i+40).map(([t,j])=>`<button data-j="${j}">${t}</button>`).join("")}</div><div id="f5"></div></div>`;
+ $$("#o5 button").forEach(b=>b.onclick=()=>{const j=+b.dataset.j;$$("#o5 button").forEach(x=>{x.disabled=true;const k=+x.dataset.j;if(k===c.a)x.classList.add("right");else if(k===j)x.classList.add("wrong")});
+  $("#f5").innerHTML=`<div class="${j===c.a?"good":"bad"}"><b>${j===c.a?"Верно.":"Не совсем."}</b> ${c.e}</div><p style="margin:8px 0 0;font-size:13px;color:var(--muted)">Источник: ${c.src}</p>`;
+  if(j===c.a){done5[c.id]=1;$(`#dt5 i[data-k="${c.id}"]`).className="ok";$$("#t5 .cs")[i].classList.add("done")}})}
+function t6(){$("#t6").innerHTML=`<div class="card"><h2>Задачи с объектов</h2><p>Решите задачу и введите ответ. Знаки «?» рядом с условием — подсказки: наведите мышь или нажмите. Допуск ответа — 2–3 %.</p><div class="dots" id="dt6">${TASKS.map(t=>`<i data-k="${t.id}"></i>`).join("")}</div></div>`+TASKS.map((t,i)=>`<div class="task" id="${t.id}"><h3><span class="mono">${i+1}</span>${t.t}</h3><p>${t.x}</p><div class="chips">${t.h.map((x,j)=>`<span class="chip" tabindex="0" data-tipt="${x.replace(/"/g,"&quot;")}">подсказка ${j+1}</span>`).join("")}</div><div class="ans"><input type="text" inputmode="decimal" aria-label="Ответ"><button class="btn">Проверить</button><button class="btn ghost">Решение</button></div><div class="fb"></div></div>`).join("");
+ TASKS.forEach(t=>{const box=$("#"+t.id),inp=box.querySelector("input"),[b1,b2]=box.querySelectorAll(".ans button"),fb=box.querySelector(".fb");
+  const chk=()=>{const v=parseFloat(inp.value.replace(/\s/g,"").replace(",","."));if(!isFinite(v)){fb.innerHTML=`<div class="warn">Введите число.</div>`;return}const ok=Math.abs(v-t.a)<=Math.abs(t.a)*t.tol;fb.innerHTML=ok?`<div class="good"><b>Верно.</b> ${t.s}</div>`:`<div class="bad"><b>Пока не так.</b> Проверьте единицы и порядок величины, загляните в подсказки.</div>`;if(ok){$(`#dt6 i[data-k="${t.id}"]`).className="ok"}};
+  b1.onclick=chk;inp.onkeydown=e=>{if(e.key==="Enter")chk()};b2.onclick=()=>{fb.innerHTML=`<div class="warn"><b>Решение.</b> ${t.s}</div>`}})}
+function shuf(a,seed){let s=(Math.imul(seed+11,2654435761)>>>0)^0x9E3779B9;const r=()=>{s^=s<<13;s>>>=0;s^=s>>>17;s^=s<<5;s>>>=0;return s/4294967296};for(let k=0;k<7;k++)r();const o=a.map((x,i)=>[x,i]);for(let i=o.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[o[i],o[j]]=[o[j],o[i]]}return o}
+const LET="АБВГД";
+const T7={i:0,ans:[],done:false};
+function grade7(s){return s>=14?[5,"отлично"]:s>=11?[4,"хорошо"]:s>=8?[3,"удовлетворительно"]:[2,"неудовлетворительно"]}
+function t7(){const q=TEST[T7.i],n=TEST.length;
+ if(T7.done){const s=TEST.reduce((a,q,k)=>a+(T7.ans[k]===q.a),0),[g,gt]=grade7(s);
+  $("#t7").innerHTML=`<div class="card" style="align-items:center;text-align:center"><span class="tag">Тест завершён</span><div style="font-size:80px;font-weight:700;line-height:1;color:${g>=4?"var(--ok)":g===3?"var(--warn)":"var(--hot)"}">${g}</div><h2 style="margin:0">Оценка: ${gt}</h2><p style="margin:0">Верных ответов: <b>${s} из ${n}</b>. Шкала: 14–15 — «5», 11–13 — «4», 8–10 — «3», меньше 8 — «2».</p><div class="btns" style="justify-content:center"><button class="btn" id="rv7">Показать разбор ответов</button><button class="btn ghost" id="rs7">Пройти заново</button></div></div><div id="rev7"></div>`;
+  $("#rs7").onclick=()=>{Object.assign(T7,{i:0,ans:[],done:false});t7()};
+  $("#rv7").onclick=()=>{$("#rev7").innerHTML=TEST.map((q,k)=>{const ok=T7.ans[k]===q.a;return `<div class="tq"><div class="qq">${k+1}. ${q.q}</div><div class="${ok?"good":"bad"}"><b>${ok?"Верно":"Неверно"}.</b> ${ok?"":"Ваш ответ: "+(T7.ans[k]==null?"нет ответа":q.o[T7.ans[k]])+". "}Правильно: ${q.o[q.a]}. ${q.e}</div></div>`}).join("");$("#rv7").disabled=true};return}
+ $("#t7").innerHTML=`<div class="card"><h2>Тест: 15 вопросов</h2><p style="margin:0">Отвечайте по порядку. Правильные ответы и оценка появятся только в конце. Вернуться к вопросу можно кнопкой «Назад».</p><div class="dots">${TEST.map((x,k)=>`<i class="${T7.ans[k]!=null?"ok":""}" style="${k===T7.i?"outline:2px solid var(--accent)":""}"></i>`).join("")}</div></div>
+ <div class="tq"><div class="qq">Вопрос ${T7.i+1} из ${n}. ${q.q}</div>${shuf(q.o,T7.i).map(([t,j],k)=>`<label><input type="radio" name="r7" value="${j}" ${T7.ans[T7.i]===j?"checked":""}><span><b>${LET[k]})</b> ${t}</span></label>`).join("")}
+ <div class="btns"><button class="btn ghost" id="pv7" ${T7.i?"":"disabled"}>← Назад</button><button class="btn" id="nx7">${T7.i<n-1?"Дальше →":"Завершить тест"}</button></div><div id="w7"></div></div>`;
+ $$("#t7 input").forEach(x=>x.onchange=()=>{T7.ans[T7.i]=+x.value});
+ $("#pv7").onclick=()=>{T7.i--;t7()};
+ $("#nx7").onclick=()=>{if(T7.ans[T7.i]==null){$("#w7").innerHTML=`<div class="warn">Выберите вариант ответа.</div>`;return}if(T7.i<n-1){T7.i++;t7()}else{const miss=TEST.findIndex((x,k)=>T7.ans[k]==null);if(miss>=0){T7.i=miss;t7();$("#w7").innerHTML=`<div class="warn">Остался вопрос без ответа.</div>`;return}T7.done=true;t7()}};}
+const built={},FIT={t1:()=>{C1m&&C1m.fit();C1g&&C1g.fit();if(T1.run)requestAnimationFrame(an1)},t2:()=>upd2(),t3:()=>{C3&&C3.fit();C3b&&C3b.fit();C3z&&C3z.fit()},t4:()=>{C4a&&C4a.fit();C4z&&C4z.fit();C4b&&C4b.fit()}};
+function onTab(t){if(!built[t]){built[t]=1;({t1,t2,t3,t4,t5,t6,t7})[t]()}else if(FIT[t])FIT[t]()}
+onTab("t1");
+
+</script>
+<a href="../" title="Все материалы" style="position:fixed;right:10px;bottom:10px;z-index:99999;background:rgba(31,95,175,.92);color:#fff;font:600 13px system-ui,sans-serif;padding:6px 11px;border-radius:999px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.25)">⌂ Все материалы</a><script>addEventListener("load",function(){var h=location.hash.slice(1),b=h&&document.querySelector("[data-tab="+h+"]");if(b)b.click()})</script></html>

@@ -1,0 +1,500 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Лекция 2. Ионизация и электронная лавина — презентация</title><link rel="stylesheet" href="../fonts/fonts.css"><style>*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#0e131a;overflow:hidden}
+#stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+#deck{width:1920px;height:1080px;position:relative;flex:none;transform-origin:center center}
+#deck>section{position:absolute;inset:0;width:1920px;height:1080px;overflow:hidden}
+body:not(.print) #deck>section:not(.on){display:none!important}
+section ul,section ol{padding-left:1.2em}section li{margin:.25em 0}
+section table{border-collapse:collapse;width:100%}
+section th,section td{text-align:left;vertical-align:top;padding:.45em .6em;border-bottom:1px solid rgba(128,128,128,.35)}
+section th{font-weight:600;border-bottom:2px solid currentColor}
+section img{display:block}
+#ui{position:fixed;left:0;right:0;bottom:0;display:flex;gap:6px;align-items:center;justify-content:center;padding:8px;font:600 14px system-ui,sans-serif;z-index:9;opacity:.9}
+#ui a,#ui button{background:rgba(20,29,43,.85);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:7px 14px;font:inherit;text-decoration:none;cursor:pointer}
+#ui span{background:rgba(20,29,43,.85);color:#fff;border-radius:999px;padding:7px 12px;min-width:76px;text-align:center}
+body.print{overflow:visible;background:#fff}body.print #stage{position:static;display:block}
+body.print #deck{transform:none!important;height:auto}
+body.print #deck>section{position:relative!important;page-break-after:always;break-after:page}
+body.print #ui{display:none}
+@page{size:1920px 1080px;margin:0}</style></head><body><div id="stage"><div id="deck"><section id="cover" data-transition="fade" style="background:#121B2B;color:#F4F2EC;font-family:'Public Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:space-between">
+<img src="img/e3755aae76.webp" alt="" style="position:absolute;left:1000px;top:120px;width:860px;height:440px;object-fit:contain;opacity:0.16">
+<p style="font-size:28px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#F0A26B">Техника высоких напряжений · лекция 2</p>
+<div style="display:flex;flex-direction:column;gap:32px;width:1300px">
+<h1 style="font-family:'Rubik', Arial, sans-serif;font-size:104px;font-weight:700;line-height:1.05">Ионизация газа и электронная лавина</h1>
+<p style="font-size:36px;line-height:1.35;color:#C3CEDC">Откуда в изоляторе берутся заряды, как они размножаются и когда разряд начинает поддерживать себя сам</p>
+</div>
+<p style="font-size:24px;color:#93A3B8">13.03.02 · интерактив «Ионизация и электронная лавина» · по учебнику Важова и Лавриновича, разд. 1.1</p>
+
+</section>
+<section id="goals" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">Цели лекции</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">После пары вы сможете</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;flex:1">
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:32px"><p style="font-size:48px;font-weight:700;color:#1F5FAF">1</p><p style="font-size:28px;line-height:1.4">Назвать виды ионизации и эмиссии и условие каждой</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:32px"><p style="font-size:48px;font-weight:700;color:#1F5FAF">2</p><p style="font-size:28px;line-height:1.4">Оценить энергию электрона на пробеге и рассчитать α</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:32px"><p style="font-size:48px;font-weight:700;color:#1F5FAF">3</p><p style="font-size:28px;line-height:1.4">Посчитать электроны и ионы в лавине</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:32px"><p style="font-size:48px;font-weight:700;color:#1F5FAF">4</p><p style="font-size:28px;line-height:1.4">Проверить условие самостоятельности разряда</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:32px"><p style="font-size:48px;font-weight:700;color:#1F5FAF">5</p><p style="font-size:28px;line-height:1.4">Получить из него закон Пашена</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:32px"><p style="font-size:48px;font-weight:700;color:#1F5FAF">6</p><p style="font-size:28px;line-height:1.4">Объяснить влияние давления, высоты и газа</p></div>
+</div>
+
+</section>
+<section id="riddle" data-transition="fade" style="background:#1F5FAF;color:#F4F2EC;font-family:'Public Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:48px">
+<p style="font-size:28px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#D6E4F7">Вопрос в аудиторию</p>
+<h1 style="font-family:'Rubik', Arial, sans-serif;font-size:88px;font-weight:700;line-height:1.1;width:1500px">Воздух — изолятор. Откуда в нём берутся заряды, чтобы произошёл пробой?</h1>
+<p style="font-size:36px;line-height:1.4;color:#D6E4F7;width:1400px">И почему промежуток держит 30 кВ, а при 36 кВ пробивается — что меняется на этих 6 киловольтах?</p>
+
+</section>
+<section id="atom" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">1 · Атом и энергия</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Возбуждение — электрон на дальней орбите, ионизация — электрон ушёл</h2>
+</div>
+<div style="display:flex;gap:48px;flex:1">
+<div style="width:760px;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:28px;line-height:1.45;color:#46505E">Возбуждённый атом через ≈ 10⁻⁸ с возвращается и излучает фотон. При ионизации рождаются два свободных заряда: <b>электрон и положительный ион</b>.</p>
+<p style="font-size:28px;line-height:1.45;color:#46505E"><b>1 эВ</b> — энергия заряда e, прошедшего 1 В. Если E в В/м, а путь в м, их произведение — сразу энергия в эВ.</p>
+</div>
+<table style="font-size:28px;color:#141D2B;width:856px">
+<tr><th style="width:28%">Газ</th><th style="width:36%">Возбуждение, эВ</th><th style="width:36%">Ионизация, эВ</th></tr>
+<tr><td>N₂</td><td>6,1</td><td>15,5</td></tr>
+<tr><td>O₂</td><td>7,9</td><td>12,5</td></tr>
+<tr><td>H₂O</td><td>7,6</td><td>12,7</td></tr>
+<tr><td>Ar</td><td>11,5</td><td>15,8</td></tr>
+<tr><td>SF₆</td><td>—</td><td>15,6</td></tr>
+</table>
+</div>
+
+</section>
+<section id="recomb" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">1 · Обратные процессы</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Заряды не только рождаются, но и исчезают</h2>
+</div>
+<div style="display:flex;gap:28px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:36px">
+<h3 style="font-family:'Rubik', Arial, sans-serif;font-size:40px;font-weight:600">Рекомбинация</h3>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:30px">e⁻ + A⁺ → A + h·ν</p>
+<p style="font-size:28px;line-height:1.45;color:#46505E">Равновесие с ионизацией задаёт степень ионизации ψ = n/N. Сильно ионизованный газ — плазма: канал искры, дуги.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:36px">
+<h3 style="font-family:'Rubik', Arial, sans-serif;font-size:40px;font-weight:600">Прилипание</h3>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:30px">e⁻ + O₂ → O₂⁻</p>
+<p style="font-size:28px;line-height:1.45;color:#46505E">Электроотрицательные газы — O₂, H₂O, SF₆ — захватывают электроны. Тяжёлый ион не ионизует. Коэффициент η, 1/см.</p>
+</div>
+</div>
+
+</section>
+<section id="vol" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">2 · Объёмная ионизация</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Четыре способа выбить электрон в газе</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;flex:1">
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border-left:8px solid #1F5FAF;border-radius:12px;padding:28px 32px"><h3 style="font-size:34px;font-weight:600">Ударная электроном</h3><p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:28px;color:#1F5FAF">e·E·λ ≥ Wи</p><p style="font-size:26px;color:#46505E">Главный механизм лавины</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border-left:8px solid #1F5FAF;border-radius:12px;padding:28px 32px"><h3 style="font-size:34px;font-weight:600">Ступенчатая</h3><p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:28px;color:#1F5FAF">W₁ + W₂ ≥ Wи за ≈10⁻⁸ с</p><p style="font-size:26px;color:#46505E">Канал искры и дуги</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border-left:8px solid #B4531B;border-radius:12px;padding:28px 32px"><h3 style="font-size:34px;font-weight:600">Фотоионизация</h3><p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:28px;color:#B4531B">h·ν ≥ Wи;  λ ≤ 1240/Wи нм</p><p style="font-size:26px;color:#46505E">Для O₂ — короче 99 нм; основа стримера</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border-left:8px solid #B4531B;border-radius:12px;padding:28px 32px"><h3 style="font-size:34px;font-weight:600">Термоионизация</h3><p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:28px;color:#B4531B">T ≈ 5000–20 000 К</p><p style="font-size:26px;color:#46505E">Дуга, лидер, канал искры</p></div>
+</div>
+
+</section>
+<section id="mnemo" data-transition="fade" style="background:#E6ECF2;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">В интерактиве · вкладка 1</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Каждый механизм — на анимированной схеме</h2>
+</div>
+<div style="display:flex;gap:40px;flex:1;align-items:start">
+<img src="img/db7440c5dc.webp" alt="Окно мнемосхемы «Ударная ионизация электроном»: анимация, условие и пример" style="width:780px;height:640px;object-fit:contain;background:#FFFDF8;border-radius:16px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">10 карточек: 4 вида объёмной ионизации, 4 вида эмиссии, рекомбинация и прилипание.</p>
+<p style="font-size:30px;line-height:1.45">Нажатие открывает окно: крупная анимация, условие, объяснение, пример из практики.</p>
+<p style="font-size:30px;line-height:1.45;color:#46505E">Закрыть — крестиком, Esc или щелчком по фону.</p>
+</div>
+</div>
+
+</section>
+<section id="emis" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">3 · Эмиссия с катода</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Катод отдаёт электроны легче газа: W<span style="color:#B4531B">вых</span> ≈ 4,5 эВ</h2>
+</div>
+<table style="font-size:28px;color:#141D2B">
+<tr><th style="width:28%">Вид</th><th style="width:34%">Условие</th><th style="width:38%">Где встречается</th></tr>
+<tr><td>Ударом иона</td><td>mv²/2 ≥ Wвых</td><td>Ионы лавины → механизм γ</td></tr>
+<tr><td>Фотоэмиссия</td><td>h·ν ≥ Wвых, λ ≤ 276 нм</td><td>УФ-подсветка разрядника</td></tr>
+<tr><td>Термоэмиссия</td><td>j = A·T²·e^(−Wвых/kT)</td><td>Пятно дуги на контакте</td></tr>
+<tr><td>Автоэлектронная</td><td>E ≈ 10⁷–10⁸ В/см</td><td>Микроострия в вакуумной камере</td></tr>
+</table>
+<p style="font-size:30px;line-height:1.4;background:#FFFDF8;border-left:6px solid #1F5FAF;padding:20px 28px"><b>Коэффициент γ</b> — сколько электронов выбивает с катода один ион лавины. Всегда γ ≪ 1: обычно 10⁻⁴…10⁻¹.</p>
+
+</section>
+<section id="lam" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">4 · Длина свободного пробега</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Чем ниже давление, тем дальше летит электрон</h2>
+</div>
+<div style="display:flex;gap:48px;flex:1">
+<div style="width:620px;display:flex;flex-direction:column;gap:24px">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:32px;background:#FFFDF8;border-left:6px solid #1F5FAF;padding:18px 26px">λ = 1/Z ∝ T/p</p>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:32px;background:#FFFDF8;border-left:6px solid #1F5FAF;padding:18px 26px">λ = 1/(A·p)</p>
+<p style="font-size:28px;line-height:1.45;color:#46505E">Воздух при 760 мм рт. ст.: <b>λ ≈ 0,88 мкм</b>. В горах длиннее, в сжатом газе короче.</p>
+</div>
+<img src="img/409f9dc373.webp" alt="График длины пробега электрона от давления для воздуха, азота и аргона" style="flex:1;width:996px;height:514px;object-fit:contain;background:#FFFFFF;border-radius:16px">
+</div>
+
+</section>
+<section id="wpath" data-transition="fade" style="background:#121B2B;color:#F4F2EC;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#F0A26B">4 · Энергия на пробеге</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">W = e·E·λ: средний электрон ионизовать не может</h2>
+</div>
+<div style="display:flex;gap:40px;flex:1;align-items:center">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;align-items:center"><p style="font-family:'Rubik', Arial, sans-serif;font-size:140px;font-weight:700;color:#7FB3F0">2,6</p><p style="font-size:30px;color:#C3CEDC;text-align:center">эВ — набирает электрон при 30 кВ/см</p></div>
+<p style="font-size:72px;color:#93A3B8">≪</p>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;align-items:center"><p style="font-family:'Rubik', Arial, sans-serif;font-size:140px;font-weight:700;color:#F0A26B">12,5</p><p style="font-size:30px;color:#C3CEDC;text-align:center">эВ — нужно для ионизации O₂</p></div>
+</div>
+<p style="font-size:32px;line-height:1.4;color:#C3CEDC">Ионизуют только «счастливчики», пролетевшие без удара в несколько раз дольше среднего.</p>
+
+</section>
+<section id="prob" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">5 · Вероятность ионизации</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Длинный пробег — редкость, но их миллиарды</h2>
+</div>
+<div style="display:flex;gap:48px;flex:1">
+<img src="img/269c9ae1cc.webp" alt="Доля пробегов длиннее x: при 30 кВ/см ионизует 0,01 % ударов, при 80 кВ/см — 3 %" style="width:1060px;height:515px;object-fit:contain;background:#FFFFFF;border-radius:16px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:30px;background:#FFFDF8;border-left:6px solid #1F5FAF;padding:18px 26px">P = e^(−x/λ)</p>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:30px;background:#FFFDF8;border-left:6px solid #1F5FAF;padding:18px 26px">xи = Wи/(e·E)</p>
+<p style="font-size:28px;line-height:1.45;color:#46505E">Доля ионизирующих ударов: e^(−Wи/(eEλ))</p>
+</div>
+</div>
+
+</section>
+<section id="alpha" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">5 · Коэффициент ударной ионизации</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">α — ионизаций на 1 см пути электрона</h2>
+</div>
+<div style="display:flex;flex-direction:column;gap:20px">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:34px;background:#FFFDF8;border-left:6px solid #1F5FAF;padding:20px 28px">α = (1/λ)·e^(−Wи/(eEλ))   →   α/p = A·e^(−B·p/E)</p>
+<p style="font-size:30px;line-height:1.45">Главное: <b>α/p зависит только от E/p</b> — приведённая напряжённость, параметр подобия.</p>
+</div>
+<table style="font-size:28px;color:#141D2B">
+<tr><th style="width:28%">Газ</th><th style="width:24%">A, 1/(см·мм рт. ст.)</th><th style="width:24%">B, В/(см·мм рт. ст.)</th><th style="width:24%">E/p, диапазон</th></tr>
+<tr><td>Воздух</td><td>15</td><td>365</td><td>100–800</td></tr>
+<tr><td>Азот</td><td>12</td><td>342</td><td>100–600</td></tr>
+<tr><td>Аргон</td><td>12</td><td>180</td><td>100–600</td></tr>
+</table>
+
+</section>
+<section id="alphag" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">5 · α для воздуха</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Небольшой рост поля — α растёт в десятки раз</h2>
+</div>
+<div style="display:flex;gap:32px;flex:1">
+<img src="img/e89147f223.webp" alt="α/p от E/p для воздуха, азота и аргона" style="flex:1;width:816px;height:444px;object-fit:contain;background:#FFFFFF;border-radius:16px">
+<img src="img/e9ef0a183d.webp" alt="α воздуха при 760 мм рт. ст.: 30 кВ/см — 1,1; 35,5 — 4,6; 45 — 24 1/см" style="flex:1;width:816px;height:396px;object-fit:contain;background:#FFFFFF;border-radius:16px">
+</div>
+<p style="font-size:30px;line-height:1.4">30 кВ/см → α ≈ 1,1 · 35,5 кВ/см → 4,6 · 45 кВ/см → 24 1/см</p>
+
+</section>
+<section id="weff" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">5 · Эффективная энергия ионизации</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">B/A ≈ 24 эВ — вдвое больше табличных 12,5</h2>
+</div>
+<img src="img/ceb577b675.webp" alt="Вкладка «Энергия электрона»: пилообразная энергия электрона, линии возбуждения и ионизации, счётчики" style="width:1664px;height:520px;object-fit:contain;background:#FFFFFF;border-radius:16px">
+<p style="font-size:28px;line-height:1.4">Электрон тратит энергию на возбуждение и колебания молекул — поэтому в модели «удар — потеря всей энергии» порог равен B/A.</p>
+
+</section>
+<section id="demo2" data-transition="fade" style="background:#B4531B;color:#FBF1E9;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#FFE0C8">В интерактиве · вкладка 2</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Три случая за 10 минут</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;flex:1">
+<div style="display:flex;flex-direction:column;gap:14px;background:#93410F;border-radius:16px;padding:36px"><h3 style="font-size:36px;font-weight:600">Шина КРУ, 80 кВ/см</h3><p style="font-size:28px;line-height:1.4;color:#FFE0C8">За пробег 7 эВ, ионизирует 3 % ударов, α ≈ 360 1/см</p></div>
+<div style="display:flex;flex-direction:column;gap:14px;background:#93410F;border-radius:16px;padding:36px"><h3 style="font-size:36px;font-weight:600">Перед пробоем, 35 кВ/см</h3><p style="font-size:28px;line-height:1.4;color:#FFE0C8">Ионизаций почти нет, α ≈ 4,6 1/см — и этого хватает на пробой</p></div>
+<div style="display:flex;flex-direction:column;gap:14px;background:#93410F;border-radius:16px;padding:36px"><h3 style="font-size:36px;font-weight:600">Разрядник, 100 мм рт. ст.</h3><p style="font-size:28px;line-height:1.4;color:#FFE0C8">Пробег 6,7 мкм — ионизаций много: давление решает</p></div>
+</div>
+
+</section>
+<section id="saval" data-transition="fade" style="background:#121B2B;color:#F4F2EC;font-family:'Public Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:40px">
+<p style="font-size:28px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#F0A26B">Часть 2</p>
+<h1 style="font-family:'Rubik', Arial, sans-serif;font-size:96px;font-weight:700;line-height:1.08;width:1400px">Электронная лавина</h1>
+<p style="font-size:36px;line-height:1.4;color:#C3CEDC;width:1300px">Один электрон, сильное поле — и через сантиметр их сто миллионов</p>
+
+</section>
+<section id="aval" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">6 · Рост лавины</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Каждые 1/α пути — электронов в e раз больше</h2>
+</div>
+<div style="display:flex;gap:48px;flex:1">
+<div style="width:640px;display:flex;flex-direction:column;gap:20px">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:30px;background:#FFFDF8;border-left:6px solid #1F5FAF;padding:18px 26px">dn = α·n·dx</p>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:30px;background:#FFFDF8;border-left:6px solid #1F5FAF;padding:18px 26px">n = n₀·e^(αx)</p>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:30px;background:#FFFDF8;border-left:6px solid #B4531B;padding:18px 26px">с прилипанием: n₀·e^((α−η)x)</p>
+<p style="font-size:28px;line-height:1.45;color:#46505E">α = 10 1/см, x = 1,5 см → e¹⁵ ≈ <b>3,3 млн</b> электронов</p>
+</div>
+<img src="img/e3755aae76.webp" alt="Рост числа электронов в лавине при α = 5, 10, 20 1/см; порог 10⁸" style="flex:1;width:976px;height:503px;object-fit:contain;background:#FFFFFF;border-radius:16px">
+</div>
+
+</section>
+<section id="ions" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">6 · Где лежат ионы</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Голова из электронов, хвост из ионов — и почти все ионы у головы</h2>
+</div>
+<img src="img/9dced9bbeb.webp" alt="Плотность ионов вдоль лавины растёт экспоненциально к головке" style="width:1664px;height:400px;object-fit:contain;background:#FFFFFF;border-radius:16px">
+<div style="display:flex;gap:24px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:24px 28px"><p style="font-family:'Rubik', Arial, sans-serif;font-size:48px;font-weight:700;color:#1F5FAF">63 %</p><p style="font-size:26px;color:#46505E">ионов — в последних 1/α</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:24px 28px"><p style="font-family:'Rubik', Arial, sans-serif;font-size:48px;font-weight:700;color:#1F5FAF">1/α</p><p style="font-size:26px;color:#46505E">центр ионов позади головки</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:24px 28px"><p style="font-family:'Rubik', Arial, sans-serif;font-size:48px;font-weight:700;color:#B4531B">0,055 %</p><p style="font-size:26px;color:#46505E">в задней половине при αx = 15</p></div>
+</div>
+
+</section>
+<section id="head" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">6 · Поле головки и стример</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">При αx ≈ 18–20 лавина «замечает» свой заряд</h2>
+</div>
+<div style="display:flex;gap:48px;flex:1">
+<div style="width:640px;display:flex;flex-direction:column;gap:20px">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:30px;background:#FFFDF8;border-left:6px solid #1F5FAF;padding:18px 26px">r ≈ √(4·(D/μ)·x/E)</p>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:30px;background:#FFFDF8;border-left:6px solid #1F5FAF;padding:18px 26px">Eq = e·n/(4πε₀r²)</p>
+<p style="font-size:28px;line-height:1.45;color:#46505E">Когда Eq ≈ E (n ≈ 10⁸), фотоионизация перед головкой рождает стример — <b>лекция 3</b>.</p>
+</div>
+<img src="img/c5631f3009.webp" alt="Отношение поля головки к внешнему полю пересекает единицу при αx около 17–20" style="flex:1;width:976px;height:474px;object-fit:contain;background:#FFFFFF;border-radius:16px">
+</div>
+
+</section>
+<section id="avaldemo" data-transition="fade" style="background:#E6ECF2;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">В интерактиве · вкладка 3</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Лавина-капля и её счётчики</h2>
+</div>
+<img src="img/a478c20389.webp" alt="Лавина в промежутке: синие электроны в головке, оранжевые ионы в хвосте, красная обводка — переход в стример" style="width:1664px;height:424px;object-fit:contain;background:#0D171E;border-radius:16px">
+<table style="font-size:26px;color:#141D2B">
+<tr><th style="width:25%">Воздух, 42 кВ/см, 12 мм</th><th style="width:25%">Значение</th><th style="width:25%">Величина</th><th style="width:25%">Значение</th></tr>
+<tr><td>α, 1/см</td><td>15,4</td><td>Ионов в задней половине</td><td>&lt; 0,01 %</td></tr>
+<tr><td>Электронов в головке</td><td>1,1·10⁸</td><td>Поле головки</td><td>139 кВ/см</td></tr>
+<tr><td>Ионов у головки (1/α)</td><td>63 %</td><td>Критическая длина</td><td>11,2 мм</td></tr>
+</table>
+
+</section>
+<section id="att" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">6 · Прилипание</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Работает разность α − η</h2>
+</div>
+<div style="display:flex;gap:28px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border-top:8px solid #1F5FAF;border-radius:12px;padding:32px"><h3 style="font-size:36px;font-weight:600">α − η &gt; 0</h3><p style="font-size:28px;line-height:1.45;color:#46505E">Лавина растёт, но медленнее: α = 12, η = 2 → e¹⁰ вместо e¹² — в 7,4 раза меньше</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border-top:8px solid #B4531B;border-radius:12px;padding:32px"><h3 style="font-size:36px;font-weight:600">α − η ≤ 0</h3><p style="font-size:28px;line-height:1.45;color:#46505E">Лавина гаснет. В воздухе — ниже ≈ 24–26 кВ/см (критическая напряжённость)</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border-top:8px solid #1E8A4C;border-radius:12px;padding:32px"><h3 style="font-size:36px;font-weight:600">Элегаз SF₆</h3><p style="font-size:28px;line-height:1.45;color:#46505E">Очень сильное прилипание — прочность в 2,5–3 раза выше воздуха</p></div>
+</div>
+
+</section>
+<section id="sself" data-transition="fade" style="background:#121B2B;color:#F4F2EC;font-family:'Public Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:40px">
+<p style="font-size:28px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#F0A26B">Часть 3</p>
+<h1 style="font-family:'Rubik', Arial, sans-serif;font-size:96px;font-weight:700;line-height:1.08;width:1500px">Когда разряд поддерживает себя сам</h1>
+<p style="font-size:36px;line-height:1.4;color:#C3CEDC;width:1300px">Условие самостоятельности, опыт Таунсенда и закон Пашена</p>
+
+</section>
+<section id="two" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">7 · Две формы разряда</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Убрали ультрафиолет — погас или продолжается?</h2>
+</div>
+<div style="display:flex;gap:28px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:40px">
+<h3 style="font-family:'Rubik', Arial, sans-serif;font-size:42px;font-weight:600;color:#1F5FAF">Несамостоятельный</h3>
+<p style="font-size:30px;line-height:1.45;color:#46505E">Новые электроны даёт только внешний ионизатор: ультрафиолет, радиоактивный фон, рентген. Убрали — разряд погас.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:40px">
+<h3 style="font-family:'Rubik', Arial, sans-serif;font-size:42px;font-weight:600;color:#B4531B">Самостоятельный</h3>
+<p style="font-size:30px;line-height:1.45;color:#46505E">Лавина сама рождает новые электроны: фотоны выбивают их из газа и катода, ионы — из катода.</p>
+</div>
+</div>
+
+</section>
+<section id="gen" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">7 · Условие самостоятельности</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Одна лавина должна дать хотя бы один новый электрон</h2>
+</div>
+<div style="display:flex;gap:48px;flex:1">
+<div style="width:700px;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:28px;line-height:1.45;color:#46505E">Лавина оставляет e^((α−η)S) − 1 ионов, каждый выбивает γ электронов:</p>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:32px;background:#FFFDF8;border-left:6px solid #B4531B;padding:20px 28px">μ = γ·(e^((α−η)S) − 1) ≥ 1</p>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:32px;background:#FFFDF8;border-left:6px solid #1F5FAF;padding:20px 28px">(α−η)S = ln(1 + 1/γ)</p>
+<p style="font-size:28px;line-height:1.45">При γ = 0,01: <b>αS = 4,62</b> — лавина из ~100 электронов.</p>
+</div>
+<img src="img/8083ec9732.webp" alt="Поколения лавин: при μ = 0,5 затухают, при μ = 1,5 растут" style="flex:1;width:916px;height:371px;object-fit:contain;background:#FFFFFF;border-radius:16px">
+</div>
+
+</section>
+<section id="towns" data-transition="fade" style="background:#E6ECF2;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">7 · Опыт Таунсенда · вкладка 4</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Что показывает прибор при подъёме напряжения</h2>
+</div>
+<img src="img/3570a0c486.webp" alt="Схема опыта: УФ-лампа, источник U, промежуток, микроамперметр; анимация поколения лавины" style="width:1664px;height:240px;object-fit:contain;background:#0D171E;border-radius:16px">
+<div style="display:flex;gap:32px;flex:1">
+<img src="img/fc559b9e3d.webp" alt="Ток Таунсенда растёт с напряжением и уходит в бесконечность при 35,5 кВ" style="width:736px;height:380px;object-fit:contain;background:#FFFFFF;border-radius:16px">
+<div style="flex:1;display:flex;flex-direction:column;gap:14px">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:28px;background:#FFFDF8;border-left:6px solid #1F5FAF;padding:16px 22px">I = I₀·e^(αS)/(1 − μ)</p>
+<p style="font-size:26px;line-height:1.4"><b>I</b> — ток лампы <b>II</b> — экспонента <b>III</b> — вторичные с катода <b>IV</b> — μ → 1, пробой</p>
+</div>
+</div>
+
+</section>
+<section id="paschen" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">8 · Закон Пашена</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Условие самостоятельности + E = U/S = закон Пашена</h2>
+</div>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:30px;background:#FFFDF8;border-left:6px solid #B4531B;padding:18px 26px">Uпр = B·p·S / [ln(A·p·S) − ln ln(1 + 1/γ)]</p>
+<div style="display:flex;gap:32px;flex:1">
+<img src="img/5801f78fa9.webp" alt="Кривая Пашена в интерактиве: над кривой пробой, под кривой держит, точка — промежуток студента" style="width:1000px;height:277px;object-fit:contain;background:#0D171E;border-radius:16px">
+<div style="flex:1;display:flex;flex-direction:column;gap:14px">
+<p style="font-size:28px;line-height:1.4"><b>Минимум:</b> (pS)min = e·ln(1+1/γ)/A ≈ 0,84 мм рт. ст.·см, Umin ≈ 305 В</p>
+<p style="font-size:26px;line-height:1.4;color:#46505E">Справа — мало энергии на пробеге; слева — слишком мало ударов</p>
+</div>
+</div>
+
+</section>
+<section id="tabs" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">8 · Числа для воздуха</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Длиннее промежуток или выше в горы — что меняется</h2>
+</div>
+<div style="display:flex;gap:40px;flex:1">
+<table style="font-size:26px;color:#141D2B;width:812px">
+<tr><th style="width:30%">S, см (760)</th><th style="width:35%">Uпр, кВ</th><th style="width:35%">Eпр, кВ/см</th></tr>
+<tr><td>0,1</td><td>5,0</td><td>50,3</td></tr>
+<tr><td>0,5</td><td>19,5</td><td>39,0</td></tr>
+<tr><td>1</td><td>35,5</td><td>35,5</td></tr>
+<tr><td>2</td><td>65,2</td><td>32,6</td></tr>
+<tr><td>3</td><td>93,3</td><td>31,1</td></tr>
+</table>
+<table style="font-size:26px;color:#141D2B;width:812px">
+<tr><th style="width:30%">Высота, м</th><th style="width:35%">p, мм рт. ст.</th><th style="width:35%">Uпр 1 см, кВ</th></tr>
+<tr><td>0</td><td>760</td><td>35,5</td></tr>
+<tr><td>1000</td><td>673</td><td>31,9</td></tr>
+<tr><td>2000</td><td>595</td><td>28,7</td></tr>
+<tr><td>3000</td><td>526</td><td>25,8</td></tr>
+<tr><td>4000</td><td>465</td><td>23,2</td></tr>
+</table>
+</div>
+
+</section>
+<section id="cond" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">9 · Внешние условия</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Что меняет прочность промежутка на практике</h2>
+</div>
+<table style="font-size:26px;color:#141D2B">
+<tr><th style="width:24%">Фактор</th><th style="width:38%">Физика</th><th style="width:38%">Практика</th></tr>
+<tr><td>Давление ↓</td><td>λ растёт, Uпр падает почти ∝ p</td><td>Высокогорные ПС, утечка элегаза</td></tr>
+<tr><td>Температура ↑</td><td>Плотность газа ↓</td><td>Приведение к нормальным условиям</td></tr>
+<tr><td>Влажность</td><td>η ↑, но конденсат на поверхности</td><td>Подогрев ячеек КРУ</td></tr>
+<tr><td>Газ</td><td>Другие A, B, η</td><td>SF₆ в 2,5–3 раза прочнее воздуха</td></tr>
+<tr><td>Катод, облучение</td><td>γ и начальные электроны</td><td>УФ-подсветка разрядников</td></tr>
+<tr><td>Глубокий вакуум</td><td>Левая ветвь Пашена</td><td>Вакуумные выключатели</td></tr>
+</table>
+
+</section>
+<section id="case1" data-transition="fade" style="background:#121B2B;color:#F4F2EC;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#F0A26B">Реальный случай 1 · 19 сентября 2023</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Ракета потеряна из-за дуги при низком давлении</h2>
+</div>
+<div style="display:flex;gap:28px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#1C2840;border-radius:16px;padding:36px"><h3 style="font-size:34px;font-weight:600;color:#7FB3F0">Что случилось</h3><p style="font-size:27px;line-height:1.45;color:#C3CEDC">Ракета Electron (Rocket Lab): через ≈ 151 с вторая ступень потеряла питание — дуга в высоковольтном источнике замкнула батареи. Совпали пульсации напряжения, гелий и азот в отсеке и скрытый дефект изоляции.</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#1C2840;border-radius:16px;padding:36px"><h3 style="font-size:34px;font-weight:600;color:#F0A26B">Физика и урок</h3><p style="font-size:27px;line-height:1.45;color:#C3CEDC">С высотой p·S падает — рабочая точка уходит к минимуму Пашена, где пробой возможен от сотен вольт. Компания сослалась на закон Пашена и сделала отсек герметичным с поддерживаемым давлением.</p></div>
+</div>
+
+</section>
+<section id="case2" data-transition="fade" style="background:#121B2B;color:#F4F2EC;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#F0A26B">Реальный случай 2 · 28 декабря 2022, Канада</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Элегазовый выключатель на морозе не отключил КЗ</h2>
+</div>
+<div style="display:flex;gap:28px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#1C2840;border-radius:16px;padding:36px"><h3 style="font-size:34px;font-weight:600;color:#7FB3F0">Что случилось</h3><p style="font-size:27px;line-height:1.45;color:#C3CEDC">Выключатель 138 кВ был в блокировке по низкому давлению SF₆: сигнал за 6 дней не отработали. Мороз до −34 °C, КЗ длилось ≈ 165 с, трансформатор повреждён.</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#1C2840;border-radius:16px;padding:36px"><h3 style="font-size:34px;font-weight:600;color:#F0A26B">Посчитаем</h3><p style="font-size:27px;line-height:1.45;color:#C3CEDC">87 psi при 20 °C → при −34 °C: 87·239/293 ≈ <b style="color:#F4F2EC">71 psi</b> — ниже порога блокировки 72 psi от одного охлаждения. Поэтому контролируют плотность с термокомпенсацией.</p></div>
+</div>
+
+</section>
+<section id="case3" data-transition="fade" style="background:#121B2B;color:#F4F2EC;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#F0A26B">Реальный случай 3 · вакуумные выключатели</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Скрытая потеря вакуума и измерение током ионизации</h2>
+</div>
+<div style="display:flex;gap:28px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#1C2840;border-radius:16px;padding:36px"><h3 style="font-size:34px;font-weight:600;color:#7FB3F0">Что происходит</h3><p style="font-size:27px;line-height:1.45;color:#C3CEDC">Камеры делают при 10⁻⁴–10⁻⁵ Па, со временем они понемногу теряют вакуум. При ≈ 10⁻¹ Па камера перестаёт выдерживать испытание и может отказать внезапно.</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#1C2840;border-radius:16px;padding:36px"><h3 style="font-size:34px;font-weight:600;color:#F0A26B">Физика</h3><p style="font-size:27px;line-height:1.45;color:#C3CEDC">Глубокий вакуум — далеко левее минимума Пашена. Метод MAC зажигает разряд Пеннинга: ток ионизации ∝ давлению — прямое применение ударной ионизации.</p></div>
+</div>
+
+</section>
+<section id="practice" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">Практика · вкладка 5 и пособие студента</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Девять задач с объектов</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;flex:1">
+<p style="font-size:26px;line-height:1.4;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:20px 24px"><b>1.</b> Энергия на пробеге у шины КРУ</p>
+<p style="font-size:26px;line-height:1.4;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:20px 24px"><b>2.</b> Путь до ионизации O₂</p>
+<p style="font-size:26px;line-height:1.4;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:20px 24px"><b>3.</b> Фотоны от короны ВЛ</p>
+<p style="font-size:26px;line-height:1.4;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:20px 24px"><b>4.</b> Электроны в головке лавины</p>
+<p style="font-size:26px;line-height:1.4;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:20px 24px"><b>5.</b> Сырой рудник и прилипание</p>
+<p style="font-size:26px;line-height:1.4;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:20px 24px"><b>6.</b> Порог самостоятельности</p>
+<p style="font-size:26px;line-height:1.4;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:20px 24px"><b>7.</b> Подстанция в горах</p>
+<p style="font-size:26px;line-height:1.4;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:20px 24px"><b>8.</b> Ток с ультрафиолетом</p>
+<p style="font-size:26px;line-height:1.4;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:20px 24px"><b>9.</b> Где лавина станет стримером</p>
+</div>
+
+</section>
+<section id="check" data-transition="fade" style="background:#E6ECF2;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">Итог</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Проверьте себя</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:22px 48px">
+<p style="font-size:28px;line-height:1.4">1. Почему при 30 кВ/см воздух не пробивается?</p>
+<p style="font-size:28px;line-height:1.4">5. Что будет, если η > α?</p>
+<p style="font-size:28px;line-height:1.4">2. Чем α отличается от γ?</p>
+<p style="font-size:28px;line-height:1.4">6. Как из условия самостоятельности получить закон Пашена?</p>
+<p style="font-size:28px;line-height:1.4">3. Почему ионы лавины почти неподвижны?</p>
+<p style="font-size:28px;line-height:1.4">7. Почему у кривой Пашена есть минимум?</p>
+<p style="font-size:28px;line-height:1.4">4. Где в лавине лежат почти все ионы?</p>
+<p style="font-size:28px;line-height:1.4">8. Почему вакуум — хороший изолятор?</p>
+</div>
+
+</section>
+<section id="final" data-transition="fade" style="background:#121B2B;color:#F4F2EC;font-family:'Public Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:44px">
+<p style="font-size:28px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#F0A26B">Главное</p>
+<div style="display:flex;flex-direction:column;gap:26px;width:1560px">
+<p style="font-size:44px;line-height:1.3">Ионизуют редкие электроны с длинным пробегом: α = A·p·e^(−Bp/E)</p>
+<p style="font-size:44px;line-height:1.3">Лавина растёт как e^(αx); ионы — у головки; при αx ≈ 20 она становится стримером</p>
+<p style="font-size:44px;line-height:1.3">Пробой — когда γ·(e^(αS) − 1) ≥ 1; отсюда закон Пашена</p>
+</div>
+<p style="font-size:28px;color:#93A3B8">Дома: задачи 1–5 вкладки «Задачи», тест — вкладка 6. Следующая лекция — стример, лидер, искра</p>
+
+</section>
+</div></div><div id="ui"><a href="../../">⌂</a><button id="pv" aria-label="Назад">←</button><span id="cnt"></span><button id="nx" aria-label="Вперёд">→</button><button id="fsb" aria-label="Во весь экран">⛶</button><a href="l2.pdf" download>PDF</a></div><script>var D=document.getElementById('deck'),S=[].slice.call(D.children),i=0,n=S.length,C=document.getElementById('cnt');
+function fit(){var k=Math.min(innerWidth/1920,(innerHeight-(innerWidth<700?0:0))/1080);D.style.transform='scale('+k+')'}
+function go(j){i=Math.max(0,Math.min(n-1,j));S.forEach(function(s,k){s.classList.toggle('on',k===i)});C.textContent=(i+1)+' / '+n;try{history.replaceState(null,'','#'+(i+1))}catch(e){}}
+if(location.search.indexOf('print')>=0){document.body.classList.add('print')}else{
+addEventListener('resize',fit);fit();go((parseInt(location.hash.slice(1))||1)-1);
+addEventListener('keydown',function(e){if(['ArrowRight','PageDown',' ','Enter'].indexOf(e.key)>=0){go(i+1);e.preventDefault()}else if(['ArrowLeft','PageUp','Backspace'].indexOf(e.key)>=0){go(i-1);e.preventDefault()}else if(e.key==='Home')go(0);else if(e.key==='End')go(n-1);else if(e.key==='f')fs()});
+var x0=null;addEventListener('touchstart',function(e){x0=e.touches[0].clientX},{passive:true});addEventListener('touchend',function(e){if(x0===null)return;var dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>40)go(i+(dx<0?1:-1));x0=null});
+document.getElementById('stage').addEventListener('click',function(e){if(e.target.closest('a'))return;go(i+(e.clientX>innerWidth/3?1:-1))});
+document.getElementById('pv').onclick=function(){go(i-1)};document.getElementById('nx').onclick=function(){go(i+1)};
+document.getElementById('fsb').onclick=fs}
+function fs(){var d=document.documentElement;if(!document.fullscreenElement){d.requestFullscreen&&d.requestFullscreen()}else{document.exitFullscreen()}}</script></body></html>

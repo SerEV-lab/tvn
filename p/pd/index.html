@@ -1,0 +1,786 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Лекции 10–11. Частичные разряды и PRPD-диаграммы — презентация</title><link rel="stylesheet" href="../fonts/fonts.css"><style>*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#0e131a;overflow:hidden}
+#stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+#deck{width:1920px;height:1080px;position:relative;flex:none;transform-origin:center center}
+#deck>section{position:absolute;inset:0;width:1920px;height:1080px;overflow:hidden}
+body:not(.print) #deck>section:not(.on){display:none!important}
+section ul,section ol{padding-left:1.2em}section li{margin:.25em 0}
+section table{border-collapse:collapse;width:100%}
+section th,section td{text-align:left;vertical-align:top;padding:.45em .6em;border-bottom:1px solid rgba(128,128,128,.35)}
+section th{font-weight:600;border-bottom:2px solid currentColor}
+section img{display:block}
+#ui{position:fixed;left:0;right:0;bottom:0;display:flex;gap:6px;align-items:center;justify-content:center;padding:8px;font:600 14px system-ui,sans-serif;z-index:9;opacity:.9}
+#ui a,#ui button{background:rgba(20,29,43,.85);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:7px 14px;font:inherit;text-decoration:none;cursor:pointer}
+#ui span{background:rgba(20,29,43,.85);color:#fff;border-radius:999px;padding:7px 12px;min-width:76px;text-align:center}
+body.print{overflow:visible;background:#fff}body.print #stage{position:static;display:block}
+body.print #deck{transform:none!important;height:auto}
+body.print #deck>section{position:relative!important;page-break-after:always;break-after:page}
+body.print #ui{display:none}
+@page{size:1920px 1080px;margin:0}</style></head><body><div id="stage"><div id="deck"><section id="cover" data-transition="fade" style="background:#172231;color:#F5F4EF;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:space-between">
+<img src="img/58a5011648.webp" alt="Типовые PRPD-картины: пора, поверхностный разряд, корона" style="position:absolute;left:1088px;top:0px;width:832px;height:1080px;object-fit:cover;opacity:0.18">
+<p style="font-size:28px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#F29A5C">Техника высоких напряжений</p>
+<div style="display:flex;flex-direction:column;gap:32px;width:1200px">
+<h1 style="font-size:104px;font-weight:700;line-height:1.05">Частичные разряды и PRPD-диаграммы</h1>
+<p style="font-size:36px;line-height:1.35;color:#C9D3DD">Лекции 10–11 и практическое занятие</p>
+</div>
+<p style="font-size:24px;color:#9FB0C0">13.03.02 «Электроэнергетика и электротехника» · интерактив «ЧР и PRPD»</p>
+
+</section>
+<section id="plan" data-transition="fade" style="background:#F5F4EF;color:#172231;font-family:'IBM Plex Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B5501C">План блока</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.1">Три пары: от физики разряда к диагнозу</h2>
+</div>
+<div style="display:flex;gap:32px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#FFFDF9;border:1px solid #DAD6CC;border-radius:16px;padding:40px">
+<p style="font-size:24px;font-weight:600;color:#B5501C">ЛЕКЦИЯ 10</p>
+<h3 style="font-size:36px;font-weight:600;line-height:1.2">Физика и измерение</h3>
+<ul style="font-size:28px;line-height:1.4;color:#46525F">
+<li>поле в поре и закон Пашена</li>
+<li>схема a–b–c, кажущийся заряд</li>
+<li>эффект памяти, Uв и Uп</li>
+<li>схема измерения и калибровка</li>
+<li>локализация дефекта</li>
+</ul>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#FFFDF9;border:1px solid #DAD6CC;border-radius:16px;padding:40px">
+<p style="font-size:24px;font-weight:600;color:#B5501C">ЛЕКЦИЯ 11</p>
+<h3 style="font-size:36px;font-weight:600;line-height:1.2">PRPD и диагностика</h3>
+<ul style="font-size:28px;line-height:1.4;color:#46525F">
+<li>как строится PRPD</li>
+<li>гистограммы и Qm</li>
+<li>галерея источников</li>
+<li>алгоритм чтения и ловушки</li>
+<li>тренды и решения</li>
+</ul>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#FFFDF9;border:1px solid #DAD6CC;border-radius:16px;padding:40px">
+<p style="font-size:24px;font-weight:600;color:#B5501C">ПРАКТИКА</p>
+<h3 style="font-size:36px;font-weight:600;line-height:1.2">Считаем и читаем</h3>
+<ul style="font-size:28px;line-height:1.4;color:#46525F">
+<li>А — 8 расчётных задач</li>
+<li>Б — 8 PRPD с объектов</li>
+<li>В — измерение с калибровкой</li>
+<li>Г — опыты на модели поры</li>
+</ul>
+</div>
+</div>
+
+</section>
+<section id="l10" data-transition="fade" style="background:#172231;color:#F5F4EF;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:40px">
+<p style="font-size:28px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#F29A5C">Лекция 10</p>
+<h1 style="font-size:96px;font-weight:700;line-height:1.08;width:1400px">Частичные разряды: физика и измерение</h1>
+<p style="font-size:36px;line-height:1.4;color:#C9D3DD;width:1300px">Почему маленькая пора разряжается тысячи раз в секунду, а изоляция ещё держит — и как это измерить в пикокулонах</p>
+
+</section>
+<section id="what" data-transition="fade" style="background:#F5F4EF;color:#172231;font-family:'IBM Plex Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B5501C">1 · Определение</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.1">Частичный разряд — пробой, который не случился</h2>
+</div>
+<p style="font-size:30px;line-height:1.4;color:#46525F;background:#FFFDF9;border-left:6px solid #B5501C;padding:24px 32px">Местный электрический разряд, который замыкает только часть изоляции между электродами (ГОСТ Р 55191-2012). Изоляция в целом продолжает держать напряжение, а разряд повторяется каждый полупериод.</p>
+<table style="font-size:26px;color:#172231">
+<tr><th style="width:20%">Вид ЧР</th><th style="width:40%">Где возникает</th><th style="width:40%">Пример</th></tr>
+<tr><td>Внутренний</td><td>Газовая пора, расслоение, трещина</td><td>Непропитка литой обмотки, пора в кабеле</td></tr>
+<tr><td>Поверхностный</td><td>Вдоль поверхности твёрдой изоляции</td><td>Край экрана кабельной муфты, выход стержня из паза</td></tr>
+<tr><td>Корона</td><td>Газ у электрода с малым радиусом</td><td>Острая кромка шины, заусенец</td></tr>
+<tr><td>Триинг</td><td>Каналы, «проеденные» разрядами в полимере</td><td>Электрический триинг в сшитом полиэтилене</td></tr>
+</table>
+
+</section>
+<section id="enh" data-transition="fade" style="background:#F5F4EF;color:#172231;font-family:'IBM Plex Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B5501C">2 · Поле в поре</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.1">В поре поле сильнее, а прочность меньше</h2>
+</div>
+<div style="display:flex;gap:48px;flex:1">
+<div style="width:640px;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:28px;line-height:1.4;color:#46525F">Плоская пора поперёк поля: нормальная составляющая индукции непрерывна, ε0·Eв = ε0·εr·E.</p>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:32px;background:#FFFDF9;border-left:6px solid #B5501C;padding:20px 28px">Eв / E = εr</p>
+<p style="font-size:28px;line-height:1.4;color:#46525F">Сферическая пора:</p>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:32px;background:#FFFDF9;border-left:6px solid #B5501C;padding:20px 28px">Eв / E = 3εr / (2εr + 1)</p>
+<p style="font-size:28px;line-height:1.4;color:#46525F">Газ в поре в 5–10 раз слабее твёрдой изоляции — поэтому разряд начинается именно там.</p>
+</div>
+<img src="img/0496c6f8cc.webp" alt="Усиление поля в поре в зависимости от εr изоляции" style="flex:1;width:976px;height:566px;object-fit:contain;background:#FFFFFF;border-radius:16px">
+</div>
+
+</section>
+<section id="paschen" data-transition="fade" style="background:#F5F4EF;color:#172231;font-family:'IBM Plex Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B5501C">3 · Закон Пашена</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.1">Пробивное напряжение поры зависит от p·d</h2>
+</div>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:32px;background:#FFFDF9;border-left:6px solid #B5501C;padding:20px 28px">Uпр = B·p·d / [ ln(A·p·d) − ln ln(1 + 1/γ) ],  A = 15, B = 365 (воздух, Торр·см)</p>
+<img src="img/f5eaf819a6.webp" alt="Пробивное напряжение воздушной поры при атмосферном давлении" style="width:1664px;height:520px;object-fit:contain;background:#FFFFFF;border-radius:16px">
+
+</section>
+<section id="ui" data-transition="fade" style="background:#F5F4EF;color:#172231;font-family:'IBM Plex Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B5501C">3 · Напряжение возникновения</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.1">Когда в поре начинаются разряды</h2>
+</div>
+<div style="display:flex;gap:48px;flex:1">
+<div style="width:760px;display:flex;flex-direction:column;gap:24px">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:30px;background:#FFFDF9;border-left:6px solid #B5501C;padding:20px 28px">k = d·εr / (D − d + d·εr)</p>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:30px;background:#FFFDF9;border-left:6px solid #B5501C;padding:20px 28px">Uв = Uпр / (√2 · k)</p>
+<table style="font-size:26px;color:#172231">
+<tr><th style="width:28%">Пора d</th><th style="width:20%">k</th><th style="width:26%">Uпр, кВ</th><th style="width:26%">Uв, кВ</th></tr>
+<tr><td>0,1 мм</td><td>0,121</td><td>0,87</td><td>5,05</td></tr>
+<tr style="background:#F7E3D4"><td>0,3 мм</td><td>0,308</td><td>1,93</td><td>4,44 — min</td></tr>
+<tr><td>0,5 мм</td><td>0,444</td><td>2,88</td><td>4,58</td></tr>
+</table>
+<p style="font-size:24px;color:#46525F">Эпоксид εr = 4,0, изоляция D = 3 мм</p>
+</div>
+<img src="img/efe2ce26fa.webp" alt="Напряжение возникновения ЧР в плоской поре для трёх материалов" style="flex:1;width:856px;height:520px;object-fit:contain;background:#FFFFFF;border-radius:16px">
+</div>
+
+</section>
+<section id="abc" data-transition="fade" style="background:#F5F4EF;color:#172231;font-family:'IBM Plex Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B5501C">4 · Схема замещения a–b–c</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.1">Прибор видит не тот заряд, что прошёл в поре</h2>
+</div>
+<div style="display:flex;gap:28px">
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#FFFDF9;border:1px solid #DAD6CC;border-radius:16px;padding:32px">
+<h3 style="font-size:36px;font-weight:600">Cc — пора</h3>
+<p style="font-size:26px;line-height:1.4;color:#46525F">Шунтирована искровым промежутком F: пробой газа</p>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:28px">Cc = ε0·A / d</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#FFFDF9;border:1px solid #DAD6CC;border-radius:16px;padding:32px">
+<h3 style="font-size:36px;font-weight:600">Cb — последовательно</h3>
+<p style="font-size:26px;line-height:1.4;color:#46525F">Изоляция над и под порой</p>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:28px">Cb = ε0·εr·A / (D − d)</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#FFFDF9;border:1px solid #DAD6CC;border-radius:16px;padding:32px">
+<h3 style="font-size:36px;font-weight:600">Ca — остальное</h3>
+<p style="font-size:26px;line-height:1.4;color:#46525F">Вся здоровая изоляция объекта, Ca ≫ Cb</p>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:28px">Ca ≈ C объекта</p>
+</div>
+</div>
+<div style="display:flex;gap:28px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#E8EDF1;border-radius:16px;padding:32px">
+<p style="font-size:26px;font-weight:600;color:#1F5F99">КАЖУЩИЙСЯ ЗАРЯД — его меряет прибор</p>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:32px">q = Cb · ΔU</p>
+<p style="font-size:26px;line-height:1.4;color:#46525F">ΔU ≈ Uпр − Uост — скачок напряжения на поре</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#E8EDF1;border-radius:16px;padding:32px">
+<p style="font-size:26px;font-weight:600;color:#1F5F99">ПРИМЕР: эпоксид, пора 0,3 × 2 мм</p>
+<p style="font-size:28px;line-height:1.5">Cb = 41 фФ, Cc = 93 фФ, ΔU ≈ 1,78 кВ<br>q = 73 пКл, q ист = (Cb + Cc)·ΔU = 238 пКл</p>
+</div>
+</div>
+
+</section>
+<section id="wave" data-transition="fade" style="background:#F5F4EF;color:#172231;font-family:'IBM Plex Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B5501C">5 · Разряды во времени</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.1">Разряды идут только на подъёмах полуволн</h2>
+</div>
+<div style="display:flex;gap:48px;flex:1">
+<img src="img/d72b428d69.webp" alt="Напряжение на поре и импульсы ЧР при U ≈ 1,46 Uв" style="width:1000px;height:664px;object-fit:contain;background:#FFFFFF;border-radius:16px">
+<div style="flex:1;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:8px"><h3 style="font-size:32px;font-weight:600;color:#B5501C">1. Где</h3><p style="font-size:28px;line-height:1.4;color:#46525F">Пока |U| на поре растёт: 0–90° и 180–270°</p></div>
+<div style="display:flex;flex-direction:column;gap:8px"><h3 style="font-size:32px;font-weight:600;color:#B5501C">2. Знак</h3><p style="font-size:28px;line-height:1.4;color:#46525F">В «+» полуволне импульсы «+», в «−» — «−»</p></div>
+<div style="display:flex;flex-direction:column;gap:8px"><h3 style="font-size:32px;font-weight:600;color:#B5501C">3. Сколько</h3><p style="font-size:28px;line-height:1.4;color:#46525F">С ростом U растёт число импульсов, а не их величина</p></div>
+</div>
+</div>
+
+</section>
+<section id="memory" data-transition="fade" style="background:#F5F4EF;color:#172231;font-family:'IBM Plex Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B5501C">5.1–5.3 · Память, запаздывание, погасание</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.1">Заряд на стенках поры меняет всё</h2>
+</div>
+<img src="img/aa589ebf4f.webp" alt="Пора при U ≈ 2Uв: больше разрядов, начинаются раньше нуля" style="width:1664px;height:400px;object-fit:contain;background:#FFFFFF;border-radius:16px">
+<div style="display:flex;gap:28px">
+<div style="flex:1;display:flex;flex-direction:column;gap:10px;background:#FFFDF9;border:1px solid #DAD6CC;border-radius:16px;padding:28px">
+<h3 style="font-size:32px;font-weight:600">Эффект памяти</h3>
+<p style="font-size:26px;line-height:1.4;color:#46525F">Разряды начинаются раньше нуля напряжения: при 2Uв — с 335°</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:10px;background:#FFFDF9;border:1px solid #DAD6CC;border-radius:16px;padding:28px">
+<h3 style="font-size:32px;font-weight:600">Запаздывание</h3>
+<p style="font-size:26px;line-height:1.4;color:#46525F">Нужен свободный электрон: разброс по фазе и величине</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:10px;background:#FFFDF9;border:1px solid #DAD6CC;border-radius:16px;padding:28px">
+<h3 style="font-size:32px;font-weight:600">Uп &lt; Uв</h3>
+<p style="font-size:26px;line-height:1.4;color:#46525F">Начавшись, разряды держатся до 0,75–0,9 Uв</p>
+</div>
+</div>
+
+</section>
+<section id="demo1" data-transition="fade" style="background:#B5501C;color:#FBF3EC;font-family:'IBM Plex Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#FFE1CC">В интерактиве · вкладка «1 Пора в изоляции»</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.1">Четыре опыта за 15 минут</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;flex:1">
+<div style="display:flex;flex-direction:column;gap:12px;background:#9A4214;border-radius:16px;padding:36px">
+<h3 style="font-size:36px;font-weight:600">Uв: 4,3 → 4,6 кВ</h3>
+<p style="font-size:28px;line-height:1.4;color:#FFE1CC">Эпоксид, 0,3 мм, «1 период/с». Первые разряды при 4,5–4,6 кВ, расчёт — 4,44</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#9A4214;border-radius:16px;padding:36px">
+<h3 style="font-size:36px;font-weight:600">Рождение PRPD: 6,5 кВ</h3>
+<p style="font-size:28px;line-height:1.4;color:#FFE1CC">«Очистить PRPD», «0,2 периода/с», «+1 период», затем «10 периодов/с»</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#9A4214;border-radius:16px;padding:36px">
+<h3 style="font-size:36px;font-weight:600">Память: 9 кВ</h3>
+<p style="font-size:28px;line-height:1.4;color:#FFE1CC">6 импульсов за период, «+» разряды начинаются с 335°</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#9A4214;border-radius:16px;padding:36px">
+<h3 style="font-size:36px;font-weight:600">Погасание: вниз от 6,5</h3>
+<p style="font-size:28px;line-height:1.4;color:#FFE1CC">Стрелкой по 0,1 кВ: разряды держатся до 3,3–3,9 кВ</p>
+</div>
+</div>
+
+</section>
+<section id="chars" data-transition="fade" style="background:#F5F4EF;color:#172231;font-family:'IBM Plex Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B5501C">6 · Характеристики ЧР</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.1">Что измеряют и в чём</h2>
+</div>
+<div style="display:flex;gap:48px;flex:1">
+<table style="font-size:26px;color:#172231;width:1040px">
+<tr><th style="width:36%">Величина</th><th style="width:44%">Определение</th><th style="width:20%">Единица</th></tr>
+<tr><td>Кажущийся заряд q</td><td>Заряд, дающий тот же отсчёт</td><td>пКл</td></tr>
+<tr><td>Частота повторения n</td><td>Импульсов в секунду</td><td>1/с</td></tr>
+<tr><td>Средний ток I</td><td>Σ|qi| / T</td><td>А</td></tr>
+<tr><td>Квадратичная скорость D</td><td>Σqi² / T</td><td>Кл²/с</td></tr>
+<tr><td>Мощность P</td><td>Σqi·ui / T</td><td>Вт</td></tr>
+<tr><td>Qm (МЭК/TS 60034-27)</td><td>Импульсы, повторяющиеся 10 раз в секунду</td><td>пКл, мВ</td></tr>
+</table>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#E8EDF1;border-radius:16px;padding:36px">
+<p style="font-size:26px;font-weight:600;color:#1F5F99">ЭНЕРГИЯ ОДНОГО РАЗРЯДА</p>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:32px">W ≈ ½ · q · √2 · Uв</p>
+<p style="font-size:28px;line-height:1.45">q = 500 пКл, Uв = 6 кВ<br><b>W ≈ 2,1 мкДж</b></p>
+<p style="font-size:26px;line-height:1.4;color:#46525F">Мало? При 10⁴ импульсов в секунду за год в одной точке — порядка килоджоуля.</p>
+</div>
+</div>
+
+</section>
+<section id="degr" data-transition="fade" style="background:#E8EDF1;color:#172231;font-family:'IBM Plex Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B5501C">7 · Старение</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.1">Пять способов, которыми ЧР разрушают изоляцию</h2>
+</div>
+<div style="display:flex;gap:24px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#FFFDF9;border-radius:16px;padding:32px"><p style="font-size:56px;font-weight:700;color:#B5501C">1</p><h3 style="font-size:28px;font-weight:600">Бомбардировка</h3><p style="font-size:26px;line-height:1.4;color:#46525F">Ионы и электроны разрывают связи, эрозия стенок</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#FFFDF9;border-radius:16px;padding:32px"><p style="font-size:56px;font-weight:700;color:#B5501C">2</p><h3 style="font-size:28px;font-weight:600">Химия</h3><p style="font-size:26px;line-height:1.4;color:#46525F">Озон, оксиды азота, с влагой — азотная кислота</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#FFFDF9;border-radius:16px;padding:32px"><p style="font-size:56px;font-weight:700;color:#B5501C">3</p><h3 style="font-size:28px;font-weight:600">Ультрафиолет</h3><p style="font-size:26px;line-height:1.4;color:#46525F">Свечение разряда разрушает полимер</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#FFFDF9;border-radius:16px;padding:32px"><p style="font-size:56px;font-weight:700;color:#B5501C">4</p><h3 style="font-size:28px;font-weight:600">Нагрев</h3><p style="font-size:26px;line-height:1.4;color:#46525F">Сотни градусов в канале разряда</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#FFFDF9;border-radius:16px;padding:32px"><p style="font-size:56px;font-weight:700;color:#B5501C">5</p><h3 style="font-size:28px;font-weight:600">Триинг</h3><p style="font-size:26px;line-height:1.4;color:#46525F">Ветвящиеся каналы растут до пробоя</p></div>
+</div>
+<p style="font-size:30px;line-height:1.4"><b>Стойкость разная:</b> полимер и литая изоляция не прощают ЧР, слюда терпит их десятилетиями — отсюда разные нормы.</p>
+
+</section>
+<section id="circ" data-transition="fade" style="background:#F5F4EF;color:#172231;font-family:'IBM Plex Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B5501C">8 · Измерение по ГОСТ Р 55191 (МЭК 60270)</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.1">Схема измерения ЧР</h2>
+</div>
+<img src="img/cfb4613e6b.webp" alt="Схема измерения ЧР: трансформатор, фильтр Z, объект Ca, калибратор, конденсатор связи Ck, Zm, прибор" style="width:1664px;height:470px;object-fit:contain;background:#E6EBEF;border-radius:16px">
+<div style="display:flex;gap:24px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px"><h3 style="font-size:28px;font-weight:600;color:#B5501C">Фильтр Z</h3><p style="font-size:26px;line-height:1.4;color:#46525F">Не пускает помехи источника, не даёт импульсу уйти в трансформатор</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px"><h3 style="font-size:28px;font-weight:600;color:#B5501C">Конденсатор Ck</h3><p style="font-size:26px;line-height:1.4;color:#46525F">Без ЧР, отдаёт заряд объекту при разряде</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px"><h3 style="font-size:28px;font-weight:600;color:#B5501C">Zm и прибор</h3><p style="font-size:26px;line-height:1.4;color:#46525F">Импульс тока → импульс напряжения → пКл</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px"><h3 style="font-size:28px;font-weight:600;color:#B5501C">Синхронизация</h3><p style="font-size:26px;line-height:1.4;color:#46525F">Фаза от того же напряжения — для PRPD</p></div>
+</div>
+
+</section>
+<section id="spec" data-transition="fade" style="background:#F5F4EF;color:#172231;font-family:'IBM Plex Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B5501C">8.2 · Почему прибор измеряет заряд</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.1">Форма импульса теряется, а заряд — нет</h2>
+</div>
+<div style="display:flex;gap:48px;flex:1">
+<img src="img/4564cf7463.webp" alt="Спектр импульса ЧР и полосы измерения МЭК 60270, ВЧ и УВЧ" style="width:1000px;height:563px;object-fit:contain;background:#FFFFFF;border-radius:16px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:28px;line-height:1.45;color:#46525F">Импульс ЧР в газе длится 1–2 нс, в кабеле он расплывается.</p>
+<p style="font-size:28px;line-height:1.45;color:#46525F">Ниже ~1 МГц спектр плоский и равен заряду импульса — интеграл тока.</p>
+<p style="font-size:28px;line-height:1.45;color:#172231"><b>Полоса МЭК 60270: 100–400 кГц</b> — прибор интегрирует импульс и показывает пКл, как бы ни исказился фронт.</p>
+</div>
+</div>
+
+</section>
+<section id="sens" data-transition="fade" style="background:#F5F4EF;color:#172231;font-family:'IBM Plex Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B5501C">8.3 · Чувствительность</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.1">Большой объект «съедает» импульс</h2>
+</div>
+<div style="display:flex;gap:48px;flex:1">
+<div style="width:700px;display:flex;flex-direction:column;gap:24px">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:32px;background:#FFFDF9;border-left:6px solid #B5501C;padding:20px 28px">η = Ck / (Ca + Ck)</p>
+<table style="font-size:26px;color:#172231">
+<tr><th style="width:40%">Кабель 30 нФ</th><th style="width:30%">Ck 100 пФ</th><th style="width:30%">Ck 2 нФ</th></tr>
+<tr><td>Доля η</td><td>0,33 %</td><td>6,25 %</td></tr>
+<tr><td>Порог</td><td>≈ 75 пКл</td><td>≈ 4 пКл</td></tr>
+<tr><td>q при 10,4 кВ</td><td>не виден</td><td>4,6 пКл</td></tr>
+</table>
+<p style="font-size:28px;line-height:1.4;color:#46525F">Вывод: Ck — не меньше нескольких процентов от Ca.</p>
+</div>
+<img src="img/fc69a1a046.webp" alt="Доля импульса через измерительную ветвь в зависимости от Ck" style="flex:1;width:916px;height:528px;object-fit:contain;background:#FFFFFF;border-radius:16px">
+</div>
+
+</section>
+<section id="calib" data-transition="fade" style="background:#F5F4EF;color:#172231;font-family:'IBM Plex Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B5501C">8.4 · Калибровка</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.1">Масштаб прибора — только для этой схемы</h2>
+</div>
+<div style="display:flex;gap:48px;flex:1">
+<ol style="font-size:30px;line-height:1.45;color:#172231;width:900px">
+<li>Снять напряжение, заземлить объект</li>
+<li>Калибратор — к выводам объекта, не к прибору</li>
+<li>Подать q0 того же порядка, что ожидаемые ЧР; записать отсчёт и масштаб</li>
+<li>Отключить калибратор</li>
+<li>Изменили объект, Ck или провода — калибровать заново</li>
+</ol>
+<div style="flex:1;display:flex;flex-direction:column;gap:18px;background:#E8EDF1;border-radius:16px;padding:36px">
+<p style="font-size:26px;font-weight:600;color:#1F5F99">ПРИМЕР: обмотка 2 нФ, Ck 1 нФ</p>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:30px;line-height:1.5">q0 = U0·C0<br>100 пКл → 66,67 мВ<br>k = 1,500 пКл/мВ</p>
+<p style="font-size:26px;line-height:1.4;color:#46525F">Импульс ЧР 22,8 мВ → 34,2 пКл</p>
+</div>
+</div>
+
+</section>
+<section id="order" data-transition="fade" style="background:#F5F4EF;color:#172231;font-family:'IBM Plex Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B5501C">8.5 · Порядок испытания</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.1">Пять шагов до протокола</h2>
+</div>
+<div style="display:flex;gap:20px;flex:1;align-items:start">
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#FFFDF9;border-top:8px solid #1F6FB2;border-radius:12px;padding:32px"><p style="font-size:24px;font-weight:600;color:#1F5F99">ШАГ 1</p><h3 style="font-size:32px;font-weight:600">Фон</h3><p style="font-size:26px;line-height:1.4;color:#46525F">Схема без объекта под напряжением</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#FFFDF9;border-top:8px solid #1F6FB2;border-radius:12px;padding:32px"><p style="font-size:24px;font-weight:600;color:#1F5F99">ШАГ 2</p><h3 style="font-size:32px;font-weight:600">Uв</h3><p style="font-size:26px;line-height:1.4;color:#46525F">Плавный подъём до устойчивых ЧР</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#FFFDF9;border-top:8px solid #B5501C;border-radius:12px;padding:32px"><p style="font-size:24px;font-weight:600;color:#B5501C">ШАГ 3</p><h3 style="font-size:32px;font-weight:600">Uисп</h3><p style="font-size:26px;line-height:1.4;color:#46525F">Выдержка, запись q</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#FFFDF9;border-top:8px solid #1F6FB2;border-radius:12px;padding:32px"><p style="font-size:24px;font-weight:600;color:#1F5F99">ШАГ 4</p><h3 style="font-size:32px;font-weight:600">Uп</h3><p style="font-size:26px;line-height:1.4;color:#46525F">Плавное снижение до погасания</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#FFFDF9;border-top:8px solid #1F6FB2;border-radius:12px;padding:32px"><p style="font-size:24px;font-weight:600;color:#1F5F99">ШАГ 5</p><h3 style="font-size:32px;font-weight:600">Протокол</h3><p style="font-size:26px;line-height:1.4;color:#46525F">Схема, калибровка, фон, Uв, q, Uп</p></div>
+</div>
+<p style="font-size:30px;line-height:1.4">Трансформатор 6 кВ, Uисп = 7,8 кВ: <b>34,2 пКл при норме 10 пКл — не прошёл</b></p>
+
+</section>
+<section id="methods" data-transition="fade" style="background:#F5F4EF;color:#172231;font-family:'IBM Plex Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B5501C">9 · Другие методы</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.1">Под рабочим напряжением — без пикокулонов</h2>
+</div>
+<table style="font-size:25px;color:#172231">
+<tr><th style="width:30%">Метод</th><th style="width:34%">Что регистрируют</th><th style="width:36%">Где применяют</th></tr>
+<tr><td>ВЧ трансформатор тока, 1–30 МГц</td><td>Ток в заземлении экрана</td><td>Онлайн: кабели, машины</td></tr>
+<tr><td>Ёмкостные датчики 80 пФ</td><td>Импульс на выводах</td><td>Генераторы, двигатели</td></tr>
+<tr><td>УВЧ, 0,3–3 ГГц</td><td>Излучение разряда</td><td>КРУЭ, трансформаторы</td></tr>
+<tr><td>Акустический, 20–300 кГц</td><td>Звуковая волна</td><td>Локация в баке, КРУ</td></tr>
+<tr><td>TEV на корпусе</td><td>Импульсы на оболочке</td><td>КРУ 6–35 кВ</td></tr>
+<tr><td>Газы в масле</td><td>Водород, метан</td><td>Масляные трансформаторы</td></tr>
+<tr><td>Оптический</td><td>Свечение, ультрафиолет</td><td>Корона на ВЛ и ПС</td></tr>
+</table>
+
+</section>
+<section id="tdr" data-transition="fade" style="background:#F5F4EF;color:#172231;font-family:'IBM Plex Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B5501C">10 · Локализация</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.1">Где дефект: по эху импульса</h2>
+</div>
+<div style="display:flex;gap:48px;flex:1">
+<img src="img/f66760ce03.webp" alt="Рефлектограмма ЧР в кабеле: прямой импульс и отражение от дальнего конца" style="width:960px;height:501px;object-fit:contain;background:#FFFFFF;border-radius:16px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<h3 style="font-size:32px;font-weight:600">Кабель</h3>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:30px;background:#FFFDF9;border-left:6px solid #B5501C;padding:20px 28px">x = L − v·Δt / 2</p>
+<p style="font-size:26px;line-height:1.4;color:#46525F">L = 450 м, v = 170 м/мкс, Δt = 4,12 мкс → x = 100 м</p>
+<h3 style="font-size:32px;font-weight:600">Трансформатор</h3>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:30px;background:#FFFDF9;border-left:6px solid #B5501C;padding:20px 28px">s = vзв · t,  vзв ≈ 1400 м/с</p>
+</div>
+</div>
+
+</section>
+<section id="norms" data-transition="fade" style="background:#F5F4EF;color:#172231;font-family:'IBM Plex Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B5501C">11 · Нормы</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.1">Порядок величин: от 10 пКл до «нормы нет»</h2>
+</div>
+<table style="font-size:26px;color:#172231">
+<tr><th style="width:40%">Оборудование</th><th style="width:22%">Условие</th><th style="width:38%">Порядок нормы</th></tr>
+<tr><td>Кабели из сшитого полиэтилена 6–35 кВ</td><td>1,73 U0</td><td>≤ 10 пКл (МЭК 60502-2)</td></tr>
+<tr><td>Сухие трансформаторы с литой изоляцией</td><td>≈ 1,3 Uном</td><td>≤ 10 пКл (МЭК 60076-11)</td></tr>
+<tr><td>Измерительные трансформаторы, вводы</td><td>по стандарту</td><td>единицы–десятки пКл</td></tr>
+<tr><td>Масляные силовые трансформаторы</td><td>по программе</td><td>сотни пКл</td></tr>
+<tr><td>Машины со слюдяной изоляцией</td><td>фазное</td><td>нормы нет — тренд и сравнение</td></tr>
+</table>
+<p style="font-size:26px;color:#46525F">Ориентиры для порядка величин; на объекте — действующий стандарт на изделие.</p>
+
+</section>
+<section id="l10q" data-transition="fade" style="background:#E8EDF1;color:#172231;font-family:'IBM Plex Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B5501C">Итог лекции 10</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.1">Проверьте себя</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px 48px">
+<p style="font-size:28px;line-height:1.4">1. Чем ЧР отличается от пробоя?</p>
+<p style="font-size:28px;line-height:1.4">5. Кажущийся и истинный заряд: какой больше?</p>
+<p style="font-size:28px;line-height:1.4">2. Почему поле в плоской поре в εr раз больше?</p>
+<p style="font-size:28px;line-height:1.4">6. Почему разряды на подъёмах полуволн?</p>
+<p style="font-size:28px;line-height:1.4">3. Почему мелкие поры прочнее по напряжённости?</p>
+<p style="font-size:28px;line-height:1.4">7. Почему Uп &lt; Uв и чем это опасно?</p>
+<p style="font-size:28px;line-height:1.4">4. Что означает каждая ёмкость схемы a–b–c?</p>
+<p style="font-size:28px;line-height:1.4">8. Почему калибратор — к выводам объекта?</p>
+</div>
+
+</section>
+<section id="l11" data-transition="fade" style="background:#172231;color:#F5F4EF;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:40px">
+<img src="img/7e00a2b62c.webp" alt="" style="position:absolute;left:1088px;top:0px;width:832px;height:1080px;object-fit:cover;opacity:0.16">
+<p style="font-size:28px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#F29A5C">Лекция 11</p>
+<h1 style="font-size:96px;font-weight:700;line-height:1.08;width:1300px">PRPD-диаграммы и диагностика изоляции</h1>
+<p style="font-size:36px;line-height:1.4;color:#C9D3DD;width:1200px">Тысячи импульсов на одной картинке: по форме облаков узнаём дефект, по тренду — решаем, что делать</p>
+
+</section>
+<section id="build" data-transition="fade" style="background:#F5F4EF;color:#172231;font-family:'IBM Plex Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B5501C">1–2 · Фаза и построение</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.1">PRPD: каждая точка — один разряд</h2>
+</div>
+<img src="img/600cbe80d8.webp" alt="Построение PRPD: импульсы во времени, один период, накопление 300 периодов" style="width:1664px;height:485px;object-fit:contain;background:#FFFFFF;border-radius:16px">
+<div style="display:flex;gap:24px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px"><h3 style="font-size:28px;font-weight:600;color:#B5501C">1. Синхронизация</h3><p style="font-size:26px;line-height:1.4;color:#46525F">Фаза от испытательного напряжения</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px"><h3 style="font-size:28px;font-weight:600;color:#B5501C">2. Пара (φ, q)</h3><p style="font-size:26px;line-height:1.4;color:#46525F">Для каждого импульса выше порога</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px"><h3 style="font-size:28px;font-weight:600;color:#B5501C">3. Наложение</h3><p style="font-size:26px;line-height:1.4;color:#46525F">N периодов на одну плоскость</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px"><h3 style="font-size:28px;font-weight:600;color:#B5501C">4. Плотность</h3><p style="font-size:26px;line-height:1.4;color:#46525F">Клетки и цвет — число попаданий</p></div>
+</div>
+
+</section>
+<section id="hist" data-transition="fade" style="background:#F5F4EF;color:#172231;font-family:'IBM Plex Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B5501C">3 · Гистограммы и числа</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.1">Сравниваем полуволны</h2>
+</div>
+<div style="display:flex;gap:48px;flex:1">
+<img src="img/ef2c964440.webp" alt="Фазовые гистограммы поры и поверхностного разряда" style="width:1100px;height:604px;object-fit:contain;background:#FFFFFF;border-radius:16px">
+<div style="flex:1;display:flex;flex-direction:column;gap:22px">
+<p style="font-size:28px;line-height:1.4"><b>Hn(φ)</b> — сколько импульсов на 5° фазы</p>
+<p style="font-size:28px;line-height:1.4"><b>Hqmax(φ)</b> — наибольший заряд на 5°</p>
+<p style="font-size:28px;line-height:1.4"><b>Qm</b> — величина, повторяющаяся 10 раз/с</p>
+<p style="font-size:28px;line-height:1.4"><b>Асимметрия</b> Q+ / Q−</p>
+<p style="font-size:28px;line-height:1.4"><b>Фаза начала</b> и ширина облака</p>
+</div>
+</div>
+
+</section>
+<section id="why" data-transition="fade" style="background:#F5F4EF;color:#172231;font-family:'IBM Plex Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B5501C">4 · Картина поры</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.1">Физика лекции 10 — в форме облаков</h2>
+</div>
+<img src="img/5bd7664f67.webp" alt="Картина поры при 1,05; 1,4 и 2 Uв" style="width:1664px;height:519px;object-fit:contain;background:#FFFFFF;border-radius:16px">
+<div style="display:flex;gap:24px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px"><h3 style="font-size:28px;font-weight:600;color:#B5501C">Подъёмы полуволн</h3><p style="font-size:26px;line-height:1.4;color:#46525F">|U| на поре растёт</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px"><h3 style="font-size:28px;font-weight:600;color:#B5501C">Сдвиг к нулю</h3><p style="font-size:26px;line-height:1.4;color:#46525F">Эффект памяти</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px"><h3 style="font-size:28px;font-weight:600;color:#B5501C">Полосы</h3><p style="font-size:26px;line-height:1.4;color:#46525F">Поры разного размера</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px"><h3 style="font-size:28px;font-weight:600;color:#B5501C">Разброс</h3><p style="font-size:26px;line-height:1.4;color:#46525F">Статистическое запаздывание</p></div>
+</div>
+
+</section>
+<section id="gala" data-transition="fade" style="background:#F5F4EF;color:#172231;font-family:'IBM Plex Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B5501C">5 · Галерея, часть 1</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.1">Пора, поверхность, две короны</h2>
+</div>
+<div style="display:flex;gap:40px;flex:1">
+<img src="img/58a5011648.webp" alt="PRPD: внутренняя пора, поверхностный разряд, корона на высоковольтном и на заземлённом острие" style="width:1150px;height:705px;object-fit:contain;background:#FFFFFF;border-radius:16px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;flex-direction:column;gap:6px"><h3 style="font-size:28px;font-weight:600">Пора</h3><p style="font-size:24px;line-height:1.35;color:#46525F">Два одинаковых облака, полосы</p></div>
+<div style="display:flex;flex-direction:column;gap:6px"><h3 style="font-size:28px;font-weight:600">Поверхность</h3><p style="font-size:24px;line-height:1.35;color:#46525F">«+» облако в 2–3 раза крупнее</p></div>
+<div style="display:flex;flex-direction:column;gap:6px"><h3 style="font-size:28px;font-weight:600">Корона на ВН</h3><p style="font-size:24px;line-height:1.35;color:#46525F">Ровная полоса мелких у 270°</p></div>
+<div style="display:flex;flex-direction:column;gap:6px"><h3 style="font-size:28px;font-weight:600">Корона на земле</h3><p style="font-size:24px;line-height:1.35;color:#46525F">Зеркально: полоса у 90°</p></div>
+</div>
+</div>
+
+</section>
+<section id="galb" data-transition="fade" style="background:#F5F4EF;color:#172231;font-family:'IBM Plex Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B5501C">5 · Галерея, часть 2</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.1">Плавающий потенциал, паз, помеха, шум</h2>
+</div>
+<div style="display:flex;gap:40px;flex:1">
+<img src="img/7e00a2b62c.webp" alt="PRPD: плавающий потенциал, пазовые разряды, помеха от преобразователя, шум" style="width:1150px;height:705px;object-fit:contain;background:#FFFFFF;border-radius:16px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;flex-direction:column;gap:6px"><h3 style="font-size:28px;font-weight:600">Плавающий потенциал</h3><p style="font-size:24px;line-height:1.35;color:#46525F">Пары одинаковых крупных импульсов</p></div>
+<div style="display:flex;flex-direction:column;gap:6px"><h3 style="font-size:28px;font-weight:600">Пазовые разряды</h3><p style="font-size:24px;line-height:1.35;color:#46525F">«−» облако крупнее, нКл</p></div>
+<div style="display:flex;flex-direction:column;gap:6px"><h3 style="font-size:28px;font-weight:600">Помеха</h3><p style="font-size:24px;line-height:1.35;color:#46525F">Шесть столбиков через 60°</p></div>
+<div style="display:flex;flex-direction:column;gap:6px"><h3 style="font-size:28px;font-weight:600">Шум</h3><p style="font-size:24px;line-height:1.35;color:#46525F">Равномерная «трава», &lt; 1 пКл</p></div>
+</div>
+</div>
+
+</section>
+<section id="algo" data-transition="fade" style="background:#172231;color:#F5F4EF;font-family:'IBM Plex Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#F29A5C">6 · Алгоритм чтения</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.1">Восемь вопросов к любой PRPD</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px 40px;flex:1">
+<div style="display:flex;gap:20px;align-items:start"><p style="font-size:44px;font-weight:700;color:#F29A5C;width:56px">1</p><div style="flex:1;display:flex;flex-direction:column;gap:4px"><h3 style="font-size:30px;font-weight:600">Синхронизация</h3><p style="font-size:24px;line-height:1.35;color:#C9D3DD">От той ли фазы взят сигнал?</p></div></div>
+<div style="display:flex;gap:20px;align-items:start"><p style="font-size:44px;font-weight:700;color:#F29A5C;width:56px">5</p><div style="flex:1;display:flex;flex-direction:column;gap:4px"><h3 style="font-size:30px;font-weight:600">Симметрия</h3><p style="font-size:24px;line-height:1.35;color:#C9D3DD">Симметрично — внутри; нет — поверхность, корона</p></div></div>
+<div style="display:flex;gap:20px;align-items:start"><p style="font-size:44px;font-weight:700;color:#F29A5C;width:56px">2</p><div style="flex:1;display:flex;flex-direction:column;gap:4px"><h3 style="font-size:30px;font-weight:600">Фон</h3><p style="font-size:24px;line-height:1.35;color:#C9D3DD">Есть ли картина без напряжения?</p></div></div>
+<div style="display:flex;gap:20px;align-items:start"><p style="font-size:44px;font-weight:700;color:#F29A5C;width:56px">6</p><div style="flex:1;display:flex;flex-direction:column;gap:4px"><h3 style="font-size:30px;font-weight:600">Разброс</h3><p style="font-size:24px;line-height:1.35;color:#C9D3DD">Широкий — поры; узкий — корона, плавающий</p></div></div>
+<div style="display:flex;gap:20px;align-items:start"><p style="font-size:44px;font-weight:700;color:#F29A5C;width:56px">3</p><div style="flex:1;display:flex;flex-direction:column;gap:4px"><h3 style="font-size:30px;font-weight:600">Шум</h3><p style="font-size:24px;line-height:1.35;color:#C9D3DD">Порог выше равномерной «травы»</p></div></div>
+<div style="display:flex;gap:20px;align-items:start"><p style="font-size:44px;font-weight:700;color:#F29A5C;width:56px">7</p><div style="flex:1;display:flex;flex-direction:column;gap:4px"><h3 style="font-size:30px;font-weight:600">Напряжение</h3><p style="font-size:24px;line-height:1.35;color:#C9D3DD">Как меняется картина при подъёме U?</p></div></div>
+<div style="display:flex;gap:20px;align-items:start"><p style="font-size:44px;font-weight:700;color:#F29A5C;width:56px">4</p><div style="flex:1;display:flex;flex-direction:column;gap:4px"><h3 style="font-size:30px;font-weight:600">Положение</h3><p style="font-size:24px;line-height:1.35;color:#C9D3DD">Подъёмы полуволн или пики?</p></div></div>
+<div style="display:flex;gap:20px;align-items:start"><p style="font-size:44px;font-weight:700;color:#F29A5C;width:56px">8</p><div style="flex:1;display:flex;flex-direction:column;gap:4px"><h3 style="font-size:30px;font-weight:600">Тренд</h3><p style="font-size:24px;line-height:1.35;color:#C9D3DD">Что было в прошлый раз?</p></div></div>
+</div>
+
+</section>
+<section id="shift" data-transition="fade" style="background:#F5F4EF;color:#172231;font-family:'IBM Plex Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B5501C">7.1 · Ловушка: чужая синхронизация</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.1">Та же пора, сдвинутая на 120°</h2>
+</div>
+<img src="img/c5f1958626.webp" alt="Пора при синхронизации от своей фазы и от другой фазы" style="width:1664px;height:577px;object-fit:contain;background:#FFFFFF;border-radius:16px">
+<p style="font-size:30px;line-height:1.4">Облака стоят «не там» — похоже на корону или поверхность. <b>Проверка: откуда взят сигнал фазы?</b></p>
+
+</section>
+<section id="inter" data-transition="fade" style="background:#F5F4EF;color:#172231;font-family:'IBM Plex Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B5501C">7.2–7.3 · Ловушка: помехи</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.1">Сняли напряжение — что осталось?</h2>
+</div>
+<div style="display:flex;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;font-weight:600;color:#1F5F99">U/Uв = 1,4: пора + помеха</p>
+<img src="img/9a746c95c0.webp" alt="Пора и помеха преобразователя вместе" style="width:816px;height:270px;object-fit:contain;background:#FFFFFF;border-radius:12px">
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;font-weight:600;color:#1F5F99">U = 0: осталась только помеха</p>
+<img src="img/aa06754b8e.webp" alt="Напряжение снято: остались шесть столбиков помехи" style="width:816px;height:270px;object-fit:contain;background:#FFFFFF;border-radius:12px">
+</div>
+</div>
+<div style="display:flex;gap:24px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:10px;background:#FFFDF9;border:1px solid #DAD6CC;border-radius:16px;padding:28px"><h3 style="font-size:30px;font-weight:600">Тест за минуту</h3><p style="font-size:26px;line-height:1.4;color:#46525F">ЧР исчезают без напряжения, помеха — нет</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:10px;background:#FFFDF9;border:1px solid #DAD6CC;border-radius:16px;padding:28px"><h3 style="font-size:30px;font-weight:600">Против помех</h3><p style="font-size:26px;line-height:1.4;color:#46525F">Фильтры, стробирование, экранирование</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:10px;background:#FFFDF9;border:1px solid #DAD6CC;border-radius:16px;padding:28px"><h3 style="font-size:30px;font-weight:600">Питание от ЧРП</h3><p style="font-size:26px;line-height:1.4;color:#46525F">Классическая PRPD 50 Гц плохо подходит</p></div>
+</div>
+
+</section>
+<section id="equip" data-transition="fade" style="background:#F5F4EF;color:#172231;font-family:'IBM Plex Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B5501C">8 · По видам оборудования</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.1">Где и как ищут ЧР на практике</h2>
+</div>
+<table style="font-size:25px;color:#172231">
+<tr><th style="width:24%">Оборудование</th><th style="width:38%">Как измеряют</th><th style="width:38%">На что смотрят</th></tr>
+<tr><td>Кабели</td><td>VLF 0,1 Гц, колебательное; онлайн — HFCT</td><td>Муфты, заделки; локализация по отражению</td></tr>
+<tr><td>Машины 6–20 кВ</td><td>Онлайн: 80 пФ на выводах</td><td>Тренд Qm, асимметрия, сравнение фаз</td></tr>
+<tr><td>Силовые трансформаторы</td><td>Вводы, акустика, газы в масле</td><td>Водород, акустическая локация</td></tr>
+<tr><td>КРУ 6–35 кВ</td><td>TEV, ультразвук</td><td>Корона, разряды на изоляторах</td></tr>
+<tr><td>КРУЭ</td><td>УВЧ-датчики</td><td>Свободные частицы, выступы</td></tr>
+<tr><td>Сухие и измерительные трансформаторы</td><td>Заводские испытания, ГОСТ Р 55191</td><td>Норма порядка 10 пКл; поры литья — брак</td></tr>
+</table>
+
+</section>
+<section id="trend" data-transition="fade" style="background:#F5F4EF;color:#172231;font-family:'IBM Plex Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B5501C">9 · Тренды и решения</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.1">Одно измерение мало что говорит</h2>
+</div>
+<div style="display:flex;gap:48px;flex:1">
+<img src="img/7daa41558d.webp" alt="Тренд Qm: стабильная машина и машина с ускоряющимся старением" style="width:860px;height:476px;object-fit:contain;background:#FFFFFF;border-radius:16px">
+<table style="font-size:24px;color:#172231;width:756px">
+<tr><th style="width:24%">Ситуация</th><th style="width:40%">Признак</th><th style="width:36%">Решение</th></tr>
+<tr><td>Норма</td><td>Qm стабилен</td><td>Плановое наблюдение</td></tr>
+<tr><td>Внимание</td><td>Рост заметен, картина та же</td><td>Чаще измерять</td></tr>
+<tr style="background:#F7E3D4"><td>Тревога</td><td>Qm ×2 за полгода, асимметрия</td><td>Проверка на останове</td></tr>
+<tr style="background:#F0C9AE"><td>Срочно</td><td>Скачок, новые крупные импульсы</td><td>Вывод из работы</td></tr>
+</table>
+</div>
+<p style="font-size:26px;color:#46525F">«Вдвое за полгода» — ориентир практики, не норма. Падение Qm при старении поры — не улучшение.</p>
+
+</section>
+<section id="l11q" data-transition="fade" style="background:#E8EDF1;color:#172231;font-family:'IBM Plex Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B5501C">Итог лекции 11</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.1">Проверьте себя</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px 48px">
+<p style="font-size:28px;line-height:1.4">1. Что по осям PRPD и откуда фаза?</p>
+<p style="font-size:28px;line-height:1.4">5. Как отличить плавающий потенциал от поры?</p>
+<p style="font-size:28px;line-height:1.4">2. Почему облака поры на подъёмах полуволн?</p>
+<p style="font-size:28px;line-height:1.4">6. Помеха или ЧР — проверка за минуту?</p>
+<p style="font-size:28px;line-height:1.4">3. Почему с ростом U облака сдвигаются к нулю?</p>
+<p style="font-size:28px;line-height:1.4">7. Что даст синхронизация от другой фазы?</p>
+<p style="font-size:28px;line-height:1.4">4. Корона на ВН и на земле: чем отличаются?</p>
+<p style="font-size:28px;line-height:1.4">8. Почему у машин важен тренд, а у кабелей — норма?</p>
+</div>
+
+</section>
+<section id="pr" data-transition="fade" style="background:#172231;color:#F5F4EF;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:48px">
+<div style="display:flex;flex-direction:column;gap:24px">
+<p style="font-size:28px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#F29A5C">Практическое занятие</p>
+<h1 style="font-size:96px;font-weight:700;line-height:1.08">ЧР и PRPD: считаем, читаем, измеряем</h1>
+</div>
+<div style="display:flex;gap:24px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;border-top:4px solid #F29A5C;padding:24px 0px 0px 0px"><p style="font-size:44px;font-weight:700;color:#F29A5C">А · 30 мин</p><p style="font-size:28px;color:#C9D3DD">8 расчётных задач</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;border-top:4px solid #F29A5C;padding:24px 0px 0px 0px"><p style="font-size:44px;font-weight:700;color:#F29A5C">Б · 25 мин</p><p style="font-size:28px;color:#C9D3DD">8 PRPD с объектов</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;border-top:4px solid #F29A5C;padding:24px 0px 0px 0px"><p style="font-size:44px;font-weight:700;color:#F29A5C">В · 25 мин</p><p style="font-size:28px;color:#C9D3DD">Измерение с калибровкой</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;border-top:4px solid #F29A5C;padding:24px 0px 0px 0px"><p style="font-size:44px;font-weight:700;color:#F29A5C">Г · 10 мин</p><p style="font-size:28px;color:#C9D3DD">Опыты на модели поры</p></div>
+</div>
+
+</section>
+<section id="tasks" data-transition="fade" style="background:#F5F4EF;color:#172231;font-family:'IBM Plex Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B5501C">Часть А · Расчёты</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.1">Восемь задач с объектов</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px 40px;flex:1">
+<p style="font-size:24px;line-height:1.35"><b>1. Калибровка.</b> 100 пКл дают 40 мВ; импульсы ЧР — 180 мВ. Заряд?</p>
+<p style="font-size:24px;line-height:1.35"><b>5. Кабель 800 м.</b> Отражение через 3,2 мкс, v = 170 м/мкс. Где дефект?</p>
+<p style="font-size:24px;line-height:1.35"><b>2. Пора в кабеле.</b> D = 5,5 мм, εr = 2,3, d = 0,2 мм, Uпр = 1,42 кВ. Uв?</p>
+<p style="font-size:24px;line-height:1.35"><b>6. Акустика.</b> Звук пришёл через 210 мкс, масло 1400 м/с. Расстояние?</p>
+<p style="font-size:24px;line-height:1.35"><b>3. Энергия.</b> Двигатель 6 кВ: 500 пКл при Uв = 6 кВ. W одного разряда?</p>
+<p style="font-size:24px;line-height:1.35"><b>7. Чувствительность.</b> Ca = 10 нФ, Ck 1 нФ → 100 пФ. Во сколько раз упал отсчёт?</p>
+<p style="font-size:24px;line-height:1.35"><b>4. Средний ток.</b> 200 импульсов за период по 300 пКл, 50 Гц. I?</p>
+<p style="font-size:24px;line-height:1.35"><b>8. Приёмка.</b> Кабель 6/10 кВ, U0 = 6 кВ, испытание 1,73 U0. Uисп?</p>
+</div>
+
+</section>
+<section id="b12" data-transition="fade" style="background:#F5F4EF;color:#172231;font-family:'IBM Plex Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;justify-content:space-between;align-items:end">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B5501C">Часть Б · Чтение PRPD</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.1">Случаи Б1 и Б2</h2>
+</div>
+<p style="font-size:28px;font-weight:600;background:#172231;color:#F5F4EF;padding:14px 28px;border-radius:40px">1. Что за источник?  2. Что делать?</p>
+</div>
+<div style="display:flex;gap:48px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:14px">
+<p style="font-size:28px;font-weight:600"><span style="color:#B5501C">Б1</span> · Кабель 10 кВ, сшитый полиэтилен, 1,2 км</p>
+<img src="img/1644040701.webp" alt="PRPD, случай Б1" style="width:808px;height:419px;object-fit:contain;background:#FFFFFF;border-radius:12px">
+<p style="font-size:24px;line-height:1.4;color:#46525F">После монтажа новой соединительной муфты; при 1,7 U0 = 10,2 кВ импульсы до 300 пКл</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:14px">
+<p style="font-size:28px;font-weight:600"><span style="color:#B5501C">Б2</span> · Двигатель 6 кВ насоса водоотлива</p>
+<img src="img/cfc77deefb.webp" alt="PRPD, случай Б2" style="width:808px;height:419px;object-fit:contain;background:#FFFFFF;border-radius:12px">
+<p style="font-size:24px;line-height:1.4;color:#46525F">Капитальный ремонт, 25 лет в работе, жалобы на вибрацию; испытание фазным напряжением</p>
+</div>
+</div>
+
+</section>
+<section id="b34" data-transition="fade" style="background:#F5F4EF;color:#172231;font-family:'IBM Plex Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;justify-content:space-between;align-items:end">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B5501C">Часть Б · Чтение PRPD</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.1">Случаи Б3 и Б4</h2>
+</div>
+<p style="font-size:28px;font-weight:600;background:#172231;color:#F5F4EF;padding:14px 28px;border-radius:40px">1. Что за источник?  2. Что делать?</p>
+</div>
+<div style="display:flex;gap:48px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:14px">
+<p style="font-size:28px;font-weight:600"><span style="color:#B5501C">Б3</span> · Гидрогенератор 10,5 кВ, онлайн</p>
+<img src="img/c7840b0e23.webp" alt="PRPD, случай Б3" style="width:808px;height:419px;object-fit:contain;background:#FFFFFF;border-radius:12px">
+<p style="font-size:24px;line-height:1.4;color:#46525F">Датчики 80 пФ на выводах; Qm 4–5 нКл уже четыре года без роста; слюдяная изоляция</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:14px">
+<p style="font-size:28px;font-weight:600"><span style="color:#B5501C">Б4</span> · Сухой трансформатор 6/0,4 кВ, 1000 кВ·А</p>
+<img src="img/0bf4d3dbd5.webp" alt="PRPD, случай Б4" style="width:808px;height:419px;object-fit:contain;background:#FFFFFF;border-radius:12px">
+<p style="font-size:24px;line-height:1.4;color:#46525F">Приёмка на заводе: 60 пКл при норме порядка 10 пКл, картина устойчивая</p>
+</div>
+</div>
+
+</section>
+<section id="b56" data-transition="fade" style="background:#F5F4EF;color:#172231;font-family:'IBM Plex Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;justify-content:space-between;align-items:end">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B5501C">Часть Б · Чтение PRPD</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.1">Случаи Б5 и Б6</h2>
+</div>
+<p style="font-size:28px;font-weight:600;background:#172231;color:#F5F4EF;padding:14px 28px;border-radius:40px">1. Что за источник?  2. Что делать?</p>
+</div>
+<div style="display:flex;gap:48px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:14px">
+<p style="font-size:28px;font-weight:600"><span style="color:#B5501C">Б5</span> · Ячейка КРУ 6 кВ, испытание шин</p>
+<img src="img/f5cb8d5971.webp" alt="PRPD, случай Б5" style="width:808px;height:419px;object-fit:contain;background:#FFFFFF;border-radius:12px">
+<p style="font-size:24px;line-height:1.4;color:#46525F">Слышен треск, много мелких одинаковых импульсов; при подъёме U — редкие крупные</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:14px">
+<p style="font-size:28px;font-weight:600"><span style="color:#B5501C">Б6</span> · ПС 6 кВ обогатительной фабрики</p>
+<img src="img/be21fd226f.webp" alt="PRPD, случай Б6" style="width:808px;height:419px;object-fit:contain;background:#FFFFFF;border-radius:12px">
+<p style="font-size:24px;line-height:1.4;color:#46525F">Рядом работает тиристорный выпрямитель; картина есть и при снятом с кабеля напряжении</p>
+</div>
+</div>
+
+</section>
+<section id="b78" data-transition="fade" style="background:#F5F4EF;color:#172231;font-family:'IBM Plex Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;justify-content:space-between;align-items:end">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B5501C">Часть Б · Чтение PRPD</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.1">Случаи Б7 и Б8</h2>
+</div>
+<p style="font-size:28px;font-weight:600;background:#172231;color:#F5F4EF;padding:14px 28px;border-radius:40px">1. Что за источник?  2. Что делать?</p>
+</div>
+<div style="display:flex;gap:48px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:14px">
+<p style="font-size:28px;font-weight:600"><span style="color:#B5501C">Б7</span> · Трансформатор напряжения 6 кВ</p>
+<img src="img/20e9bf90be.webp" alt="PRPD, случай Б7" style="width:808px;height:419px;object-fit:contain;background:#FFFFFF;border-radius:12px">
+<p style="font-size:24px;line-height:1.4;color:#46525F">После ремонта: несколько крупных импульсов около 1 нКл, почти постоянных, мало меняются с U</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:14px">
+<p style="font-size:28px;font-weight:600"><span style="color:#B5501C">Б8</span> · Двигатель 6 кВ, измерение с выводов</p>
+<img src="img/bb051ca2fd.webp" alt="PRPD, случай Б8" style="width:808px;height:419px;object-fit:contain;background:#FFFFFF;border-radius:12px">
+<p style="font-size:24px;line-height:1.4;color:#46525F">Похоже на корону у положительного пика; синхронизацию взяли от ТН другой фазы</p>
+</div>
+</div>
+
+</section>
+<section id="measure" data-transition="fade" style="background:#F5F4EF;color:#172231;font-family:'IBM Plex Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B5501C">Части В и Г · Интерактив</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.1">Измеряем сами</h2>
+</div>
+<div style="display:flex;gap:28px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFDF9;border:1px solid #DAD6CC;border-radius:16px;padding:36px">
+<p style="font-size:24px;font-weight:600;color:#1F5F99">В1 · ВКЛАДКА 3</p>
+<h3 style="font-size:34px;font-weight:600">Сухой трансформатор</h3>
+<ol style="font-size:26px;line-height:1.4;color:#46525F">
+<li>Ck 1 нФ, калибратор 100 пКл</li>
+<li>Записать масштаб, отключить калибратор</li>
+<li>Поднимать U, отметить Uв</li>
+<li>7,8 кВ: q и вывод по норме</li>
+<li>Сменить Ck под напряжением — что скажет прибор?</li>
+</ol>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFDF9;border:1px solid #DAD6CC;border-radius:16px;padding:36px">
+<p style="font-size:24px;font-weight:600;color:#1F5F99">В2 · ВКЛАДКА 3</p>
+<h3 style="font-size:34px;font-weight:600">Кабель 30 нФ</h3>
+<ol style="font-size:26px;line-height:1.4;color:#46525F">
+<li>Ck 100 пФ, калибратор 10 пКл</li>
+<li>Повторить с 100 пКл — почему лучше?</li>
+<li>10,4 кВ: видны ли ЧР?</li>
+<li>Ck 2 нФ, перекалибровать, повторить</li>
+</ol>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFDF9;border:1px solid #DAD6CC;border-radius:16px;padding:36px">
+<p style="font-size:24px;font-weight:600;color:#1F5F99">Г · ВКЛАДКА 1</p>
+<h3 style="font-size:34px;font-weight:600">Модель поры</h3>
+<ol style="font-size:26px;line-height:1.4;color:#46525F">
+<li>Найти Uв для трёх материалов</li>
+<li>Диаметр 1 → 4 мм: что меняется?</li>
+<li>Найти Uп снижением U</li>
+</ol>
+</div>
+</div>
+
+</section>
+<section id="final" data-transition="fade" style="background:#172231;color:#F5F4EF;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:48px">
+<p style="font-size:28px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#F29A5C">Главное</p>
+<div style="display:flex;flex-direction:column;gap:28px;width:1500px">
+<p style="font-size:44px;line-height:1.3">ЧР начинаются, когда напряжение на поре достигает пробивного по Пашену</p>
+<p style="font-size:44px;line-height:1.3">Прибор меряет кажущийся заряд — только после калибровки этой схемы</p>
+<p style="font-size:44px;line-height:1.3">PRPD узнаёт дефект по фазе и форме облаков, тренд — решает, что делать</p>
+</div>
+<p style="font-size:28px;color:#9FB0C0">Домашнее задание: тест во вкладке «6 Тест» интерактива и чек-лист студента</p>
+
+</section>
+</div></div><div id="ui"><a href="../../">⌂</a><button id="pv" aria-label="Назад">←</button><span id="cnt"></span><button id="nx" aria-label="Вперёд">→</button><button id="fsb" aria-label="Во весь экран">⛶</button><a href="pd.pdf" download>PDF</a></div><script>var D=document.getElementById('deck'),S=[].slice.call(D.children),i=0,n=S.length,C=document.getElementById('cnt');
+function fit(){var k=Math.min(innerWidth/1920,(innerHeight-(innerWidth<700?0:0))/1080);D.style.transform='scale('+k+')'}
+function go(j){i=Math.max(0,Math.min(n-1,j));S.forEach(function(s,k){s.classList.toggle('on',k===i)});C.textContent=(i+1)+' / '+n;try{history.replaceState(null,'','#'+(i+1))}catch(e){}}
+if(location.search.indexOf('print')>=0){document.body.classList.add('print')}else{
+addEventListener('resize',fit);fit();go((parseInt(location.hash.slice(1))||1)-1);
+addEventListener('keydown',function(e){if(['ArrowRight','PageDown',' ','Enter'].indexOf(e.key)>=0){go(i+1);e.preventDefault()}else if(['ArrowLeft','PageUp','Backspace'].indexOf(e.key)>=0){go(i-1);e.preventDefault()}else if(e.key==='Home')go(0);else if(e.key==='End')go(n-1);else if(e.key==='f')fs()});
+var x0=null;addEventListener('touchstart',function(e){x0=e.touches[0].clientX},{passive:true});addEventListener('touchend',function(e){if(x0===null)return;var dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>40)go(i+(dx<0?1:-1));x0=null});
+document.getElementById('stage').addEventListener('click',function(e){if(e.target.closest('a'))return;go(i+(e.clientX>innerWidth/3?1:-1))});
+document.getElementById('pv').onclick=function(){go(i-1)};document.getElementById('nx').onclick=function(){go(i+1)};
+document.getElementById('fsb').onclick=fs}
+function fs(){var d=document.documentElement;if(!document.fullscreenElement){d.requestFullscreen&&d.requestFullscreen()}else{document.exitFullscreen()}}</script></body></html>

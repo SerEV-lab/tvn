@@ -1,0 +1,538 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Лекция 3. Пособие студента: задачи и кейсы</title><style>:root{--ink:#16202c;--muted:#5b6675;--line:#d9dde3;--acc:#1f5faf;--bg:#fff;--soft:#f3f5f8}
+@media (prefers-color-scheme:dark){:root{--ink:#e6eaf0;--muted:#9aa6b5;--line:#33404f;--acc:#7fb3f0;--bg:#121820;--soft:#1b2430}img{background:#fff}}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 "PT Serif",Georgia,"Times New Roman",serif}
+.bar{position:sticky;top:0;display:flex;justify-content:space-between;gap:12px;padding:10px 16px;background:var(--soft);border-bottom:1px solid var(--line);font:600 14px system-ui,-apple-system,"Segoe UI",sans-serif;z-index:5}
+.bar a{color:var(--acc);text-decoration:none}.bar .pdf{border:1px solid var(--acc);border-radius:999px;padding:2px 12px}
+main{max-width:820px;margin:0 auto;padding:16px 16px 64px}
+h1,h2,h3,h4{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.25;margin:1.6em 0 .5em}
+h1{font-size:1.5em}h2{font-size:1.25em}h3{font-size:1.08em}
+p{margin:.5em 0}img{max-width:100%;height:auto;display:block;margin:12px auto;border-radius:6px}
+figure{margin:16px 0}figcaption{text-align:center;color:var(--muted);font-size:.9em}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:.92em;display:block;overflow-x:auto}
+td,th{border:1px solid var(--line);padding:6px 8px;vertical-align:top}th{background:var(--soft);text-align:left}
+math{font-size:1.08em}math[display=block]{overflow-x:auto;overflow-y:hidden;margin:10px 0}
+blockquote{margin:12px 0;padding:8px 14px;border-left:4px solid var(--acc);background:var(--soft)}
+@media print{.bar{display:none}body{font-size:12pt}main{max-width:none;padding:0}table{display:table}img{background:none}}
+</style></head><body><nav class="bar"><a href="../">← Техника высоких напряжений</a><a class="pdf" href="l3-student.pdf" download>Скачать PDF</a></nav><main><p>Техника высоких напряжений</p>
+<p><strong>Методическое пособие для студента</strong></p>
+<p><strong>Стример, лидер, искровой разряд: как решать
+задачи</strong></p>
+<p><em>Справочные данные, алгоритм, разобранные примеры, задачи и
+реальные случаи · лекция 3</em></p>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Как работать с пособием.</strong> Просмотрите справочные
+данные и сводку формул. Повторите сами расчёты разобранных примеров.
+Решите задачи раздела 4 и сверьтесь с ответами в конце. Раздел 5 —
+реальные случаи: ответьте на вопросы письменно. Интерактив «Стример,
+лидер, искровой разряд» помогает проверить себя: вкладки 1–4 считают те
+же величины, вкладка 6 — ещё 10 задач.</td>
+</tr>
+</tbody>
+</table>
+<h2>1. Справочные данные</h2>
+<table>
+<colgroup>
+<col style="width: 47%" />
+<col style="width: 52%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Величина</strong></th>
+<th><strong>Значение</strong></th>
+</tr>
+<tr class="odd">
+<th>Константы Таунсенда для воздуха</th>
+<th>A = 15 1/(см·мм рт. ст.), B = 365 В/(см·мм рт. ст.)</th>
+</tr>
+<tr class="header">
+<th>Критерий стримера</th>
+<th>αx<sub>кр</sub> ≈ 18–20 (в расчётах — 20)</th>
+</tr>
+<tr class="odd">
+<th>Поле устойчивости стримера при δ = 1</th>
+<th>+: 4,7 кВ/см; −: 11,7 кВ/см</th>
+</tr>
+<tr class="header">
+<th>Поле головки стримера</th>
+<th>+: 120–160 кВ/см; −: 100–120 кВ/см</th>
+</tr>
+<tr class="odd">
+<th>Скорость стримера</th>
+<th>10<sup>5</sup>…4·10<sup>6</sup> м/с</th>
+</tr>
+<tr class="header">
+<th>Относительная плотность воздуха</th>
+<th>δ ≈ e<sup>−H/8150</sup></th>
+</tr>
+<tr class="odd">
+<th>Порог перехода стебля в лидер</th>
+<th>≈ 1500–2000 К</th>
+</tr>
+<tr class="header">
+<th>Температура канала лидера</th>
+<th>2000–3500 К</th>
+</tr>
+<tr class="odd">
+<th>Скорость лабораторного лидера</th>
+<th>≈ 10<sup>4</sup> м/с (1–3 см/мкс)</th>
+</tr>
+<tr class="header">
+<th>Ступенчатый лидер молнии</th>
+<th>ступени — десятки м, паузы 20–50 мкс, ≈ 2·10<sup>5</sup> м/с</th>
+</tr>
+<tr class="odd">
+<th>Обратный удар молнии</th>
+<th>≈ 30 000 К, ≥ 10 атм</th>
+</tr>
+<tr class="header">
+<th>Учебная модель лидера</th>
+<th>E<sub>s</sub> = 3,8 кВ/см, E<sub>L</sub> = 1,5 кВ/см, 3 см/мкс</th>
+</tr>
+<tr class="odd">
+<th>Грозовой импульс</th>
+<th>1,2/50 мкс</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<h2>2. Сводка формул</h2>
+<table>
+<colgroup>
+<col style="width: 34%" />
+<col style="width: 35%" />
+<col style="width: 29%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Что считаем</strong></th>
+<th><strong>Формула</strong></th>
+<th><strong>Замечание</strong></th>
+</tr>
+<tr class="odd">
+<th>Коэффициент ионизации</th>
+<th>α = A·p·e<sup>−B·p/E</sup></th>
+<th>p в мм рт. ст., E в В/см</th>
+</tr>
+<tr class="header">
+<th>Критическая длина лавины</th>
+<th>x<sub>кр</sub> = 20/α</th>
+<th>меньше зазора — пробой стримерный</th>
+</tr>
+<tr class="odd">
+<th>Длина стримерной зоны</th>
+<th>L<sub>s</sub> ≈ U/E<sub>s</sub></th>
+<th>резко неоднородное поле</th>
+</tr>
+<tr class="header">
+<th>Пробой острие — плоскость</th>
+<th>U<sub>пр</sub> ≈ E<sub>s</sub>·δ·d</th>
+<th>d до ≈ 1 м</th>
+</tr>
+<tr class="odd">
+<th>Поле у острия</th>
+<th>E<sub>max</sub> = 2U/(r·ln(4d/r))</th>
+<th>лекция 1</th>
+</tr>
+<tr class="header">
+<th>Зажигание (модель)</th>
+<th>E<sub>з</sub> = 30δ(1 + 0,3/√(δr)), U<sub>з</sub> =
+E<sub>з</sub>·r·ln(4d/r)/2</th>
+<th>r в см; у «−» × 0,9</th>
+</tr>
+<tr class="odd">
+<th>Формула Галле</th>
+<th>U<sub>50</sub> = 3400·k/(1 + 8/d)</th>
+<th>кВ, d в м, k = 1 стержень</th>
+</tr>
+<tr class="header">
+<th>Стримерная зона лидера</th>
+<th>L<sub>s</sub> = (U − E<sub>L</sub>·L)/E<sub>s</sub></th>
+<th>модель</th>
+</tr>
+<tr class="odd">
+<th>Финальный скачок</th>
+<th>L + L<sub>s</sub> ≥ d</th>
+<th></th>
+</tr>
+<tr class="header">
+<th>Время разряда</th>
+<th>t<sub>р</sub> = t<sub>с</sub> + t<sub>ф</sub></th>
+<th></th>
+</tr>
+<tr class="odd">
+<th>Критерий площадей</th>
+<th>∫(u − U<sub>0</sub>)dt = D</th>
+<th>прямоугольник: t<sub>ф</sub> = D/(U − U<sub>0</sub>)</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<h2>3. Алгоритм решения и разобранные примеры</h2>
+<ol type="1">
+<li><p>Определите, какой механизм работает: однородное поле и малый
+зазор — лавина и критерий стримера; острие и зазор до 1 м — стримеры;
+больше 1 м — лидер и формула Галле; импульс — время разряда.</p></li>
+<li><p>Переведите единицы: E в кВ/см, d в см (для стримеров) или в м
+(для Галле).</p></li>
+<li><p>Учтите полярность (E<sub>s+</sub> или E<sub>s−</sub>) и высоту
+(δ).</p></li>
+<li><p>Подставьте числа и проверьте порядок величины: сотни киловольт на
+метр — разумно, мегавольты на сантиметр — ошибка.</p></li>
+</ol>
+<h3>Пример 1. Где лавина станет стримером</h3>
+<p><strong>Дано:</strong> воздух, 760 мм рт. ст., почти однородное поле
+E = 35 кВ/см, зазор 3 см.</p>
+<p>α = 15·760·e<sup>−365·760/35000</sup> = 4,12 1/см.</p>
+<p>x<sub>кр</sub> = 20/α = 20/4,12 = 4,9 см.</p>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Ответ:</strong> x<sub>кр</sub> ≈ 4,9 см &gt; 3 см: лавина
+дойдёт до анода раньше, чем станет стримером.</td>
+</tr>
+</tbody>
+</table>
+<h3>Пример 2. Пробой острие — плоскость при двух полярностях</h3>
+<p><strong>Дано:</strong> острие на расстоянии d = 40 см от заземлённой
+плоскости, δ = 1.</p>
+<p>Острие «+»: U<sub>пр</sub> ≈ E<sub>s+</sub>·d = 4,7·40 = 188 кВ.</p>
+<p>Острие «−»: U<sub>пр</sub> ≈ E<sub>s−</sub>·d = 11,7·40 = 468 кВ.</p>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Ответ:</strong> 188 и 468 кВ: при положительном острие в 2,5
+раза меньше.</td>
+</tr>
+</tbody>
+</table>
+<p><img
+src="l3-student/media/d0033bb8b1a3c3b7141d4026ce6ec5726cb5142f.webp"
+title="Проверка во вкладке 1: при 60 кВ и 20 см стримеры «+» дорастают лишь до 12,8 см = 60/4,7"
+style="width:5.51042in;height:1.4375in"
+alt="Проверка во вкладке 1: при 60 кВ и 20 см стримеры «+» дорастают лишь до 12,8 см = 60/4,7" /></p>
+<p><strong>Рис. 1.</strong> Проверка во вкладке 1: при 60 кВ и 20 см
+стримеры «+» дорастают лишь до 12,8 см = 60/4,7</p>
+<h3>Пример 3. Напряжение зажигания</h3>
+<p><strong>Дано:</strong> острие r = 1 мм = 0,1 см, d = 20 см, δ =
+1.</p>
+<p>E<sub>з</sub> = 30·(1 + 0,3/√0,1) = 58,5 кВ/см.</p>
+<p>U<sub>з</sub> = E<sub>з</sub>·r·ln(4d/r)/2 = 58,5·0,1·ln 800/2 = 19,5
+кВ.</p>
+<p>У отрицательного острия на 10 % меньше: 17,6 кВ.</p>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Ответ:</strong> ≈ 19,5 кВ («+») и 17,6 кВ («−») — в 5–10 раз
+меньше пробивного: долгое время горит только корона.</td>
+</tr>
+</tbody>
+</table>
+<h3>Пример 4. Поправка на высоту</h3>
+<p><strong>Дано:</strong> промежуток 40 см, острие «+», высота 1000
+м.</p>
+<p>δ = e<sup>−1000/8150</sup> = 0,885.</p>
+<p>U<sub>пр</sub> ≈ 4,7·0,885·40 = 166 кВ.</p>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Ответ:</strong> ≈ 166 кВ — на 12 % меньше, чем на уровне
+моря.</td>
+</tr>
+</tbody>
+</table>
+<h3>Пример 5. Длинный промежуток по Галле</h3>
+<p><strong>Дано:</strong> стержень — плоскость, d = 5 м, положительный
+коммутационный импульс.</p>
+<p>U<sub>50</sub> = 3400/(1 + 8/5) = 1308 кВ.</p>
+<p>Средняя напряжённость 262 кВ/м; «только стримеры» дали бы 470·5 =
+2350 кВ.</p>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Ответ:</strong> U<sub>50</sub> ≈ 1308 кВ.</td>
+</tr>
+</tbody>
+</table>
+<h3>Пример 6. Какой длины нужен лидер</h3>
+<p><strong>Дано:</strong> d = 4 м, напряжение 1140 кВ (считаем
+неизменным), E<sub>s</sub> = 3,8 кВ/см, E<sub>L</sub> = 1,5 кВ/см,
+скорость лидера 3 см/мкс.</p>
+<p>Одни стримеры: L<sub>s</sub> = 1140/380 = 3,0 м &lt; 4 м — не
+хватает.</p>
+<p>Условие скачка: L + (1140 − 150·L)/380 = 4 → L·(1 − 150/380) = 4 −
+3,0 → L = 1,0/0,605 = 1,65 м.</p>
+<p>Время роста лидера: 165 см / 3 см/мкс = 55 мкс.</p>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Ответ:</strong> лидер ≈ 1,65 м, ≈ 55 мкс от старта
+лидера.</td>
+</tr>
+</tbody>
+</table>
+<p><img
+src="l3-student/media/8f1e9beaf71d48308fb6870b9b8cfcc9258b5f3a.png"
+title="Во вкладке 3 напряжение импульса к моменту пробоя (≈ 205 мкс) ещё растёт и равно ≈ 1085 кВ, поэтому лидер длиннее — ≈ 1,9 м. Проверка: 1,92 + (1085 − 150·1,92)/380 ≈ 4,0 м"
+style="width:5.51042in;height:1.14583in"
+alt="Во вкладке 3 напряжение импульса к моменту пробоя (≈ 205 мкс) ещё растёт и равно ≈ 1085 кВ, поэтому лидер длиннее — ≈ 1,9 м. Проверка: 1,92 + (1085 − 150·1,92)/380 ≈ 4,0 м" /></p>
+<p><strong>Рис. 2.</strong> Во вкладке 3 напряжение импульса к моменту
+пробоя (≈ 205 мкс) ещё растёт и равно ≈ 1085 кВ, поэтому лидер длиннее —
+≈ 1,9 м. Проверка: 1,92 + (1085 − 150·1,92)/380 ≈ 4,0 м</p>
+<h3>Пример 7. Время разряда по критерию площадей</h3>
+<p><strong>Дано:</strong> U<sub>0</sub> = 100 кВ; прямоугольное
+напряжение 130 кВ; среднее t<sub>с</sub> = 0,4 мкс. Сравнить стержень (D
+= 60 кВ·мкс) и шаровой промежуток (D = 2 кВ·мкс).</p>
+<p>Стержень: t<sub>ф</sub> = 60/(130 − 100) = 2,0 мкс, t<sub>р</sub> =
+2,4 мкс.</p>
+<p>Шары: t<sub>ф</sub> = 2/30 = 0,067 мкс, t<sub>р</sub> ≈ 0,47 мкс —
+почти всё время уходит на ожидание электрона.</p>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Ответ:</strong> 2,4 мкс и 0,47 мкс; у шаров разброс задаёт
+t<sub>с</sub>, отсюда облучение.</td>
+</tr>
+</tbody>
+</table>
+<p><img
+src="l3-student/media/99d798170ea52ddcbdee48023cf8a06a0b6f5e5a.png"
+title="Во вкладке 4 импульс не прямоугольный, но идея та же: пробой, когда жёлтая площадь над U₀ достигла D"
+style="width:5.51042in;height:1.20833in"
+alt="Во вкладке 4 импульс не прямоугольный, но идея та же: пробой, когда жёлтая площадь над U₀ достигла D" /></p>
+<p><strong>Рис. 3.</strong> Во вкладке 4 импульс не прямоугольный, но
+идея та же: пробой, когда жёлтая площадь над U₀ достигла D</p>
+<h2>4. Задачи для самостоятельной работы</h2>
+<ol type="1">
+<li><p>Почти однородное поле 45 кВ/см в воздухе при 760 мм рт. ст.
+Найдите критическую длину лавины x<sub>кр</sub> (αx<sub>кр</sub> = 20),
+мм.</p></li>
+<li><p>То же при 60 кВ/см, мм.</p></li>
+<li><p>Острие «+» в 50 см от заземлённой плоскости, δ = 1. Оцените
+пробивное напряжение, кВ.</p></li>
+<li><p>Острие «−» в 15 см от плоскости, δ = 1. Пробивное напряжение,
+кВ.</p></li>
+<li><p>Высота 3000 м, острие «+», d = 30 см. Пробивное напряжение,
+кВ.</p></li>
+<li><p>Острие r = 0,5 мм, d = 30 см, δ = 1, полярность «+». Напряжение
+зажигания по модели, кВ.</p></li>
+<li><p>Наибольшая напряжённость у острия r = 1 мм при U = 50 кВ и d = 20
+см, кВ/см.</p></li>
+<li><p>U<sub>50</sub> стержень — плоскость при d = 2 м по Галле,
+кВ.</p></li>
+<li><p>При какой длине промежутка стержень — плоскость U<sub>50</sub> по
+Галле равно 1500 кВ, м?</p></li>
+<li><p>Облако на высоте 5 км, средняя скорость ступенчатого лидера
+2·10<sup>5</sup> м/с. Время до земли, мс.</p></li>
+<li><p>U<sub>0</sub> = 100 кВ, D = 60 кВ·мкс, прямоугольное напряжение
+160 кВ. Время формирования, мкс.</p></li>
+<li><p>Лидер растёт со скоростью 3 см/мкс. За какое время он пройдёт 1,5
+м, мкс?</p></li>
+</ol>
+<h2>5. Реальные случаи</h2>
+<p>Прочитайте случай и ответьте письменно на вопрос. Эти же случаи с
+вариантами ответа — во вкладке 5 интерактива.</p>
+<h3>5.1. Италия, 28 сентября 2003: дуга на дерево</h3>
+<p>Около 03:00 линия 400 кВ Mettlen–Lavorgo (Лукманьер), по которой
+энергия шла из Швейцарии в Италию, отключилась: в пролёте возникла дуга
+на дерево. Нагрузка перешла на соседние линии, через ≈ 20 минут они тоже
+отключились, Италия отделилась от энергосистемы Европы. Без света
+остались около 56 млн человек, на полуострове — до 12 часов.</p>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Вопрос.</strong> Почему промежуток «провод — дерево»
+пробивается при меньшем напряжении, чем однородный промежуток той же
+длины?</td>
+</tr>
+</tbody>
+</table>
+<p>Источник: Википедия, «2003 Italy blackout»; итоговый отчёт UCTE,
+апрель 2004</p>
+<h3>5.2. США и Канада, 14 августа 2003: деревья под линиями 345 кВ</h3>
+<p>В 14:02 отключилась линия Stuart–Atlanta: деревья высотой 9–11 м под
+проводом на высоте ≈ 12 м. По той же причине отключились Star–South
+Canton (14:27, окончательно 15:42), Harding–Chamberlin (15:05),
+Hanna–Juniper (15:32) — при нагрузке в пределах нормального режима.
+Каскад оставил без света около 50 млн человек.</p>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Вопрос.</strong> Почему линии отключились при нагрузке в
+пределах нормы?</td>
+</tr>
+</tbody>
+</table>
+<p>Источник: NERC, отчёт о деревьях в аварии 14 августа 2003</p>
+<h3>5.3. Сколько нужно до дерева: формула Галле в стандарте</h3>
+<p>Для линии 345 кВ (наибольшее 362 кВ, кратность коммутационных
+перенапряжений 2,0) NERC получил минимальный зазор 3,53 фута (≈ 1,08 м)
+на высоте 3000 футов, а повторный расчёт PNNL по Галле с теми же
+допущениями — 6,1 фута (≈ 1,86 м).</p>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Вопрос.</strong> Почему расчётный случай для зазора до
+дерева — положительный коммутационный импульс?</td>
+</tr>
+</tbody>
+</table>
+<p>Источник: PNNL-21220, 2012</p>
+<h3>5.4. Лидер в промежутке 1 м: ударная волна</h3>
+<p>Промежуток стержень — плоскость 1 м, положительный импульс 404 кВ с
+фронтом 250 мкс. Интерферометр Маха — Цендера: лидер удлинялся не
+медленнее 1,3·10<sup>4</sup> м/с, от канала расходилась ударная волна со
+скоростью ≈ 319 м/с.</p>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Вопрос.</strong> Почему от канала лидера идёт ударная волна,
+а от стримеров — нет?</td>
+</tr>
+</tbody>
+</table>
+<p>Источник: «Shock Wave in Leader Discharge Observed Using Mach-Zehnder
+Interferometry», arXiv:1806.02788</p>
+<h3>5.5. Ступенчатый лидер молнии</h3>
+<p>Высокоскоростная съёмка: ступени по десятки метров, паузы 20–50 мкс,
+средняя скорость ≈ 2·10<sup>5</sup> м/с, ток ступени ≥ 1 кА. Обратный
+удар раскаляет канал до ≈ 30 000 К при давлении ≥ 10 атм.</p>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Вопрос.</strong> Почему ступенчатый лидер молнии в среднем
+быстрее лабораторного?</td>
+</tr>
+</tbody>
+</table>
+<p>Источник: Rakov V. A., Uman M. A. Lightning: Physics and Effects,
+разд. 4.7–4.12</p>
+<h2>6. Ответы к задачам раздела 4</h2>
+<table>
+<colgroup>
+<col style="width: 7%" />
+<col style="width: 92%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>№</strong></th>
+<th><strong>Ответ</strong></th>
+</tr>
+<tr class="odd">
+<th>1</th>
+<th>8,3 мм</th>
+</tr>
+<tr class="header">
+<th>2</th>
+<th>1,79 мм</th>
+</tr>
+<tr class="odd">
+<th>3</th>
+<th>235 кВ</th>
+</tr>
+<tr class="header">
+<th>4</th>
+<th>175,5 кВ</th>
+</tr>
+<tr class="odd">
+<th>5</th>
+<th>97,6 кВ</th>
+</tr>
+<tr class="header">
+<th>6</th>
+<th>13,7 кВ</th>
+</tr>
+<tr class="odd">
+<th>7</th>
+<th>150 кВ/см</th>
+</tr>
+<tr class="header">
+<th>8</th>
+<th>680 кВ</th>
+</tr>
+<tr class="odd">
+<th>9</th>
+<th>6,32 м</th>
+</tr>
+<tr class="header">
+<th>10</th>
+<th>25 мс</th>
+</tr>
+<tr class="odd">
+<th>11</th>
+<th>1,0 мкс</th>
+</tr>
+<tr class="header">
+<th>12</th>
+<th>50 мкс</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<h2>7. Источники</h2>
+<ol type="1">
+<li><p>Важов В. Ф., Лавринович В. А. Техника высоких напряжений:
+учебник. — Томск: ТПУ, 2014. — Разд. 1.1–1.2.</p></li>
+<li><p>On propagation of positive and negative streamers in air in
+uniform electric fields. — arXiv:2305.09560.</p></li>
+<li><p>Briels T. M. P. et al. Positive and negative streamers in ambient
+air: measuring diameter, velocity and dissipated energy. —
+arXiv:0805.1376, 2008.</p></li>
+<li><p>Gallet G., Leroy G., Lacey R., Kromer I. General expression for
+positive switching impulse strength valid up to extra long air gaps. —
+IEEE Trans. PAS, 1975.</p></li>
+<li><p>Applicability of the Gallet Equation to the Vegetation Clearances
+of NERC Reliability Standard FAC-003-2. — PNNL-21220, 2012.</p></li>
+<li><p>Rakov V. A., Uman M. A. Lightning: Physics and Effects. —
+Cambridge University Press, 2003. — Разд. 4.</p></li>
+<li><p>NERC. Final report on the August 14, 2003 blackout: vegetation
+(trees) investigation.</p></li>
+<li><p>2003 Italy blackout. — Wikipedia; UCTE. Final Report of the
+Investigation Committee on the 28 September 2003 Blackout in Italy,
+2004.</p></li>
+</ol>
+</main></body></html>

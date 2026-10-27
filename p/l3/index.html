@@ -1,0 +1,502 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Лекция 3. Стример, лидер, искровой разряд — презентация</title><link rel="stylesheet" href="../fonts/fonts.css"><style>*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#0e131a;overflow:hidden}
+#stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+#deck{width:1920px;height:1080px;position:relative;flex:none;transform-origin:center center}
+#deck>section{position:absolute;inset:0;width:1920px;height:1080px;overflow:hidden}
+body:not(.print) #deck>section:not(.on){display:none!important}
+section ul,section ol{padding-left:1.2em}section li{margin:.25em 0}
+section table{border-collapse:collapse;width:100%}
+section th,section td{text-align:left;vertical-align:top;padding:.45em .6em;border-bottom:1px solid rgba(128,128,128,.35)}
+section th{font-weight:600;border-bottom:2px solid currentColor}
+section img{display:block}
+#ui{position:fixed;left:0;right:0;bottom:0;display:flex;gap:6px;align-items:center;justify-content:center;padding:8px;font:600 14px system-ui,sans-serif;z-index:9;opacity:.9}
+#ui a,#ui button{background:rgba(20,29,43,.85);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:7px 14px;font:inherit;text-decoration:none;cursor:pointer}
+#ui span{background:rgba(20,29,43,.85);color:#fff;border-radius:999px;padding:7px 12px;min-width:76px;text-align:center}
+body.print{overflow:visible;background:#fff}body.print #stage{position:static;display:block}
+body.print #deck{transform:none!important;height:auto}
+body.print #deck>section{position:relative!important;page-break-after:always;break-after:page}
+body.print #ui{display:none}
+@page{size:1920px 1080px;margin:0}</style></head><body><div id="stage"><div id="deck"><section id="cover" data-transition="fade" style="background:#121B2B;color:#F4F2EC;font-family:'Public Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:space-between">
+<img src="img/da3ba0c00a.webp" alt="" style="position:absolute;left:900px;top:110px;width:960px;height:470px;object-fit:contain;opacity:0.22">
+<p style="font-size:28px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#F0A26B">Техника высоких напряжений · лекция 3</p>
+<div style="display:flex;flex-direction:column;gap:32px;width:1300px">
+<h1 style="font-family:'Rubik', Arial, sans-serif;font-size:104px;font-weight:700;line-height:1.05">Стример, лидер, искровой разряд</h1>
+<p style="font-size:36px;line-height:1.35;color:#C3CEDC">Как лавина превращается в канал, почему знак острия меняет пробивное напряжение вдвое и сколько длится пробой</p>
+</div>
+<p style="font-size:24px;color:#93A3B8">13.03.02 · интерактив «Стример, лидер, искровой разряд» · по учебнику Важова и Лавриновича, разд. 1.1–1.2</p>
+
+</section>
+<section id="goals" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">Цели лекции</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">После пары вы сможете</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;flex:1">
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:32px"><p style="font-size:48px;font-weight:700;color:#1F5FAF">1</p><p style="font-size:28px;line-height:1.4">Объяснить, как лавина становится стримером и почему он растёт сам</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:32px"><p style="font-size:48px;font-weight:700;color:#1F5FAF">2</p><p style="font-size:28px;line-height:1.4">Отличить положительный стример от отрицательного</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:32px"><p style="font-size:48px;font-weight:700;color:#1F5FAF">3</p><p style="font-size:28px;line-height:1.4">Оценить пробивное напряжение с учётом полярности</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:32px"><p style="font-size:48px;font-weight:700;color:#1F5FAF">4</p><p style="font-size:28px;line-height:1.4">Описать лидер, его нагрев и финальный скачок</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:32px"><p style="font-size:48px;font-weight:700;color:#1F5FAF">5</p><p style="font-size:28px;line-height:1.4">Посчитать U₅₀ длинного промежутка по Галле</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:32px"><p style="font-size:48px;font-weight:700;color:#1F5FAF">6</p><p style="font-size:28px;line-height:1.4">Найти время разряда и прочитать вольт-секундную характеристику</p></div>
+</div>
+
+</section>
+<section id="riddle" data-transition="fade" style="background:#B4531B;color:#FBF4EC;font-family:'Public Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:48px">
+<p style="font-size:28px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#FBE3D0">Два вопроса на всю пару</p>
+<div style="display:flex;gap:40px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#93410F;border-radius:20px;padding:44px"><p style="font-family:'Rubik', Arial, sans-serif;font-size:96px;font-weight:700;line-height:1">94 и 234 кВ</p><p style="font-size:32px;line-height:1.4">Острие в 20 см от заземлённой стенки. При «+» на острие промежуток пробивается при ≈ 94 кВ, при «−» — при ≈ 234 кВ. Почему знак так важен?</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#93410F;border-radius:20px;padding:44px"><p style="font-family:'Rubik', Arial, sans-serif;font-size:96px;font-weight:700;line-height:1">1,9 МВ</p><p style="font-size:32px;line-height:1.4">Если 20 см держат ≈ 94 кВ, то 10 м должны держать ≈ 4,7 МВ. А держат лишь ≈ 1,9 МВ. Куда делась прочность?</p></div>
+</div>
+
+</section>
+<section id="recap" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">1 · От лавины к стримеру</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Где заканчивается лекция 2</h2>
+</div>
+<div style="display:flex;gap:40px;flex:1">
+<img src="img/6f3479a3e8.webp" alt="Рост лавины e^(αx) при 30, 40 и 50 кВ/см и порог αx = 20" style="width:960px;height:500px;object-fit:contain;background:#FFFFFF;border-radius:16px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:34px;background:#FFFDF8;border-left:6px solid #1F5FAF;padding:20px 28px">αx<sub>кр</sub> ≈ 18–20</p>
+<p style="font-size:28px;line-height:1.45">В головке ≈ 10⁸ электронов, их поле <b>сравнялось с внешним</b>. Формулы лавины перестают работать.</p>
+<p style="font-size:28px;line-height:1.45">При 40 кВ/см: α ≈ 11 1/см, x<sub>кр</sub> ≈ 1,8 см. Промежуток длиннее — пробой пойдёт по <b>стримерному</b> механизму.</p>
+</div>
+</div>
+
+</section>
+<section id="townfail" data-transition="fade" style="background:#E6ECF2;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">1 · Почему одной теории Таунсенда мало</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Опыт с промежутками при атмосферном давлении ей противоречит</h2>
+</div>
+<table style="font-size:28px;color:#141D2B">
+<tr><th style="width:34%">Наблюдение</th><th style="width:33%">Ждём по Таунсенду</th><th style="width:33%">Видим на опыте</th></tr>
+<tr><td>Время пробоя 1 см</td><td>несколько пробегов ионов, ≥ 10⁻⁵ с</td><td>≈ 10⁻⁸–10⁻⁷ с</td></tr>
+<tr><td>Материал катода (γ)</td><td>влияет</td><td>почти не влияет при большом p·S</td></tr>
+<tr><td>Форма канала</td><td>диффузное свечение</td><td>тонкий извилистый ветвистый канал</td></tr>
+<tr><td>Где начинается</td><td>у катода</td><td>может начаться в середине промежутка</td></tr>
+</table>
+<p style="font-size:30px;line-height:1.4">Вывод: при атмосферном давлении и промежутках от ≈ 1 см разряд развивается <b>сам, без участия катода</b> — это стример.</p>
+
+</section>
+<section id="mechpos" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">2 · Положительный стример · вкладка 1</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Головка шагает к катоду за счёт фотонов</h2>
+</div>
+<img src="img/ee85830656.webp" alt="Анимация: положительная головка, фотоны, вторичные лавины идут к головке" style="width:1664px;height:330px;object-fit:contain;background:#0D171E;border-radius:16px">
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px">
+<div style="display:flex;flex-direction:column;gap:10px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:28px"><h3 style="font-size:30px;font-weight:600;color:#1F5FAF">1. Головка излучает</h3><p style="font-size:26px;line-height:1.4">Возбуждённый азот светит ультрафиолетом, фотоны ионизируют кислород впереди</p></div>
+<div style="display:flex;flex-direction:column;gap:10px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:28px"><h3 style="font-size:30px;font-weight:600;color:#1F5FAF">2. Вторичные лавины</h3><p style="font-size:26px;line-height:1.4">Затравочные электроны летят к положительной головке и размножаются в её поле</p></div>
+<div style="display:flex;flex-direction:column;gap:10px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:28px"><h3 style="font-size:30px;font-weight:600;color:#1F5FAF">3. Новая головка</h3><p style="font-size:26px;line-height:1.4">Электроны входят в канал, хвосты ионов становятся головкой ближе к катоду</p></div>
+</div>
+
+</section>
+<section id="mechneg" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">2 · Отрицательный стример · вкладка 1</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Головка из электронов расплывается</h2>
+</div>
+<img src="img/c324c9e594.webp" alt="Анимация: отрицательная головка, электроны уходят вперёд к аноду" style="width:1664px;height:330px;object-fit:contain;background:#0D171E;border-radius:16px">
+<div style="display:flex;gap:32px">
+<p style="flex:1;font-size:28px;line-height:1.45">Электроны головки сами уходят вперёд по полю, к аноду. Заряд головки размазывается, <b>её поле слабее</b>: 100–120 кВ/см против 120–160 у положительной.</p>
+<p style="flex:1;font-size:28px;line-height:1.45">Лавины бегут от головки. Чтобы стример не затух, нужно внешнее поле <b>в 2–2,5 раза сильнее</b>, чем для положительного.</p>
+</div>
+
+</section>
+<section id="cmp" data-transition="fade" style="background:#E6ECF2;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">2 · Сравнение</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Положительный и отрицательный стример</h2>
+</div>
+<table style="font-size:28px;color:#141D2B">
+<tr><th style="width:28%"></th><th style="width:36%">Положительный (+)</th><th style="width:36%">Отрицательный (−)</th></tr>
+<tr><td>Куда растёт</td><td>к катоду, навстречу электронам</td><td>к аноду, вместе с электронами</td></tr>
+<tr><td>Головка</td><td>ионы, компактная, 120–160 кВ/см</td><td>электроны, расплывается, 100–120 кВ/см</td></tr>
+<tr><td>Поле устойчивости E<sub>s</sub></td><td><b>≈ 4,7 кВ/см</b></td><td><b>≈ 11,7 кВ/см</b></td></tr>
+<tr><td>Скорость</td><td>10⁵ … 4·10⁶ м/с</td><td>на 20–25 % меньше</td></tr>
+<tr><td>Диаметр</td><td>от 0,2 мм у самых тонких</td><td>толще, от ≈ 1 мм</td></tr>
+<tr><td>Вид</td><td>тонкие ветвящиеся нити</td><td>короткие толстые кисти</td></tr>
+</table>
+
+</section>
+<section id="es" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">3 · Поле устойчивости</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Каждый сантиметр стримера «съедает» E<sub>s</sub></h2>
+</div>
+<div style="display:flex;gap:40px;flex:1">
+<img src="img/58d3765688.webp" alt="Длина стримеров от напряжения для + и − острия, d = 20 см" style="width:960px;height:500px;object-fit:contain;background:#FFFFFF;border-radius:16px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:32px;background:#FFFDF8;border-left:6px solid #1F5FAF;padding:18px 26px">L ≈ U / E<sub>s</sub><br>U<sub>пр</sub> ≈ E<sub>s</sub>·d</p>
+<p style="font-size:28px;line-height:1.45">20 см: <b>94 кВ</b> при «+» и <b>234 кВ</b> при «−».</p>
+<p style="font-size:28px;line-height:1.45">Работает для резко неоднородных промежутков до ≈ 1 м. Дальше нужен лидер.</p>
+</div>
+</div>
+
+</section>
+<section id="gapdemo" data-transition="fade" style="background:#121B2B;color:#F4F2EC;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#F0A26B">В интерактиве · вкладка 1</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">60 кВ на промежутке 20 см</h2>
+</div>
+<div style="display:flex;gap:28px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px"><img src="img/ac687cb550.webp" alt="Положительное острие: стримеры 12,8 см" style="width:818px;height:300px;object-fit:contain;background:#0D171E;border-radius:16px"><p style="font-size:28px;color:#F0A26B">Острие +: стримеры 12,8 см</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px"><img src="img/5fcc516bce.webp" alt="Отрицательное острие: стримеры 5,1 см" style="width:818px;height:300px;object-fit:contain;background:#0D171E;border-radius:16px"><p style="font-size:28px;color:#7FB3F0">Острие −: стримеры 5,1 см</p></div>
+</div>
+<p style="font-size:30px;line-height:1.4;color:#C3CEDC">Поднимите напряжение: при «+» стримеры дорастут до плоскости на 94 кВ, при «−» — лишь на 234 кВ.</p>
+
+</section>
+<section id="polcharge" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">4 · Полярный эффект · вкладка 2</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Всё решает облако медленных ионов у острия</h2>
+</div>
+<img src="img/6905dc790e.webp" alt="Слева облако положительных ионов у положительного острия, справа — отрицательные ионы у отрицательного" style="width:1664px;height:330px;object-fit:contain;background:#0D171E;border-radius:16px">
+<div style="display:flex;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:10px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:28px"><h3 style="font-size:30px;font-weight:600;color:#C8372B">Острие +</h3><p style="font-size:26px;line-height:1.4">Электроны уходят в острие, ионы «+» остаются перед ним и <b>удлиняют острие</b> — поле дальше в промежутке сильнее</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:10px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:28px"><h3 style="font-size:30px;font-weight:600;color:#1F5FAF">Острие −</h3><p style="font-size:26px;line-height:1.4">Ионы «+» прижаты к острию и усиливают поле у него, а облако ионов O₂⁻ дальше <b>ослабляет поле</b> в промежутке</p></div>
+</div>
+
+</section>
+<section id="polfield" data-transition="fade" style="background:#121B2B;color:#F4F2EC;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#F0A26B">4 · Поле вдоль оси</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Объёмный заряд перераспределяет поле</h2>
+</div>
+<img src="img/e0dff070e1.webp" alt="Поле вдоль оси: без заряда, с положительным и отрицательным острием" style="width:1664px;height:420px;object-fit:contain;background:#0D171E;border-radius:16px">
+<div style="display:flex;gap:32px">
+<p style="flex:1;font-size:28px;line-height:1.45;color:#F0A26B">Острие +: у острия поле ниже, дальше — выше и дольше держится над E<sub>s+</sub></p>
+<p style="flex:1;font-size:28px;line-height:1.45;color:#7FB3F0">Острие −: у острия всплеск, дальше провал ниже E<sub>s−</sub> — стримеры гаснут</p>
+</div>
+
+</section>
+<section id="polgraph" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">4 · Зажигание и пробой</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Корона раньше у «−», пробой раньше у «+»</h2>
+</div>
+<div style="display:flex;gap:40px;flex:1">
+<img src="img/632daf1b89.webp" alt="Напряжения зажигания и пробоя от расстояния для двух полярностей" style="width:960px;height:520px;object-fit:contain;background:#FFFFFF;border-radius:16px">
+<div style="flex:1;display:flex;flex-direction:column;gap:18px">
+<p style="font-size:28px;line-height:1.45">Пробой растёт с d: <b>4,7·d</b> и <b>11,7·d</b> кВ (d в см).</p>
+<p style="font-size:28px;line-height:1.45">Зажигание почти не зависит от d — его задаёт радиус острия.</p>
+<p style="font-size:28px;line-height:1.45">Отношение пробивных напряжений ≈ <b>2,5</b>.</p>
+</div>
+</div>
+
+</section>
+<section id="polpract" data-transition="fade" style="background:#E6ECF2;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">4 · Где это важно</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Полярный эффект на объектах</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;flex:1">
+<div style="display:flex;flex-direction:column;gap:10px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:30px"><h3 style="font-size:30px;font-weight:600;color:#1F5FAF">Испытания изоляции</h3><p style="font-size:26px;line-height:1.4">Внешнюю изоляцию испытывают импульсами обеих полярностей: для воздушных промежутков опаснее положительная</p></div>
+<div style="display:flex;flex-direction:column;gap:10px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:30px"><h3 style="font-size:30px;font-weight:600;color:#1F5FAF">Переменное напряжение</h3><p style="font-size:26px;line-height:1.4">Пробой резко неоднородного промежутка наступает в положительный полупериод на острие</p></div>
+<div style="display:flex;flex-direction:column;gap:10px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:30px"><h3 style="font-size:30px;font-weight:600;color:#1F5FAF">Звено постоянного тока ПЧ</h3><p style="font-size:26px;line-height:1.4">У шины «+» острая кромка опаснее, чем у шины «−»: зазоры считают по худшей полярности</p></div>
+<div style="display:flex;flex-direction:column;gap:10px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:30px"><h3 style="font-size:30px;font-weight:600;color:#1F5FAF">Корона на кромках</h3><p style="font-size:26px;line-height:1.4">На отрицательной острой кромке корона начинается раньше: треск и помехи появляются при невысоком напряжении</p></div>
+</div>
+
+</section>
+<section id="gallet" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">5 · Длинные промежутки</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Прочность насыщается: каждый метр держит меньше</h2>
+</div>
+<div style="display:flex;gap:40px;flex:1">
+<img src="img/a1cb7c0dfc.webp" alt="Формула Галле и прямая только для стримеров" style="width:960px;height:520px;object-fit:contain;background:#FFFFFF;border-radius:16px">
+<div style="flex:1;display:flex;flex-direction:column;gap:18px">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:30px;background:#FFFDF8;border-left:6px solid #1F5FAF;padding:18px 24px">U₅₀ = 3400·k / (1 + 8/d)</p>
+<p style="font-size:27px;line-height:1.45">d в метрах, k = 1 для стержня над плоскостью, положительный коммутационный импульс.</p>
+<p style="font-size:27px;line-height:1.45">1 м — 378 кВ/м, 10 м — <b>189 кВ/м</b>. Ответ на второй вопрос-загадку — <b>лидер</b>.</p>
+</div>
+</div>
+
+</section>
+<section id="stem" data-transition="fade" style="background:#E6ECF2;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">5 · Рождение лидера</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Стебель стримеров нагревается и начинает проводить</h2>
+</div>
+<div style="display:flex;gap:40px;flex:1">
+<img src="img/e98a0c5744.webp" alt="Шкала температур: стример, стебель, лидер, главный разряд, обратный удар" style="width:960px;height:480px;object-fit:contain;background:#FFFFFF;border-radius:16px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px">
+<p style="font-size:27px;line-height:1.45">Токи многих стримеров сходятся в общий <b>стебель</b> и греют его.</p>
+<p style="font-size:27px;line-height:1.45">Холодный газ: электроны прилипают к O₂ за 10⁻⁸–10⁻⁷ с — канал гаснет.</p>
+<p style="font-size:27px;line-height:1.45">Выше <b>≈ 1500–2000 К</b> электроны отрываются от O⁻ — канал остаётся проводящим. Это и есть <b>лидер</b>.</p>
+</div>
+</div>
+
+</section>
+<section id="ltemp" data-transition="fade" style="background:#121B2B;color:#F4F2EC;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#F0A26B">В интерактиве · вкладка 3 · наведите курсор</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Где в разряде горячо, а где нет</h2>
+</div>
+<div style="display:flex;gap:28px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px"><img src="img/8a48d665a5.webp" alt="Курсор на канале лидера: 2170 К" style="width:818px;height:300px;object-fit:contain;background:#0D171E;border-radius:16px"><p style="font-size:28px;color:#F0A26B">Канал лидера: ≈ 2000 К и выше</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px"><img src="img/917b2cfc08.webp" alt="Курсор в стримерной зоне: 320 К" style="width:818px;height:300px;object-fit:contain;background:#0D171E;border-radius:16px"><p style="font-size:28px;color:#C39BFF">Стримерная зона: ≈ 300 К</p></div>
+</div>
+<p style="font-size:30px;line-height:1.4;color:#C3CEDC">Чем старше участок канала, тем он горячее и толще. Отойдите от оси на 1–2 мм — снова холодный воздух.</p>
+
+</section>
+<section id="lstruct" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">5 · Как устроен лидер</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Горячий канал несёт потенциал электрода вперёд</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px">
+<div style="display:flex;flex-direction:column;gap:10px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:28px"><h3 style="font-size:30px;font-weight:600;color:#C8372B">Канал лидера</h3><p style="font-size:26px;line-height:1.4">Хорошо проводит: на метре теряется мало напряжения (модель — 1,5 кВ/см)</p></div>
+<div style="display:flex;flex-direction:column;gap:10px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:28px"><h3 style="font-size:30px;font-weight:600;color:#7B4FC4">Стримерная зона</h3><p style="font-size:26px;line-height:1.4">Веер стримеров перед головкой, длина L<sub>s</sub> = (U − E<sub>L</sub>·L)/E<sub>s</sub></p></div>
+<div style="display:flex;flex-direction:column;gap:10px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:28px"><h3 style="font-size:30px;font-weight:600;color:#1F5FAF">Финальный скачок</h3><p style="font-size:26px;line-height:1.4">Когда L + L<sub>s</sub> = d, канал за микросекунды замыкает промежуток</p></div>
+</div>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:32px;background:#FFFDF8;border-left:6px solid #1F5FAF;padding:18px 26px">пробой: L + (U − E<sub>L</sub>·L)/E<sub>s</sub> ≥ d</p>
+<p style="font-size:28px;line-height:1.45">Лидер растёт ≈ 1–3 см/мкс (10⁴ м/с) — на два порядка медленнее стримера.</p>
+
+</section>
+<section id="ldyn" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">5 · Развитие во времени · вкладка 3</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Промежуток 4 м: от первых стримеров до пробоя</h2>
+</div>
+<div style="display:flex;gap:40px;flex:1">
+<img src="img/0d08fa0c1f.webp" alt="u(t), длина лидера и стримерной зоны, пробой на 203 мкс" style="width:960px;height:520px;object-fit:contain;background:#FFFFFF;border-radius:16px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px">
+<p style="font-size:27px;line-height:1.45"><b>0–90 мкс</b>: напряжение растёт, от стержня только стримеры.</p>
+<p style="font-size:27px;line-height:1.45"><b>90–200 мкс</b>: стартует лидер, стримерная зона едет впереди него.</p>
+<p style="font-size:27px;line-height:1.45"><b>203 мкс</b>: зона коснулась плоскости — финальный скачок.</p>
+</div>
+</div>
+
+</section>
+<section id="spark" data-transition="fade" style="background:#121B2B;color:#F4F2EC;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#F0A26B">6 · Искра</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Главный разряд: 10⁴ К и ударная волна</h2>
+</div>
+<img src="img/9f5740a74b.webp" alt="Канал главного разряда, курсор: около 20 000 К" style="width:1664px;height:330px;object-fit:contain;background:#0D171E;border-radius:16px">
+<div style="display:flex;gap:28px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#1C2840;border-radius:16px;padding:30px"><h3 style="font-size:30px;font-weight:600;color:#7FB3F0">Что происходит</h3><p style="font-size:26px;line-height:1.45;color:#C3CEDC">Ток растёт до сотен ампер и выше, газ ионизуется термически, канал проводит как металл</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#1C2840;border-radius:16px;padding:30px"><h3 style="font-size:30px;font-weight:600;color:#F0A26B">Звук</h3><p style="font-size:26px;line-height:1.45;color:#C3CEDC">Давление в канале резко растёт — ударная волна. В лаборатории — щелчок, у молнии — гром</p></div>
+</div>
+
+</section>
+<section id="stepped" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">7 · Лидер молнии · вкладка 3, режим «молния»</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Отрицательный лидер идёт ступенями</h2>
+</div>
+<div style="display:flex;gap:32px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px">
+<img src="img/1db079911f.webp" alt="Ступенчатый лидер от облака к земле" style="width:800px;height:250px;object-fit:contain;background:#0D171E;border-radius:16px">
+<img src="img/a2c35000d9.webp" alt="Крупно: пространственный стебель перед головкой" style="width:800px;height:200px;object-fit:contain;background:#0D171E;border-radius:16px">
+</div>
+<table style="font-size:26px;color:#141D2B;width:832px">
+<tr><th style="width:40%"></th><th style="width:30%">Лаборатория (+)</th><th style="width:30%">Молния (−)</th></tr>
+<tr><td>Как растёт</td><td>почти непрерывно</td><td>ступенями</td></tr>
+<tr><td>Ступень · пауза</td><td>—</td><td>десятки м · 20–50 мкс</td></tr>
+<tr><td>Средняя скорость</td><td>≈ 10⁴ м/с</td><td>≈ 2·10⁵ м/с</td></tr>
+<tr><td>После касания</td><td>главный разряд</td><td>обратный удар, ≈ 30 000 К</td></tr>
+</table>
+</div>
+
+</section>
+<section id="crit" data-transition="fade" style="background:#E6ECF2;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">7 · Какой импульс опаснее</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Длинному промежутку опаснее положительный коммутационный</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;flex:1">
+<div style="display:flex;flex-direction:column;gap:10px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:28px"><h3 style="font-size:30px;font-weight:600;color:#1F5FAF">Грозовой, 1,2/50 мкс</h3><p style="font-size:26px;line-height:1.4">Лидер не успевает: за 50 мкс при 3 см/мкс — 1,5 м. Нужно большее напряжение</p></div>
+<div style="display:flex;flex-direction:column;gap:10px;background:#FFFDF8;border:1px solid #C8372B;border-radius:16px;padding:28px"><h3 style="font-size:30px;font-weight:600;color:#C8372B">Коммутационный, сотни мкс</h3><p style="font-size:26px;line-height:1.4">Лидер успевает пройти промежуток на фронте — минимум пробивного напряжения</p></div>
+<div style="display:flex;flex-direction:column;gap:10px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:28px"><h3 style="font-size:30px;font-weight:600;color:#1F5FAF">Очень длинный фронт</h3><p style="font-size:26px;line-height:1.4">Объёмный заряд стримеров успевает «экранировать» стержень — прочность снова растёт</p></div>
+</div>
+<p style="font-size:28px;line-height:1.45">Поэтому изоляцию ВЛ 330 кВ и выше выбирают по коммутационным перенапряжениям, а формула Галле дана для критического фронта.</p>
+
+</section>
+<section id="tdis" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">8 · Время разряда</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Пробой не мгновенный: ждём электрон и строим канал</h2>
+</div>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:36px;background:#FFFDF8;border-left:6px solid #1F5FAF;padding:20px 28px">t<sub>р</sub> = t<sub>с</sub> + t<sub>ф</sub></p>
+<div style="display:flex;gap:32px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:32px"><h3 style="font-size:32px;font-weight:600;color:#1F5FAF">t<sub>с</sub> — статистическое</h3><p style="font-size:27px;line-height:1.45">Ожидание «эффективного» электрона в нужном месте. Случайно. Уменьшают облучением: ультрафиолет, радиоактивный препарат</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:32px"><h3 style="font-size:32px;font-weight:600;color:#1F5FAF">t<sub>ф</sub> — формирования</h3><p style="font-size:27px;line-height:1.45">От первой лавины до замыкания канала: стримеры, лидер, скачок. Тем меньше, чем больше перенапряжение</p></div>
+</div>
+
+</section>
+<section id="impulse" data-transition="fade" style="background:#121B2B;color:#F4F2EC;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#F0A26B">8 · Импульс 1,2/50 мкс · вкладка 4</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:56px;font-weight:600;line-height:1.1">Что значат 1,2 и 50, и где пробой «срезает» импульс</h2>
+</div>
+<div style="display:flex;gap:28px">
+<div style="flex:1;display:flex;flex-direction:column;gap:10px"><img src="img/c832e8fd18.webp" alt="Весь импульс 270 кВ, отметки 100 %, 50 % и 50 мкс, пробой на фронте" style="width:818px;height:270px;object-fit:contain;background:#0D171E;border-radius:16px"><p style="font-size:26px;color:#C3CEDC">Весь импульс: 50 мкс — спад до 50 % амплитуды</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:10px"><img src="img/105deb4dcb.webp" alt="Начало импульса крупно: пробой на 0,28 мкс при 139 кВ" style="width:818px;height:270px;object-fit:contain;background:#0D171E;border-radius:16px"><p style="font-size:26px;color:#C3CEDC">0–5 мкс крупно: пробой на фронте, при ≈ 50 % амплитуды</p></div>
+</div>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:30px;background:#1C2840;border-left:6px solid #F0A26B;padding:18px 26px">T₁ = 1,67·(t₉₀ − t₃₀) = 1,67·(0,86 − 0,14) ≈ 1,2 мкс; максимум ≈ 2,1 мкс</p>
+
+</section>
+<section id="area" data-transition="fade" style="background:#E6ECF2;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">8 · Критерий площадей · вкладка 4</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Пробой, когда площадь над U₀ набрала D</h2>
+</div>
+<div style="display:flex;gap:40px;flex:1">
+<img src="img/2d5c8e9af0.webp" alt="Интерактив: стержень, 180 кВ, начало импульса крупно, площадь над U₀ до пробоя" style="width:960px;height:500px;object-fit:contain;background:#0D171E;border-radius:16px">
+<div style="flex:1;display:flex;flex-direction:column;gap:18px">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:28px;background:#FFFDF8;border-left:6px solid #1F5FAF;padding:18px 24px">∫(u − U₀)dt = D</p>
+<p style="font-size:27px;line-height:1.45">Интеграл берём от t₀ + t<sub>с</sub> до t<sub>р</sub>.</p>
+<p style="font-size:27px;line-height:1.45">Малое D — однородное поле (шары), большое D — стержень.</p>
+<p style="font-size:27px;line-height:1.45">Прямоугольный импульс: t<sub>ф</sub> = D/(U − U₀).</p>
+</div>
+</div>
+
+</section>
+<section id="vt" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">8 · Вольт-секундная характеристика</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Однородное поле — пологая, стержень — крутая</h2>
+</div>
+<div style="display:flex;gap:40px;flex:1">
+<img src="img/a8ef99dc08.webp" alt="Вольт-секундные характеристики шарового и стержневого промежутков" style="width:960px;height:500px;object-fit:contain;background:#FFFFFF;border-radius:16px">
+<div style="flex:1;display:flex;flex-direction:column;gap:18px">
+<p style="font-size:27px;line-height:1.45">Точка характеристики: напряжение пробоя и время до него при одном импульсе.</p>
+<p style="font-size:27px;line-height:1.45">Шары: импульсный коэффициент ≈ <b>1,02</b>. Стержень: ≈ <b>1,1–1,2</b> и больше.</p>
+<p style="font-size:27px;line-height:1.45">Без облучения у шаров — большой разброс.</p>
+</div>
+</div>
+
+</section>
+<section id="coord" data-transition="fade" style="background:#121B2B;color:#F4F2EC;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#F0A26B">8 · Координация · вкладка 4</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Защита должна сработать раньше изоляции всегда</h2>
+</div>
+<div style="display:flex;gap:40px;flex:1">
+<img src="img/89b9da9615.webp" alt="Характеристики изоляции и стержневого промежутка пересекаются около 2 мкс" style="width:960px;height:500px;object-fit:contain;background:#FFFFFF;border-radius:16px">
+<div style="flex:1;display:flex;flex-direction:column;gap:18px">
+<p style="font-size:27px;line-height:1.45;color:#C3CEDC">Статически промежуток (110 кВ) ниже изоляции (150 кВ).</p>
+<p style="font-size:27px;line-height:1.45;color:#C3CEDC">Но при пробое быстрее ≈ <b style="color:#F4F2EC">2 мкс</b> характеристики пересекаются — изоляция пробивается первой.</p>
+<p style="font-size:27px;line-height:1.45;color:#F0A26B">Поэтому оборудование защищают ОПН, а не стержневыми промежутками.</p>
+</div>
+</div>
+
+</section>
+<section id="case1" data-transition="fade" style="background:#121B2B;color:#F4F2EC;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#F0A26B">Реальный случай 1 · 28 сентября 2003, Италия</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Дуга с провода 400 кВ на дерево — 56 млн без света</h2>
+</div>
+<div style="display:flex;gap:28px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#1C2840;border-radius:16px;padding:36px"><h3 style="font-size:34px;font-weight:600;color:#7FB3F0">Что случилось</h3><p style="font-size:27px;line-height:1.45;color:#C3CEDC">Около 03:00 линия Mettlen–Lavorgo (Лукманьер) из Швейцарии в Италию отключилась: дуга на дерево. Нагрузка перешла на соседние линии, они тоже отключились, Италия отделилась от энергосистемы Европы — до 12 часов без света.</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#1C2840;border-radius:16px;padding:36px"><h3 style="font-size:34px;font-weight:600;color:#F0A26B">Физика</h3><p style="font-size:27px;line-height:1.45;color:#C3CEDC">Дерево — заземлённое «острие». Зазор стал меньше пробивного: стримеры, лидер, финальный скачок, затем ток КЗ поддерживает дугу. Минимальный зазор до растительности считают по формуле Галле.</p></div>
+</div>
+
+</section>
+<section id="case2" data-transition="fade" style="background:#121B2B;color:#F4F2EC;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#F0A26B">Реальный случай 2 · 14 августа 2003, США и Канада</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Четыре линии 345 кВ отключились из-за деревьев</h2>
+</div>
+<div style="display:flex;gap:28px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#1C2840;border-radius:16px;padding:36px"><h3 style="font-size:34px;font-weight:600;color:#7FB3F0">Что случилось</h3><p style="font-size:27px;line-height:1.45;color:#C3CEDC">14:02 — Stuart–Atlanta: деревья 9–11 м под проводом на высоте ≈ 12 м. Затем Star–South Canton, Harding–Chamberlin, Hanna–Juniper — при нормальной нагрузке. Каскад, около 50 млн человек без света.</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#1C2840;border-radius:16px;padding:36px"><h3 style="font-size:34px;font-weight:600;color:#F0A26B">Вывод расследования</h3><p style="font-size:27px;line-height:1.45;color:#C3CEDC">«Прямая причина — разросшиеся деревья»; провисание лишь немного помогло. На деревьях — ожоги током КЗ. После аварии ввели стандарт NERC FAC-003 с минимальным зазором до растительности.</p></div>
+</div>
+
+</section>
+<section id="case3" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">Реальный случай 3 · стандарт NERC FAC-003</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Сколько метров до дерева нужно линии 345 кВ</h2>
+</div>
+<div style="display:flex;gap:40px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:18px">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:28px;background:#FFFDF8;border-left:6px solid #1F5FAF;padding:18px 24px">U = 362·√2/√3·2,0 = 591 кВ<br>591 = 3400·1,3/(1 + 8/d)<br>d ≈ 1,24 м</p>
+<p style="font-size:27px;line-height:1.45">Наш расчёт — по формуле Галле, k = 1,3, кратность коммутационных перенапряжений 2,0.</p>
+</div>
+<table style="font-size:27px;color:#141D2B;width:780px">
+<tr><th style="width:60%">Источник</th><th style="width:40%">Зазор</th></tr>
+<tr><td>NERC (высота 3000 футов)</td><td>3,53 фута ≈ 1,08 м</td></tr>
+<tr><td>PNNL, Галле, те же допущения</td><td>6,1 фута ≈ 1,86 м</td></tr>
+<tr><td>Наш расчёт, уровень моря</td><td>≈ 1,24 м</td></tr>
+</table>
+</div>
+
+</section>
+<section id="case4" data-transition="fade" style="background:#E6ECF2;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">Ещё 3 случая · вкладка 5 интерактива</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Разберите сами</h2>
+</div>
+<div style="display:flex;gap:32px;flex:1">
+<img src="img/8667d2749f.webp" alt="Вкладка «Реальные случаи»: вопрос с вариантами и разбор" style="width:900px;height:620px;object-fit:contain;background:#FFFFFF;border-radius:16px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px">
+<p style="font-size:27px;line-height:1.4"><b>4.</b> Лидер в промежутке 1 м: ударная волна от канала</p>
+<p style="font-size:27px;line-height:1.4"><b>5.</b> Ступенчатый лидер молнии</p>
+<p style="font-size:27px;line-height:1.4"><b>6.</b> Защитный промежуток не успел: пересечение характеристик</p>
+<p style="font-size:26px;line-height:1.4;color:#51606C">У каждого случая — вопрос, варианты, разбор и источник.</p>
+</div>
+</div>
+
+</section>
+<section id="practice" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">Практика · вкладка 6 и пособие студента</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Десять задач с объектов</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px 24px;flex:1">
+<p style="font-size:26px;line-height:1.4;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:16px 22px"><b>1.</b> Где лавина станет стримером</p>
+<p style="font-size:26px;line-height:1.4;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:16px 22px"><b>6.</b> Насыщение прочности на 10 м</p>
+<p style="font-size:26px;line-height:1.4;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:16px 22px"><b>2.</b> Дотянется ли положительный стример</p>
+<p style="font-size:26px;line-height:1.4;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:16px 22px"><b>7.</b> Время роста лидера</p>
+<p style="font-size:26px;line-height:1.4;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:16px 22px"><b>3.</b> А если острие отрицательное</p>
+<p style="font-size:26px;line-height:1.4;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:16px 22px"><b>8.</b> Сколько идёт ступенчатый лидер</p>
+<p style="font-size:26px;line-height:1.4;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:16px 22px"><b>4.</b> Подстанция в Хибинах</p>
+<p style="font-size:26px;line-height:1.4;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:16px 22px"><b>9.</b> Время пробоя по площадям</p>
+<p style="font-size:26px;line-height:1.4;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:16px 22px"><b>5.</b> U₅₀ промежутка 3 м</p>
+<p style="font-size:26px;line-height:1.4;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:16px 22px"><b>10.</b> Зазор до дерева по Галле</p>
+</div>
+
+</section>
+<section id="check" data-transition="fade" style="background:#E6ECF2;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">Итог</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Проверьте себя</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:22px 48px">
+<p style="font-size:28px;line-height:1.4">1. Что даёт стримеру электроны впереди головки?</p>
+<p style="font-size:28px;line-height:1.4">5. Почему стримеру нужен лидер в промежутке 5 м?</p>
+<p style="font-size:28px;line-height:1.4">2. Почему отрицательному стримеру нужно большее поле?</p>
+<p style="font-size:28px;line-height:1.4">6. При какой температуре стебель становится лидером?</p>
+<p style="font-size:28px;line-height:1.4">3. Почему корона раньше у «−», а пробой у «+»?</p>
+<p style="font-size:28px;line-height:1.4">7. Из чего складывается время разряда?</p>
+<p style="font-size:28px;line-height:1.4">4. Что показывает формула Галле?</p>
+<p style="font-size:28px;line-height:1.4">8. Почему стержневой промежуток плохо защищает от крутых волн?</p>
+</div>
+
+</section>
+<section id="final" data-transition="fade" style="background:#121B2B;color:#F4F2EC;font-family:'Public Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:44px">
+<p style="font-size:28px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#F0A26B">Главное</p>
+<div style="display:flex;flex-direction:column;gap:26px;width:1600px">
+<p style="font-size:42px;line-height:1.3">При αx ≈ 20 лавина становится стримером: растёт сама за счёт поля головки и фотонов</p>
+<p style="font-size:42px;line-height:1.3">E<sub>s</sub> ≈ 4,7 кВ/см у «+» и 11,7 кВ/см у «−»: пробой острия «+» в 2,5 раза легче</p>
+<p style="font-size:42px;line-height:1.3">В длинных промежутках горячий лидер несёт потенциал вперёд — прочность насыщается</p>
+<p style="font-size:42px;line-height:1.3">t<sub>р</sub> = t<sub>с</sub> + t<sub>ф</sub>: защита должна быть «быстрее» изоляции</p>
+</div>
+<p style="font-size:28px;color:#93A3B8">Дома: задачи вкладки 6, тест — вкладка 7. Следующая лекция — закон Пашена и плотность воздуха</p>
+
+</section>
+</div></div><div id="ui"><a href="../../">⌂</a><button id="pv" aria-label="Назад">←</button><span id="cnt"></span><button id="nx" aria-label="Вперёд">→</button><button id="fsb" aria-label="Во весь экран">⛶</button><a href="l3.pdf" download>PDF</a></div><script>var D=document.getElementById('deck'),S=[].slice.call(D.children),i=0,n=S.length,C=document.getElementById('cnt');
+function fit(){var k=Math.min(innerWidth/1920,(innerHeight-(innerWidth<700?0:0))/1080);D.style.transform='scale('+k+')'}
+function go(j){i=Math.max(0,Math.min(n-1,j));S.forEach(function(s,k){s.classList.toggle('on',k===i)});C.textContent=(i+1)+' / '+n;try{history.replaceState(null,'','#'+(i+1))}catch(e){}}
+if(location.search.indexOf('print')>=0){document.body.classList.add('print')}else{
+addEventListener('resize',fit);fit();go((parseInt(location.hash.slice(1))||1)-1);
+addEventListener('keydown',function(e){if(['ArrowRight','PageDown',' ','Enter'].indexOf(e.key)>=0){go(i+1);e.preventDefault()}else if(['ArrowLeft','PageUp','Backspace'].indexOf(e.key)>=0){go(i-1);e.preventDefault()}else if(e.key==='Home')go(0);else if(e.key==='End')go(n-1);else if(e.key==='f')fs()});
+var x0=null;addEventListener('touchstart',function(e){x0=e.touches[0].clientX},{passive:true});addEventListener('touchend',function(e){if(x0===null)return;var dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>40)go(i+(dx<0?1:-1));x0=null});
+document.getElementById('stage').addEventListener('click',function(e){if(e.target.closest('a'))return;go(i+(e.clientX>innerWidth/3?1:-1))});
+document.getElementById('pv').onclick=function(){go(i-1)};document.getElementById('nx').onclick=function(){go(i+1)};
+document.getElementById('fsb').onclick=fs}
+function fs(){var d=document.documentElement;if(!document.fullscreenElement){d.requestFullscreen&&d.requestFullscreen()}else{document.exitFullscreen()}}</script></body></html>

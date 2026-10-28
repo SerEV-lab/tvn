@@ -1,0 +1,300 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Наладка ВД-6300. Чек-лист студента</title><style>:root{--ink:#16202c;--muted:#5b6675;--line:#d9dde3;--acc:#1f5faf;--bg:#fff;--soft:#f3f5f8}
+@media (prefers-color-scheme:dark){:root{--ink:#e6eaf0;--muted:#9aa6b5;--line:#33404f;--acc:#7fb3f0;--bg:#121820;--soft:#1b2430}img{background:#fff}}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 "PT Serif",Georgia,"Times New Roman",serif}
+.bar{position:sticky;top:0;display:flex;justify-content:space-between;gap:12px;padding:10px 16px;background:var(--soft);border-bottom:1px solid var(--line);font:600 14px system-ui,-apple-system,"Segoe UI",sans-serif;z-index:5}
+.bar a{color:var(--acc);text-decoration:none}.bar .pdf{border:1px solid var(--acc);border-radius:999px;padding:2px 12px}
+main{max-width:820px;margin:0 auto;padding:16px 16px 64px}
+h1,h2,h3,h4{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.25;margin:1.6em 0 .5em}
+h1{font-size:1.5em}h2{font-size:1.25em}h3{font-size:1.08em}
+p{margin:.5em 0}img{max-width:100%;height:auto;display:block;margin:12px auto;border-radius:6px}
+figure{margin:16px 0}figcaption{text-align:center;color:var(--muted);font-size:.9em}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:.92em;display:block;overflow-x:auto}
+td,th{border:1px solid var(--line);padding:6px 8px;vertical-align:top}th{background:var(--soft);text-align:left}
+math{font-size:1.08em}math[display=block]{overflow-x:auto;overflow-y:hidden;margin:10px 0}
+blockquote{margin:12px 0;padding:8px 14px;border-left:4px solid var(--acc);background:var(--soft)}
+@media print{.bar{display:none}body{font-size:12pt}main{max-width:none;padding:0}table{display:table}img{background:none}}
+</style></head><body><nav class="bar"><a href="../">← Техника высоких напряжений</a><a class="pdf" href="vd-checklist.pdf" download>Скачать PDF</a></nav><main><p>Техника высоких напряжений</p>
+<p><strong>Чек-лист студента</strong></p>
+<p><strong>Наладка привода ВД-6300</strong></p>
+<p><em>Сквозное задание, 16 этапов</em></p>
+<p>ФИО ____________________________ Группа ________ Дата ________</p>
+<h2>1. Подготовка</h2>
+<table>
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 93%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>☐</td>
+<td>Прочитал методические указания: схему привода и правила игры</td>
+</tr>
+<tr class="even">
+<td>☐</td>
+<td>Повторил лекции к расчётному заданию «Вентильный двигатель 10
+кВ»</td>
+</tr>
+<tr class="odd">
+<td>☐</td>
+<td>Подготовил калькулятор (натуральный логарифм, степени) и бланк
+ответов</td>
+</tr>
+<tr class="even">
+<td>☐</td>
+<td>Открыл игру по ссылке или QR-коду</td>
+</tr>
+</tbody>
+</table>
+<h2>2. Этапы</h2>
+<p>Отмечайте этап, когда приняты и расчёт, и решение на стенде. В
+столбце «С 1-й попытки» поставьте «+», если обе проверки прошли
+сразу.</p>
+<table>
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 9%" />
+<col style="width: 35%" />
+<col style="width: 16%" />
+<col style="width: 21%" />
+<col style="width: 11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Этап</strong></th>
+<th><strong>Задача</strong></th>
+<th><strong>Расчёт</strong></th>
+<th><strong>Решение на стенде</strong></th>
+<th><strong>С 1-й попытки</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>☐</td>
+<td>А1</td>
+<td>Труба ввода по полю</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>☐</td>
+<td>А2</td>
+<td>Уравнительные обкладки</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>☐</td>
+<td>А3</td>
+<td>Покрышка и путь утечки</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>☐</td>
+<td>А4</td>
+<td>Старение RIP</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>☐</td>
+<td>А5</td>
+<td>Допустимая пустота</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>☐</td>
+<td>Б1</td>
+<td>Гармоники и нагрев</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>☐</td>
+<td>В1</td>
+<td>Охлаждение реактора</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>☐</td>
+<td>В2</td>
+<td>ОПН звена постоянного тока</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>☐</td>
+<td>Г1</td>
+<td>Коммутирующая ёмкость</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>☐</td>
+<td>Г2</td>
+<td>Снаббер: ёмкость</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>☐</td>
+<td>Г3</td>
+<td>Потери в резисторе снаббера</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>☐</td>
+<td>Д1</td>
+<td>Корпусная изоляция</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>☐</td>
+<td>Д2</td>
+<td>Противокоронное покрытие</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>☐</td>
+<td>Е1</td>
+<td>Стробирование помех</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>☐</td>
+<td>Е2</td>
+<td>Диагноз по PRPD</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>☐</td>
+<td>Ж1</td>
+<td>Индекс HI</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2>3. Могу объяснить</h2>
+<table>
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 93%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>☐</td>
+<td>Почему у коаксиального ввода есть оптимальный радиус трубы</td>
+</tr>
+<tr class="even">
+<td>☐</td>
+<td>Зачем во вводе уравнительные обкладки и как выбирают их число</td>
+</tr>
+<tr class="odd">
+<td>☐</td>
+<td>Как кривая жизни задаёт допустимое рабочее поле на 30 лет</td>
+</tr>
+<tr class="even">
+<td>☐</td>
+<td>Почему высшие гармоники греют трансформатор непропорционально и чем
+помогает 12-пульсная схема</td>
+</tr>
+<tr class="odd">
+<td>☐</td>
+<td>Куда уходит энергия реактора при обрыве тока и как выбирают ОПН</td>
+</tr>
+<tr class="even">
+<td>☐</td>
+<td>Почему коммутирующая ёмкость АИТ ограничена и снизу, и сверху</td>
+</tr>
+<tr class="odd">
+<td>☐</td>
+<td>Зачем снаббер и почему потери в нём не зависят от сопротивления
+резистора</td>
+</tr>
+<tr class="even">
+<td>☐</td>
+<td>Почему противокоронное покрытие проверяют и на 50 Гц, и на
+всплесках</td>
+</tr>
+<tr class="odd">
+<td>☐</td>
+<td>Как стробирование отделяет частичные разряды от помех
+преобразователя</td>
+</tr>
+<tr class="even">
+<td>☐</td>
+<td>Как по PRPD отличить пустоту, поверхностный разряд, корону и
+помеху</td>
+</tr>
+<tr class="odd">
+<td>☐</td>
+<td>Как паспорт изоляции сводится к индексу HI</td>
+</tr>
+</tbody>
+</table>
+<h2>4. Сдача</h2>
+<table>
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 61%" />
+<col style="width: 32%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Что сделать</strong></th>
+<th><strong>Результат</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>☐</td>
+<td>Прошёл все этапы и нажал «Пуск»</td>
+<td>Очки: ______</td>
+</tr>
+<tr class="even">
+<td>☐</td>
+<td>Сохранил запас разрядного промежутка (из 6 шагов)</td>
+<td>Осталось: ______</td>
+</tr>
+<tr class="odd">
+<td>☐</td>
+<td>Нажал «Скопировать итог» и отправил текст преподавателю</td>
+<td>Дата: ______</td>
+</tr>
+<tr class="even">
+<td>☐</td>
+<td>Заполнил бланк ответов в методических указаниях</td>
+<td>Этапов: ___ из 16</td>
+</tr>
+</tbody>
+</table>
+<p>Если этап не даётся — откройте «Подсказки к сквозному заданию»: там
+написано, с чего начать и где обычно ошибаются.</p>
+</main></body></html>

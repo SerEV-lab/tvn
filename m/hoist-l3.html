@@ -1,0 +1,306 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ЧРП подъёма 6 кВ. Лекция 3. Изоляция, диагностика, испытания</title><style>:root{--ink:#16202c;--muted:#5b6675;--line:#d9dde3;--acc:#1f5faf;--bg:#fff;--soft:#f3f5f8}
+@media (prefers-color-scheme:dark){:root{--ink:#e6eaf0;--muted:#9aa6b5;--line:#33404f;--acc:#7fb3f0;--bg:#121820;--soft:#1b2430}img{background:#fff}}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 "PT Serif",Georgia,"Times New Roman",serif}
+.bar{position:sticky;top:0;display:flex;justify-content:space-between;gap:12px;padding:10px 16px;background:var(--soft);border-bottom:1px solid var(--line);font:600 14px system-ui,-apple-system,"Segoe UI",sans-serif;z-index:5}
+.bar a{color:var(--acc);text-decoration:none}.bar .pdf{border:1px solid var(--acc);border-radius:999px;padding:2px 12px}
+main{max-width:820px;margin:0 auto;padding:16px 16px 64px}
+h1,h2,h3,h4{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.25;margin:1.6em 0 .5em}
+h1{font-size:1.5em}h2{font-size:1.25em}h3{font-size:1.08em}
+p{margin:.5em 0}img{max-width:100%;height:auto;display:block;margin:12px auto;border-radius:6px}
+figure{margin:16px 0}figcaption{text-align:center;color:var(--muted);font-size:.9em}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:.92em;display:block;overflow-x:auto}
+td,th{border:1px solid var(--line);padding:6px 8px;vertical-align:top}th{background:var(--soft);text-align:left}
+math{font-size:1.08em}math[display=block]{overflow-x:auto;overflow-y:hidden;margin:10px 0}
+blockquote{margin:12px 0;padding:8px 14px;border-left:4px solid var(--acc);background:var(--soft)}
+@media print{.bar{display:none}body{font-size:12pt}main{max-width:none;padding:0}table{display:table}img{background:none}}
+</style></head><body><nav class="bar"><a href="../">← Техника высоких напряжений</a><a class="pdf" href="hoist-l3.pdf" download>Скачать PDF</a></nav><main><p>Техника высоких напряжений</p>
+<p><strong>Лекция 3 · вариант 1 расчётной работы</strong></p>
+<p><strong>Изоляция двигателя и кабеля при питании от ПЧ</strong></p>
+<p><em>Недели 4–6, 10–15: расчёт, противокоронная защита, старение,
+нагрев, диагностика, испытания</em></p>
+<h2>1. Система изоляции статора 6 кВ</h2>
+<p>Изоляция обмотки статора состоит из корпусной (пазовой) — между медью
+и заземлённым сердечником, витковой — между витками катушки, и межфазной
+— в лобовых частях. На 6 кВ применяют слюдосодержащую изоляцию,
+пропитанную эпоксидным компаундом (вакуумно-нагнетательная пропитка VPI
+или монолитная технология), класс нагревостойкости F (155 °C).</p>
+<p>Толщину корпусной изоляции выбирают по двум критериям: она должна
+выдержать испытательное напряжение с запасом и длительно работать при
+пиковых напряжениях ШИМ без ускоренного старения:</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>δ</mi><mn>1</mn></msub><mo>=</mo><mfrac><mrow><msqrt><mn>2</mn></msqrt><msub><mi>U</mi><mrow><mi>и</mi><mi>с</mi><mi>п</mi></mrow></msub><msub><mi>k</mi><mi>з</mi></msub></mrow><msub><mi>E</mi><mrow><mi>п</mi><mi>р</mi></mrow></msub></mfrac><mo>=</mo><mspace width="0.222em"></mspace><mfrac><mrow><mn>1</mn><mo>,</mo><mn>414</mn><mo>⋅</mo><mn>15</mn><mo>⋅</mo><mn>2</mn></mrow><mn>25</mn></mfrac><mo>=</mo><mspace width="0.222em"></mspace><mn>1</mn><mo>,</mo><mn>70</mn><mspace width="0.222em"></mspace><mi>м</mi><mi>м</mi></mrow><annotation encoding="application/x-tex">\delta_{1} = \frac{\sqrt{2}U_{исп}k_{з}}{E_{пр}} = \ \frac{1,414 \cdot 15 \cdot 2}{25} = \ 1,70\ мм</annotation></semantics></math>
+(1)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>δ</mi><mn>2</mn></msub><mo>=</mo><mfrac><msub><mi>U</mi><mrow><mi>п</mi><mi>и</mi><mi>к</mi><mi>.</mi><mi>з</mi></mrow></msub><msub><mi>E</mi><mrow><mi>д</mi><mi>л</mi></mrow></msub></mfrac><mo>=</mo><mfrac><mrow><mn>8</mn><mo>,</mo><mn>85</mn></mrow><mrow><mn>3</mn><mo>,</mo><mn>5</mn></mrow></mfrac><mo>=</mo><mspace width="0.222em"></mspace><mn>2</mn><mo>,</mo><mn>53</mn><mspace width="0.222em"></mspace><mi>м</mi><mi>м</mi></mrow><annotation encoding="application/x-tex">\delta_{2} = \frac{U_{пик.з}}{E_{дл}} = \frac{8,85}{3,5} = \ 2,53\ мм</annotation></semantics></math>
+(2)</p>
+<p>где U<sub>пик.з</sub> = U<sub>пик</sub>/√3 = 8,85 кВ — пик фаза —
+земля, E<sub>дл</sub> = 3,5 кВ/мм — длительно допустимая напряжённость
+при ШИМ. Определяет длительный критерий; округляя вверх с шагом 0,2 мм,
+получаем δ = 2,6 мм (E = 3,41 кВ/мм). При синусоидальном питании хватило
+бы 1,7 мм: ШИМ требует почти на миллиметр более толстой гильзы, а
+значит, меньше меди в пазу и хуже теплоотвод.</p>
+<h2>2. Противокоронная защита лобовых частей</h2>
+<p>На выходе стержня из паза поле вдоль поверхности изоляции резко
+концентрируется у края заземлённого пазового покрытия — возникают
+скользящие разряды. Их предотвращает полупроводящее покрытие в лобовой
+части. Вместе с ёмкостью изоляции C<sub>0</sub> =
+ε<sub>0</sub>ε<sub>r</sub>/δ оно образует распределённую RC-цепь, вдоль
+которой потенциал спадает с характерной длиной λ:</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mn>0</mn></msub><mo>=</mo><mfrac><mrow><msub><mi>ε</mi><mn>0</mn></msub><msub><mi>ε</mi><mi>r</mi></msub></mrow><mi>δ</mi></mfrac><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mi>λ</mi><mo>=</mo><mfrac><mn>1</mn><msqrt><mrow><mi>ω</mi><msub><mi>C</mi><mn>0</mn></msub><msub><mi>ρ</mi><mi>s</mi></msub></mrow></msqrt></mfrac><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><msub><mi>E</mi><mi>τ</mi></msub><mo>=</mo><mfrac><mi>U</mi><mi>λ</mi></mfrac><mo>≤</mo><mspace width="0.222em"></mspace><mn>0</mn><mo>,</mo><mn>5</mn><mspace width="0.222em"></mspace><mi>к</mi><mi>В</mi><mi>/</mi><mi>м</mi><mi>м</mi></mrow><annotation encoding="application/x-tex">C_{0} = \frac{\varepsilon_{0}\varepsilon_{r}}{\delta},\ \ \lambda = \frac{1}{\sqrt{\omega C_{0}\rho_{s}}},\ \ E_{\tau} = \frac{U}{\lambda} \leq \ 0,5\ кВ/мм</annotation></semantics></math>
+(3)</p>
+<p>Для импульсов ШИМ эквивалентная частота f<sub>экв</sub> =
+1/(πt<sub>ф</sub>) = 314 кГц, U = 8,85 кВ — требуется λ ≥ 17,7 мм и
+ρ<sub>s</sub> ≤ 1,05·10⁵ Ом. Для 50 Гц (U = 4,9 кВ) достаточно λ ≥ 9,8
+мм, ρ<sub>s</sub> ≤ 2,2·10⁹ Ом. Различие в 10 000 раз одним покрытием не
+перекрыть, поэтому применяют двухступенчатое покрытие: у паза — слой 10⁵
+Ом длиной около 55 мм, далее — 10⁹ Ом длиной около 43 мм. Альтернатива —
+нелинейное покрытие на карбиде кремния SiC, сопротивление которого само
+падает с ростом поля.</p>
+<p><img
+src="hoist-l3/media/86baeaafbfef79e26bfcfb0f6d16319740f57436.webp"
+title="Спад потенциала вдоль двух ступеней противокоронного покрытия"
+style="width:5.51042in;height:2.36458in"
+alt="Спад потенциала вдоль двух ступеней противокоронного покрытия" /></p>
+<p><strong>Рис. 1.</strong> Спад потенциала вдоль двух ступеней
+противокоронного покрытия</p>
+<h2>3. Диэлектрические потери</h2>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>д</mi></msub><mo>=</mo><mspace width="0.222em"></mspace><mi>ω</mi><mi>C</mi><msup><mi>U</mi><mn>2</mn></msup><mi>t</mi><mi>g</mi><mi>δ</mi></mrow><annotation encoding="application/x-tex">P_{д} = \ \omega CU^{2}tg\delta</annotation></semantics></math>
+(4)</p>
+<p>При ёмкости фазы на корпус C = ε<sub>0</sub>ε<sub>r</sub>S/δ = 73,6
+нФ и tgδ = 0,02 потери при 50 Гц — 5,5 Вт, от пульсаций ШИМ (1,5 кВ, 4
+кГц) — 83 Вт. Потери выросли в 15 раз, но распределены по 4,8 м²
+изоляции: тепловой поток 18 Вт/м² нагревает изоляцию толщиной 2,6 мм
+всего на 0,2 K. Вывод: при ШИМ изоляцию разрушает не нагрев от
+диэлектрических потерь, а пики напряжения и частичные разряды. Однако
+tgδ растёт с температурой, и при дефектной (увлажнённой) изоляции
+возможен тепловой пробой — это проверяют измерением tgδ.</p>
+<h2>4. Частичные разряды в изоляции кабеля СПЭ</h2>
+<p>Поле в коаксиальном кабеле наибольшее у экрана жилы:</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mo>max</mo></msub><mo>=</mo><mfrac><mi>U</mi><mrow><mi>r</mi><mo>⋅</mo><mi>l</mi><mi>n</mi><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mi>R</mi><mi>r</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac><mo>=</mo><mfrac><mrow><mn>8</mn><mo>,</mo><mn>85</mn></mrow><mrow><mn>6</mn><mo>,</mo><mn>7</mn><mo>⋅</mo><mi>l</mi><mi>n</mi><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mn>10</mn><mo>,</mo><mn>1</mn></mrow><mrow><mn>6</mn><mo>,</mo><mn>7</mn></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac><mo>=</mo><mspace width="0.222em"></mspace><mn>3</mn><mo>,</mo><mn>22</mn><mspace width="0.222em"></mspace><mi>к</mi><mi>В</mi><mi>/</mi><mi>м</mi><mi>м</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">E_{\max} = \frac{U}{r \cdot ln\left( \frac{R}{r} \right)} = \frac{8,85}{6,7 \cdot ln\left( \frac{10,1}{6,7} \right)} = \ 3,22\ кВ/мм.</annotation></semantics></math>
+(5)</p>
+<p>В газовой микропоре поле больше в ε<sub>r</sub> раз (непрерывна
+нормальная составляющая индукции): 2,3·3,22 = 7,41 кВ/мм. Пора
+разряжается, если это больше её пробивного поля по закону Пашена:</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mrow><mi>п</mi><mi>р</mi></mrow></msub><mo>=</mo><mfrac><mrow><mn>365</mn><mi>p</mi><mi>d</mi></mrow><mrow><mi>l</mi><mi>n</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>15</mn><mi>p</mi><mi>d</mi><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.222em"></mspace><mo>−</mo><mspace width="0.222em"></mspace><mi>l</mi><mi>n</mi><mspace width="0.222em"></mspace><mi>l</mi><mi>n</mi><mspace width="0.222em"></mspace><mn>101</mn></mrow></mfrac><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><msub><mi>E</mi><mrow><mi>п</mi><mi>р</mi><mi>.</mi><mi>в</mi></mrow></msub><mo>=</mo><mfrac><msub><mi>U</mi><mrow><mi>п</mi><mi>р</mi></mrow></msub><mi>d</mi></mfrac></mrow><annotation encoding="application/x-tex">U_{пр} = \frac{365pd}{ln(15pd)\  - \ ln\ ln\ 101},\ \ E_{пр.в} = \frac{U_{пр}}{d}</annotation></semantics></math>
+(6)</p>
+<p>(p — давление, мм рт. ст.; d — размер поры, см). Чем меньше пора, тем
+выше её пробивное поле: 0,05 мм — 11,0 кВ/мм, 0,1 мм — 8,65 кВ/мм, 0,2
+мм — 7,11 кВ/мм. При пиках ШИМ разряжаются поры крупнее ≈ 0,17 мм,
+отсюда норма приёмки — поры не крупнее 0,1 мм. Разряды на каждом
+импульсе (тысячи в секунду) эродируют стенки поры и прорастают в
+электрические триинги — древовидные каналы, ведущие к пробою.</p>
+<p><img
+src="hoist-l3/media/f26713ca4def0ccc934f1e584f365728cd3e316d.png"
+title="Пробивное поле газовой поры и поле в поре при пиках ШИМ"
+style="width:5.51042in;height:2.36458in"
+alt="Пробивное поле газовой поры и поле в поре при пиках ШИМ" /></p>
+<p><strong>Рис. 2.</strong> Пробивное поле газовой поры и поле в поре
+при пиках ШИМ</p>
+<h2>5. Старение и ресурс</h2>
+<p>Электрическое старение описывает вольт-временная характеристика
+(кривая жизни):</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>=</mo><mspace width="0.222em"></mspace><mi>A</mi><mo>⋅</mo><msup><mi>E</mi><mrow><mo>−</mo><mi>n</mi></mrow></msup><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mo>⇒</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><msub><mi>t</mi><mn>2</mn></msub><mo>=</mo><msub><mi>t</mi><mn>1</mn></msub><msup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><msub><mi>E</mi><mn>1</mn></msub><msub><mi>E</mi><mn>2</mn></msub></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mi>n</mi></msup></mrow><annotation encoding="application/x-tex">t = \ A \cdot E^{- n}\ \  \Rightarrow \ \ t_{2} = t_{1}\left( \frac{E_{1}}{E_{2}} \right)^{n}</annotation></semantics></math>
+(7)</p>
+<p>Для изоляции статора принято: 30 лет при 3,0 кВ/мм, n = 9. Без
+фильтра пик 3,41 кВ/мм — ресурс 30·(3,0/3,41)⁹ = 9,6 года; с фильтром
+2,77 кВ/мм — 61 год. Большой показатель n делает изоляцию очень
+чувствительной к пикам: +8 % поля — ресурс вдвое меньше. При ШИМ
+старение дополнительно ускоряет большое число импульсов в секунду.
+Тепловое старение подчиняется правилу Монтзингера: +8…10 °C — срок
+примерно вдвое меньше.</p>
+<p><img
+src="hoist-l3/media/287adfb563e40a8ffc235413a2d52523b161c0e2.png"
+title="Кривая жизни изоляции статора и рабочие точки без фильтра и с фильтром"
+style="width:5.51042in;height:2.36458in"
+alt="Кривая жизни изоляции статора и рабочие точки без фильтра и с фильтром" /></p>
+<p><strong>Рис. 3.</strong> Кривая жизни изоляции статора и рабочие
+точки без фильтра и с фильтром</p>
+<h2>6. Нагрев обмотки и поверхностный эффект</h2>
+<p>Класс F допускает 155 °C в наиболее нагретой точке. Высшие гармоники
+тока ШИМ вытесняются к поверхности проводника (скин-эффект), и
+сопротивление меди для них растёт. Глубина проникновения и коэффициент
+добавочных потерь элементарного проводника высотой h:</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>δ</mi><mrow><mi>с</mi><mi>к</mi></mrow></msub><mo>=</mo><msqrt><mfrac><mrow><mn>2</mn><mi>ρ</mi></mrow><mrow><mi>ω</mi><msub><mi>μ</mi><mn>0</mn></msub></mrow></mfrac></msqrt><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><msub><mi>k</mi><mi>R</mi></msub><mo>=</mo><mspace width="0.222em"></mspace><mi>ξ</mi><mfrac><mrow><mi>s</mi><mi>h</mi><mspace width="0.222em"></mspace><mn>2</mn><mi>ξ</mi><mspace width="0.222em"></mspace><mo>+</mo><mspace width="0.222em"></mspace><mi>s</mi><mi>i</mi><mi>n</mi><mspace width="0.222em"></mspace><mn>2</mn><mi>ξ</mi></mrow><mrow><mi>c</mi><mi>h</mi><mspace width="0.222em"></mspace><mn>2</mn><mi>ξ</mi><mspace width="0.222em"></mspace><mo>−</mo><mspace width="0.222em"></mspace><mi>c</mi><mi>o</mi><mi>s</mi><mspace width="0.222em"></mspace><mn>2</mn><mi>ξ</mi></mrow></mfrac><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mi>ξ</mi><mspace width="0.222em"></mspace><mo>=</mo><mfrac><mi>h</mi><msub><mi>δ</mi><mrow><mi>с</mi><mi>к</mi></mrow></msub></mfrac></mrow><annotation encoding="application/x-tex">\delta_{ск} = \sqrt{\frac{2\rho}{\omega\mu_{0}}},\ \ k_{R} = \ \xi\frac{sh\ 2\xi\  + \ sin\ 2\xi}{ch\ 2\xi\  - \ cos\ 2\xi},\ \ \xi\  = \frac{h}{\delta_{ск}}</annotation></semantics></math>
+(8)</p>
+<p>При 4 кГц и ρ = 2,3·10⁻⁸ Ом·м (медь при 110 °C) δ<sub>ск</sub> = 1,21
+мм. Проводник 3 мм имеет k<sub>R</sub> = 2,46, 2 мм — 1,52. Поэтому
+стержни делят на тонкие элементарные проводники и транспонируют их
+(стержень Рёбеля). Чем тоньше проводник, тем меньше добавочные потери,
+но больше изоляции и меньше меди в пазу — выбирают наибольшую высоту,
+при которой k<sub>R</sub> допустим.</p>
+<p><img
+src="hoist-l3/media/6f18004b051b3088c7726f1940347b691edaf335.png"
+title="Коэффициент добавочных потерь на 4 кГц в зависимости от высоты проводника"
+style="width:5.51042in;height:2.36458in"
+alt="Коэффициент добавочных потерь на 4 кГц в зависимости от высоты проводника" /></p>
+<p><strong>Рис. 4.</strong> Коэффициент добавочных потерь на 4 кГц в
+зависимости от высоты проводника</p>
+<h2>7. Диагностика под рабочим напряжением</h2>
+<h3>7.1. Частичные разряды</h3>
+<p>Кажущийся заряд ЧР измеряют по импульсу тока во внешней цепи. Прибор
+предварительно калибруют: калибратор подаёт известный заряд
+Q<sub>кал</sub>, и сигнал пересчитывают пропорционально:</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Q</mi><mrow><mi>ч</mi><mi>р</mi></mrow></msub><mo>=</mo><msub><mi>Q</mi><mrow><mi>к</mi><mi>а</mi><mi>л</mi></mrow></msub><mfrac><msub><mi>U</mi><mrow><mi>и</mi><mi>з</mi><mi>м</mi></mrow></msub><msub><mi>U</mi><mrow><mi>к</mi><mi>а</mi><mi>л</mi></mrow></msub></mfrac><mo>=</mo><mspace width="0.222em"></mspace><mn>1000</mn><mo>⋅</mo><mfrac><mn>60</mn><mn>250</mn></mfrac><mo>=</mo><mspace width="0.222em"></mspace><mn>240</mn><mspace width="0.222em"></mspace><mi>п</mi><mi>К</mi><mi>л</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">Q_{чр} = Q_{кал}\frac{U_{изм}}{U_{кал}} = \ 1000 \cdot \frac{60}{250} = \ 240\ пКл.</annotation></semantics></math>
+(9)</p>
+<p>Под работающим ПЧ классическая полоса МЭК 60270 (100–500 кГц) и
+полоса 2–20 МГц забиты помехами: фронты ШИМ и «звон» кабеля дают мощный
+спектр до десятков мегагерц. Импульсы ЧР длятся наносекунды, и их спектр
+простирается до сотен мегагерц, поэтому онлайн-контроль ведут в
+ОВЧ/СВЧ-диапазоне (30–300 МГц и выше) датчиками HFCT, ёмкостными и
+антенными; дополнительно применяют стробирование по синхроимпульсам СУ
+ПЧ. Подходы описаны в стандартах серии IEC 60034-27.</p>
+<p><img
+src="hoist-l3/media/c0b46907ba06c1bba3918643e4dddd23c209e5c1.png"
+title="Спектры помех ШИМ и импульсов ЧР; полоса МЭК 60270 и ОВЧ-полоса"
+style="width:5.51042in;height:2.36458in"
+alt="Спектры помех ШИМ и импульсов ЧР; полоса МЭК 60270 и ОВЧ-полоса" /></p>
+<p><strong>Рис. 5.</strong> Спектры помех ШИМ и импульсов ЧР; полоса МЭК
+60270 и ОВЧ-полоса</p>
+<h3>7.2. Зависимость tgδ(U)</h3>
+<p>Пока в изоляции нет ЧР, tgδ не зависит от напряжения. С появлением
+разрядов в пустотах добавляются потери, и tgδ начинает расти. Напряжение
+зажигания ЧР находят, продлевая восходящий участок до исходного уровня;
+прирост tgδ между 0,2 и 1,0 U<sub>ном</sub> (tip-up) характеризует
+количество пустот.</p>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 12%" />
+<col style="width: 12%" />
+<col style="width: 12%" />
+<col style="width: 12%" />
+<col style="width: 12%" />
+<col style="width: 12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>U/U<sub>ном</sub></strong></th>
+<th><strong>0,2</strong></th>
+<th><strong>0,4</strong></th>
+<th><strong>0,6</strong></th>
+<th><strong>0,8</strong></th>
+<th><strong>1,0</strong></th>
+<th><strong>1,2</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>tgδ, %</td>
+<td>1,00</td>
+<td>1,00</td>
+<td>1,00</td>
+<td>1,30</td>
+<td>1,75</td>
+<td>2,20</td>
+</tr>
+</tbody>
+</table>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mrow><mi>з</mi><mi>а</mi><mi>ж</mi></mrow></msub><mo>=</mo><msub><mi>U</mi><mrow><mi>н</mi><mi>о</mi><mi>м</mi></mrow></msub><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>8</mn><mspace width="0.222em"></mspace><mo>−</mo><mspace width="0.222em"></mspace><mfrac><mrow><mn>1</mn><mo>,</mo><mn>30</mn><mspace width="0.222em"></mspace><mo>−</mo><mspace width="0.222em"></mspace><mn>1</mn><mo>,</mo><mn>00</mn></mrow><mrow><mn>2</mn><mo>,</mo><mn>25</mn></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mspace width="0.222em"></mspace><mn>6</mn><mo>⋅</mo><mn>0</mn><mo>,</mo><mn>667</mn><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mn>4</mn><mo>,</mo><mn>0</mn><mspace width="0.222em"></mspace><mi>к</mi><mi>В</mi></mrow><annotation encoding="application/x-tex">U_{заж} = U_{ном}\left( 0,8\  - \ \frac{1,30\  - \ 1,00}{2,25} \right) = \ 6 \cdot 0,667\  = \ 4,0\ кВ</annotation></semantics></math>
+(10)</p>
+<p>4,0 кВ больше фазного напряжения сети 3,46 кВ — при синусоидальном
+питании ЧР не было бы. Но пики ШИМ фаза — земля 7–9 кВ выше
+U<sub>заж</sub>: при питании от ПЧ разряды возникают на каждом импульсе.
+Отсюда обязательность фильтра и постоянного контроля ЧР.</p>
+<p><img
+src="hoist-l3/media/9b14817dd06311ae16df0d6e4e4624c37e9c8034.png"
+title="Зависимость tgδ(U) и определение напряжения зажигания ЧР"
+style="width:5.11458in;height:2.19792in"
+alt="Зависимость tgδ(U) и определение напряжения зажигания ЧР" /></p>
+<p><strong>Рис. 6.</strong> Зависимость tgδ(U) и определение напряжения
+зажигания ЧР</p>
+<h2>8. Приёмо-сдаточные испытания</h2>
+<p>Испытание повышенным напряжением промышленной частоты проверяет, что
+в изоляции нет грубых дефектов. В задании для обмотки статора задано 15
+кВ, 1 минута; конкретное значение для реального объекта берут по
+действующим нормам (ПУЭ, гл. 1.8; ГОСТ IEC 60034-1; документация
+изготовителя). Обмотка для источника — ёмкость, поэтому мощность
+испытательного трансформатора определяется ёмкостным током:</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mo>=</mo><mspace width="0.222em"></mspace><mi>ω</mi><mi>C</mi><msub><mi>U</mi><mrow><mi>и</mi><mi>с</mi><mi>п</mi></mrow></msub><mo>=</mo><mspace width="0.222em"></mspace><mn>314</mn><mo>⋅</mo><mn>221</mn><mo>⋅</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>9</mn></mrow></msup><mo>⋅</mo><mn>15</mn><mspace width="0.222em"></mspace><mn>000</mn><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mn>1</mn><mo>,</mo><mn>04</mn><mspace width="0.222em"></mspace><mi>А</mi><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mi>S</mi><mspace width="0.222em"></mspace><mo>=</mo><msub><mi>U</mi><mrow><mi>и</mi><mi>с</mi><mi>п</mi></mrow></msub><mi>I</mi><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mn>15</mn><mo>,</mo><mn>6</mn><mspace width="0.222em"></mspace><mi>к</mi><mi>В</mi><mo>⋅</mo><mi>А</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">I = \ \omega CU_{исп} = \ 314 \cdot 221 \cdot 10^{- 9} \cdot 15\ 000\  = \ 1,04\ А,\ \ S\  = U_{исп}I\  = \ 15,6\ кВ \cdot А.</annotation></semantics></math>
+(11)</p>
+<p>С запасом 1,2 нужен трансформатор не меньше 18,7 кВ·А — из ряда 25
+кВ·А.</p>
+<table>
+<colgroup>
+<col style="width: 7%" />
+<col style="width: 53%" />
+<col style="width: 39%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>№</strong></th>
+<th><strong>Операция</strong></th>
+<th><strong>Критерий</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Сопротивление изоляции мегаомметром 2500 В, коэффициент абсорбции
+R<sub>60</sub>/R<sub>15</sub></td>
+<td>по нормам; абсорбция ≥ 1,3</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>tgδ(U) и ЧР при 0,2…1,2 U<sub>ном</sub></td>
+<td>прирост tgδ, U<sub>заж</sub> &gt; U<sub>ф</sub></td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Испытание 15 кВ 50 Гц, 1 мин</td>
+<td>нет пробоя и перекрытия</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Повторное измерение сопротивления изоляции</td>
+<td>не ниже исходного</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>Испытание кабеля СПЭ (по заданию — 35 кВ) и проверка экранов</td>
+<td>нет пробоя</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>Оформление протокола и итогового отчёта</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h2>Контрольные вопросы</h2>
+<ol type="1">
+<li><p>По каким двум критериям выбирают толщину корпусной изоляции и
+какой из них определяющий при ШИМ?</p></li>
+<li><p>Зачем нужно противокоронное покрытие и почему для ШИМ оно
+двухступенчатое?</p></li>
+<li><p>Почему диэлектрические потери при ШИМ мало влияют на нагрев
+изоляции?</p></li>
+<li><p>Почему поле в газовой поре больше, чем в изоляции? Как выбрать
+допустимый размер поры?</p></li>
+<li><p>Как пиковое поле влияет на ресурс при n = 9?</p></li>
+<li><p>Зачем стержень делят на элементарные проводники?</p></li>
+<li><p>Почему ЧР под работающим ПЧ измеряют в ОВЧ-диапазоне?</p></li>
+<li><p>Как по зависимости tgδ(U) найти напряжение зажигания ЧР?</p></li>
+<li><p>Как выбрать мощность испытательного трансформатора?</p></li>
+</ol>
+<h2>Литература</h2>
+<ol start="10" type="1">
+<li><p>Важов В. Ф., Лавринович В. А. Техника высоких напряжений :
+учебник. — Томск : Изд-во ТПУ.</p></li>
+<li><p>Базуткин В. В., Ларионов В. П., Пинталь Ю. С. Техника высоких
+напряжений: изоляция и перенапряжения в электрических системах. — М. :
+Энергоатомиздат, 1986.</p></li>
+<li><p>Розанов Ю. К., Рябчицкий М. В., Кваснюк А. А. Силовая электроника
+: учебник для вузов. — М. : Издательский дом МЭИ.</p></li>
+<li><p>Ключев В. И. Теория электропривода : учебник для вузов. — М. :
+Энергоатомиздат.</p></li>
+<li><p>Stone G. C., Culbert I., Boulter E. A., Dhirani H. Electrical
+Insulation for Rotating Machines. — 2nd ed. — Wiley–IEEE Press,
+2014.</p></li>
+<li><p>IEC TS 60034-25. Rotating electrical machines — AC electrical
+machines used in power drive systems — Application guide.</p></li>
+<li><p>IEC 60034-18-41 / IEC 60034-18-42. Qualification of electrical
+insulation systems used in rotating machines fed from voltage
+converters.</p></li>
+<li><p>IEC 60270. High-voltage test techniques — Charge-based
+measurement of partial discharges.</p></li>
+</ol>
+</main></body></html>

@@ -1,0 +1,768 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Наладка привода ВД-6300. Методические указания</title><style>:root{--ink:#16202c;--muted:#5b6675;--line:#d9dde3;--acc:#1f5faf;--bg:#fff;--soft:#f3f5f8}
+@media (prefers-color-scheme:dark){:root{--ink:#e6eaf0;--muted:#9aa6b5;--line:#33404f;--acc:#7fb3f0;--bg:#121820;--soft:#1b2430}img{background:#fff}}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 "PT Serif",Georgia,"Times New Roman",serif}
+.bar{position:sticky;top:0;display:flex;justify-content:space-between;gap:12px;padding:10px 16px;background:var(--soft);border-bottom:1px solid var(--line);font:600 14px system-ui,-apple-system,"Segoe UI",sans-serif;z-index:5}
+.bar a{color:var(--acc);text-decoration:none}.bar .pdf{border:1px solid var(--acc);border-radius:999px;padding:2px 12px}
+main{max-width:820px;margin:0 auto;padding:16px 16px 64px}
+h1,h2,h3,h4{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.25;margin:1.6em 0 .5em}
+h1{font-size:1.5em}h2{font-size:1.25em}h3{font-size:1.08em}
+p{margin:.5em 0}img{max-width:100%;height:auto;display:block;margin:12px auto;border-radius:6px}
+figure{margin:16px 0}figcaption{text-align:center;color:var(--muted);font-size:.9em}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:.92em;display:block;overflow-x:auto}
+td,th{border:1px solid var(--line);padding:6px 8px;vertical-align:top}th{background:var(--soft);text-align:left}
+math{font-size:1.08em}math[display=block]{overflow-x:auto;overflow-y:hidden;margin:10px 0}
+blockquote{margin:12px 0;padding:8px 14px;border-left:4px solid var(--acc);background:var(--soft)}
+@media print{.bar{display:none}body{font-size:12pt}main{max-width:none;padding:0}table{display:table}img{background:none}}
+</style></head><body><nav class="bar"><a href="../">← Техника высоких напряжений</a><a class="pdf" href="vd-guide.pdf" download>Скачать PDF</a></nav><main><p>Техника высоких напряжений</p>
+<p><strong>Методические указания для студентов</strong></p>
+<p><strong>Наладка привода ВД-6300</strong></p>
+<p><em>Деловая игра по расчётному заданию «Вентильный двигатель 10 кВ»,
+недели 1–15</em></p>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><p><strong>Цель занятия.</strong> Закрепить расчёты всех 15 недель
+задания на одном объекте — высоковольтном частотно-регулируемом приводе
+ВД-6300 — и научиться принимать по ним инженерные решения: выбирать
+размеры, номиналы и режимы так, чтобы изоляция и оборудование работали с
+запасом.</p>
+<p><strong>Что понадобится:</strong> компьютер или телефон с браузером,
+калькулятор с натуральным логарифмом и степенями, эти указания. Ссылку
+на игру выдаёт преподаватель.</p>
+<p><strong>Продолжительность:</strong> 60–90 минут; прогресс сохраняется
+в браузере, можно продолжить позже.</p></td>
+</tr>
+</tbody>
+</table>
+<h2>1. Объект: привод ВД-6300</h2>
+<p>Привод состоит из семи аппаратов, через которые энергия идёт от сети
+к двигателю. Наладка ведётся в том же порядке: следующий аппарат
+открывается, когда налажен предыдущий; на мнемосхеме он загорается, и по
+шине идёт ток.</p>
+<p><img
+src="vd-guide/media/f5ee039d498db333438492be0fec4d24287a7f39.webp"
+title="Мнемосхема привода ВД-6300 после наладки: сеть 35 кВ → RIP-ввод → трансформатор 35/10 кВ с 12-пульсным выпрямителем → звено Ld с ОПН → инвертор АИТ → двигатель 10 кВ; мониторинг ЧР и паспорт изоляции в АСУ ТП"
+style="width:6.30208in;height:3.10417in"
+alt="Мнемосхема привода ВД-6300 после наладки: сеть 35 кВ → RIP-ввод → трансформатор 35/10 кВ с 12-пульсным выпрямителем → звено Ld с ОПН → инвертор АИТ → двигатель 10 кВ; мониторинг ЧР и паспорт изоляции в АСУ ТП" /></p>
+<p><strong>Рис. 1.</strong> Мнемосхема привода ВД-6300 после наладки:
+сеть 35 кВ → RIP-ввод → трансформатор 35/10 кВ с 12-пульсным
+выпрямителем → звено Ld с ОПН → инвертор АИТ → двигатель 10 кВ;
+мониторинг ЧР и паспорт изоляции в АСУ ТП</p>
+<table>
+<colgroup>
+<col style="width: 27%" />
+<col style="width: 16%" />
+<col style="width: 56%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Аппарат</strong></th>
+<th><strong>Этапы</strong></th>
+<th><strong>Что настраивается на стенде</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Ввод 35 кВ</td>
+<td>А1–А5</td>
+<td>диаметр трубы; число обкладок; число рёбер; рабочее поле RIP;
+допустимая пустота</td>
+</tr>
+<tr class="even">
+<td>Трансформатор 8 МВА</td>
+<td>Б1</td>
+<td>схема выпрямителя и охлаждение</td>
+</tr>
+<tr class="odd">
+<td>Реактор Ld и ОПН</td>
+<td>В1, В2</td>
+<td>охлаждение и поверхность; U<sub>нр</sub> и класс ОПН</td>
+</tr>
+<tr class="even">
+<td>Инвертор АИТ</td>
+<td>Г1–Г3</td>
+<td>ёмкость C<sub>к</sub>; ёмкость снаббера C<sub>s</sub>; номинал
+резистора</td>
+</tr>
+<tr class="odd">
+<td>Двигатель 10 кВ</td>
+<td>Д1, Д2</td>
+<td>толщина изоляции δ; сопротивление покрытия ρ<sub>s</sub></td>
+</tr>
+<tr class="even">
+<td>Мониторинг ЧР</td>
+<td>Е1, Е2</td>
+<td>ширина строба; диагноз по портретам PRPD</td>
+</tr>
+<tr class="odd">
+<td>Паспорт изоляции</td>
+<td>Ж1</td>
+<td>баллы трёх узлов → индекс HI</td>
+</tr>
+</tbody>
+</table>
+<h2>2. Правила игры</h2>
+<ol type="1">
+<li><p>Каждый из 16 этапов состоит из двух шагов:
+<strong>расчёт</strong> (ввести число) и <strong>наладка</strong> на
+интерактивном стенде (ползунки, переключатели, кнопка «Принять
+решение»). Всего 32 проверки.</p></li>
+<li><p>Числовой ответ принимается с допуском ±3 %; дробную часть можно
+отделять запятой или точкой. Единицы указаны рядом с полем
+ввода.</p></li>
+<li><p>«Жизни» — разрядный промежуток «стержень — плоскость». Каждая
+ошибка удлиняет стример на шаг; шестая ошибка — пробой изоляции, игра
+начинается заново. Три верных ответа подряд с первой попытки «сушат
+изоляцию» и убирают один шаг.</p></li>
+<li><p>Очки: верно с первой попытки — 100, после ошибки — 50; подсказка
+снимает 50 очков. Подсказка одна на всю игру. Максимум — 3200.</p></li>
+<li><p>На стенде зелёные показания — условие выполнено, красные — нет.
+Выполнить условия мало: чаще всего нужно наименьшее или наибольшее
+подходящее значение. Читайте задание до конца.</p></li>
+<li><p>После последнего этапа нажмите «Пуск», затем «Скопировать итог» и
+отправьте текст преподавателю.</p></li>
+</ol>
+<p><img
+src="vd-guide/media/2497503418f356046301ab1394372c39fe11e879.webp"
+title="Пример стенда: этап Г1, подбор коммутирующей ёмкости. Слева — ползунок и кнопка «Принять решение», справа — форма напряжения и индикаторы условий"
+style="width:6.30208in;height:2.6875in"
+alt="Пример стенда: этап Г1, подбор коммутирующей ёмкости. Слева — ползунок и кнопка «Принять решение», справа — форма напряжения и индикаторы условий" /></p>
+<p><strong>Рис. 2.</strong> Пример стенда: этап Г1, подбор коммутирующей
+ёмкости. Слева — ползунок и кнопка «Принять решение», справа — форма
+напряжения и индикаторы условий</p>
+<h2>3. Порядок работы на каждом этапе</h2>
+<ol type="1">
+<li><p>Прочитайте «Дано» и пояснение в этих указаниях, выпишите
+формулы.</p></li>
+<li><p>Выполните расчёт на калькуляторе, следите за единицами. Запишите
+ответ в бланк (приложение).</p></li>
+<li><p>Введите ответ в игре. Ошиблись — проверьте перевод единиц и
+порядок действий.</p></li>
+<li><p>На стенде сначала оцените решение расчётом, затем подтвердите его
+ползунком. Убедитесь, что все показания зелёные и выбрано наименьшее или
+наибольшее значение, которое требует задание.</p></li>
+<li><p>Запишите выбранное решение и показания стенда в бланк.</p></li>
+</ol>
+<h2>4. Этапы наладки</h2>
+<h3>Ввод 35 кВ</h3>
+<p>RIP-ввод 35 кВ подводит питание сети к трансформатору. Пять этапов:
+поле у трубы, уравнительные обкладки, путь утечки покрышки, старение
+изоляции и частичные разряды.</p>
+<h4>А1 · Труба ввода по полю (расчётная неделя 4)</h4>
+<p><strong>Дано.</strong> RIP-ввод — коаксиальная система: токоведущая
+труба радиусом r<sub>0</sub> внутри изоляционного остова радиусом R = 45
+мм. Испытательное напряжение U = 95 кВ. Стандартный ряд труб: Ø20, Ø25,
+Ø30, Ø40, Ø50 мм.</p>
+<p><strong>Пояснение.</strong> Наибольшее поле — у поверхности
+внутреннего проводника. При заданном R поле минимально при r<sub>0</sub>
+= R/e: тонкая труба даёт малый радиус кривизны, толстая оставляет тонкий
+слой изоляции. Радиус — половина диаметра.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mo>max</mo></msub><mo>=</mo><mfrac><mi>U</mi><mrow><msub><mi>r</mi><mn>0</mn></msub><mo>⋅</mo><mi>l</mi><mi>n</mi><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mi>R</mi><msub><mi>r</mi><mn>0</mn></msub></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac></mrow><annotation encoding="application/x-tex">E_{\max} = \frac{U}{r_{0} \cdot ln\left( \frac{R}{r_{0}} \right)}</annotation></semantics></math>
+(1)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>r</mi><mrow><mn>0</mn><mo>,</mo><mi>о</mi><mi>п</mi><mi>т</mi></mrow></msub><mo>=</mo><mfrac><mi>R</mi><mi>e</mi></mfrac></mrow><annotation encoding="application/x-tex">r_{0,опт} = \frac{R}{e}</annotation></semantics></math>
+(2)</p>
+<p><strong>Расчёт.</strong> Найти: наибольшее поле у трубы Ø20 мм,
+кВ/мм.</p>
+<p><strong>Наладка.</strong> Подобрать трубу из ряда так, чтобы поле у
+её поверхности было наименьшим (по току 400 А подходят все).</p>
+<p>Ответ: расчёт ____________ кВ/мм; решение наладки
+______________________</p>
+<h4>А2 · Уравнительные обкладки (расчётная неделя 5)</h4>
+<p><strong>Дано.</strong> Конденсаторный ввод: металлические обкладки
+делят изоляцию на N слоёв с равными ёмкостями C<sub>k</sub>.
+Испытательное напряжение U = 95 кВ. Напряжение начала скользящих
+разрядов у края обкладки U<sub>н.ск</sub> = 20,3 кВ.</p>
+<p><strong>Пояснение.</strong> Слои включены последовательно и несут
+одинаковый заряд, поэтому при равных ёмкостях ступени напряжения равны.
+Скользящий разряд — разряд вдоль поверхности диэлектрика с большой
+удельной ёмкостью; его канал растёт очень быстро. Ступень берут с
+запасом 2.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><mi>U</mi><mo>=</mo><mfrac><mi>U</mi><mi>N</mi></mfrac></mrow><annotation encoding="application/x-tex">\Delta U = \frac{U}{N}</annotation></semantics></math>
+(3)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mi>k</mi></msub><mo>=</mo><mfrac><mrow><mn>2</mn><mi>π</mi><msub><mi>ε</mi><mn>0</mn></msub><msub><mi>ε</mi><mi>r</mi></msub><msub><mi>l</mi><mi>k</mi></msub></mrow><mrow><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><msub><mi>r</mi><mi>k</mi></msub><msub><mi>r</mi><mrow><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac><mo>=</mo><mi>c</mi><mi>o</mi><mi>n</mi><mi>s</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">C_{k} = \frac{2\pi\varepsilon_{0}\varepsilon_{r}l_{k}}{\ln\left( \frac{r_{k}}{r_{k - 1}} \right)} = const</annotation></semantics></math>
+(4)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><mi>U</mi><mo>≤</mo><mfrac><msub><mi>U</mi><mrow><mi>н</mi><mi>.</mi><mi>с</mi><mi>к</mi></mrow></msub><mn>2</mn></mfrac></mrow><annotation encoding="application/x-tex">\Delta U \leq \frac{U_{н.ск}}{2}</annotation></semantics></math>
+(5)</p>
+<p><strong>Расчёт.</strong> Найти: ступень напряжения на один слой при N
+= 8, кВ.</p>
+<p><strong>Наладка.</strong> Выбрать наименьшее число обкладок N (4…14),
+при котором ступень при испытании не больше U<sub>н.ск</sub>/2 = 10,15
+кВ.</p>
+<p>Ответ: расчёт ____________ кВ; решение наладки
+______________________</p>
+<h4>А3 · Покрышка и путь утечки (расчётная неделя 6)</h4>
+<p><strong>Дано.</strong> Наибольшее рабочее напряжение U<sub>нр</sub> =
+40,5 кВ; II степень загрязнения: λ<sub>э</sub> = 2,35 см/кВ; коэффициент
+формы k = 1,1. Покрышка высотой 420 мм; варианты: 8 рёбер (вылет 40/30
+мм), 10 рёбер (40/30), 12 рёбер (45/35).</p>
+<p><strong>Пояснение.</strong> Длина пути утечки L<sub>ут</sub> —
+расстояние по поверхности рёбер, определяет работу в грязи и влаге.
+Сухоразрядное расстояние L<sub>сух</sub> — путь по воздуху, определяет
+грозовой импульс. s/p — отношение шага рёбер к вылету: при s/p &lt; 0,8
+соседние рёбра перекрываются дугой.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mrow><mi>у</mi><mi>т</mi></mrow></msub><mo>=</mo><msub><mi>λ</mi><mi>э</mi></msub><mo>⋅</mo><msub><mi>U</mi><mrow><mi>н</mi><mi>р</mi></mrow></msub><mo>⋅</mo><mi>k</mi></mrow><annotation encoding="application/x-tex">L_{ут} = \lambda_{э} \cdot U_{нр} \cdot k</annotation></semantics></math>
+(6)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mrow><mi>с</mi><mi>у</mi><mi>х</mi></mrow></msub><mo>=</mo><mfrac><msub><mi>U</mi><mrow><mi>г</mi><mi>и</mi></mrow></msub><msub><mi>E</mi><mrow><mi>г</mi><mi>и</mi></mrow></msub></mfrac><mo>⋅</mo><msub><mi>k</mi><mi>а</mi></msub></mrow><annotation encoding="application/x-tex">L_{сух} = \frac{U_{ги}}{E_{ги}} \cdot k_{а}</annotation></semantics></math>
+(7)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mi>/</mi><mi>p</mi><mo>≥</mo><mn>0</mn><mo>,</mo><mn>8</mn></mrow><annotation encoding="application/x-tex">s/p \geq 0,8</annotation></semantics></math>
+(8)</p>
+<p><strong>Расчёт.</strong> Найти: нормированная длина пути утечки
+L<sub>ут</sub>, мм.</p>
+<p><strong>Наладка.</strong> Выбрать 8, 10 или 12 рёбер: путь утечки не
+меньше нормы и s/p ≥ 0,8.</p>
+<p>Ответ: расчёт ____________ мм; решение наладки
+______________________</p>
+<h4>А4 · Старение RIP: рабочее поле на 30 лет (расчётная неделя 10)</h4>
+<p><strong>Дано.</strong> Кратковременная прочность RIP E<sub>0</sub> =
+25 кВ/мм при t<sub>0</sub> = 1 мин; показатель кривой жизни n = 9; срок
+службы t<sub>сл</sub> = 30 лет = 262 800 ч; запас на разброс
+k<sub>з</sub> = 1,5.</p>
+<p><strong>Пояснение.</strong> Кривая жизни — зависимость срока службы
+от напряжённости. Времена подставляют в одних единицах (1 мин = 1/60 ч).
+Рабочее поле должно удовлетворять k<sub>з</sub>·E<sub>раб</sub> ≤
+E<sub>дл</sub>. Правило Монтзингера: +8…10 °C сокращают срок примерно
+вдвое.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>=</mo><msub><mi>t</mi><mn>0</mn></msub><msup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><msub><mi>E</mi><mn>0</mn></msub><mi>E</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mi>n</mi></msup></mrow><annotation encoding="application/x-tex">t = t_{0}\left( \frac{E_{0}}{E} \right)^{n}</annotation></semantics></math>
+(9)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mrow><mi>д</mi><mi>л</mi></mrow></msub><mo>=</mo><msub><mi>E</mi><mn>0</mn></msub><msup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><msub><mi>t</mi><mn>0</mn></msub><msub><mi>t</mi><mrow><mi>с</mi><mi>л</mi></mrow></msub></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mn>1</mn><mi>/</mi><mi>n</mi></mrow></msup></mrow><annotation encoding="application/x-tex">E_{дл} = E_{0}\left( \frac{t_{0}}{t_{сл}} \right)^{1/n}</annotation></semantics></math>
+(10)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>k</mi><mi>з</mi></msub><mo>⋅</mo><msub><mi>E</mi><mrow><mi>р</mi><mi>а</mi><mi>б</mi></mrow></msub><mo>≤</mo><msub><mi>E</mi><mrow><mi>д</mi><mi>л</mi></mrow></msub></mrow><annotation encoding="application/x-tex">k_{з} \cdot E_{раб} \leq E_{дл}</annotation></semantics></math>
+(11)</p>
+<p><strong>Расчёт.</strong> Найти: допустимая длительная напряжённость
+E<sub>дл</sub> на 30 лет, кВ/мм.</p>
+<p><strong>Наладка.</strong> Ползунком E<sub>раб</sub> = 1,0…4,0 кВ/мм
+найти наибольшее рабочее поле, при котором срок при E =
+1,5·E<sub>раб</sub> не меньше 30 лет.</p>
+<p>Ответ: расчёт ____________ кВ/мм; решение наладки
+______________________</p>
+<h4>А5 · Допустимая пустота в RIP (расчётная неделя 11)</h4>
+<p><strong>Дано.</strong> Схема a–b–c: пустота пробивается при
+U<sub>пр</sub> = 867 В, после разряда остаётся U<sub>ост</sub> =
+0,25·U<sub>пр</sub>; ёмкость изоляции над пустотой C<sub>b</sub> = 10
+фФ. Поле в пустоте 6,7 кВ/мм при синусе и 8,7 кВ/мм со всплесками АИТ
+(k<sub>п</sub> = 1,3); давление p = 760 мм рт. ст.</p>
+<p><strong>Пояснение.</strong> Частичный разряд (ЧР) замыкает только
+часть изоляции, например газовую пустоту. C<sub>a</sub> — ёмкость
+остальной изоляции, C<sub>b</sub> — изоляции над пустотой, C<sub>c</sub>
+— пустоты. Заряд «кажущийся»: его измеряют на выводах. Поле в пустоте в
+ε<sub>r</sub> раз выше, чем в изоляции. Пустота разряжается, когда поле
+в ней выше её пробивного поля по закону Пашена.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>q</mi><mo>=</mo><msub><mi>C</mi><mi>b</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>U</mi><mrow><mi>п</mi><mi>р</mi></mrow></msub><mo>−</mo><msub><mi>U</mi><mrow><mi>о</mi><mi>с</mi><mi>т</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">q = C_{b}\left( U_{пр} - U_{ост} \right)</annotation></semantics></math>
+(12)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mrow><mi>п</mi><mi>р</mi></mrow></msub><mo>=</mo><mfrac><mrow><mn>365</mn><mi>p</mi><mi>d</mi></mrow><mrow><mi>l</mi><mi>n</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>15</mn><mi>p</mi><mi>d</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mi>l</mi><mi>n</mi><mspace width="0.222em"></mspace><mi>l</mi><mi>n</mi><mspace width="0.222em"></mspace><mn>101</mn></mrow></mfrac><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><msub><mi>E</mi><mrow><mi>п</mi><mi>р</mi><mi>.</mi><mi>в</mi></mrow></msub><mo>=</mo><mfrac><msub><mi>U</mi><mrow><mi>п</mi><mi>р</mi></mrow></msub><mi>d</mi></mfrac></mrow><annotation encoding="application/x-tex">U_{пр} = \frac{365pd}{ln(15pd) - ln\ ln\ 101},\ \ E_{пр.в} = \frac{U_{пр}}{d}</annotation></semantics></math>
+(13)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mi>в</mi></msub><mo>=</mo><msub><mi>ε</mi><mi>r</mi></msub><msub><mi>E</mi><mrow><mi>и</mi><mi>з</mi></mrow></msub></mrow><annotation encoding="application/x-tex">E_{в} = \varepsilon_{r}E_{из}</annotation></semantics></math>
+(14)</p>
+<p><strong>Расчёт.</strong> Найти: кажущийся заряд q, пКл.</p>
+<p><strong>Наладка.</strong> Назначить норму приёмки: наибольший размер
+пустоты (0,02 / 0,05 / 0,1 / 0,2 мм), которая не разряжается при питании
+от АИТ.</p>
+<p>Ответ: расчёт ____________ пКл; решение наладки
+______________________</p>
+<h3>Трансформатор 8 МВА</h3>
+<p>Сухой трансформатор 35/10 кВ с литой изоляцией питает выпрямитель.
+Этап: гармоники тока и нагрев обмотки.</p>
+<h4>Б1 · Гармоники и нагрев трансформатора (расчётная неделя 12)</h4>
+<p><strong>Дано.</strong> Сухой трансформатор 8 МВА: P<sub>0</sub> = 12
+кВт, P<sub>k</sub> = 60 кВт (P<sub>dc</sub> 88 %, P<sub>EC</sub> 8 %,
+P<sub>OSL</sub> 4 %), загрузка β = 0,93, норма перегрева обмотки 100 K
+(класс F).</p>
+<p><strong>Пояснение.</strong> Вихревые потери P<sub>EC</sub> растут как
+h², поэтому высшие гармоники греют непропорционально. p-пульсный
+выпрямитель даёт гармоники h = kp ± 1 с амплитудой ≈ I<sub>1</sub>/h. В
+12-пульсной схеме мосты питаются от обмоток «звезда» и «треугольник» со
+сдвигом 30°. Класс F: 155 °C = 40 + 100 + 15. AN — естественное
+охлаждение, AF — вентиляторы.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mrow><mi>L</mi><mi>L</mi></mrow></msub><mo>=</mo><msup><mi>β</mi><mn>2</mn></msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>P</mi><mrow><mi>d</mi><mi>c</mi></mrow></msub><mi>Σ</mi><msubsup><mi>a</mi><mi>h</mi><mn>2</mn></msubsup><mo>+</mo><msub><mi>P</mi><mrow><mi>E</mi><mi>C</mi></mrow></msub><mi>Σ</mi><msubsup><mi>a</mi><mi>h</mi><mn>2</mn></msubsup><msup><mi>h</mi><mn>2</mn></msup><mo>+</mo><msub><mi>P</mi><mrow><mi>O</mi><mi>S</mi><mi>L</mi></mrow></msub><mi>Σ</mi><msubsup><mi>a</mi><mi>h</mi><mn>2</mn></msubsup><msup><mi>h</mi><mrow><mn>0</mn><mo>,</mo><mn>8</mn></mrow></msup><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">P_{LL} = \beta^{2}\left( P_{dc}\Sigma a_{h}^{2} + P_{EC}\Sigma a_{h}^{2}h^{2} + P_{OSL}\Sigma a_{h}^{2}h^{0,8} \right)</annotation></semantics></math>
+(15)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><mi>θ</mi><mo>=</mo><mn>100</mn><mspace width="0.222em"></mspace><mi>K</mi><mo>⋅</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><msub><mi>P</mi><mn>0</mn></msub><mo>+</mo><msub><mi>P</mi><mrow><mi>L</mi><mi>L</mi></mrow></msub></mrow><mrow><msub><mi>P</mi><mn>0</mn></msub><mo>+</mo><msub><mi>P</mi><mi>k</mi></msub></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mn>0</mn><mo>,</mo><mn>8</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\Delta\theta = 100\ K \cdot \left( \frac{P_{0} + P_{LL}}{P_{0} + P_{k}} \right)^{0,8}</annotation></semantics></math>
+(16)</p>
+<p><strong>Расчёт.</strong> Найти: перегрев обмотки Δθ при
+синусоидальном токе, K.</p>
+<p><strong>Наладка.</strong> Выбрать схему выпрямителя (6 / 12 пульсов)
+и охлаждение (AN / AF): перегрев не больше 100 K без вентиляторов.</p>
+<p>Ответ: расчёт ____________ K; решение наладки
+______________________</p>
+<h3>Реактор Ld и ОПН</h3>
+<p>Реактор звена постоянного тока сглаживает ток, ОПН защищает звено при
+обрыве тока. Два этапа: охлаждение реактора и выбор ОПН.</p>
+<h4>В1 · Охлаждение реактора Ld (расчётная неделя 12)</h4>
+<p><strong>Дано.</strong> Мощность привода P<sub>1</sub> = 6,5 МВт;
+удельные потери в меди 0,2 %; добавка на магнитопровод 15 %. Коэффициент
+теплоотдачи α = 12 Вт/(м²·К) при AN и 35 — при AF; поверхность S = 6…18
+м² (шаг 2); воздух 40 °C; теплоёмкость C = 2,3 МДж/К.</p>
+<p><strong>Пояснение.</strong> Нагрев по закону Ньютона: перегрев
+пропорционален потерям и обратно пропорционален теплоотдаче и площади.
+Тепловая постоянная T — за это время перегрев достигает 63 %
+установившегося.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mrow><mi>C</mi><mi>u</mi></mrow></msub><mo>=</mo><mn>0</mn><mo>,</mo><mn>002</mn><mo>⋅</mo><msub><mi>P</mi><mn>1</mn></msub><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mi>P</mi><mo>=</mo><mn>1</mn><mo>,</mo><mn>15</mn><mo>⋅</mo><msub><mi>P</mi><mrow><mi>C</mi><mi>u</mi></mrow></msub></mrow><annotation encoding="application/x-tex">P_{Cu} = 0,002 \cdot P_{1},\ \ P = 1,15 \cdot P_{Cu}</annotation></semantics></math>
+(17)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><mi>θ</mi><mo>=</mo><mfrac><mi>P</mi><mrow><mi>α</mi><mi>S</mi></mrow></mfrac><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><msub><mi>θ</mi><mrow><mi>г</mi><mi>т</mi></mrow></msub><mo>=</mo><mn>40</mn><mspace width="0.222em"></mspace><mo>+</mo><mspace width="0.222em"></mspace><mi>Δ</mi><mi>θ</mi><mspace width="0.222em"></mspace><mo>+</mo><mspace width="0.222em"></mspace><mn>15</mn><mo>≤</mo><mn>155</mn><mspace width="0.222em"></mspace><msup><mi></mi><mo>∘</mo></msup><mi>C</mi></mrow><annotation encoding="application/x-tex">\Delta\theta = \frac{P}{\alpha S},\ \ \theta_{гт} = 40\  + \ \Delta\theta\  + \ 15 \leq 155\ {^\circ}C</annotation></semantics></math>
+(18)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi><mo>=</mo><mfrac><mi>C</mi><mrow><mi>α</mi><mi>S</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">T = \frac{C}{\alpha S}</annotation></semantics></math>
+(19)</p>
+<p><strong>Расчёт.</strong> Найти: полные потери реактора P, кВт.</p>
+<p><strong>Наладка.</strong> Подобрать охлаждение и поверхность: горячая
+точка не выше 155 °C (Δθ ≤ 100 K); приоритет — естественное охлаждение и
+наименьшая S.</p>
+<p>Ответ: расчёт ____________ кВт; решение наладки
+______________________</p>
+<h4>В2 · ОПН звена постоянного тока (расчётная неделя 9)</h4>
+<p><strong>Дано.</strong> L<sub>d</sub> = 0,15 Гн; I<sub>d</sub> = 510
+А; ток перегрузки I = 1,5·I<sub>d</sub> = 765 А; запас 1,2; наибольшее
+рабочее линейное на входе выпрямителя 12 кВ. Ряд U<sub>нр</sub>: 15, 18,
+21 кВ; классы энергоёмкости 1, 2, 3 (w ≈ 2,5; 4,5; 7,0 кДж на 1 кВ
+U<sub>нр</sub>); U<sub>ост</sub> ≈ 1,9·U<sub>нр</sub>.</p>
+<p><strong>Пояснение.</strong> ОПН — варистор на основе ZnO с резко
+нелинейной характеристикой: в работе почти не проводит, при
+перенапряжении пропускает большой ток. При обрыве тока энергия реактора
+уходит в ОПН. U<sub>нр</sub> — наибольшее длительное рабочее напряжение
+ОПН, U<sub>ост</sub> — остающееся напряжение (защитный уровень).</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>W</mi><mrow><mi>р</mi><mi>а</mi><mi>с</mi><mi>ч</mi></mrow></msub><mo>=</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>⋅</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msub><mi>L</mi><mi>d</mi></msub><msup><mi>I</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">W_{расч} = 1,2 \cdot \frac{1}{2}L_{d}I^{2}</annotation></semantics></math>
+(20)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mrow><mi>н</mi><mi>р</mi></mrow></msub><mo>≥</mo><mn>1</mn><mo>,</mo><mn>05</mn><mo>⋅</mo><msqrt><mn>2</mn></msqrt><mo>⋅</mo><msub><mi>U</mi><mrow><mi>р</mi><mi>а</mi><mi>б</mi><mi>.</mi><mi>m</mi><mi>a</mi><mi>x</mi></mrow></msub></mrow><annotation encoding="application/x-tex">U_{нр} \geq 1,05 \cdot \sqrt{2} \cdot U_{раб.max}</annotation></semantics></math>
+(21)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>W</mi><mrow><mi>О</mi><mi>П</mi><mi>Н</mi></mrow></msub><mo>=</mo><mi>w</mi><mo>⋅</mo><msub><mi>U</mi><mrow><mi>н</mi><mi>р</mi></mrow></msub><mo>≥</mo><msub><mi>W</mi><mrow><mi>р</mi><mi>а</mi><mi>с</mi><mi>ч</mi></mrow></msub><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><msub><mi>t</mi><mrow><mi>г</mi><mi>а</mi><mi>ш</mi></mrow></msub><mo>=</mo><mfrac><mrow><msub><mi>L</mi><mi>d</mi></msub><mi>I</mi></mrow><msub><mi>U</mi><mrow><mi>о</mi><mi>с</mi><mi>т</mi></mrow></msub></mfrac></mrow><annotation encoding="application/x-tex">W_{ОПН} = w \cdot U_{нр} \geq W_{расч},\ \ t_{гаш} = \frac{L_{d}I}{U_{ост}}</annotation></semantics></math>
+(22)</p>
+<p><strong>Расчёт.</strong> Найти: расчётная энергия W<sub>расч</sub>,
+кДж.</p>
+<p><strong>Наладка.</strong> Выбрать наименьшие подходящие
+U<sub>нр</sub> и класс энергоёмкости.</p>
+<p>Ответ: расчёт ____________ кДж; решение наладки
+______________________</p>
+<h3>Инвертор АИТ</h3>
+<p>Автономный инвертор тока на приборах SGCT переключает ток звена в
+фазы двигателя. Три этапа: коммутирующая ёмкость, снаббер и его
+резистор.</p>
+<h4>Г1 · Коммутирующая ёмкость Cк (расчётная неделя 2)</h4>
+<p><strong>Дано.</strong> Двигатель: U = 10 кВ, S = 7216 кВ·А, f = 50
+Гц, x″<sub>d</sub> = 0,15 о.е.; ток звена I<sub>d</sub> = 510 А;
+U<sub>раб.max</sub> = 12 кВ. Ползунок C<sub>к</sub> = 40…150 мкФ (шаг
+10).</p>
+<p><strong>Пояснение.</strong> АИТ — автономный инвертор тока: реактор
+держит ток звена постоянным, инвертор переключает его в фазы двигателя
+(6 коммутаций за период). В контуре коммутации две фазы двигателя.
+Энергия индуктивности переходит в конденсатор:
+½L<sub>к</sub>I<sub>d</sub>² = ½C<sub>к</sub>ΔU². Больше C<sub>к</sub> —
+меньше всплеск, но дольше коммутация.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Z</mi><mi>б</mi></msub><mo>=</mo><mfrac><msup><mi>U</mi><mn>2</mn></msup><mi>S</mi></mfrac><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><msubsup><mi>X</mi><mi>d</mi><mi>″</mi></msubsup><mo>=</mo><msubsup><mi>x</mi><mi>d</mi><mi>″</mi></msubsup><msub><mi>Z</mi><mi>б</mi></msub><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><msubsup><mi>L</mi><mi>d</mi><mi>″</mi></msubsup><mo>=</mo><mfrac><msubsup><mi>X</mi><mi>d</mi><mi>″</mi></msubsup><mrow><mn>2</mn><mi>π</mi><mi>f</mi></mrow></mfrac><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><msub><mi>L</mi><mi>к</mi></msub><mo>=</mo><mn>2</mn><msubsup><mi>L</mi><mi>d</mi><mi>″</mi></msubsup></mrow><annotation encoding="application/x-tex">Z_{б} = \frac{U^{2}}{S},\ \ X_{d}^{&#39;&#39;} = x_{d}^{&#39;&#39;}Z_{б},\ \ L_{d}^{&#39;&#39;} = \frac{X_{d}^{&#39;&#39;}}{2\pi f},\ \ L_{к} = 2L_{d}^{&#39;&#39;}</annotation></semantics></math>
+(23)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><mi>U</mi><mo>=</mo><msub><mi>I</mi><mi>d</mi></msub><msqrt><mfrac><msub><mi>L</mi><mi>к</mi></msub><msub><mi>C</mi><mi>к</mi></msub></mfrac></msqrt><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><msub><mi>k</mi><mrow><mi>п</mi><mi>е</mi><mi>р</mi></mrow></msub><mo>=</mo><mfrac><mrow><msqrt><mn>2</mn></msqrt><msub><mi>U</mi><mrow><mi>р</mi><mi>а</mi><mi>б</mi><mi>.</mi><mi>m</mi><mi>a</mi><mi>x</mi></mrow></msub><mo>+</mo><mi>Δ</mi><mi>U</mi></mrow><mrow><msqrt><mn>2</mn></msqrt><msub><mi>U</mi><mrow><mi>р</mi><mi>а</mi><mi>б</mi><mi>.</mi><mi>m</mi><mi>a</mi><mi>x</mi></mrow></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">\Delta U = I_{d}\sqrt{\frac{L_{к}}{C_{к}}},\ \ k_{пер} = \frac{\sqrt{2}U_{раб.max} + \Delta U}{\sqrt{2}U_{раб.max}}</annotation></semantics></math>
+(24)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>t</mi><mi>к</mi></msub><mo>=</mo><mfrac><mi>π</mi><mn>2</mn></mfrac><msqrt><mrow><msub><mi>L</mi><mi>к</mi></msub><msub><mi>C</mi><mi>к</mi></msub></mrow></msqrt><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mi>μ</mi><mo>=</mo><mn>360</mn><msup><mi></mi><mo>∘</mo></msup><mo>⋅</mo><mi>f</mi><mo>⋅</mo><msub><mi>t</mi><mi>к</mi></msub></mrow><annotation encoding="application/x-tex">t_{к} = \frac{\pi}{2}\sqrt{L_{к}C_{к}},\ \ \mu = 360{^\circ} \cdot f \cdot t_{к}</annotation></semantics></math>
+(25)</p>
+<p><strong>Расчёт.</strong> Найти: индуктивность контура коммутации
+L<sub>к</sub>, мГн.</p>
+<p><strong>Наладка.</strong> Найти C<sub>к</sub>, при которой
+одновременно k<sub>пер</sub> ≤ 1,40 и μ ≤ 30°.</p>
+<p>Ответ: расчёт ____________ мГн; решение наладки
+______________________</p>
+<h4>Г2 · Снаббер: ёмкость Cs (расчётная неделя 7)</h4>
+<p><strong>Дано.</strong> Выключаемый ток с перегрузкой I<sub>T</sub> =
+765 А; критическая скорость нарастания напряжения прибора
+(dU/dt)<sub>кр</sub> ≈ 1000 В/мкс; допустимая — половина. Ряд
+C<sub>s</sub>: 1,0; 1,5; 2,0; 3,0 мкФ.</p>
+<p><strong>Пояснение.</strong> Снаббер — RC-цепочка параллельно прибору;
+пока ток переходит в конденсатор, напряжение растёт линейно. Удобное
+соотношение: 1 А/мкФ = 1 В/мкс.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>d</mi><mi>U</mi></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac><mo>=</mo><mfrac><msub><mi>I</mi><mi>T</mi></msub><msub><mi>C</mi><mi>s</mi></msub></mfrac></mrow><annotation encoding="application/x-tex">\frac{dU}{dt} = \frac{I_{T}}{C_{s}}</annotation></semantics></math>
+(26)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mi>s</mi></msub><mo>≥</mo><mfrac><msub><mi>I</mi><mi>T</mi></msub><msub><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>d</mi><mi>U</mi></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mi>д</mi><mi>о</mi><mi>п</mi></mrow></msub></mfrac><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><msub><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>d</mi><mi>U</mi></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mi>д</mi><mi>о</mi><mi>п</mi></mrow></msub><mo>=</mo><mn>0</mn><mo>,</mo><mn>5</mn><msub><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>d</mi><mi>U</mi></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mi>к</mi><mi>р</mi></mrow></msub></mrow><annotation encoding="application/x-tex">C_{s} \geq \frac{I_{T}}{\left( \frac{dU}{dt} \right)_{доп}},\ \ \left( \frac{dU}{dt} \right)_{доп} = 0,5\left( \frac{dU}{dt} \right)_{кр}</annotation></semantics></math>
+(27)</p>
+<p><strong>Расчёт.</strong> Найти: наименьшая ёмкость C<sub>s</sub>,
+мкФ.</p>
+<p><strong>Наладка.</strong> Выбрать из ряда ближайшую ёмкость не меньше
+расчётной (большая — лишние потери).</p>
+<p>Ответ: расчёт ____________ мкФ; решение наладки
+______________________</p>
+<h4>Г3 · Потери и резистор снаббера (расчётная неделя 8)</h4>
+<p><strong>Дано.</strong> C<sub>s</sub> = 2 мкФ; рабочее напряжение
+плеча 20,7 кВ на N = 7 приборов; частота f = 50 Гц; всего 42 снаббера;
+мощность привода 6,3 МВт. Ряд резисторов: 0,5; 1,0; 1,5; 2,5 кВт.</p>
+<p><strong>Пояснение.</strong> За цикл в резисторе рассеивается
+½C<sub>s</sub>U² при заряде и ½C<sub>s</sub>U² при разряде, независимо
+от R<sub>s</sub>. В средние потери идёт рабочее напряжение на приборе.
+Запас по мощности = номинал / рабочие потери.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>R</mi></msub><mo>=</mo><msub><mi>C</mi><mi>s</mi></msub><msup><mi>U</mi><mn>2</mn></msup><mi>f</mi><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mi>U</mi><mo>=</mo><mfrac><msub><mi>U</mi><mrow><mi>V</mi><mi>S</mi></mrow></msub><mi>N</mi></mfrac></mrow><annotation encoding="application/x-tex">P_{R} = C_{s}U^{2}f,\ \ U = \frac{U_{VS}}{N}</annotation></semantics></math>
+(28)</p>
+<p><strong>Расчёт.</strong> Найти: мощность потерь в одном резисторе
+P<sub>R</sub>, Вт.</p>
+<p><strong>Наладка.</strong> Выбрать номинал водоохлаждаемого резистора
+с запасом не меньше 1,5 — ближайший из ряда.</p>
+<p>Ответ: расчёт ____________ Вт; решение наладки
+______________________</p>
+<h3>Двигатель 10 кВ</h3>
+<p>Синхронный двигатель 10 кВ компрессорной станции. Два этапа: толщина
+корпусной изоляции и противокоронное покрытие.</p>
+<h4>Д1 · Корпусная изоляция статора (расчётная неделя 1)</h4>
+<p><strong>Дано.</strong> U<sub>ном</sub> = 10 кВ; K = 1,2; кратность
+коммутационного всплеска k<sub>комм</sub> = 1,4; E<sub>дл.доп</sub> =
+4,0 кВ/мм; E<sub>кр</sub> ≈ 25 кВ/мм; запас k<sub>з</sub> = 3;
+технологический шаг толщины 0,5 мм.</p>
+<p><strong>Пояснение.</strong> Корпусная изоляция разделяет медь стержня
+и заземлённый сердечник, на неё действует фазное напряжение. √2 —
+переход к амплитуде, √3 — от линейного к фазному. Толщину выбирают по
+двум критериям и округляют вверх: лишняя толщина ухудшает
+теплоотвод.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mrow><mi>р</mi><mi>а</mi><mi>с</mi><mi>ч</mi></mrow></msub><mo>=</mo><msub><mi>k</mi><mrow><mi>к</mi><mi>о</mi><mi>м</mi><mi>м</mi></mrow></msub><mo>⋅</mo><mi>K</mi><mo>⋅</mo><msub><mi>U</mi><mrow><mi>н</mi><mi>о</mi><mi>м</mi></mrow></msub><mfrac><msqrt><mn>2</mn></msqrt><msqrt><mn>3</mn></msqrt></mfrac></mrow><annotation encoding="application/x-tex">U_{расч} = k_{комм} \cdot K \cdot U_{ном}\frac{\sqrt{2}}{\sqrt{3}}</annotation></semantics></math>
+(29)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>δ</mi><mn>1</mn></msub><mo>=</mo><mfrac><msub><mi>U</mi><mrow><mi>р</mi><mi>а</mi><mi>с</mi><mi>ч</mi></mrow></msub><msub><mi>E</mi><mrow><mi>д</mi><mi>л</mi><mi>.</mi><mi>д</mi><mi>о</mi><mi>п</mi></mrow></msub></mfrac><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><msub><mi>δ</mi><mn>2</mn></msub><mo>=</mo><mfrac><mrow><msub><mi>U</mi><mrow><mi>и</mi><mi>с</mi><mi>п</mi></mrow></msub><msub><mi>k</mi><mi>з</mi></msub></mrow><msub><mi>E</mi><mrow><mi>к</mi><mi>р</mi></mrow></msub></mfrac><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><msub><mi>U</mi><mrow><mi>и</mi><mi>с</mi><mi>п</mi></mrow></msub><mo>=</mo><mn>2</mn><msub><mi>U</mi><mrow><mi>н</mi><mi>о</mi><mi>м</mi></mrow></msub><mo>+</mo><mspace width="0.222em"></mspace><mn>1</mn><mspace width="0.222em"></mspace><mi>к</mi><mi>В</mi></mrow><annotation encoding="application/x-tex">\delta_{1} = \frac{U_{расч}}{E_{дл.доп}},\ \ \delta_{2} = \frac{U_{исп}k_{з}}{E_{кр}},\ \ U_{исп} = 2U_{ном} + \ 1\ кВ</annotation></semantics></math>
+(30)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mo>≥</mo><mo>max</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>δ</mi><mn>1</mn></msub><mo>;</mo><mspace width="0.222em"></mspace><msub><mi>δ</mi><mn>2</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\delta \geq \max\left( \delta_{1};\ \delta_{2} \right)</annotation></semantics></math>
+(31)</p>
+<p><strong>Расчёт.</strong> Найти: расчётное пиковое напряжение
+U<sub>расч</sub>, кВ.</p>
+<p><strong>Наладка.</strong> Выбрать наименьшую толщину δ из ряда
+(2,0…5,0 мм, шаг 0,5), удовлетворяющую обоим условиям.</p>
+<p>Ответ: расчёт ____________ кВ; решение наладки
+______________________</p>
+<h4>Д2 · Противокоронное покрытие (расчётная неделя 3)</h4>
+<p><strong>Дано.</strong> Удельная ёмкость изоляции C<sub>0</sub> =
+1,14·10⁻⁸ Ф/м²; ω = 314 с⁻¹; напряжение 50 Гц U = 9,80 кВ; всплеск ΔU =
+6,56 кВ с f<sub>экв</sub> = 1/(2t<sub>к</sub>) = 309 Гц. Ползунок
+ρ<sub>s</sub> = 10⁷…10¹¹ Ом по декадам.</p>
+<p><strong>Пояснение.</strong> Полупроводящее покрытие на выходе стержня
+из паза выравнивает поле вдоль поверхности. Это распределённая RC-цепь:
+λ — длина, на которой потенциал падает в e раз; длина покрытия ≈ 3λ.
+Низкое ρ<sub>s</sub> даёт длинную λ, но больший ёмкостный ток и
+нагрев.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mn>0</mn></msub><mo>=</mo><mfrac><mrow><msub><mi>ε</mi><mn>0</mn></msub><msub><mi>ε</mi><mi>r</mi></msub></mrow><mi>δ</mi></mfrac><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mi>λ</mi><mo>=</mo><mfrac><mn>1</mn><msqrt><mrow><mi>ω</mi><msub><mi>C</mi><mn>0</mn></msub><msub><mi>ρ</mi><mi>s</mi></msub></mrow></msqrt></mfrac><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><msub><mi>E</mi><mi>τ</mi></msub><mo>=</mo><mfrac><mi>U</mi><mi>λ</mi></mfrac></mrow><annotation encoding="application/x-tex">C_{0} = \frac{\varepsilon_{0}\varepsilon_{r}}{\delta},\ \ \lambda = \frac{1}{\sqrt{\omega C_{0}\rho_{s}}},\ \ E_{\tau} = \frac{U}{\lambda}</annotation></semantics></math>
+(32)</p>
+<p><strong>Расчёт.</strong> Найти: длина затухания λ при ρ<sub>s</sub> =
+10⁹ Ом, мм.</p>
+<p><strong>Наладка.</strong> Подобрать наибольшее ρ<sub>s</sub>, при
+котором E<sub>τ</sub> ≤ 0,5 кВ/мм и при 50 Гц, и на всплеске.</p>
+<p>Ответ: расчёт ____________ мм; решение наладки
+______________________</p>
+<h3>Мониторинг ЧР</h3>
+<p>Система контроля частичных разрядов. Два этапа: стробирование помех
+инвертора и диагноз по фазовым портретам.</p>
+<h4>Е1 · Стробирование помех АИТ (расчётная неделя 13)</h4>
+<p><strong>Дано.</strong> Конденсатор связи C<sub>с</sub> = 80 пФ,
+измерительный резистор R<sub>и</sub> = 50 Ом. Период T = 20 мс, 6
+коммутаций, «звон» помехи ≈ 50 мкс после каждой. Ползунок полуширины
+строба ±w = 10…150 мкс.</p>
+<p><strong>Пояснение.</strong> C<sub>с</sub> и R<sub>и</sub> образуют
+фильтр верхних частот: 50 Гц не проходит, импульсы ЧР проходят. Спектр
+помех коммутации перекрывает полосу ЧР, поэтому их вырезают по времени —
+стробированием по синхроимпульсам от системы управления ПЧ.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mi>с</mi></msub><mo>=</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>π</mi><msub><mi>R</mi><mi>и</mi></msub><msub><mi>C</mi><mi>с</mi></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">f_{с} = \frac{1}{2\pi R_{и}C_{с}}</annotation></semantics></math>
+(33)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>д</mi><mi>о</mi><mi>л</mi><mi>я</mi><mspace width="0.222em"></mspace><mi>с</mi><mi>л</mi><mi>е</mi><mi>п</mi><mi>о</mi><mi>г</mi><mi>о</mi><mspace width="0.222em"></mspace><mi>в</mi><mi>р</mi><mi>е</mi><mi>м</mi><mi>е</mi><mi>н</mi><mi>и</mi><mo>=</mo><mfrac><mrow><mn>6</mn><mo>⋅</mo><mn>2</mn><mi>w</mi></mrow><mi>T</mi></mfrac></mrow><annotation encoding="application/x-tex">доля\ слепого\ времени = \frac{6 \cdot 2w}{T}</annotation></semantics></math>
+(34)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>v</mi><mo>⋅</mo><mi>Δ</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">x = v \cdot \Delta t</annotation></semantics></math>
+(35)</p>
+<p><strong>Расчёт.</strong> Найти: граничная частота f<sub>с</sub>,
+МГц.</p>
+<p><strong>Наладка.</strong> Выбрать w: строб накрывает помеху (w ≥ 50
+мкс), слепое время не больше 3 %.</p>
+<p>Ответ: расчёт ____________ МГц; решение наладки
+______________________</p>
+<h4>Е2 · Диагноз по PRPD (расчётная неделя 14)</h4>
+<p><strong>Дано.</strong> Портрет ЧР: Q95<sub>+</sub> = 419 пКл,
+Q95<sub>−</sub> = 168 пКл. На стенде — четыре фазовые диаграммы, каждой
+нужно назначить диагноз: пустота, поверхностный разряд, корона, помеха
+АИТ.</p>
+<p><strong>Пояснение.</strong> PRPD — фазовая диаграмма: по горизонтали
+фаза 0…360°, по вертикали заряд импульса. Q95 — заряд, который не
+превышают 95 % импульсов. Q<sub>+</sub>/Q<sub>−</sub> ≈ 1 — внутренняя
+пустота; &gt; 2 или &lt; 0,5 — поверхность или паз; узкое облако у пика
+одной полуволны — корона; узкие полосы через равные углы — помеха
+преобразователя.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><msub><mi>Q</mi><mo>+</mo></msub><msub><mi>Q</mi><mo>−</mo></msub></mfrac><mo>=</mo><mfrac><msub><mrow><mi>Q</mi><mn>95</mn></mrow><mo>+</mo></msub><msub><mrow><mi>Q</mi><mn>95</mn></mrow><mo>−</mo></msub></mfrac></mrow><annotation encoding="application/x-tex">\frac{Q_{+}}{Q_{-}} = \frac{{Q95}_{+}}{{Q95}_{-}}</annotation></semantics></math>
+(36)</p>
+<p><strong>Расчёт.</strong> Найти: отношение
+Q<sub>+</sub>/Q<sub>−</sub>.</p>
+<p><strong>Наладка.</strong> Поставить диагноз каждому из четырёх
+портретов.</p>
+<p>Ответ: расчёт ____________; решение наладки
+______________________</p>
+<h3>Паспорт изоляции</h3>
+<p>АСУ ТП сводит результаты в паспорт изоляции. Этап: баллы узлов и
+индекс состояния HI.</p>
+<h4>Ж1 · Паспорт и индекс HI (расчётная неделя 15)</h4>
+<p><strong>Дано.</strong> Поле в корпусной изоляции статора 3,92 кВ/мм
+при норме 4,0. В паспорте восемь узлов с весами w<sub>i</sub>; пять
+баллов заданы, три (снабберы 383/500 В/мкс; реактор 89/100 K;
+трансформатор 93,5/100 K) ставит студент.</p>
+<p><strong>Пояснение.</strong> Шкала баллов: 1,0 — запас ≥ 50 %; 0,9 —
+10…50 %; 0,8 — меньше 10 %; 0,5 — на границе; 0 — норма нарушена. Шкала
+HI: ≥ 85 % — хорошее; 70…85 % — удовлетворительное; 50…70 % —
+ухудшенное; &lt; 50 % — критическое.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>з</mi><mi>а</mi><mi>п</mi><mi>а</mi><mi>с</mi><mo>=</mo><mfrac><mrow><mi>н</mi><mi>о</mi><mi>р</mi><mi>м</mi><mi>а</mi><mspace width="0.222em"></mspace><mo>−</mo><mspace width="0.222em"></mspace><mi>з</mi><mi>н</mi><mi>а</mi><mi>ч</mi><mi>е</mi><mi>н</mi><mi>и</mi><mi>е</mi></mrow><mrow><mi>н</mi><mi>о</mi><mi>р</mi><mi>м</mi><mi>а</mi></mrow></mfrac><mo>⋅</mo><mn>100</mn><mspace width="0.222em"></mspace><mi>%</mi></mrow><annotation encoding="application/x-tex">запас = \frac{норма\  - \ значение}{норма} \cdot 100\ \%</annotation></semantics></math>
+(37)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mi>I</mi><mo>=</mo><mfrac><mrow><mi>Σ</mi><msub><mi>w</mi><mi>i</mi></msub><msub><mi>s</mi><mi>i</mi></msub></mrow><mrow><mi>Σ</mi><msub><mi>w</mi><mi>i</mi></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">HI = \frac{\Sigma w_{i}s_{i}}{\Sigma w_{i}}</annotation></semantics></math>
+(38)</p>
+<p><strong>Расчёт.</strong> Найти: запас корпусной изоляции статора по
+полю, %.</p>
+<p><strong>Наладка.</strong> Поставить баллы трём узлам по шкале
+паспорта.</p>
+<p>Ответ: расчёт ____________ %; решение наладки
+______________________</p>
+<h2>5. Справочные данные</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Величина</strong></th>
+<th><strong>Значение</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ε<sub>0</sub> — электрическая постоянная</td>
+<td>8,854·10⁻¹² Ф/м</td>
+</tr>
+<tr class="even">
+<td>e — основание натурального логарифма</td>
+<td>2,718</td>
+</tr>
+<tr class="odd">
+<td>√2; √3</td>
+<td>1,414; 1,732</td>
+</tr>
+<tr class="even">
+<td>ω при 50 Гц</td>
+<td>314 с⁻¹</td>
+</tr>
+<tr class="odd">
+<td>Период при 50 Гц</td>
+<td>20 мс; 1° = 55,6 мкс</td>
+</tr>
+<tr class="even">
+<td>1 мкФ; 1 пФ; 1 фФ</td>
+<td>10⁻⁶; 10⁻¹²; 10⁻¹⁵ Ф</td>
+</tr>
+<tr class="odd">
+<td>1 мГн; 1 пКл</td>
+<td>10⁻³ Гн; 10⁻¹² Кл</td>
+</tr>
+<tr class="even">
+<td>1 А/мкФ</td>
+<td>1 В/мкс</td>
+</tr>
+<tr class="odd">
+<td>1 год; 1 мин</td>
+<td>8760 ч; 1/60 ч</td>
+</tr>
+<tr class="even">
+<td>Корень n-й степени</td>
+<td>x<sup>1/n</sup> = e<sup>(ln x)/n</sup></td>
+</tr>
+</tbody>
+</table>
+<p>Перед подстановкой переводите величины в согласованные единицы: при U
+в кВ и S в МВ·А сопротивление Z = U²/S получается в омах; радиусы и
+толщины в одной формуле — в одних единицах.</p>
+<h2>6. Контрольные вопросы</h2>
+<ol type="1">
+<li><p>(А1) Почему у коаксиальной системы существует оптимальный радиус
+внутреннего проводника?</p></li>
+<li><p>(А2) Почему при равных ёмкостях слоёв напряжение распределяется
+поровну?</p></li>
+<li><p>(А3) Чем отличаются длина пути утечки и сухоразрядное
+расстояние?</p></li>
+<li><p>(А4) Что показывает кривая жизни изоляции и почему важен
+показатель n?</p></li>
+<li><p>(А5) Почему поле в газовой пустоте больше, чем в окружающей
+изоляции?</p></li>
+<li><p>(Б1) Почему 12-пульсная схема меньше греет
+трансформатор?</p></li>
+<li><p>(В1) Почему выгодна большая тепловая постоянная
+реактора?</p></li>
+<li><p>(В2) Почему U<sub>нр</sub> ОПН нельзя выбирать «с большим
+запасом»?</p></li>
+<li><p>(Г1) Почему при увеличении C<sub>к</sub> растёт угол
+коммутации?</p></li>
+<li><p>(Г2) Почему ёмкость снаббера нельзя брать «чем больше, тем
+лучше»?</p></li>
+<li><p>(Г3) Как изменятся потери в снабберах при ШИМ 300 Гц?</p></li>
+<li><p>(Д1) Почему питание от преобразователя требует более толстой
+изоляции?</p></li>
+<li><p>(Д2) Почему всплески инвертора опаснее для лобовых частей
+обмотки, чем 50 Гц?</p></li>
+<li><p>(Е1) Почему помехи коммутаций нельзя убрать частотным
+фильтром?</p></li>
+<li><p>(Е2) По какому признаку на PRPD помеху преобразователя отличают
+от ЧР?</p></li>
+<li><p>(Ж1) Зачем паспорт изоляции сводят к одному индексу HI?</p></li>
+</ol>
+<h2>7. Отчёт и оценка</h2>
+<p>В отчёт входят: заполненный бланк (приложение), текст итога из игры
+(«Скопировать итог»: очки, оставшийся запас прочности, ошибки по
+аппаратам, время) и письменные ответы на три контрольных вопроса по
+выбору преподавателя.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Очки (максимум 3200)</strong></th>
+<th><strong>Оценка</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2900 и больше</td>
+<td>«отлично»</td>
+</tr>
+<tr class="even">
+<td>2400–2899</td>
+<td>«хорошо»</td>
+</tr>
+<tr class="odd">
+<td>1800–2399</td>
+<td>«удовлетворительно»</td>
+</tr>
+<tr class="even">
+<td>меньше 1800 или пробой</td>
+<td>повторное прохождение</td>
+</tr>
+</tbody>
+</table>
+<h2>Приложение. Бланк отчёта</h2>
+<p>ФИО ______________________________ Группа ________ Дата ________</p>
+<table>
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 32%" />
+<col style="width: 18%" />
+<col style="width: 28%" />
+<col style="width: 11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Этап</strong></th>
+<th><strong>Что найти</strong></th>
+<th><strong>Расчёт</strong></th>
+<th><strong>Решение наладки</strong></th>
+<th><strong>Ошибок</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>А1</td>
+<td>Наибольшее поле у трубы Ø20 мм, кВ/мм</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>А2</td>
+<td>Ступень напряжения на один слой при N = 8, кВ</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>А3</td>
+<td>Нормированная длина пути утечки Lут, мм</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>А4</td>
+<td>Допустимая длительная напряжённость Eдл на 30 лет, кВ/мм</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>А5</td>
+<td>Кажущийся заряд q, пКл</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Б1</td>
+<td>Перегрев обмотки Δθ при синусоидальном токе, K</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>В1</td>
+<td>Полные потери реактора P, кВт</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>В2</td>
+<td>Расчётная энергия Wрасч, кДж</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Г1</td>
+<td>Индуктивность контура коммутации Lк, мГн</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Г2</td>
+<td>Наименьшая ёмкость Cs, мкФ</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Г3</td>
+<td>Мощность потерь в одном резисторе PR, Вт</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Д1</td>
+<td>Расчётное пиковое напряжение Uрасч, кВ</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Д2</td>
+<td>Длина затухания λ при ρs = 10⁹ Ом, мм</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Е1</td>
+<td>Граничная частота fс, МГц</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Е2</td>
+<td>Отношение Q+/Q−</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Ж1</td>
+<td>Запас корпусной изоляции статора по полю, %</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Итог игры: очки ______ запас прочности ______ время ______ оценка
+______</p>
+</main></body></html>

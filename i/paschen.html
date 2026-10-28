@@ -1,0 +1,707 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Закон Пашена</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;700&family=IBM+Plex+Sans:wght@400;600&display=swap">
+<style>
+/* Лабораторный стол: светлые панели, тёмные экраны приборов; акцент — синий, импульсы — тёплый/холодный по полярности */
+:root{
+  --bg:#D8DFE2; --panel:#F3F6F6; --ink:#15212A; --muted:#51606C; --line:#BFCACF; --well:#E6ECEE;
+  --accent:#1F5FAF; --accent-ink:#FFFFFF; --soft:#E2ECF8; --hot:#C8372B; --ok:#1E8A4C; --warn:#A8670F;
+  --scr:#0D171E; --scr2:#16242D; --grid:#253844; --scrtxt:#9FB4C0; --pos:#FF8A3D; --neg:#4FB3FF; --spark:#FFD54A;
+  --cu:#B8743A; --ins:#C9D8B5; --ins2:#E3D7A6;
+  --f-disp:"IBM Plex Sans Condensed","Arial Narrow",Arial,sans-serif;
+  --f-body:"IBM Plex Sans",Arial,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  color-scheme:light;
+}
+[hidden]{display:none!important}
+html,body{background:var(--bg);color:var(--ink)}
+body{margin:0;font-family:var(--f-body);font-size:16px;line-height:1.5;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+.wrap{max-width:1380px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+h1,h2,h3{font-family:var(--f-disp);font-weight:700;line-height:1.1;margin:0;text-wrap:balance}
+h1{font-size:clamp(26px,3.2vw,36px)}
+h2{font-size:23px}
+h3{font-size:18px}
+p{margin:0}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+sub,sup{font-size:.72em}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 93%,transparent);backdrop-filter:blur(6px);padding-top:12px;padding-bottom:10px;border-bottom:1px solid var(--line);margin-left:calc(-1*max(16px,env(safe-area-inset-left,0px)));margin-right:calc(-1*max(16px,env(safe-area-inset-right,0px)));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.topin{max-width:1380px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap}
+.tabs{display:flex;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:4px;overflow-x:auto;max-width:100%}
+.tabs button{border:0;background:transparent;border-radius:7px;padding:8px 13px;font-weight:600;white-space:nowrap;color:var(--muted)}
+.tabs button.on{background:var(--accent);color:var(--accent-ink)}
+.tabs button span{font-family:var(--f-mono);font-weight:400;margin-right:6px;opacity:.8}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.q{display:inline-flex;align-items:center;justify-content:center;width:19px;height:19px;border-radius:50%;border:1.4px solid var(--accent);color:var(--accent);background:var(--panel);font:700 12px/1 var(--f-body);cursor:help;padding:0;margin:0 3px;vertical-align:middle;flex:none}
+.q:hover,.q.on{background:var(--accent);color:var(--accent-ink)}
+svg .sq{cursor:help}
+svg .sq circle{fill:var(--panel);stroke:var(--accent);stroke-width:1.4}
+svg .sq text{fill:var(--accent);font:700 11px var(--f-body)}
+svg .sq:hover circle,svg .sq.on circle{fill:var(--accent)}
+svg .sq:hover text,svg .sq.on text{fill:var(--accent-ink)}
+#tip{box-sizing:border-box;position:fixed;z-index:60;width:max-content;max-width:min(380px,calc(100vw - 16px));background:#15212A;color:#EEF3F6;font-size:14.5px;line-height:1.45;padding:10px 12px;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.3)}
+#tip b{color:#FFD27A}
+#tip .x{float:right;margin:-4px -4px 0 8px;border:0;background:none;color:#9FB4C0;font-size:18px;line-height:1;padding:0 4px}
+.concepts{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.cpt{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:4px}
+.cpt b{font-family:var(--f-disp);font-size:16.5px}
+.cpt b .q{float:right}
+.cpt p{font-size:13.5px;color:var(--muted)}
+.lab{display:grid;grid-template-columns:310px minmax(0,1fr);gap:16px;align-items:start}
+.lab.rev{grid-template-columns:minmax(0,1fr) 330px}
+.side{display:flex;flex-direction:column;gap:14px}
+.lbl{font-size:13px;font-weight:600;color:var(--muted);display:block;margin-bottom:5px}
+.seg{display:flex;flex-wrap:wrap;gap:4px}
+.seg button{border:1px solid var(--line);background:var(--well);border-radius:6px;padding:6px 10px;font-size:13.5px}
+.seg button.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.grid2 button{border:1px solid var(--line);background:var(--well);border-radius:8px;padding:7px 9px;text-align:left;font-size:13.5px;line-height:1.25}
+.grid2 button.on{border-color:var(--accent);background:var(--soft);box-shadow:inset 0 0 0 1px var(--accent);font-weight:600}
+.rng .tp{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.rng output{font-family:var(--f-mono);font-size:15px;font-weight:500}
+.rng input{width:100%;accent-color:var(--accent)}
+.btns{display:flex;flex-wrap:wrap;gap:6px}
+.btn{border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);border-radius:7px;padding:8px 14px;font-weight:600;font-size:14.5px}
+.btn.ghost{background:var(--panel);color:var(--accent)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.reads{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:6px}
+.rd{background:var(--well);border:1px solid var(--line);border-radius:7px;padding:6px 9px;display:flex;flex-direction:column;gap:1px;min-width:0}
+.rd span{font-size:12px;color:var(--muted);display:block;line-height:1.35}
+.rd b{font-family:var(--f-mono);font-weight:500;font-size:16px;font-variant-numeric:tabular-nums}
+.rd.hot b{color:var(--hot)} .rd.ok b{color:var(--ok)}
+.scr{background:var(--scr);border-radius:8px;border:1px solid #071016;position:relative;min-width:0}
+.scr canvas{display:block;width:100%}
+.scrh{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 10px 0;color:var(--scrtxt);font-family:var(--f-mono);font-size:12px;flex-wrap:wrap}
+.scrh b{color:#E8F1F5;font-weight:500}
+.scrh .seg button{background:#1E2E38;border-color:#33495A;color:#CFE0EA;padding:3px 9px;font-size:12px}
+.scrh .seg button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.lg{display:inline-flex;align-items:center;gap:5px;margin-right:10px}
+.lg i{display:inline-block;width:14px;height:3px;border-radius:2px}
+.two{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:12px}
+.fig{background:var(--well);border:1px solid var(--line);border-radius:8px;padding:6px;min-width:0}
+.fig svg{display:block;width:100%;height:auto}
+.fig svg text{font-family:var(--f-body);fill:#15212A}
+.fig .cap{font-size:12.5px;color:var(--muted);padding:2px 4px 0}
+.log{background:var(--well);border-left:4px solid var(--accent);border-radius:6px;padding:8px 12px;font-size:14.5px;min-height:44px}
+.list{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:5px;font-size:14.5px}
+.info h3{margin-bottom:2px}
+.info p{font-size:14.5px}
+.tabp{display:flex;flex-direction:column;gap:12px}
+.tag{display:inline-block;align-self:flex-start;font-family:var(--f-mono);font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:1px 6px}
+.warn{background:#FCEFD8;border:1px solid #E8C27A;color:#5C3B05;border-radius:7px;padding:8px 12px;font-size:14.5px}
+.good{background:#E1F3E7;border:1px solid #9BD1AE;color:#134A2A;border-radius:7px;padding:8px 12px;font-size:14.5px}
+.bad{background:#F9E2DF;border:1px solid #E3A49B;color:#6B1A11;border-radius:7px;padding:8px 12px;font-size:14.5px}
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;font-size:14px}
+.steps li{display:flex;gap:8px;align-items:flex-start}
+.steps li i{flex:none;width:18px;height:18px;border-radius:50%;border:1.5px solid var(--line);margin-top:2px;display:inline-flex;align-items:center;justify-content:center;font-style:normal;font-size:11px;color:#fff}
+.steps li.done i{background:var(--ok);border-color:var(--ok)}
+.steps li.done i::after{content:"✓"}
+.case{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:14px;align-items:start}
+.opts{display:flex;flex-direction:column;gap:6px}
+.opts button{text-align:left;border:1px solid var(--line);background:var(--well);border-radius:7px;padding:8px 10px;font-size:14.5px;line-height:1.35}
+.opts button.sel{border-color:var(--accent);background:var(--soft)}
+.opts button.right{border-color:var(--ok);background:#E1F3E7}
+.opts button.wrong{border-color:var(--hot);background:#F9E2DF}
+.opts button:disabled{cursor:default;color:var(--ink)}
+.dots{display:flex;gap:5px;flex-wrap:wrap}
+.dots i{width:12px;height:12px;border-radius:50%;background:var(--line)}
+.dots i.cur{background:var(--accent)} .dots i.ok{background:var(--ok)} .dots i.half{background:var(--warn)} .dots i.no{background:var(--hot)}
+.task{border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.task h3{display:flex;gap:10px;align-items:baseline}
+.task h3 .mono{color:var(--muted);font-size:14px}
+.task p{font-size:15.5px;max-width:80ch}
+.ans{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.ans input{width:140px;font:inherit;font-family:var(--f-mono);padding:7px 10px;border:1px solid var(--line);border-radius:7px;background:#fff;color:var(--ink)}
+.ans .u{color:var(--muted);font-family:var(--f-mono)}
+.tq{border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:12px 16px;display:flex;flex-direction:column;gap:8px}
+.tq .qq{font-weight:600}
+.tq label{display:flex;gap:8px;align-items:flex-start;padding:5px 8px;border-radius:6px;border:1px solid transparent;font-size:15px;cursor:pointer}
+.tq label:hover{background:var(--well)}
+.tq label.right{border-color:var(--ok);background:#E1F3E7}
+.tq label.wrong{border-color:var(--hot);background:#F9E2DF}
+.tq input{margin-top:5px;accent-color:var(--accent)}
+.tq .ex{font-size:14px;color:var(--muted)}
+.circ{overflow-x:auto}
+.circ svg{min-width:640px}
+.circ svg text{font-family:var(--f-body);font-size:12.5px;fill:var(--ink)}
+.circ .el{cursor:pointer}
+.circ .el:hover .hl,.circ .el:focus-visible .hl{stroke:var(--accent);stroke-dasharray:4 3;fill:var(--soft);fill-opacity:.5}
+.circ .hl{fill:transparent;stroke:transparent;stroke-width:1.5}
+.sw{display:flex;align-items:center;gap:8px;font-size:14px}
+.sw button{min-width:110px}
+@media (max-width:1050px){.concepts{grid-template-columns:repeat(3,minmax(0,1fr))}.two,.case{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:820px){.lab,.lab.rev{grid-template-columns:minmax(0,1fr)}.concepts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.cpt p{display:none}.cpt{padding:8px 10px}.cpt b{font-size:15px}}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.mech{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.mc{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:6px;cursor:pointer;text-align:left;font:inherit;color:inherit}
+.mc:hover,.mc:focus-visible{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.mc b{font-family:var(--f-disp);font-size:16.5px}
+.mc .grp{font-family:var(--f-mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.mc svg{width:100%;height:auto;background:#0D171E;border-radius:7px;display:block}
+.mc .cond{font-size:13.5px;line-height:1.4}
+.mc .cond i{font-style:normal;font-family:var(--f-mono);color:var(--accent);font-size:13px}
+.fml{font-family:"IBM Plex Sans",Georgia,serif;font-size:19px;background:var(--well);border-left:4px solid var(--accent);border-radius:6px;padding:8px 14px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px}
+.fml i{font-family:Georgia,"Times New Roman",serif;font-size:21px}
+.fml small{font-family:var(--f-body);font-size:13px;color:var(--muted)}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 3px;line-height:1.15}
+.frac>span:first-child{border-bottom:1.4px solid currentColor;padding:0 3px}
+.frac>span:last-child{padding:0 3px}
+#dlg{position:fixed;inset:0;z-index:70;background:rgba(13,23,30,.55);display:flex;align-items:center;justify-content:center;padding:16px}
+#dlg[hidden]{display:none!important}
+#dlg .box{background:var(--panel);border-radius:12px;max-width:760px;width:100%;max-height:calc(100vh - 32px);overflow:auto;padding:18px;display:flex;flex-direction:column;gap:12px;position:relative}
+#dlg .x{position:absolute;top:8px;right:10px;border:0;background:none;font-size:26px;line-height:1;color:var(--muted);padding:4px 8px}
+#dlg svg{width:100%;height:auto;background:#0D171E;border-radius:8px}
+.gen{display:flex;gap:4px;align-items:flex-end;height:150px}
+.chip{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--accent);color:var(--accent);background:var(--panel);border-radius:14px;padding:2px 10px;font-size:13px;cursor:help}
+.chip:hover,.chip.on{background:var(--accent);color:#fff}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+@keyframes mvR{0%{transform:translateX(0);opacity:1}45%{transform:translateX(var(--d,70px));opacity:1}50%,100%{transform:translateX(var(--d,70px));opacity:0}}
+@keyframes out1{0%,48%{transform:translate(0,0);opacity:0}52%{opacity:1}100%{transform:translate(var(--dx,70px),var(--dy,-24px));opacity:1}}
+@keyframes flash{0%,45%{opacity:0}50%{opacity:1}75%,100%{opacity:0}}
+@keyframes show2{0%,48%{opacity:0}52%,100%{opacity:1}}
+@keyframes hide2{0%,48%{opacity:1}52%,100%{opacity:0}}
+@keyframes jig{0%,100%{transform:translate(0,0)}25%{transform:translate(3px,-2px)}50%{transform:translate(-2px,3px)}75%{transform:translate(2px,2px)}}
+@keyframes glow{0%,100%{opacity:.35}50%{opacity:1}}
+.an{animation-duration:3.2s;animation-iteration-count:infinite;animation-timing-function:linear;transform-box:fill-box}
+.a-mv{animation-name:mvR}.a-out{animation-name:out1}.a-fl{animation-name:flash}.a-s2{animation-name:show2}.a-h2{animation-name:hide2}.a-jig{animation-name:jig;animation-duration:.5s}.a-gl{animation-name:glow;animation-duration:1.6s}
+@keyframes mv1{0%{transform:translateX(0);opacity:1}25%{transform:translateX(var(--d,70px));opacity:1}27%,100%{transform:translateX(var(--d,70px));opacity:0}}
+@keyframes mv2{0%,38%{transform:translateX(0);opacity:0}40%{opacity:1}63%{transform:translateX(var(--d,70px));opacity:1}65%,100%{transform:translateX(var(--d,70px));opacity:0}}
+@keyframes s25{0%,24%{opacity:0}27%,100%{opacity:1}}
+@keyframes s25h{0%,24%{opacity:0}27%,63%{opacity:1}66%,100%{opacity:0}}
+@keyframes s65{0%,63%{opacity:0}66%,100%{opacity:1}}
+@keyframes h65{0%,63%{opacity:1}66%,100%{opacity:0}}
+@keyframes out65{0%,63%{transform:translate(0,0);opacity:0}66%{opacity:1}100%{transform:translate(var(--dx,70px),var(--dy,-24px));opacity:1}}
+@keyframes fl65{0%,62%{opacity:0}66%{opacity:1}85%,100%{opacity:0}}
+@keyframes fl25{0%,22%{opacity:0}26%{opacity:1}40%,100%{opacity:0}}
+.a-mv1{animation-name:mv1}.a-mv2{animation-name:mv2}.a-s25{animation-name:s25}.a-s25h{animation-name:s25h}.a-s65{animation-name:s65}.a-h65{animation-name:h65}.a-o65{animation-name:out65}.a-f65{animation-name:fl65}.a-f25{animation-name:fl25}
+@media (prefers-reduced-motion:reduce){.an{animation:none}}
+@media (max-width:560px){.fml{font-size:17px}.fml i{font-size:19px}}
+</style>
+<style>
+.cases{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.cs{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;cursor:pointer;text-align:left;font:inherit;color:inherit}
+.cs:hover,.cs.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--soft)}
+.cs b{font-size:15.5px}.cs .tag{align-self:flex-start}
+.cs.done{border-left:5px solid var(--ok)}
+.phase{display:flex;gap:6px;flex-wrap:wrap}.phase span{font:12.5px var(--mono,monospace);padding:3px 8px;border-radius:12px;background:var(--well);color:var(--muted)}.phase span.on{background:var(--accent);color:#fff}
+.stat{font-weight:600}.stat.ok{color:var(--ok)}.stat.hot{color:var(--hot)}.stat.w{color:var(--warn)}
+.pol2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:820px){.pol2{grid-template-columns:1fr}}
+.cmpw{overflow-x:auto}.cmp{width:100%;min-width:560px;border-collapse:collapse;font-size:14px}.cmp td,.cmp th{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}.cmp th{background:var(--well)}
+</style>
+<div class="wrap">
+<header class="top"><div class="topin">
+ <div><div class="eyebrow">Техника высоких напряжений · лекция 4 · физика разряда</div><h1>Закон Пашена, давление и плотность газа</h1></div>
+ <nav class="tabs" role="tablist" aria-label="Разделы">
+  <button role="tab" data-tab="t1" class="on"><span>1</span>Кривая Пашена</button>
+  <button role="tab" data-tab="t2"><span>2</span>Погода и высота</button>
+  <button role="tab" data-tab="t3"><span>3</span>Вакуум и элегаз</button>
+  <button role="tab" data-tab="t4"><span>4</span>Газ в изоляции</button>
+  <button role="tab" data-tab="t5"><span>5</span>Реальные случаи</button>
+  <button role="tab" data-tab="t6"><span>6</span>Задачи</button>
+  <button role="tab" data-tab="t7"><span>7</span>Тест</button>
+ </nav>
+</div></header>
+
+<section class="concepts" aria-label="Ключевые понятия">
+ <div class="cpt"><b>Закон Пашена <button class="q" data-tip="paschen" aria-label="Справка">?</button></b><p>U<sub>пр</sub> зависит только от p·d</p></div>
+ <div class="cpt"><b>Минимум Пашена <button class="q" data-tip="min" aria-label="Справка">?</button></b><p>Воздух: ≈ 327 В — ниже чистый газ не пробить</p></div>
+ <div class="cpt"><b>Две ветви <button class="q" data-tip="left" aria-label="Справка">?</button></b><p>Справа мало энергии, слева мало столкновений</p></div>
+ <div class="cpt"><b>Плотность δ <button class="q" data-tip="delta" aria-label="Справка">?</button></b><p>Мороз и давление — прочнее, жара и высота — слабее</p></div>
+ <div class="cpt"><b>Вакуум и элегаз <button class="q" data-tip="sf6" aria-label="Справка">?</button></b><p>Две стороны кривой: без газа и сжатый газ</p></div>
+</section>
+
+<section id="t1" class="tabp"></section>
+<section id="t2" class="tabp" hidden></section>
+<section id="t3" class="tabp" hidden></section>
+<section id="t4" class="tabp" hidden></section>
+<section id="t5" class="tabp" hidden></section>
+<section id="t6" class="tabp" hidden></section>
+<section id="t7" class="tabp" hidden></section>
+</div>
+<div id="tip" role="tooltip" hidden></div>
+<div id="dlg" hidden role="dialog" aria-modal="true" aria-labelledby="dlgt"><div class="box"><button class="x" aria-label="Закрыть">×</button><div id="dlgc"></div></div></div>
+<script>
+const fx=(v,n=1)=>(+v).toFixed(n).replace(".",",").replace("-","−");
+const TORR=133.322;
+const GAS={
+air:{n:"Воздух",A:15,B:365,g:0.01,mU:327,mpd:0.567,c:"#B8C4CE"},
+n2:{n:"Азот",A:12,B:342,g:0.041,mU:251,mpd:0.67,c:"#4FB3FF"},
+ar:{n:"Аргон",A:12,B:180,g:0.036,mU:137,mpd:0.9,c:"#C39BFF"},
+he:{n:"Гелий",A:3,B:34,g:0.0064,mU:156,mpd:4.0,c:"#FF8A3D"},
+h2:{n:"Водород",A:5,B:130,g:0.0215,mU:273,mpd:1.15,c:"#7EE0A8"},
+co2:{n:"Углекислый газ",A:20,B:466,g:0.0013,mU:420,mpd:0.51,c:"#F27FB2"}};
+const lnln=g=>Math.log(Math.log(1+1/g));
+const pasU=(gas,pd)=>{const G=GAS[gas],den=Math.log(G.A*pd)-lnln(G.g);return den>0?G.B*pd/den:Infinity};
+const pasAsym=gas=>{const G=GAS[gas];return Math.log(1+1/G.g)/G.A};
+const pasMin=gas=>{const G=GAS[gas],pd=Math.E*Math.log(1+1/G.g)/G.A;return {pd,U:G.B*pd/Math.log(G.A*pd/Math.log(1+1/G.g))}};
+const schU=dd=>(24.22*dd+6.08*Math.sqrt(dd))*1000;
+const airU=pd=>{const P=pasU("air",pd);if(pd<=5)return P;const S=schU(pd/760);if(pd>=20)return S;const w=Math.log(pd/5)/Math.log(4);return Math.exp((1-w)*Math.log(P)+w*Math.log(S))};
+const delta=(pmm,tC)=>(pmm/760)*(293/(273+tC));
+const deltaH=H=>Math.exp(-H/8150);
+const pH=H=>760*Math.exp(-H/8150);
+const hum=(tC,rh)=>216.7*(rh/100)*6.112*Math.exp(17.62*tC/(243.12+tC))/(273.15+tC);
+const kHum=(h,dl,kind)=>{const x=Math.min(15,Math.max(1,h/dl))-11;return kind==="dc"?1+0.014*x-0.00022*x*x:kind==="li"?1+0.010*x:1+0.012*x};
+const mw=g=>g<0.2?[0,0]:g<1?[g*(g-0.2)/0.8,g*(g-0.2)/0.8]:g<1.2?[1,1]:g<2?[1,(2.2-g)*(2-g)/0.8]:[1,0];
+function corr(U0,Lm,dl,h,kind){const k=kHum(h,dl,kind),g=U0/(500*Lm*dl*k),[m,w]=mw(g),k1=Math.pow(dl,m),k2=Math.pow(k,w);return {k,g,m,w,k1,k2,Kt:k1*k2}}
+const sphU=(dcm,dl)=>schU(dl*dcm)/1000;
+const rodU=(dcm,dl)=>4.7*dl*dcm;
+const Ka=H=>H<=1000?1:Math.exp((H-1000)/8150);
+const lamMol=pPa=>6.6e-3/pPa;
+const lamE=pPa=>4*Math.SQRT2*lamMol(pPa);
+const KVAC=40;
+const vacU=dmm=>KVAC*Math.sqrt(dmm)*1000;
+function realAir(pPa,dmm,Lmax=50){const p=pPa/TORR,d=dmm/10;let U=airU(p*d);if(p*d<20){const L1=Math.max(d,Math.min(Lmax/10,pasMin("air").pd/p));U=Math.min(U,pasU("air",p*L1));}return p*d>=pasMin("air").pd?U:Math.min(U,vacU(dmm))}
+const sf6U=(pPa,dmm)=>{const b=pPa/1e5;return (230*b+1.61)/26*dmm*1000};
+const sf6Ok=pPa=>pPa>=5e4;
+const regime=(pPa,dmm,Lmax=50)=>{const p=pPa/TORR,d=dmm/10,pm=pasMin("air").pd;if(p*d>=pm*1.6)return "right";if(p*d>=pm*0.7)return "min";return realAir(pPa,dmm,Lmax)>=vacU(dmm)*0.999?"vac":"left"};
+const voidUb=(dmm,pTorr)=>pasU("air",pTorr*dmm/10);
+function voidCalc(er,Eins,dmm,pTorr){const Ev=er*Eins,Uv=Ev*dmm*1000,Ub=voidUb(dmm,pTorr),Ebv=Ub/(dmm*1000),Einc=Ub/(er*dmm*1000);return {Ev,Uv,Ub,Ebv,Einc,pd:false||Uv>=Ub}}
+function voidMin(er,Eins,pTorr){let lo=null;for(let i=0;i<=400;i++){const d=Math.pow(10,-3+i/400*3.5);const r=voidCalc(er,Eins,d,pTorr);if(r.pd){lo=d;break}}return lo}
+if(typeof module!=="undefined")module.exports={fx,TORR,GAS,pasU,pasAsym,pasMin,schU,airU,delta,deltaH,pH,hum,kHum,mw,corr,sphU,rodU,Ka,lamMol,lamE,vacU,realAir,sf6U,sf6Ok,regime,voidUb,voidCalc,voidMin};
+
+const TIPS={
+paschen:"<b>Закон Пашена</b> (1889): пробивное напряжение однородного промежутка в данном газе зависит только от произведения давления на расстояние p·d. Теория Таунсенда даёт формулу U<sub>пр</sub> = B·pd / [ln(A·pd) − ln ln(1 + 1/γ)].",
+pd:"<b>Произведение p·d</b> — сколько молекул газа стоит у электрона на пути через зазор. Единицы: мм рт. ст.·см (1 мм рт. ст.·см = 1,333 Па·м).",
+gamma:"<b>γ — коэффициент вторичной эмиссии</b>: сколько электронов выбивает из катода один положительный ион. Зависит от газа, материала и состояния катода; для воздуха с металлическим катодом типично γ = 0,01.",
+AB:"<b>Постоянные A и B</b> описывают ионизацию электронным ударом: α/p = A·e<sup>−B·p/E</sup>. Для воздуха A = 15 1/(см·мм рт. ст.), B = 365 В/(см·мм рт. ст.). Подходят в ограниченном диапазоне E/p — поэтому формула Пашена даёт оценку, а не точное значение. Постоянные A, B для других газов — по справочнику Райзера; γ в модели подобран так, чтобы минимум совпал с измеренным.",
+right:"<b>Правая ветвь</b> (pd больше минимума): газ плотный, электрон на коротком пробеге не набирает энергии для ионизации. Чтобы пробить, нужно большее поле — напряжение растёт с pd почти линейно.",
+left:"<b>Левая ветвь</b> (pd меньше минимума): газ разрежен, электрон пролетает зазор, почти не сталкиваясь. Ионизаций мало — нужно очень большое напряжение. Разряд ищет более длинный путь, где столкновений больше.",
+min:"<b>Минимум Пашена</b> — наименьшее пробивное напряжение газа. Для воздуха по измерениям ≈ 327 В при pd ≈ 0,57 мм рт. ст.·см; по формуле с γ = 0,01 — 305 В при 0,84. Ниже этого напряжения чистый газовый промежуток не пробивается ни при каком давлении и зазоре.",
+similar:"<b>Закон подобия</b>: если давление увеличить в k раз, а зазор уменьшить в k раз, электрон сделает на пути столько же столкновений и наберёт ту же энергию между ними — пробивное напряжение не изменится.",
+lam:"<b>Длина свободного пробега</b> — среднее расстояние между столкновениями. Для молекул воздуха λ ≈ 6,6 мм при 1 Па и ≈ 66 нм при атмосферном давлении; у электрона примерно в 5,7 раза больше (4√2·λ).",
+delta:"<b>Относительная плотность воздуха δ</b> = (p/760)·(293/T), p в мм рт. ст., T в кельвинах. Нормальные условия: 760 мм рт. ст., 20 °C, δ = 1. Пробивное напряжение воздушных промежутков примерно пропорционально δ.",
+hum:"<b>Абсолютная влажность h</b> — граммы воды в кубометре воздуха. Нормальная — 11 г/м³. Молекулы воды захватывают электроны, поэтому влажность немного повышает прочность длинных неоднородных промежутков; на короткий однородный промежуток почти не влияет.",
+kt:"<b>Поправочный коэффициент K<sub>t</sub> = k<sub>1</sub>·k<sub>2</sub></b> (ГОСТ 1516.2, МЭК 60060-1): k<sub>1</sub> = δ<sup>m</sup> — на плотность, k<sub>2</sub> = k<sup>w</sup> — на влажность. Показатели m и w зависят от параметра g = U<sub>50</sub>/(500·L·δ·k): короткий однородный промежуток — m = 1, w = 0.",
+kti:"<b>Как применяют K<sub>t</sub></b>. Испытательное напряжение по нормам U<sub>0</sub> задано для нормальных условий. В день испытания подают U = U<sub>0</sub>·K<sub>t</sub>. Измеренное разрядное напряжение приводят к нормальным условиям делением: U<sub>0</sub> = U/K<sub>t</sub>.",
+alt:"<b>Высота над уровнем моря.</b> Давление падает примерно как e<sup>−H/8150</sup>. Оборудование нормального исполнения рассчитано на высоту до 1000 м; выше уровень изоляции увеличивают в K<sub>a</sub> = e<sup>(H−1000)/8150</sup> раз (для промежутков в воздухе m = 1).",
+sf6:"<b>Элегаз SF<sub>6</sub></b> — электроотрицательный газ: его молекулы захватывают свободные электроны, лавине труднее развиться. При одинаковом давлении он примерно в 3 раза прочнее воздуха. В КРУЭ его держат под давлением 0,4–0,6 МПа (абс.).",
+vac:"<b>Вакуум.</b> При давлении ниже ≈ 10⁻² Па электрону не с чем сталкиваться — лавины нет. Прочность определяют электроды: эмиссия с микроострий, испарение металла. В модели принято U ≈ 40 кВ·√d (d в мм) — оценка для чистых электродов.",
+longpath:"<b>Разряд по длинному пути.</b> На левой ветви длинный путь пробивается легче короткого: на нём больше столкновений. Поэтому в разреженном газе разряд идёт в обход — по стенкам камеры, по выводам, между дальними частями электродов.",
+void:"<b>Газовое включение</b> — пора, расслоение или трещина в твёрдой изоляции. Поле в плоской поре в ε<sub>r</sub> раз больше, чем в изоляции, а газ слабее твёрдого диэлектрика — поэтому пора разряжается первой. Это и есть частичный разряд (лекция 10).",
+schu:"<b>Формула для однородного поля в воздухе</b>: U<sub>пр</sub> ≈ 24,22·δd + 6,08·√(δd) кВ (d в см). Это аппроксимация измерений при pd больше ≈ 10 мм рт. ст.·см; при атмосферном давлении и зазоре 1 см даёт 30,3 кВ."};
+const CASES=[
+{id:"c1",tag:"Космос · 2023",t:"Ракета потеряла вторую ступень из-за дуги",
+ x:"19 сентября 2023 г. у ракеты Electron компании Rocket Lab примерно на 151-й секунде полёта резко упало напряжение источника питания второй ступени, и ракета не вышла на орбиту. Расследование назвало наиболее вероятной причиной электрическую дугу в высоковольтной системе питания: она закоротила аккумуляторы. Совпали три условия: в межступенчатом отсеке скопились гелий и азот, в изоляции жгута был дефект, форма напряжения оказалась неблагоприятной. Компания решила изменить конструкцию отсека, чтобы при полёте и разделении ступеней в нём сохранялось достаточное давление.",
+ q:"Почему дуга возникла в полёте, а не при наземных проверках того же жгута?",
+ o:["Давление в отсеке упало, pd приблизилось к минимуму Пашена — пробивное напряжение зазора упало до сотен вольт","В полёте выросла температура, и медь проводов расплавилась","В вакууме пробивное напряжение всегда равно нулю","На земле напряжение аккумуляторов было меньше"],a:0,
+ e:"При атмосферном давлении зазор в миллиметры держит киловольты (правая ветвь). При подъёме давление падает, pd уменьшается и проходит через минимум Пашена: прочность того же зазора опускается до нескольких сотен вольт. Гелий ещё ослабляет промежуток. Поэтому меры — держать давление в отсеке, а не «улучшать вакуум».",
+ src:"The Register, 09.11.2023 «Rocket Lab blames Paschen's law…» (по отчёту Rocket Lab о расследовании)."},
+{id:"c2",tag:"Высокогорье · 2011",t:"Линия ±500 кВ стала ±400 кВ",
+ x:"Линия постоянного тока Гэрмо — Лхаса (Цинхай-Тибетская связь) введена в конце 2011 г. 88 % трассы проходит выше 4000 м, перевал Тангула — 5300 м. Первоначально линию проектировали на ±500 кВ, но снизили напряжение до ±400 кВ — из-за ограничений внешней изоляции на высоте и меньшего спроса на мощность. Испытания у Тангулы показали, что композитные изоляторы нужны длиной 12–14 м против 9,75 м у подвесных изоляторов UHV на равнине; удельную длину пути утечки увеличили в 1,28 раза.",
+ q:"Почему на высоте 4500 м изоляция того же класса напряжения должна быть заметно длиннее?",
+ o:["Давление и относительная плотность воздуха там ≈ 0,58 от нормальной — разрядные напряжения воздушных промежутков падают почти пропорционально","Холод делает воздух проводящим","Ультрафиолет на высоте разрушает изолятор за несколько часов","На высоте меньше влажность, а сухой воздух проводит ток"],a:0,
+ e:"δ ≈ e<sup>−4500/8150</sup> ≈ 0,58: прочность воздушных промежутков на 40 % ниже, чем у моря. Чтобы выдержать то же напряжение, промежуток удлиняют; для оборудования вводят высотный коэффициент K<sub>a</sub> = e<sup>(H−1000)/8150</sup>. Тот же эффект в Хибинах на 400–1000 м — 5–12 %.",
+ src:"INMR, «15th Anniversary of World’s Highest HVDC Line»."},
+{id:"c3",tag:"КРУЭ · 2026",t:"Перекрытие в отсеке КРУЭ 400 кВ",
+ x:"На конференции CIGRE 2026 инженеры POWERGRID (Индия) представили разбор перекрытия в отсеке комплектного распределительного устройства с элегазовой изоляцией 400 кВ. Причина, вынесенная в заголовок доклада, — незамеченное снижение давления элегаза. Доклад посвящён и стратегии восстановления отсека после перекрытия.",
+ q:"Почему снижение давления элегаза опасно, даже если элегаз ещё остался в отсеке?",
+ o:["Отсек работает на правой ветви Пашена: прочность элегаза почти пропорциональна давлению, и при потере части газа зазоры перестают выдерживать рабочие и коммутационные напряжения","Элегаз при снижении давления превращается в проводник","Давление влияет только на теплоотвод, а не на изоляцию","Снижение давления опасно лишь в вакуумных выключателях"],a:0,
+ e:"Изоляционные расстояния в КРУЭ рассчитаны на номинальное давление 0,4–0,6 МПа. Электрическая прочность элегаза растёт с давлением почти линейно, поэтому её падение прямо уменьшает запас. Для этого ставят датчики плотности с двумя ступенями: сигнал и блокировку оперирования.",
+ src:"CIGRE Session 2026, доклад A3-10328 «Case study on flashover in a 400 kV GIS compartment due to undetected SF₆ pressure drop and restoration strategy»."},
+{id:"c4",tag:"Эксплуатация КРУ",t:"Как проверяют вакуум в камере выключателя",
+ x:"Вакуумную камеру выключателя 6–35 кВ в эксплуатации проверяют высоким напряжением между разомкнутыми контактами: переменным или постоянным, около 75–80 % заводского испытательного. Если камера потеряла вакуум, выдерживаемое напряжение падает сильно. Камеру, не прошедшую испытание при обеих полярностях, считают негодной; отказ при одной полярности может дать автоэлектронная эмиссия с микроострия, и тогда испытание повторяют с обратной полярностью.",
+ q:"Почему камера, в которую натекло немного воздуха, держит меньше, чем камера с глубоким вакуумом?",
+ o:["Давление поднялось от области вакуума к минимуму Пашена: появились молекулы для лавины, а разряд находит путь с оптимальным pd","Воздух проводит ток лучше вакуума при любом давлении","В вакууме нет электронов, поэтому пробой невозможен вообще","Натёкший воздух окислил контакты, и они стали короче"],a:0,
+ e:"В глубоком вакууме лавине не на чем развиться, прочность задают электроды. Если давление поднимется до 1–100 Па, при зазоре 10 мм pd окажется рядом с минимумом Пашена, а внутри камеры есть и более длинные пути: пробой — от сотен вольт. Поэтому испытание вакуумной камеры — по сути проверка, на какой ветви кривой Пашена она находится.",
+ src:"Megger, Electrical Tester, март 2020: «DC testing of vacuum integrity in MV switchgear»."},
+{id:"c5",tag:"Авиация",t:"Частичные разряды в проводке на высоте",
+ x:"Лаборатория Lectromec, испытывающая авиационные провода, отмечает: для любой конструкции провода или кабеля напряжения возникновения и погасания частичных разрядов на высоте ниже, чем у земли. Причина — разреженный воздух в порах и зазорах изоляции. При этом снижение идёт «до определённого предела».",
+ q:"Что означает «до определённого предела»?",
+ o:["При дальнейшем падении давления pd уходит левее минимума Пашена, и напряжение возникновения разрядов снова растёт","Выше 10 км провода перестают нагреваться","Ниже некоторого давления воздух становится проводником","На большой высоте частичные разряды гасит ультрафиолет"],a:0,
+ e:"Пока pd больше минимума, падение давления снижает прочность (правая ветвь). Пройдя минимум, газ становится настолько разреженным, что столкновений не хватает, и прочность снова растёт (левая ветвь). Для более электрической авиации с напряжениями сотни вольт это важное ограничение.",
+ src:"Lectromec, «Partial Discharge at Altitude»."},
+{id:"c6",tag:"Быт и электроника",t:"Может ли 230 В пробить воздушный зазор?",
+ x:"Амплитуда сетевого напряжения 230 В — 325 В. Минимум Пашена для воздуха по измерениям — 327 В. Тем не менее при размыкании контактов выключателя под нагрузкой искра в сети 230 В видна всегда.",
+ q:"Как совместить эти факты?",
+ o:["Чистый воздушный промежуток 325 В пробить не может, но при размыкании контактов разряд начинается из замкнутого состояния — через перемычку расплавленного металла и пары металла, без механизма Таунсенда","Минимум Пашена для воздуха равен 30 В","Искра при размыкании — это пробой по закону Пашена при pd = 0,57","В сети всегда есть перенапряжения до 3 кВ"],a:0,
+ e:"Закон Пашена описывает пробой промежутка, который был изолирующим. Дуга размыкания — другой процесс: ток идёт через последнюю точку контакта, металл плавится и испаряется, в парах металла горит дуга. Поэтому в слаботочной технике газоразрядные элементы рассчитывают с учётом минимума Пашена, а контакты — по дуге.",
+ src:"Paschen's law: минимум для воздуха 327 В при 0,567 мм рт. ст.·см (Naidu, Kamaraju «High Voltage Engineering», табл. минимальных искровых потенциалов; «Paschen's law», Википедия)."}];
+const TASKS=[
+{id:"k1",t:"Миллиметровый зазор",x:"Однородный воздушный зазор 1 мм при давлении 760 мм рт. ст. Найдите пробивное напряжение по формуле Пашена (A = 15, B = 365, γ = 0,01), кВ.",h:["pd = 760·0,1 = 76 мм рт. ст.·см.","ln ln(1 + 1/0,01) = ln 4,615 = 1,529."],a:5.035,tol:0.03,s:"U = 365·76/(ln(15·76) − 1,529) = 27 740/(7,039 − 1,529) = <b>5,03 кВ</b>. Измерения дают ≈ 4,3 кВ: формула с постоянными A и B завышает на правой ветви."},
+{id:"k2",t:"Где минимум при атмосферном давлении",x:"При каком зазоре в атмосферном воздухе (760 мм рт. ст.) пробивное напряжение по формуле Пашена минимально? Ответ в микрометрах.",h:["Минимум функции: pd<sub>min</sub> = e·ln(1 + 1/γ)/A.","1 см = 10⁴ мкм."],a:11.0,tol:0.03,s:"pd<sub>min</sub> = 2,718·4,615/15 = 0,836 мм рт. ст.·см; d = 0,836/760 = 1,10·10⁻³ см = <b>11 мкм</b>. Такие зазоры — поры и трещины в изоляции, края плёнок."},
+{id:"k3",t:"Трубка с разреженным воздухом",x:"Электроды в стеклянной трубке на расстоянии 2 см, воздух откачан до 5 мм рт. ст. Найдите пробивное напряжение по формуле Пашена, В.",h:["pd = 5·2 = 10 мм рт. ст.·см.","Это всё ещё правая ветвь, но рядом с минимумом."],a:1048,tol:0.03,s:"U = 365·10/(ln 150 − 1,529) = 3650/3,482 = <b>1048 В</b>. Тот же зазор при атмосферном давлении держит ≈ 57 кВ — в 55 раз больше."},
+{id:"k4",t:"Давление худшего случая в отсеке",x:"В приборном отсеке ракеты зазор между высоковольтными выводами 10 мм. При каком давлении этот зазор слабее всего? Ответ в паскалях (1 мм рт. ст. = 133,3 Па).",h:["Нужно pd = pd<sub>min</sub> = 0,836 мм рт. ст.·см.","d = 1 см."],a:111.5,tol:0.03,s:"p = 0,836/1 = 0,836 мм рт. ст. = <b>111 Па</b> — это давление на высоте около 48–50 км. Отсек проходит его за десятки секунд, и в это время прочность зазора — около 300 В."},
+{id:"k5",t:"Морозный антициклон в Апатитах",x:"Давление 775 мм рт. ст., температура −30 °C. Найдите относительную плотность воздуха δ.",h:["δ = (p/760)·(293/T).","T = 273 − 30 = 243 К."],a:1.23,tol:0.02,s:"δ = (775/760)·(293/243) = 1,020·1,206 = <b>1,23</b>. Воздушные промежутки в такой день на 23 % прочнее, чем при нормальных условиях."},
+{id:"k6",t:"Зазор летом в циклон",x:"Однородный воздушный зазор 2 см при δ = 0,88. Найдите пробивное напряжение по формуле U = 24,22·δd + 6,08·√(δd) кВ.",h:["δd = 0,88·2 = 1,76 см.","√1,76 = 1,327."],a:50.7,tol:0.02,s:"U = 24,22·1,76 + 6,08·1,327 = 42,6 + 8,1 = <b>50,7 кВ</b> вместо 57,0 кВ при δ = 1."},
+{id:"k7",t:"Поправка при испытании",x:"По нормам изоляцию испытывают напряжением 95 кВ (нормальные условия). В день испытания 735 мм рт. ст. и +25 °C, промежутки короткие и однородные (m = 1, w = 0). Какое напряжение подать, кВ?",h:["K<sub>t</sub> = δ<sup>m</sup>·k<sup>w</sup> = δ.","U = U<sub>0</sub>·K<sub>t</sub>."],a:90.33,tol:0.02,s:"δ = (735/760)·(293/298) = 0,951; U = 95·0,951 = <b>90,3 кВ</b>. Подав 95 кВ, испытали бы изоляцию строже нормы."},
+{id:"k8",t:"Оборудование для высокогорья",x:"Оборудование нормального исполнения имеет грозовой импульсный уровень 75 кВ. Какой уровень нужен при нормальных условиях для работы на высоте 2500 м?",h:["До 1000 м поправки нет.","K<sub>a</sub> = e<sup>(H−1000)/8150</sup>."],a:90.2,tol:0.02,s:"K<sub>a</sub> = e<sup>1500/8150</sup> = 1,202; 75·1,202 = <b>90,2 кВ</b> — изоляцию выбирают по ближайшему большему стандартному уровню."},
+{id:"k9",t:"Утечка элегаза",x:"Однородный зазор 10 мм в элегазе. Номинальное давление 0,5 МПа, после утечки — 0,35 МПа. На сколько процентов упала электрическая прочность? Используйте E = (230·p + 1,61)/26 кВ/мм, p в барах.",h:["0,5 МПа = 5 бар.","Сравните E при 5 и 3,5 бар."],a:30.0,tol:0.03,s:"E(5) = 44,29 кВ/мм, U = 443 кВ; E(3,5) = 31,02 кВ/мм, U = 310 кВ. Падение (443 − 310)/443 = <b>30 %</b> — почти пропорционально давлению."},
+{id:"k10",t:"Пора в литой изоляции",x:"Плоская воздушная пора толщиной 0,1 мм в эпоксидной изоляции (ε<sub>r</sub> = 4) при давлении 760 мм рт. ст. При какой напряжённости в изоляции пора начнёт разряжаться, кВ/мм?",h:["Пробивное напряжение поры — по Пашену при pd = 7,6 мм рт. ст.·см.","Поле в поре E<sub>в</sub> = ε<sub>r</sub>·E<sub>из</sub>, напряжение на поре — E<sub>в</sub>·d."],a:2.16,tol:0.03,s:"U<sub>пр</sub> = 365·7,6/(ln 114 − 1,529) = 865 В; E<sub>в</sub> = 865 В/0,1 мм = 8,65 кВ/мм; E<sub>из</sub> = 8,65/4 = <b>2,16 кВ/мм</b>. Рабочее поле литой изоляции — 2–4 кВ/мм, поэтому поры такого размера недопустимы."}];
+const TEST=[
+{q:"От чего по закону Пашена зависит пробивное напряжение однородного промежутка в данном газе?",o:["Только от произведения давления на расстояние p·d","Только от расстояния d","Только от давления p","От отношения p/d","От площади электродов"],a:0,e:"Электрон делает на пути число столкновений ∝ pd, а энергию между ними набирает ∝ E/p = U/(pd). Оба определяются pd."},
+{q:"Как ведёт себя пробивное напряжение воздуха при росте pd на правой ветви?",o:["Растёт почти линейно","Падает","Не меняется","Растёт, затем резко падает до нуля","Колеблется"],a:0,e:"Плотный газ: на коротком пробеге энергии мало, нужно большее поле; U ≈ (E/p)<sub>кр</sub>·pd + небольшая добавка."},
+{q:"Почему на левой ветви пробивное напряжение растёт при уменьшении pd?",o:["Электрон пролетает зазор, почти не сталкиваясь: ионизаций мало","Электроны не могут оторваться от катода","Газ становится проводником","Растёт температура газа","Ионы движутся быстрее электронов"],a:0,e:"При малом pd на пути слишком мало молекул; даже большая энергия электрона не спасает — лавине не из чего расти."},
+{q:"Минимум Пашена для воздуха по измерениям примерно равен:",o:["327 В","30 кВ","3 В","3 кВ","100 кВ"],a:0,e:"≈ 327 В при pd ≈ 0,57 мм рт. ст.·см. Формула с A = 15, B = 365, γ = 0,01 даёт 305 В при 0,84."},
+{q:"Давление увеличили в 3 раза, а зазор уменьшили в 3 раза. Пробивное напряжение:",o:["Не изменится","Вырастет в 3 раза","Уменьшится в 3 раза","Вырастет в 9 раз","Уменьшится в 9 раз"],a:0,e:"pd не изменилось — закон подобия."},
+{q:"Что такое γ в формуле Пашена?",o:["Число электронов, выбиваемых из катода одним ионом","Коэффициент ударной ионизации","Относительная плотность воздуха","Коэффициент прилипания","Диэлектрическая проницаемость газа"],a:0,e:"Вторичная эмиссия замыкает обратную связь разряда: условие самостоятельности γ(e<sup>αd</sup> − 1) = 1."},
+{q:"Как найти относительную плотность воздуха δ?",o:["δ = (p/760)·(293/T), p в мм рт. ст., T в К","δ = (760/p)·(T/293)","δ = p·T","δ = p/760 при любой температуре","δ = e<sup>−p/8150</sup>"],a:0,e:"Плотность газа пропорциональна p/T; нормальные условия — 760 мм рт. ст. и 20 °C."},
+{q:"Зимой в Апатитах −30 °C и высокое давление. По сравнению с нормальными условиями прочность воздушного промежутка:",o:["Выше примерно на 20 %","Ниже примерно на 20 %","Такая же","Ниже в 2 раза","Выше в 2 раза"],a:0,e:"δ ≈ (775/760)·(293/243) ≈ 1,23. Холодный плотный воздух прочнее."},
+{q:"По ГОСТ 1516.2 (МЭК 60060-1) при испытании в день с δ = 0,95 для короткого однородного промежутка подают:",o:["U = U₀·0,95","U = U₀/0,95","U = U₀ без поправки","U = U₀·0,95²","U = U₀ + 5 кВ"],a:0,e:"Для таких промежутков m = 1, w = 0, K<sub>t</sub> = δ. Испытательное напряжение умножают на K<sub>t</sub>, чтобы нагрузка на изоляцию соответствовала норме."},
+{q:"На какой промежуток влажность воздуха влияет сильнее?",o:["Длинный неоднородный (стержень — плоскость)","Короткий однородный (шары)","Одинаково на оба","Ни на какой","Только на промежуток в вакууме"],a:0,e:"Вода захватывает электроны и тормозит рост стримеров, это важно для длинных промежутков. Для однородного короткого промежутка w = 0."},
+{q:"Оборудование нормального исполнения рассчитано на высоту до:",o:["1000 м","100 м","3000 м","5000 м","Любую высоту"],a:0,e:"Выше 1000 м вводят высотный коэффициент K<sub>a</sub> = e<sup>(H−1000)/8150</sup>."},
+{q:"Почему элегаз прочнее воздуха?",o:["Он электроотрицательный: молекулы SF₆ захватывают свободные электроны","У него меньше молекулярная масса","Он проводит тепло хуже воздуха","Он не ионизируется вовсе","В нём больше вторичная эмиссия"],a:0,e:"Прилипание забирает электроны из лавины; при одном давлении элегаз примерно в 3 раза прочнее воздуха."},
+{q:"Вакуумная камера потеряла вакуум, давление поднялось до 50 Па. Что с прочностью между контактами 10 мм?",o:["Упала до сотен вольт: pd рядом с минимумом Пашена","Выросла, газ лучше изолирует","Не изменилась","Упала до нуля, газ стал проводником","Выросла в 10 раз"],a:0,e:"pd = 50/133·1 ≈ 0,4 мм рт. ст.·см — около минимума; в камере есть и более длинные пути."},
+{q:"Почему разряд в разреженном газе часто идёт не по кратчайшему пути?",o:["На левой ветви длинный путь пробивается легче короткого","Электроны движутся по окружности","Короткий путь закрыт ионами","Ток всегда выбирает самый длинный путь","Это ошибка измерений"],a:0,e:"На длинном пути больше столкновений; pd приближается к минимуму, напряжение пробоя ниже."},
+{q:"Плоская воздушная пора в изоляции с ε<sub>r</sub> = 4. Поле в поре по сравнению с полем в изоляции:",o:["В 4 раза больше","В 4 раза меньше","Такое же","В 2 раза больше","Равно нулю"],a:0,e:"Непрерывна нормальная составляющая индукции: ε₀E<sub>в</sub> = ε₀ε<sub>r</sub>E<sub>из</sub>. Поэтому поры разряжаются первыми — это частичные разряды."}];
+
+const TV=[TEST,[
+{q:"Два однородных промежутка в воздухе: 1 см при 760 мм рт. ст. и 2 см при 380 мм рт. ст. Их пробивные напряжения:",o:["Одинаковы","У второго вдвое больше","У второго вдвое меньше","У второго в 4 раза больше","Сравнить нельзя без γ"],a:0,e:"pd = 760 мм рт. ст.·см в обоих случаях — по закону Пашена напряжения равны."},
+{q:"Почему на правой ветви для пробоя нужно большее напряжение при большем pd?",o:["Электрон часто сталкивается и на коротком пробеге не набирает энергии для ионизации","Электрон пролетает зазор без столкновений","Катод перестаёт эмитировать электроны","Газ нагревается и расширяется","Растёт рекомбинация на электродах"],a:0,e:"Энергия на пробеге ∝ E·λ ∝ E/p; при большом p нужно большее E."},
+{q:"Что происходит с пробивным напряжением при уменьшении давления на левой ветви?",o:["Растёт","Падает","Не меняется","Сначала падает до нуля","Становится отрицательным"],a:0,e:"Слишком мало молекул на пути: ионизаций не хватает, нужно всё большее напряжение."},
+{q:"Почему газоразрядный прибор с минимумом Пашена 140 В не зажигается от 100 В?",o:["Ниже минимума Пашена газовый промежуток не пробивается ни при каком pd","Нужно уменьшить давление в 10 раз","Нужно увеличить зазор","Мешает вакуум в приборе","100 В — это слишком много"],a:0,e:"Минимум Пашена — нижняя граница пробивного напряжения данного газа и катода."},
+{q:"Давление в отсеке уменьшилось в 2 раза. Чтобы пробивное напряжение на правой ветви осталось прежним, зазор нужно:",o:["Увеличить в 2 раза","Уменьшить в 2 раза","Не менять","Увеличить в 4 раза","Уменьшить в 4 раза"],a:0,e:"Сохранить pd: p/2·2d = pd."},
+{q:"Какое условие лежит в основе вывода формулы Пашена?",o:["Условие самостоятельности разряда Таунсенда γ(e<sup>αd</sup> − 1) = 1","Закон Ома для газа","Критерий стримера αx = 20","Закон Кулона","Условие равенства токов ионов и электронов"],a:0,e:"Подстановка α/p = A·e<sup>−Bp/E</sup> и E = U/d в условие Таунсенда даёт формулу Пашена."},
+{q:"Давление 735 мм рт. ст., температура +25 °C. Относительная плотность воздуха δ ≈",o:["0,95","1,05","0,85","1,00","1,23"],a:0,e:"δ = (735/760)·(293/298) = 0,951."},
+{q:"Летом при +30 °C и пониженном давлении по сравнению с нормальными условиями прочность воздушного промежутка:",o:["Ниже на несколько процентов","Выше на несколько процентов","Не меняется","Падает в 2 раза","Растёт в 2 раза"],a:0,e:"δ < 1 из-за высокой температуры и низкого давления."},
+{q:"Измеренное в день испытания разрядное напряжение U приводят к нормальным условиям так:",o:["U₀ = U/K<sub>t</sub>","U₀ = U·K<sub>t</sub>","U₀ = U − K<sub>t</sub>","U₀ = U·K<sub>t</sub>²","Поправку не вносят"],a:0,e:"Испытательное напряжение умножают на K<sub>t</sub>, измеренное — делят."},
+{q:"Для короткого однородного промежутка (g > 2) показатели в поправке K<sub>t</sub>:",o:["m = 1, w = 0","m = 0, w = 1","m = 0, w = 0","m = 1, w = 1","m = 2, w = 2"],a:0,e:"Учитывают только плотность: K<sub>t</sub> = δ."},
+{q:"Высотный коэффициент K<sub>a</sub> для оборудования на высоте 2000 м ≈",o:["1,13","1,00","0,88","1,50","2,00"],a:0,e:"K<sub>a</sub> = e<sup>(2000−1000)/8150</sup> = 1,13."},
+{q:"Почему давление элегаза в КРУЭ контролируют датчиком плотности?",o:["Прочность элегаза почти пропорциональна давлению (плотности): утечка снижает изоляционный запас","Датчик измеряет температуру проводников","Элегаз ядовит при утечке","Датчик нужен только для учёта газа","Давление влияет лишь на скорость гашения дуги"],a:0,e:"Отсеки рассчитаны на номинальную плотность газа; при её падении сигнал, затем блокировка."},
+{q:"Почему в глубоком вакууме прочность промежутка определяют электроды, а не газ?",o:["Пробег электрона много больше зазора — лавины нет, пробой идёт от эмиссии и паров металла","В вакууме нет электронов","Газ в вакууме очень плотный","Электроды в вакууме охлаждаются","Вакуум проводит ток"],a:0,e:"При пробеге в метры столкновений в зазоре практически нет."},
+{q:"В разреженном газе пробой прошёл не между ближайшими точками электродов, а по длинной дуге вдоль стенки. Почему?",o:["На левой ветви длинный путь даёт pd ближе к минимуму и пробивается легче","Стенка проводит ток лучше газа","Электрическое поле вдоль стенки больше","Так случайно получилось","Короткий путь заблокирован магнитным полем"],a:0,e:"Это проявление левой ветви кривой Пашена."},
+{q:"Почему газовая пора разряжается раньше, чем пробивается окружающая твёрдая изоляция?",o:["Поле в поре в ε<sub>r</sub> раз больше, а прочность газа во много раз меньше","Газ в поре проводит ток","Пора нагревается сильнее изоляции","В поре нет электронов","Пора уменьшает ёмкость изоляции до нуля"],a:0,e:"Два фактора складываются: усиление поля и слабость газа."}],[
+{q:"Формула U<sub>пр</sub> = B·pd/[ln(A·pd) − ln ln(1 + 1/γ)] описывает:",o:["Кривую Пашена для однородного поля","Пробой длинных промежутков с лидером","Корону на проводах","Пробой жидкостей","Пробой твёрдой изоляции"],a:0,e:"Это закон Пашена в форме, выведенной из теории Таунсенда."},
+{q:"При атмосферном давлении зазоры больше нескольких десятков микрометров находятся:",o:["На правой ветви","На левой ветви","Точно в минимуме","Левее асимптоты","В области вакуума"],a:0,e:"Минимум для воздуха при 760 мм рт. ст. — зазор около 7–11 мкм."},
+{q:"Почему на левой ветви формула Пашена даёт «бесконечное» напряжение при pd меньше некоторого значения?",o:["Даже при огромном поле число ионизаций на пути не достигает ln(1 + 1/γ)","Электроны превращаются в ионы","Газ становится проводником","Формула ошибочна при любом pd","Катод плавится"],a:0,e:"При малом pd произведение α·d ограничено числом молекул на пути A·pd."},
+{q:"Минимум Пашена для воздуха наблюдается при pd около:",o:["0,6 мм рт. ст.·см","760 мм рт. ст.·см","100 мм рт. ст.·см","0,001 мм рт. ст.·см","10⁴ мм рт. ст.·см"],a:0,e:"По измерениям ≈ 0,57 мм рт. ст.·см."},
+{q:"Чем объясняется закон подобия?",o:["При неизменном pd электрон делает то же число столкновений и набирает ту же энергию между ними","Давление не влияет на разряд","Зазор не влияет на разряд","Электроны не сталкиваются с молекулами","Коэффициент γ равен нулю"],a:0,e:"Число столкновений ∝ pd, энергия на пробеге ∝ U/(pd)."},
+{q:"Что физически описывает коэффициент γ?",o:["Вторичную эмиссию электронов из катода под действием ионов и фотонов","Ионизацию в объёме газа","Прилипание электронов","Рекомбинацию","Диффузию электронов"],a:0,e:"γ замыкает цепь самостоятельного разряда."},
+{q:"Нормальные атмосферные условия для высоковольтных испытаний:",o:["101,3 кПа, 20 °C, 11 г/м³","100 кПа, 0 °C, сухой воздух","760 мм рт. ст., 25 °C, 50 %","1 МПа, 20 °C, 11 г/м³","101,3 кПа, 15 °C, 5 г/м³"],a:0,e:"По МЭК 60060-1 и ГОСТ 1516.2."},
+{q:"Почему в морозный антициклон воздушные промежутки прочнее?",o:["Низкая температура и высокое давление увеличивают плотность воздуха δ","Мороз уменьшает число электронов в катоде","Сухой воздух не проводит ток","Лёд покрывает электроды","Мороз усиливает фотоионизацию"],a:0,e:"δ = (p/760)·(293/T) растёт."},
+{q:"Изоляцию испытывают в день, когда K<sub>t</sub> = 1,08. Если подать нормированное напряжение без поправки, испытание будет:",o:["Мягче нормы","Жёстче нормы","Точно по норме","Недопустимым","Невозможным"],a:0,e:"Воздух сегодня прочнее — то же напряжение нагружает изоляцию меньше, чем в норме."},
+{q:"Почему влажность почти не влияет на короткий однородный промежуток?",o:["Пробой развивается без длинных стримеров, а влажность тормозит именно стримеры","Влага не попадает в зазор","Вода не захватывает электроны","Короткий зазор всегда сухой","Влияние влажности компенсирует γ"],a:0,e:"Для таких промежутков w = 0."},
+{q:"Как меняется давление воздуха с высотой?",o:["Примерно как e<sup>−H/8150</sup>","Линейно уменьшается до нуля на 8 км","Не меняется до 5000 м","Растёт","Как 1/H"],a:0,e:"Барометрическая формула с высотой однородной атмосферы ≈ 8 км."},
+{q:"Почему элегаз заменяет воздух в КРУЭ и выключателях 110–500 кВ?",o:["Электроотрицательный газ: при давлении 0,4–0,6 МПа позволяет сделать изоляционные расстояния в разы меньше","Он дешевле воздуха","Он проводит ток в замкнутом состоянии","Он не требует герметичности","Он легче воздуха"],a:0,e:"Высокая прочность и хорошее гашение дуги."},
+{q:"Как проверяют вакуумную камеру выключателя в эксплуатации?",o:["Испытанием высоким напряжением на разомкнутых контактах","Измерением сопротивления контактов омметром","Взвешиванием камеры","Измерением температуры","Визуальным осмотром"],a:0,e:"Камера с потерянным вакуумом не выдерживает испытательного напряжения."},
+{q:"Почему высоковольтной аппаратуре ракет и спутников опасен участок подъёма с давлением порядка 100 Па?",o:["Зазоры в миллиметры–сантиметры проходят через минимум Пашена","Там самая высокая температура","Там сильнее всего вибрация","Там нет воздуха","Там максимальная влажность"],a:0,e:"pd около 1 мм рт. ст.·см — пробой при нескольких сотнях вольт."},
+{q:"Как меняется пробивное поле поры при уменьшении её толщины (правая ветвь)?",o:["Растёт: мелкие поры прочнее по напряжённости","Падает","Не меняется","Обращается в ноль","Становится отрицательным"],a:0,e:"U<sub>пр</sub>/d растёт при уменьшении pd на правой ветви."}],[
+{q:"Пашен в 1889 г. установил экспериментально, что пробивное напряжение газа зависит от:",o:["Произведения давления на расстояние","Только от материала электродов","Только от температуры","Только от частоты напряжения","Объёма камеры"],a:0,e:"Теоретически закон обосновал Таунсенд."},
+{q:"Как изменится пробивное напряжение воздушного зазора 1 см, если давление поднять с 0,1 до 0,3 МПа?",o:["Вырастет почти втрое","Упадёт втрое","Не изменится","Вырастет в 9 раз","Упадёт до минимума Пашена"],a:0,e:"Правая ветвь: почти линейный рост с pd."},
+{q:"На левой ветви кривой Пашена:",o:["Пробег электрона сравним с зазором или больше","Пробег электрона много меньше зазора","Газ сжат до 1 МПа","Работает только стримерный механизм","Пробой идёт через лидер"],a:0,e:"Столкновений на пути мало."},
+{q:"Что можно сказать о напряжении 200 В на любом чистом воздушном промежутке?",o:["Оно ниже минимума Пашена — газового пробоя не будет","Оно пробивает зазоры меньше 1 мм","Оно пробивает зазоры при 100 Па","Оно пробивает любой зазор в вакууме","Его хватает только для короны"],a:0,e:"Минимум для воздуха ≈ 327 В."},
+{q:"Модель газового промежутка уменьшили в 10 раз, а давление в модели увеличили в 10 раз. Пробивное напряжение модели:",o:["Такое же, как у оригинала","В 10 раз меньше","В 10 раз больше","В 100 раз больше","В 100 раз меньше"],a:0,e:"Закон подобия: pd сохранилось."},
+{q:"Почему постоянные A и B формулы Пашена дают лишь оценку?",o:["Выражение α/p = A·e<sup>−Bp/E</sup> верно только в ограниченном диапазоне E/p","A и B меняются от напряжения сети","Они зависят от цвета электродов","Их не измеряли","Они верны только в вакууме"],a:0,e:"Для воздуха при атмосферном давлении формула завышает на 10–15 %."},
+{q:"Высота 400 м над уровнем моря (Хибины). Относительная плотность воздуха по высоте δ ≈",o:["0,95","1,05","0,60","0,80","1,00"],a:0,e:"e<sup>−400/8150</sup> = 0,952."},
+{q:"При какой погоде воздушная изоляция подстанции на Кольском полуострове прочнее всего?",o:["Мороз и высокое давление","Оттепель и циклон","Летняя жара","Туман при +2 °C","Ветер с моря"],a:0,e:"δ максимальна в холодном плотном воздухе."},
+{q:"Для чего вводят поправочный коэффициент K<sub>t</sub> при испытаниях?",o:["Чтобы результаты испытаний в разную погоду соответствовали нормальным условиям","Чтобы учесть частоту сети","Чтобы учесть сопротивление заземления","Чтобы учесть износ оборудования","Чтобы учесть ток утечки"],a:0,e:"Прочность воздуха зависит от плотности и влажности."},
+{q:"Влажность сильнее всего влияет на разрядное напряжение:",o:["Длинных промежутков стержень — плоскость","Шаровых разрядников малого зазора","Промежутков в вакууме","Промежутков в элегазе","Промежутков в трансформаторном масле"],a:0,e:"Вода тормозит развитие стримеров на длинном пути."},
+{q:"Почему изоляцию оборудования для высоты 3000 м берут с повышенным уровнем?",o:["Разрядные напряжения внешней изоляции там ниже из-за меньшей плотности воздуха","Там выше напряжение сети","Там чаще грозы","Там больше солнечной радиации","Там больше влажность"],a:0,e:"δ ≈ 0,69: уровень увеличивают в K<sub>a</sub> ≈ 1,28 раза."},
+{q:"Во сколько примерно раз элегаз прочнее воздуха при одинаковом давлении?",o:["В 2,5–3 раза","В 10 раз","В 1,1 раза","В 100 раз","Он слабее воздуха"],a:0,e:"≈ 89 и ≈ 30 кВ/см при 0,1 МПа."},
+{q:"Давление внутри исправной вакуумной камеры выключателя:",o:["Менее 10⁻² Па","Около 100 Па","Около 0,1 МПа","Около 0,5 МПа","Около 1 Па"],a:0,e:"Глубокий вакуум — левее всей кривой Пашена."},
+{q:"Что сделала Rocket Lab после аварии 2023 г., вызванной дугой в отсеке второй ступени?",o:["Изменила конструкцию отсека, чтобы сохранять давление в нём при полёте","Повысила напряжение аккумуляторов","Заполнила отсек гелием","Убрала изоляцию проводов","Снизила давление в отсеке до вакуума"],a:0,e:"Держать pd правее минимума — простой способ избежать пробоя."},
+{q:"В поре давление ниже атмосферного (газ откачан при заливке). Как это влияет на её прочность, если pd остаётся правее минимума?",o:["Прочность падает: pd уменьшилось, точка сдвинулась к минимуму","Прочность растёт","Не влияет","Пора становится вакуумной и не разряжается","Пора разряжается при любом поле"],a:0,e:"Меньше p — меньше U<sub>пр</sub> на правой ветви."}],[
+{q:"Закон Пашена выполняется для:",o:["Однородного поля в газе при неизменной температуре","Резко неоднородного поля с лидером","Жидких диэлектриков","Твёрдых диэлектриков","Любых промежутков при любом давлении"],a:0,e:"Для однородного поля, в определённом диапазоне pd."},
+{q:"Почему при давлениях выше ≈ 0,5 МПа наблюдаются отклонения от закона Пашена?",o:["Начинают влиять эмиссия с микроострий электродов и пылинки","Газ становится жидким","Пропадает ионизация","Исчезает вторичная эмиссия","Электроны перестают двигаться"],a:0,e:"В сжатом газе важны состояние поверхности и частицы."},
+{q:"Почему электрону на левой ветви «не помогает» большая энергия на пробеге?",o:["Ему почти не с чем сталкиваться — ионизаций мало","Он рекомбинирует","Он прилипает к молекулам","Он не может набрать энергию","Он поглощается анодом мгновенно"],a:0,e:"Важны и энергия, и число столкновений."},
+{q:"Какое из утверждений о минимуме Пашена верно?",o:["Минимум зависит от газа и материала катода (через γ)","Минимум одинаков для всех газов","Минимум равен 30 кВ для воздуха","Минимум наблюдается при атмосферном давлении и зазоре 1 см","Минимума у воздуха нет"],a:0,e:"Например, аргон ≈ 137 В, воздух ≈ 327 В."},
+{q:"Промежуток 2 мм в воздухе при 0,5 МПа эквивалентен по пробивному напряжению промежутку при 0,1 МПа длиной:",o:["10 мм","2 мм","0,4 мм","50 мм","1 мм"],a:0,e:"pd: 5 бар·0,2 см = 1 бар·1 см."},
+{q:"Почему для одного газа формула Пашена с разными катодами даёт разные минимумы?",o:["У разных катодов разный γ","У разных катодов разные A и B","Катод меняет давление газа","Катод меняет температуру","Не даёт — минимум один"],a:0,e:"γ входит под двойной логарифм."},
+{q:"Как найти высоту по атмосферному давлению?",o:["H ≈ −8150·ln(p/760)","H = p/760","H = 8150·p","H = 760 − p","H = ln(p)"],a:0,e:"Обращение барометрической формулы p = 760·e<sup>−H/8150</sup>."},
+{q:"При оттепели и циклоне (+1 °C, 735 мм рт. ст.) δ ≈",o:["1,03","0,90","1,23","0,80","1,20"],a:0,e:"(735/760)·(293/274) = 1,034 — почти норма; опасность в этот день — мокрое загрязнение, а не δ."},
+{q:"Параметр g в методике МЭК 60060-1 определяет:",o:["Какие показатели m и w применять — то есть тип разряда","Частоту испытательного напряжения","Длительность выдержки","Число опытов","Температуру испытания"],a:0,e:"g = U<sub>50</sub>/(500·L·δ·k)."},
+{q:"Почему в формуле влажностной поправки используется h/δ, а не h?",o:["Значима доля молекул воды среди всех молекул воздуха","Так проще считать","δ всегда равна 1","h и δ — одно и то же","Это ошибка стандарта"],a:0,e:"Отношение характеризует концентрацию воды относительно плотности газа."},
+{q:"Оборудование нормального исполнения на высоте 800 м:",o:["Применяется без высотной поправки","Требует K<sub>a</sub> = 1,5","Запрещено","Требует элегазовой изоляции","Требует удвоить изоляцию"],a:0,e:"До 1000 м поправку не вводят."},
+{q:"Утечка снизила давление элегаза с 0,5 до 0,4 МПа. Прочность однородного зазора уменьшилась примерно на:",o:["20 %","2 %","50 %","80 %","Не изменилась"],a:0,e:"Правая ветвь: почти пропорционально давлению."},
+{q:"Почему потеря вакуума в камере опаснее, чем её полное заполнение воздухом?",o:["Частично натёкший газ даёт pd у минимума Пашена — прочность сотни вольт, а атмосферный воздух держит киловольты","Воздух в камере взрывоопасен","Частичный вакуум проводит ток без пробоя","Это одинаково опасно","Полное заполнение воздухом опаснее"],a:0,e:"Сравните на вкладке 3: 50 Па — ≈ 300 В, 0,1 МПа — ≈ 30 кВ при 10 мм."},
+{q:"В лаборатории Lectromec обнаружили, что напряжение возникновения ЧР в авиационных проводах на высоте:",o:["Ниже, чем у земли","Выше, чем у земли","Такое же","Равно нулю","Зависит только от тока"],a:0,e:"Разреженный воздух в порах и зазорах — правая ветвь к минимуму."},
+{q:"Плоская пора толщиной 0,1 мм в изоляции с ε<sub>r</sub> = 4 при атмосферном давлении начинает разряжаться при поле в изоляции около:",o:["2,2 кВ/мм","0,2 кВ/мм","22 кВ/мм","8,7 кВ/мм","30 кВ/мм"],a:0,e:"U<sub>пр</sub> поры ≈ 865 В, поле в поре 8,65 кВ/мм, в изоляции — в 4 раза меньше."}]];
+
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const SUP={"0":"⁰","1":"¹","2":"²","3":"³","4":"⁴","5":"⁵","6":"⁶","7":"⁷","8":"⁸","9":"⁹","-":"⁻"};
+const fN=(n,d=2)=>{if(!isFinite(n))return "∞";const a=Math.abs(n);if(a<1e4)return a>=100?Math.round(n).toLocaleString("ru-RU").replace(/ /g," "):fx(n,a<10?d:1);const e=Math.floor(Math.log10(a)),m=n/Math.pow(10,e);return fx(m,d)+"·10"+String(e).split("").map(c=>SUP[c]).join("")};
+const qb=k=>`<button class="q" data-tip="${k}" aria-label="Справка">?</button>`;
+const tip=$("#tip");let tipFor=null,tipPin=false;
+function showTip(el,pin){const k=el.dataset.tip;const t=TIPS[k]||el.dataset.tipt;if(!t)return;tipFor=el;tipPin=!!pin;$$(".q.on,.chip.on").forEach(x=>x.classList.remove("on"));el.classList.add("on");
+ tip.innerHTML=(pin?'<button class="x" aria-label="Закрыть">×</button>':"")+t;tip.hidden=false;
+ const r=el.getBoundingClientRect(),w=tip.offsetWidth,h=tip.offsetHeight;let x=Math.min(Math.max(8,r.left+r.width/2-w/2),innerWidth-w-8),y=r.bottom+8;if(y+h>innerHeight-8)y=Math.max(8,r.top-h-8);tip.style.left=x+"px";tip.style.top=y+"px";
+ const xb=tip.querySelector(".x");if(xb)xb.onclick=e=>{e.stopPropagation();hideTip()}}
+function hideTip(){tip.hidden=true;if(tipFor)tipFor.classList.remove("on");tipFor=null;tipPin=false}
+document.addEventListener("mouseover",e=>{if(tipPin)return;const el=e.target.closest&&e.target.closest("[data-tip],[data-tipt]");if(el)showTip(el,false)});
+document.addEventListener("mouseout",e=>{if(tipPin)return;const el=e.target.closest&&e.target.closest("[data-tip],[data-tipt]");if(el&&!(e.relatedTarget&&el.contains(e.relatedTarget)))hideTip()});
+document.addEventListener("click",e=>{const el=e.target.closest&&e.target.closest("[data-tip],[data-tipt]");if(el){e.preventDefault();if(tipFor===el&&tipPin)hideTip();else showTip(el,true)}else if(!tip.contains(e.target))hideTip()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){hideTip();closeDlg()}});
+addEventListener("scroll",()=>{if(!tip.hidden)hideTip()},true);
+const dlg=$("#dlg");function openDlg(h){$("#dlgc").innerHTML=h;dlg.hidden=false;dlg.querySelector(".x").focus()}
+function closeDlg(){if(!dlg.hidden){dlg.hidden=true;const f=dlg._from;if(f)f.focus()}}
+dlg.querySelector(".x").onclick=closeDlg;dlg.addEventListener("click",e=>{if(e.target===dlg)closeDlg()});
+let curTab="t1";
+$$(".tabs button").forEach(b=>b.onclick=()=>{curTab=b.dataset.tab;$$(".tabs button").forEach(x=>x.classList.toggle("on",x===b));$$(".tabp").forEach(s=>s.hidden=s.id!==curTab);hideTip();onTab(curTab)});
+function canvasBox(el,h,draw){const cv=document.createElement("canvas");el.appendChild(cv);const o={cv,ctx:cv.getContext("2d"),w:0,h};
+ const fit=()=>{const w=Math.max(200,el.clientWidth);const dpr=Math.min(2,devicePixelRatio||1);o.w=w;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);cv.style.height=h+"px";o.ctx.setTransform(dpr,0,0,dpr,0,0);draw&&draw()};
+ o.fit=fit;new ResizeObserver(()=>{if(Math.abs(el.clientWidth-o.w)>1)fit()}).observe(el);return o}
+const rng=(id,lab,tk,min,max,step,val,unit)=>`<div class="rng"><div class="tp"><span class="lbl">${lab} ${tk?qb(tk):""}</span><output id="${id}o"></output></div><input type="range" id="${id}" min="${min}" max="${max}" step="${step}" value="${val}" aria-label="${lab.replace(/<[^>]+>/g,"")}">${unit?"":""}</div>`;
+const seg=(id,opts,val)=>`<div class="seg" id="${id}">${opts.map(([v,t])=>`<button data-v="${v}" class="${String(v)===String(val)?"on":""}">${t}</button>`).join("")}</div>`;
+function bindSeg(id,cb){$$("#"+id+" button").forEach(b=>b.onclick=()=>{$$("#"+id+" button").forEach(x=>x.classList.toggle("on",x===b));cb(b.dataset.v)})}
+const rd=(id,lab,tk)=>`<div class="rd" id="${id}w"><span>${lab} ${tk?qb(tk):""}</span><b id="${id}"></b></div>`;
+
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const CY="#FFD54A",CG="#9FB4C0",CT="#CFE0EA",CS="#0D171E",CL="#253844",CO="#FF8A3D",CB="#4FB3FF",CV="#C39BFF",CR="#FF5A4E",CK="#7EE0A8";
+const fP=v=>v>=100?fx(v,0):v>=10?fx(v,1):v>=1?fx(v,2):v>=0.1?fx(v,3):fN(v,2);
+const fV=v=>!isFinite(v)?"нет пробоя":v>=1e3?fN(v/1e3,v>=1e4?1:2)+" кВ":fx(v,0)+" В";
+const fL=cm=>cm>=1?fx(cm,cm>=10?0:2)+" см":cm>=0.1?fx(cm*10,2)+" мм":cm>=1e-4?fx(cm*1e4,cm>=1e-3?0:1)+" мкм":fN(cm*1e7,2)+" нм";
+function logAx(ctx,L,T,W,H,x0,x1,y0,y1,xl,yl,xf,yf){const X=v=>L+(Math.log10(v)-Math.log10(x0))/(Math.log10(x1)-Math.log10(x0))*W,Y=v=>T+H-(Math.log10(v)-Math.log10(y0))/(Math.log10(y1)-Math.log10(y0))*H;
+ ctx.font="11px IBM Plex Mono, monospace";ctx.strokeStyle=CL;ctx.lineWidth=1;ctx.fillStyle=CG;
+ for(let e=Math.ceil(Math.log10(x0));e<=Math.floor(Math.log10(x1));e++){const x=X(Math.pow(10,e));ctx.beginPath();ctx.moveTo(x+.5,T);ctx.lineTo(x+.5,T+H);ctx.stroke();ctx.textAlign="center";ctx.fillText(xf(Math.pow(10,e)),x,T+H+15)}
+ for(let e=Math.ceil(Math.log10(y0));e<=Math.floor(Math.log10(y1));e++){const y=Y(Math.pow(10,e));ctx.beginPath();ctx.moveTo(L,y+.5);ctx.lineTo(L+W,y+.5);ctx.stroke();ctx.textAlign="right";ctx.fillText(yf(Math.pow(10,e)),L-6,y+4)}
+ ctx.textAlign="center";ctx.fillText(xl,L+W/2,T+H+30);ctx.save();ctx.translate(13,T+H/2);ctx.rotate(-Math.PI/2);ctx.fillText(yl,0,0);ctx.restore();return {X,Y}}
+const uLab=v=>v>=1e3?fx(v/1e3,0)+" кВ":fx(v,0)+" В";
+const T1={gas:"air",lp:Math.log10(760),ld:-1,lu:Math.log10(3000),all:false};
+let C1=null,C1e=null;
+function t1(){$("#t1").innerHTML=`<div class="lab"><div class="side card">
+ <div><span class="lbl">Газ ${qb("AB")}</span>${seg("g1",Object.keys(GAS).map(k=>[k,`<i style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${GAS[k].c};margin-right:5px"></i>${GAS[k].n}`]),T1.gas)}</div>
+ ${rng("p1","Давление p, мм рт. ст.","",-2,4,0.01,T1.lp)}
+ ${rng("d1","Расстояние d","",-4,1,0.01,T1.ld)}
+ ${rng("u1","Приложенное напряжение U","",1.7,6,0.01,T1.lu)}
+ <div class="btns"><button class="btn ghost" id="sim1">Подобие: p×2, d÷2 ${qb("similar")}</button><button class="btn ghost" id="par1">Парадокс левой ветви ${qb("longpath")}</button><button class="btn ghost" id="atm1">Атмосфера, 1 мм</button></div>
+ <div class="reads">${rd("pd1","p·d, мм рт. ст.·см","pd")}${rd("pdsi1","p·d, Па·м","")}${rd("ub1","U<sub>пр</sub> по Пашену","paschen")}${rd("eb1","E<sub>пр</sub> = U<sub>пр</sub>/d","")}${rd("br1","Ветвь","")}${rd("st1","При U сейчас","")}</div>
+ <div class="log" id="lg1"></div></div>
+ <div class="card">
+ <div class="scr"><div class="scrh"><span><b>Кривая Пашена</b> · пробивное напряжение U<sub>пр</sub> от p·d, оси логарифмические</span><span><button class="btn ghost" id="all1" style="padding:3px 10px;font-size:13px;background:transparent;color:#CFE0EA;border-color:#4A6070">Сравнить газы</button></span></div><div id="leg1" style="padding:0 12px 6px;font:12px var(--f-mono);color:#9FB4C0"></div><div id="c1"></div></div>
+ <div class="log" id="how1"><b>Как читать график.</b> Жёлтая линия — граница пробоя для выбранного газа: в розовой области над ней промежуток пробивается, в зелёной под ней — держит. <b>Кружок</b> — ваш промежуток: по горизонтали его p·d, по вертикали приложенное напряжение U. Слева от минимума — <b>левая ветвь</b> (газ разрежен), справа — <b>правая</b> (газ плотный). <b>Ромб</b> — минимум по формуле, <b>белое кольцо</b> — минимум по измерениям. Белый пунктир справа — пробой воздуха по измерениям (формула 24,22δd + 6,08√(δd)): формула Пашена с постоянными A и B идёт чуть выше. Вертикальный штрих — асимптота: левее неё газовый пробой невозможен.</div>
+ <div class="scr"><div class="scrh"><span><b>Один электрон на пути от катода к аноду</b> через ваш зазор d ${qb("lam")}</span><span id="h1e"></span></div><div id="c1e"></div></div>
+ <div class="two"><div class="log" id="lw1"></div><div class="log" id="lr1"></div></div>
+ </div></div>`;
+ bindSeg("g1",v=>{T1.gas=v;upd1()});
+ $("#p1").oninput=e=>{T1.lp=+e.target.value;upd1()};$("#d1").oninput=e=>{T1.ld=+e.target.value;upd1()};$("#u1").oninput=e=>{T1.lu=+e.target.value;upd1()};
+ $("#sim1").onclick=()=>{const p=Math.pow(10,T1.lp)*2,d=Math.pow(10,T1.ld)/2;if(p>1e4||d<1e-4)return;T1.lp=Math.log10(p);T1.ld=Math.log10(d);setR1();upd1();flash1("Давление удвоено, зазор вдвое меньше: точка на кривой не сдвинулась — pd и U<sub>пр</sub> те же.")};
+ $("#par1").onclick=()=>{T1.gas="air";$$("#g1 button").forEach(b=>b.classList.toggle("on",b.dataset.v==="air"));T1.lp=Math.log10(0.4);T1.ld=0;T1.lu=Math.log10(450);setR1();upd1();flash1(`Воздух при 0,4 мм рт. ст., зазор 1 см: pd = 0,4 — левая ветвь, U<sub>пр</sub> = ${fV(pasU("air",0.4))}. Нажмите «Расстояние» и увеличьте зазор до 2 см: напряжение пробоя <b>упадёт</b> до ${fV(pasU("air",0.8))}. Длинный путь пробивается легче.`)};
+ $("#atm1").onclick=()=>{T1.gas="air";$$("#g1 button").forEach(b=>b.classList.toggle("on",b.dataset.v==="air"));T1.lp=Math.log10(760);T1.ld=-1;T1.lu=Math.log10(3000);setR1();upd1()};
+ $("#all1").onclick=()=>{T1.all=!T1.all;$("#all1").textContent=T1.all?"Только выбранный газ":"Сравнить газы";upd1()};
+ C1=canvasBox($("#c1"),360,draw1);C1e=canvasBox($("#c1e"),190,draw1e);C1.fit();C1e.fit();upd1()}
+let fl1="";function flash1(t){fl1=t;upd1();setTimeout(()=>{fl1=""},50)}
+function setR1(){$("#p1").value=T1.lp;$("#d1").value=T1.ld;$("#u1").value=T1.lu}
+function st1(){const p=Math.pow(10,T1.lp),d=Math.pow(10,T1.ld),U=Math.pow(10,T1.lu),pd=p*d,G=GAS[T1.gas],Ub=pasU(T1.gas,pd),pm=pasMin(T1.gas),as=pasAsym(T1.gas);
+ const pPa=p*TORR,le=lamE(pPa)*100,E=U/d,eps=E*le,n=d/le,ad=G.A*pd*Math.exp(-G.B*pd/U),need=Math.log(1+1/G.g);
+ const br=pd<=as?"left0":pd<pm.pd*0.7?"left":pd<pm.pd*1.6?"min":"right";return {p,d,U,pd,G,Ub,pm,as,pPa,le,E,eps,n,ad,need,br,brk:U>=Ub}}
+function upd1(){const s=st1();$("#p1o").textContent=fP(s.p)+" ("+(s.pPa>=1e3?fN(s.pPa/1e3,2)+" кПа":fP(s.pPa)+" Па")+")";$("#d1o").textContent=fL(s.d);$("#u1o").textContent=fV(s.U);
+ $("#pd1").textContent=fP(s.pd);$("#pdsi1").textContent=fP(s.pd*TORR/100);$("#ub1").textContent=fV(s.Ub);$("#eb1").textContent=isFinite(s.Ub)?fN(s.Ub/s.d/1e3,2)+" кВ/см":"—";
+ const BR={left0:["левее асимптоты","w"],left:["левая","w"],min:["у минимума","hot"],right:["правая","ok"]};$("#br1").innerHTML=`<span class="stat ${BR[s.br][1]}">${BR[s.br][0]}</span>`;
+ $("#st1").innerHTML=s.brk?`<span class="stat hot">пробой</span>`:`<span class="stat ok">держит</span>`;
+ const T={left0:`pd = ${fP(s.pd)} меньше ${fx(s.as,3)}: по формуле Таунсенда пробоя нет при любом U — электрону не хватает столкновений даже теоретически. Реально разряд уйдёт на длинный путь или пойдёт по электродным механизмам вакуума.`,
+  left:`Левая ветвь: газ разрежен. Электрон делает на пути через зазор лишь ${fx(s.n,s.n<10?1:0)} пробегов. Уменьшите давление — U<sub>пр</sub> растёт. Увеличьте зазор — U<sub>пр</sub> падает.`,
+  min:`Рядом с минимумом: ${s.G.n.toLowerCase()} пробивается при наименьшем напряжении ≈ ${fx(s.pm.U,0)} В (по формуле). Измерения: ${s.G.mU} В при pd = ${fx(s.G.mpd,2)}.`,
+  right:`Правая ветвь: газ плотный, на пути ${s.n>=1e4?fN(s.n,1):fx(s.n,0)} пробегов, но энергии на каждом мало. Увеличили pd — U<sub>пр</sub> растёт почти линейно.`}[s.br];
+ $("#lg1").innerHTML=(fl1?fl1+"<br><br>":"")+T;
+ $("#leg1").innerHTML=T1.all?Object.keys(GAS).map(k=>`<span style="color:${k===T1.gas?CY:GAS[k].c};margin-right:12px">— ${GAS[k].n}</span>`).join(""):"";
+ $("#h1e").innerHTML=`d = ${fL(s.d)} · пробегов <b>${s.n>=1e4?fN(s.n,1):fx(s.n,s.n<10?1:0)}</b> · ионизаций <b>αd = ${s.ad<0.01?"≈ 0":fx(s.ad,s.ad<10?2:0)}</b>`;
+ $("#lw1").innerHTML=`<b>Энергия на одном пробеге</b> при приложенном U: ε ≈ E·λ<sub>e</sub> = ${fN(s.eps,2)} эВ. Ионизировать молекулу азота нужно ≈ 15,6 эВ, кислорода — ≈ 12,1 эВ. ${s.eps<12?"Средней энергии на пробеге мало: ионизирует только электрон, которому выпал редкий длинный пробег. Серые точки — удары без ионизации: электрон меняет направление, теряет энергию, иногда возбуждает молекулу.":"Энергии хватает с запасом, но столкновений мало — ионизаций всё равно немного."}`;
+ $("#lr1").innerHTML=`<b>Жёлтые точки — ионизации.</b> Их среднее число на пути одного электрона — αd, где α = A·p·e<sup>−Bp/E</sup>. Каждая рождает новый электрон, тот тоже ионизирует — растёт лавина e<sup>αd</sup>. Разряд самостоятелен, когда αd ≥ ln(1 + 1/γ) = ${fx(s.need,2)}. Сейчас αd = ${s.ad<0.01?"≈ 0":fx(s.ad,2)} — ${s.brk?"<b>условие выполнено, пробой</b>":"не хватает, промежуток держит"}.`;
+ C1&&C1.fit();C1e&&C1e.fit()}
+function draw1(){if(!C1)return;const {ctx,w,h}=C1,L=64,R=16,T=12,B=40,W=w-L-R,H=h-T-B,s=st1(),nar=w<640;ctx.clearRect(0,0,w,h);ctx.fillStyle=CS;ctx.fillRect(0,0,w,h);
+ const x0=0.1,x1=1e4,y0=50,y1=1e6,{X,Y}=logAx(ctx,L,T,W,H,x0,x1,y0,y1,"p·d, мм рт. ст.·см","U, В",v=>v>=1?String(v).replace(/0000$/,"·10⁴"):fx(v,1),uLab);
+ ctx.save();ctx.beginPath();ctx.rect(L,T,W,H);ctx.clip();
+ const pts=[];for(let i=0;i<=500;i++){const pd=x0*Math.pow(x1/x0,i/500),u=pasU(T1.gas,pd);pts.push([X(pd),isFinite(u)?Y(clamp(u,y0/2,y1*4)):T-10])}
+ ctx.fillStyle="rgba(255,90,78,.10)";ctx.beginPath();ctx.moveTo(pts[0][0],T);pts.forEach(([x,y])=>ctx.lineTo(x,y));ctx.lineTo(L+W,T);ctx.closePath();ctx.fill();
+ ctx.fillStyle="rgba(126,224,168,.08)";ctx.beginPath();ctx.moveTo(pts[0][0],T+H);pts.forEach(([x,y])=>ctx.lineTo(x,y));ctx.lineTo(L+W,T+H);ctx.closePath();ctx.fill();
+ const cur=(g,col,lw,a)=>{ctx.strokeStyle=col;ctx.globalAlpha=a;ctx.lineWidth=lw;ctx.beginPath();let st=false;for(let i=0;i<=500;i++){const pd=x0*Math.pow(x1/x0,i/500),u=pasU(g,pd);if(!isFinite(u)||u>y1*3){st=false;continue}const xx=X(pd),yy=Y(Math.max(u,y0/2));st?ctx.lineTo(xx,yy):ctx.moveTo(xx,yy);st=true}ctx.stroke();ctx.globalAlpha=1};
+ if(T1.all)Object.keys(GAS).forEach(g=>{if(g===T1.gas)return;cur(g,GAS[g].c,1.5,0.7)});
+ cur(T1.gas,CY,3,1);
+ if(T1.gas==="air"){ctx.strokeStyle="#fff";ctx.setLineDash([2,4]);ctx.lineWidth=1.6;ctx.beginPath();for(let i=0;i<=200;i++){const pd=10*Math.pow(1000,i/200),u=schU(pd/760);i?ctx.lineTo(X(pd),Y(u)):ctx.moveTo(X(pd),Y(u))}ctx.stroke();ctx.setLineDash([]);ctx.fillStyle="#fff";ctx.font="11.5px IBM Plex Sans, Arial, sans-serif";ctx.textAlign="right";ctx.fillText(nar?"пунктир — опыт":"белый пунктир — опыт (воздух)",L+W-8,T+H-30)}
+ const as=pasAsym(T1.gas);ctx.strokeStyle=CY;ctx.globalAlpha=0.5;ctx.setLineDash([5,5]);ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(X(as),T);ctx.lineTo(X(as),T+H);ctx.stroke();ctx.setLineDash([]);ctx.globalAlpha=1;
+ const pm=s.pm,G=GAS[T1.gas];ctx.fillStyle=CY;ctx.save();ctx.translate(X(pm.pd),Y(pm.U));ctx.rotate(Math.PI/4);ctx.fillRect(-5,-5,10,10);ctx.restore();
+ ctx.strokeStyle="#fff";ctx.lineWidth=2;ctx.beginPath();ctx.arc(X(G.mpd),Y(G.mU),6,0,7);ctx.stroke();
+ ctx.font="12px IBM Plex Sans, Arial, sans-serif";ctx.textAlign="left";ctx.fillStyle=CY;ctx.fillText("◆ минимум: "+fx(pm.U,0)+" В",X(pm.pd)+12,Y(pm.U)+26);ctx.fillStyle="#fff";ctx.fillText("○ опыт: "+G.mU+" В",X(pm.pd)+12,Y(pm.U)+42);
+ const lx=X(Math.min(x1/3,pm.pd*400)),ly=Y(pasU(T1.gas,pm.pd*400));ctx.fillStyle=CY;ctx.font="600 13px IBM Plex Sans, Arial, sans-serif";ctx.textAlign="right";ctx.fillText("правая ветвь",lx-10,ly-12);
+ ctx.textAlign="left";ctx.fillText("левая ветвь",X(as)+14,Y(60000));
+ ctx.fillStyle=CY;ctx.font="11px IBM Plex Sans, Arial, sans-serif";ctx.save();ctx.translate(X(as)-6,T+H-60);ctx.rotate(-Math.PI/2);ctx.textAlign="left";ctx.fillText("асимптота",0,0);ctx.restore();
+ const px=X(clamp(s.pd,x0,x1)),py=Y(clamp(s.U,y0,y1));ctx.strokeStyle="rgba(255,255,255,.35)";ctx.setLineDash([3,4]);ctx.beginPath();ctx.moveTo(px,T+H);ctx.lineTo(px,py);ctx.stroke();ctx.setLineDash([]);
+ ctx.fillStyle=s.brk?CR:CK;ctx.beginPath();ctx.arc(px,py,8,0,7);ctx.fill();ctx.strokeStyle="#000";ctx.lineWidth=1.5;ctx.stroke();
+ ctx.font="600 12px IBM Plex Sans, Arial, sans-serif";ctx.fillStyle=s.brk?CR:CK;const tl=`ваш промежуток: ${fV(s.U)} — ${s.brk?"пробой":"держит"}`,tw=ctx.measureText(tl).width,tx=Math.max(L+4,px+12+tw>L+W?px-12-tw:px+12);ctx.textAlign="left";ctx.fillText(tl,tx,py+(s.brk?-12:26));
+ ctx.restore();ctx.fillStyle="rgba(255,150,140,.9)";ctx.font="12px IBM Plex Sans, Arial, sans-serif";ctx.textAlign="left";
+ ctx.fillText("область пробоя",L+8,T+16);ctx.fillStyle="rgba(126,224,168,.9)";ctx.textAlign="right";ctx.fillText("промежуток держит",L+W-8,T+H-10)}
+function draw1e(){if(!C1e)return;const {ctx,w,h}=C1e,s=st1(),x0=44,x1=w-44,yc=h/2-8;ctx.clearRect(0,0,w,h);ctx.fillStyle=CS;ctx.fillRect(0,0,w,h);
+ ctx.fillStyle="#5A6B78";ctx.fillRect(x0-14,18,14,h-56);ctx.fillRect(x1,18,14,h-56);ctx.fillStyle=CT;ctx.font="12px IBM Plex Sans, Arial, sans-serif";ctx.textAlign="center";ctx.fillText("катод −",x0-7,13);ctx.fillText("анод +",x1+7,13);
+ const N=Math.max(1,Math.min(70,Math.round(s.n))),R=(()=>{let q=12345;return()=>{q^=q<<13;q>>>=0;q^=q>>>17;q^=q<<5;q>>>=0;return q/4294967296}})();
+ const nI=Math.min(N-1,Math.round(s.ad)),ion=new Set();for(let k=0;k<nI;k++)ion.add(Math.min(N-2,Math.floor((k+0.5)/nI*(N-1))));
+ let x=x0,y=yc;ctx.lineWidth=1.6;
+ for(let i=0;i<N;i++){const nx=x0+(i+1)/N*(x1-x0)+(i<N-1?(R()-0.5)*(x1-x0)/N*0.6:0),ny=i<N-1?yc+(R()-0.5)*(h-90):yc;ctx.strokeStyle=CB;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(nx,ny);ctx.stroke();
+  if(i<N-1){const isI=ion.has(i);ctx.fillStyle=isI?CY:"#7E8F9B";ctx.beginPath();ctx.arc(nx,ny,isI?5:3,0,7);ctx.fill();if(isI){ctx.strokeStyle="rgba(255,213,74,.6)";ctx.beginPath();ctx.moveTo(nx,ny);ctx.lineTo(nx+10,ny-9);ctx.stroke();ctx.fillStyle=CB;ctx.beginPath();ctx.arc(nx+11,ny-10,2.5,0,7);ctx.fill()}}x=nx;y=ny}
+ ctx.strokeStyle=CT;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x0,h-30);ctx.lineTo(x1,h-30);ctx.moveTo(x0,h-35);ctx.lineTo(x0,h-25);ctx.moveTo(x1,h-35);ctx.lineTo(x1,h-25);ctx.stroke();
+ ctx.fillStyle=CT;ctx.textAlign="center";ctx.font="11.5px IBM Plex Sans, Arial, sans-serif";ctx.fillText(w<600?`d = ${fL(s.d)}; отрезок — пробег λₑ ≈ ${fL(s.le)}`:`зазор d = ${fL(s.d)}; один отрезок — свободный пробег λₑ ≈ ${fL(s.le)}`+(s.n>70?`; показано 70 из ${s.n>=1e4?fN(s.n,1):fx(s.n,0)} пробегов, ионизации — все`:""),(x0+x1)/2,h-12);
+ ctx.textAlign="left";ctx.fillStyle="#9FB0BC";ctx.fillText("● удар без ионизации",x0+4,30);const w1=ctx.measureText("● удар без ионизации").width;ctx.fillStyle=CY;if(w<600)ctx.fillText("● ионизация",x0+4,44);else ctx.fillText("● ионизация → новый электрон",x0+w1+20,30)}
+
+const PRE2=[["norm","Нормальные условия",20,760,64],["frost","Апатиты: мороз, антициклон",-30,775,80],["thaw","Оттепель, циклон",1,735,100],["summer","Лето, жара",28,750,55],["mount","Хибины, 1000 м",-10,Math.round(pH(1000)),80],["tibet","Тибет, 4500 м",-5,Math.round(pH(4500)),50]];
+const T2={t:20,p:760,rh:64,pre:"norm",U0:95};
+let C2=null,C2h=null;
+const GAP2=[{k:"a",n:"Однородный промежуток 2 см",U:()=>sphU(2,1),L:0.02,c:CB},{k:"b",n:"Стержень — плоскость 1 м",U:()=>rodU(100,1),L:1,c:CO}];
+function t2(){$("#t2").innerHTML=`<div class="lab"><div class="side card">
+ <div><span class="lbl">Погода и место</span><div class="seg" id="pre2" style="flex-wrap:wrap">${PRE2.map(([k,n])=>`<button data-v="${k}" class="${k===T2.pre?"on":""}">${n}</button>`).join("")}</div></div>
+ ${rng("t2","Температура, °C","",-40,40,1,T2.t)}${rng("p2","Давление, мм рт. ст.","",400,800,1,T2.p)}${rng("h2","Относительная влажность, %","hum",10,100,1,T2.rh)}
+ <div class="reads">${rd("dl2","δ","delta")}${rd("hh2","h, г/м³","hum")}${rd("hd2","h/δ","")}${rd("al2","Высота по давлению","alt")}</div>
+ <div class="log" id="lg2"></div></div>
+ <div class="card">
+ <div class="cmpw"><table class="cmp"><thead><tr><th>Промежуток</th><th>g ${qb("kt")}</th><th>m</th><th>w</th><th>k<sub>1</sub> = δ<sup>m</sup></th><th>k<sub>2</sub> = k<sup>w</sup></th><th>K<sub>t</sub></th><th>U<sub>пр</sub> норм.</th><th>U<sub>пр</sub> сегодня</th></tr></thead><tbody id="tb2"></tbody></table></div>
+ <div class="two"><div class="log" id="ts2"></div><div class="log" id="tx2"></div></div>
+ <div class="scr"><div class="scrh"><span><b>K<sub>t</sub> от температуры</b> при текущих давлении и влажности</span><span>${GAP2.map(g=>`<span class="lg"><i style="background:${g.c}"></i>${g.n}</span>`).join("")}</span></div><div id="c2"></div></div>
+ <div class="scr"><div class="scrh"><span><b>Высота над уровнем моря</b> · δ и высотный коэффициент K<sub>a</sub> ${qb("alt")}</span><span><span class="lg"><i style="background:${CY}"></i>δ</span><span class="lg"><i style="background:${CV}"></i>K<sub>a</sub></span></span></div><div id="c2h"></div></div>
+ </div></div>`;
+ $$("#pre2 button").forEach(b=>b.onclick=()=>{$$("#pre2 button").forEach(x=>x.classList.toggle("on",x===b));const P=PRE2.find(x=>x[0]===b.dataset.v);T2.pre=P[0];T2.t=P[2];T2.p=P[3];T2.rh=P[4];$("#t2").value=T2.t;$("#p2").value=T2.p;$("#h2").value=T2.rh;upd2()});
+ const man=()=>{T2.pre="";$$("#pre2 button").forEach(x=>x.classList.remove("on"))};
+ $("#t2").oninput=e=>{T2.t=+e.target.value;man();upd2()};$("#p2").oninput=e=>{T2.p=+e.target.value;man();upd2()};$("#h2").oninput=e=>{T2.rh=+e.target.value;man();upd2()};
+ C2=canvasBox($("#c2"),230,draw2);C2h=canvasBox($("#c2h"),200,draw2h);C2.fit();C2h.fit();upd2()}
+function st2(t=T2.t){const dl=delta(T2.p,t),h=hum(t,T2.rh);return {dl,h,G:GAP2.map(g=>{const U0=g.U(),c=corr(U0,g.L,dl,h,"ac");return {...g,U0,cr:c,U:U0*c.Kt}})}}
+function upd2(){const s=st2();$("#t2o").textContent=fx(T2.t,0)+" °C";$("#p2o").textContent=T2.p+" ("+fx(T2.p*TORR/1000,1)+" кПа)";$("#h2o").textContent=T2.rh+" %";
+ $("#dl2").textContent=fx(s.dl,3);$("#hh2").textContent=fx(s.h,s.h<1?2:1);const hd=s.h/s.dl;$("#hd2").innerHTML=fx(hd,1)+(hd<1?' <span class="stat w">&lt; 1</span>':hd>15?' <span class="stat w">&gt; 15</span>':"");
+ const H=-8150*Math.log(T2.p/760);$("#al2").textContent=H<0?"ниже уровня моря":fx(H,0)+" м";
+ $("#tb2").innerHTML=s.G.map(g=>`<tr><td><b style="color:${g.c==CB?"#1F5FAF":"#B4531B"}">${g.n}</b></td><td>${fx(g.cr.g,2)}</td><td>${fx(g.cr.m,2)}</td><td>${fx(g.cr.w,2)}</td><td>${fx(g.cr.k1,3)}</td><td>${fx(g.cr.k2,3)}</td><td><b>${fx(g.cr.Kt,3)}</b></td><td>${fx(g.U0,1)} кВ</td><td><b>${fx(g.U,1)} кВ</b> (${g.cr.Kt>=1?"+":"−"}${fx(Math.abs(g.cr.Kt-1)*100,1)} %)</td></tr>`).join("");
+ const A=s.G[0],B=s.G[1];
+ $("#ts2").innerHTML=`<b>Испытание ${qb("kti")}</b>. Норма: U<sub>0</sub> = ${T2.U0} кВ при нормальных условиях. Сегодня подают U = U<sub>0</sub>·K<sub>t</sub>: для короткой однородной изоляции <b>${fx(T2.U0*A.cr.Kt,1)} кВ</b>, для длинной внешней изоляции с резко неоднородным полем — <b>${fx(T2.U0*B.cr.Kt,1)} кВ</b>. ${A.cr.Kt>1?"Воздух сегодня прочнее нормы — без поправки изоляцию испытали бы мягче нормы.":"Воздух слабее нормы — без поправки изоляцию испытали бы жёстче нормы."}`;
+ $("#tx2").innerHTML=`<b>Почему разные K<sub>t</sub>.</b> У короткого однородного промежутка g = ${fx(A.cr.g,1)} &gt; 2: m = 1, w = 0 — влажность не учитывают, работает только плотность. У промежутка 1 м g = ${fx(B.cr.g,2)}: m = w = ${fx(B.cr.m,2)} — длинный разряд со стримерами и лидером чувствителен и к плотности, и к влаге. ${hd<1?"Морозный воздух очень сухой: h/δ меньше 1, формула k вне диапазона — принято h/δ = 1.":""}`;
+ $("#lg2").innerHTML=T2.pre==="frost"?"Холодный плотный воздух в антициклон: δ ≈ 1,23 — воздушные промежутки прочнее на четверть. Влажность — доли грамма на кубометр.":T2.pre==="thaw"?"Оттепель и циклон: δ ниже нормы, влажность предельная. Для изоляторов в этот день опаснее не δ, а мокрое загрязнение поверхности — об этом в лекции 12.":T2.pre==="mount"?"На 1000 м давление ≈ 672 мм рт. ст. Мороз отчасти компенсирует разрежение: δ остаётся близким к 1.":T2.pre==="tibet"?"4500 м: δ около 0,6 — прочность воздуха на 40 % ниже. Так было на линии Цинхай — Тибет (случай 2).":T2.pre==="summer"?"Жара и пониженное давление: δ ≈ 0,96 — промежутки слабее нормы на 4 %.":"Нормальные условия МЭК 60060-1 и ГОСТ 1516.2: 101,3 кПа (760 мм рт. ст.), 20 °C, 11 г/м³ — K<sub>t</sub> = 1.";
+ C2&&C2.fit();C2h&&C2h.fit()}
+function draw2(){if(!C2)return;const {ctx,w,h}=C2,L=54,R=14,T=12,B=30,W=w-L-R,H=h-T-B;ctx.clearRect(0,0,w,h);ctx.fillStyle=CS;ctx.fillRect(0,0,w,h);
+ const pts=[];for(let t=-40;t<=40;t+=1)pts.push([t,st2(t)]);let y0=Infinity,y1=-Infinity;pts.forEach(([t,s])=>s.G.forEach(g=>{y0=Math.min(y0,g.cr.Kt);y1=Math.max(y1,g.cr.Kt)}));y0=Math.min(0.8,Math.floor(y0*20)/20);y1=Math.max(1.3,Math.ceil(y1*20)/20);
+ const X=t=>L+(t+40)/80*W,Y=v=>T+H-(v-y0)/(y1-y0)*H;ctx.font="11px IBM Plex Mono, monospace";ctx.fillStyle=CG;ctx.strokeStyle=CL;
+ for(let v=Math.ceil(y0*10)/10;v<=y1+1e-9;v+=0.1){ctx.beginPath();ctx.moveTo(L,Y(v)+.5);ctx.lineTo(L+W,Y(v)+.5);ctx.stroke();ctx.textAlign="right";ctx.fillText(fx(v,1),L-6,Y(v)+4)}
+ for(let t=-40;t<=40;t+=10){ctx.textAlign="center";ctx.fillText(t+" °C",X(t),h-8)}
+ ctx.strokeStyle="rgba(255,255,255,.5)";ctx.setLineDash([4,4]);ctx.beginPath();ctx.moveTo(L,Y(1));ctx.lineTo(L+W,Y(1));ctx.stroke();ctx.setLineDash([]);
+ GAP2.forEach((g,i)=>{ctx.strokeStyle=g.c;ctx.lineWidth=2.2;ctx.beginPath();pts.forEach(([t,s],j)=>{const v=s.G[i].cr.Kt;j?ctx.lineTo(X(t),Y(v)):ctx.moveTo(X(t),Y(v))});ctx.stroke()});
+ const s=st2();GAP2.forEach((g,i)=>{ctx.fillStyle=g.c;ctx.beginPath();ctx.arc(X(T2.t),Y(s.G[i].cr.Kt),6,0,7);ctx.fill();ctx.strokeStyle="#000";ctx.lineWidth=1.5;ctx.stroke()});
+ ctx.fillStyle=CT;ctx.font="11.5px IBM Plex Sans, Arial, sans-serif";ctx.textAlign="right";ctx.fillText("Kₜ > 1: воздух прочнее нормы",L+W-6,T+14);ctx.fillText("Kₜ < 1: слабее нормы",L+W-6,T+H-6)}
+function draw2h(){if(!C2h)return;const {ctx,w,h}=C2h,L=54,R=14,T=12,B=30,W=w-L-R,H=h-T-B;ctx.clearRect(0,0,w,h);ctx.fillStyle=CS;ctx.fillRect(0,0,w,h);
+ const X=v=>L+v/5000*W,Y=v=>T+H-(v-0.4)/(1.8-0.4)*H;ctx.font="11px IBM Plex Mono, monospace";ctx.fillStyle=CG;ctx.strokeStyle=CL;
+ for(let v=0.4;v<=1.801;v+=0.2){ctx.beginPath();ctx.moveTo(L,Y(v)+.5);ctx.lineTo(L+W,Y(v)+.5);ctx.stroke();ctx.textAlign="right";ctx.fillText(fx(v,1),L-6,Y(v)+4)}
+ for(let H0=0;H0<=5000;H0+=1000){ctx.textAlign="center";ctx.fillText(H0+" м",X(H0),h-8)}
+ [[deltaH,CY],[Ka,CV]].forEach(([f,c])=>{ctx.strokeStyle=c;ctx.lineWidth=2.2;ctx.beginPath();for(let H0=0;H0<=5000;H0+=25){const v=f(H0);H0?ctx.lineTo(X(H0),Y(v)):ctx.moveTo(X(H0),Y(v))}ctx.stroke()});
+ ctx.fillStyle=CT;ctx.font="11.5px IBM Plex Sans, Arial, sans-serif";[[1000,"Хибины"],[4500,"Тибет"]].forEach(([H0,n])=>{ctx.strokeStyle="rgba(255,255,255,.35)";ctx.setLineDash([3,4]);ctx.beginPath();ctx.moveTo(X(H0),T);ctx.lineTo(X(H0),T+H);ctx.stroke();ctx.setLineDash([]);ctx.textAlign="center";ctx.fillText(n,X(H0),T+12)});
+ const Hc=Math.max(0,-8150*Math.log(T2.p/760));if(Hc<=5000){ctx.fillStyle="#fff";ctx.beginPath();ctx.arc(X(Hc),Y(deltaH(Hc)),5,0,7);ctx.fill()}
+ ctx.fillStyle=CT;ctx.textAlign="left";ctx.fillText("до 1000 м — нормальное исполнение, Kₐ = 1",X(1000)+8,Y(0.47))}
+
+const PRE3=[["vok","Вакуумная камера исправна",-3],["vlost","Камера потеряла вакуум",Math.log10(50)],["vair","Камера полна воздуха",5],["gnorm","КРУЭ: элегаз 0,5 МПа",Math.log10(5e5)],["gleak","Утечка: 0,35 МПа",Math.log10(3.5e5)],["gatm","Элегаз ушёл до 0,1 МПа",5]];
+const T3={lp:-3,d:10,pre:"vok"};
+let C3=null;
+function t3(){$("#t3").innerHTML=`<div class="lab"><div class="side card">
+ <div><span class="lbl">Ситуация</span><div class="seg" id="pre3" style="flex-wrap:wrap">${PRE3.map(([k,n])=>`<button data-v="${k}" class="${k===T3.pre?"on":""}">${n}</button>`).join("")}</div></div>
+ ${rng("p3","Давление p (абс.)","",-4,6,0.01,T3.lp)}
+ <div><span class="lbl">Зазор между контактами d</span>${seg("d3",[[1,"1 мм"],[3,"3 мм"],[10,"10 мм"]],T3.d)}</div>
+ <div class="reads">${rd("rg3","Режим","")}${rd("ua3","U<sub>пр</sub> воздух","")}${rd("us3","U<sub>пр</sub> элегаз","sf6")}${rd("le3","Пробег электрона λ<sub>e</sub>","lam")}${rd("nn3","Пробегов на зазоре","")}${rd("rr3","Элегаз / воздух","")}</div>
+ <div class="log" id="lg3"></div></div>
+ <div class="card">
+ <div class="scr"><div class="scrh"><span><b>Прочность промежутка от давления</b> · от вакуума до сжатого газа</span><span><span class="lg"><i style="background:${CY}"></i>воздух, с учётом длинного пути ${qb("longpath")}</span><span class="lg">· · · по Пашену только через зазор</span><span class="lg"><i style="background:${CK}"></i>элегаз</span><span class="lg"><i style="background:${CV}"></i>вакуум ${qb("vac")}</span></span></div><div id="c3"></div></div>
+ <div class="two"><div class="log" id="lx3"></div><div class="log" id="ly3"></div></div>
+ </div></div>`;
+ $$("#pre3 button").forEach(b=>b.onclick=()=>{$$("#pre3 button").forEach(x=>x.classList.toggle("on",x===b));const P=PRE3.find(x=>x[0]===b.dataset.v);T3.pre=P[0];T3.lp=P[2];$("#p3").value=T3.lp;upd3()});
+ $("#p3").oninput=e=>{T3.lp=+e.target.value;T3.pre="";$$("#pre3 button").forEach(x=>x.classList.remove("on"));upd3()};bindSeg("d3",v=>{T3.d=+v;upd3()});
+ C3=canvasBox($("#c3"),360,draw3);C3.fit();upd3()}
+const fPa=p=>p>=1e6?fx(p/1e6,1)+" МПа":p>=1e5?fx(p/1e6,2)+" МПа":p>=1e3?fx(p/1e3,p>=1e4?0:1)+" кПа":p>=1?fx(p,p>=10?0:1)+" Па":(()=>{const e=Math.floor(Math.log10(p)+1e-9),m=p/Math.pow(10,e);return (Math.abs(m-1)<0.05?"":fx(m,1)+"·")+"10"+String(e).split("").map(c=>SUP[c]).join("")+" Па"})();
+function upd3(){const p=Math.pow(10,T3.lp),d=T3.d,Ua=realAir(p,d),rg=regime(p,d),Us=sf6Ok(p)?sf6U(p,d):null,le=lamE(p)*1000,n=d/le;
+ $("#p3o").textContent=fPa(p)+(p>=1e3?" ("+fx(p/TORR,0)+" мм рт. ст.)":"");
+ const RG={vac:["вакуум","ok"],left:["левая ветвь","w"],min:["минимум Пашена","hot"],right:["правая ветвь","ok"]};$("#rg3").innerHTML=`<span class="stat ${RG[rg][1]}">${RG[rg][0]}</span>`;
+ $("#ua3").textContent=fV(Ua);$("#us3").textContent=Us?fV(Us):"—";$("#le3").textContent=le>=1000?fx(le/1000,le>=1e4?0:1)+" м":le>=1?fx(le,le>=100?0:1)+" мм":fx(le*1000,le*1000>=10?0:2)+" мкм";
+ $("#nn3").textContent=n<0.1?"меньше 0,1":n>=1e4?fN(n,1):fx(n,n<10?1:0);$("#rr3").textContent=Us?fx(Us/Ua,1)+" раза":"—";
+ const pre={vok:"Глубокий вакуум: пробег электрона — километры. В зазоре нет молекул для лавины, прочность задают электроды. Так работают вакуумные камеры выключателей 6–35 кВ: 10 мм в модели держат ≈ 130 кВ (оценка для чистых электродов).",
+  vlost:"Натёк воздух, давление 50 Па. При зазоре 10 мм pd ≈ 0,4 мм рт. ст.·см — около минимума Пашена, а внутри камеры есть и более длинные пути. Прочность упала до сотен вольт: камера не погасит дугу и не выдержит испытания.",
+  vair:"Атмосферный воздух: правая ветвь. 10 мм держат ≈ 30 кВ — меньше, чем глубокий вакуум, но в сотни раз больше, чем у камеры с частично потерянным вакуумом.",
+  gnorm:"КРУЭ при номинальном давлении 0,5 МПа (абс.): элегаз в 3 с лишним раза прочнее воздуха того же давления и в 15 раз прочнее атмосферного воздуха.",
+  gleak:"Утечка до 0,35 МПа: прочность упала на 30 % — почти пропорционально давлению. Датчик плотности на этой стадии должен дать сигнал, а при дальнейшем падении — запретить оперирование.",
+  gatm:"Элегаз при атмосферном давлении: ≈ 89 кВ на 10 мм. Это всё ещё прочнее воздуха, но в 5 раз ниже расчётного уровня отсека."};
+ $("#lg3").innerHTML=T3.pre?pre[T3.pre]:{vac:"Область вакуума: газ почти не участвует, прочность — от электродов.",left:"Левая ветвь: газа мало. Повышение давления снижает прочность — до минимума.",min:"Худшая область: пробой при сотнях вольт при любом зазоре в разумных пределах.",right:"Правая ветвь: чем выше давление, тем прочнее газ."}[rg];
+ $("#lx3").innerHTML=`<b>Пробег и столкновения.</b> При ${fPa(p)} электрон пролетает между столкновениями ${$("#le3").textContent}. На зазоре ${d} мм — ${$("#nn3").textContent} пробегов. Для лавины нужны десятки ионизаций на пути, поэтому при пробеге больше зазора газового разряда нет.`;
+ $("#ly3").innerHTML=`<b>Почему кривая плоская у минимума.</b> Между вакуумом и минимумом разряд выбирает путь длиной до 5 см (размер камеры), при котором pd оптимально, — поэтому напряжение держится у минимума Пашена ≈ 300 В в широком диапазоне давлений. Пунктир — расчёт только по кратчайшему пути: он обманчиво высок.`;
+ C3&&C3.fit()}
+function draw3(){if(!C3)return;const {ctx,w,h}=C3,L=64,R=16,T=26,B=40,W=w-L-R,H=h-T-B,d=T3.d;ctx.clearRect(0,0,w,h);ctx.fillStyle=CS;ctx.fillRect(0,0,w,h);
+ const x0=1e-4,x1=1e6,y0=100,y1=1e6;const {X,Y}=logAx(ctx,L,T,W,H,x0,x1,y0,y1,"p, Па (абс.)","U, В",v=>{const e=Math.round(Math.log10(v));return e===0?"1":e===1?"10":e===2?"100":"10"+String(e).split("").map(c=>SUP[c]).join("")},uLab);
+ const zone=(a,b,t,c)=>{ctx.fillStyle=c;ctx.fillRect(X(a),T,X(b)-X(a),H);ctx.fillStyle=CT;ctx.font="11px IBM Plex Sans, Arial, sans-serif";ctx.textAlign="center";ctx.fillText(t,(X(a)+X(b))/2,T-8)};
+ zone(1e-4,1e-2,"вакуумные камеры","rgba(195,155,255,.08)");zone(1,1e3,"газоразрядные приборы","rgba(255,213,74,.06)");zone(9e4,1.1e5,"атмосфера","rgba(255,255,255,.08)");zone(4e5,6e5,"КРУЭ","rgba(126,224,168,.10)");
+ ctx.save();ctx.beginPath();ctx.rect(L,T,W,H);ctx.clip();
+ ctx.strokeStyle=CV;ctx.setLineDash([6,4]);ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(L,Y(vacU(d)));ctx.lineTo(L+W,Y(vacU(d)));ctx.stroke();ctx.setLineDash([]);
+ ctx.strokeStyle="rgba(255,255,255,.7)";ctx.setLineDash([2,4]);ctx.lineWidth=1.5;ctx.beginPath();let st=false;for(let i=0;i<=600;i++){const p=x0*Math.pow(x1/x0,i/600),u=Math.min(airU(p/TORR*d/10),y1*2);if(!isFinite(u)||u<=0){st=false;continue}st?ctx.lineTo(X(p),Y(u)):ctx.moveTo(X(p),Y(u));st=true}ctx.stroke();ctx.setLineDash([]);
+ ctx.strokeStyle=CY;ctx.lineWidth=2.6;ctx.beginPath();for(let i=0;i<=600;i++){const p=x0*Math.pow(x1/x0,i/600),u=realAir(p,d);i?ctx.lineTo(X(p),Y(u)):ctx.moveTo(X(p),Y(u))}ctx.stroke();
+ ctx.strokeStyle=CK;ctx.lineWidth=2.6;ctx.beginPath();for(let i=0;i<=200;i++){const p=5e4*Math.pow(20,i/200),u=sf6U(p,d);i?ctx.lineTo(X(p),Y(u)):ctx.moveTo(X(p),Y(u))}ctx.stroke();
+ const p=Math.pow(10,T3.lp),u=realAir(p,d);ctx.strokeStyle="rgba(255,255,255,.35)";ctx.setLineDash([3,4]);ctx.beginPath();ctx.moveTo(X(p),T);ctx.lineTo(X(p),T+H);ctx.stroke();ctx.setLineDash([]);
+ ctx.fillStyle=CY;ctx.beginPath();ctx.arc(X(p),Y(u),7,0,7);ctx.fill();ctx.strokeStyle="#000";ctx.lineWidth=1.5;ctx.stroke();
+ if(sf6Ok(p)){ctx.fillStyle=CK;ctx.beginPath();ctx.arc(X(p),Y(sf6U(p,d)),7,0,7);ctx.fill();ctx.stroke()}
+ ctx.restore();ctx.fillStyle=CT;ctx.font="11.5px IBM Plex Sans, Arial, sans-serif";ctx.textAlign="left";ctx.fillText("минимум ≈ 300 В",X(30),Y(300)+18)}
+
+const MAT4=[["2.3","СПЭ кабеля, ε = 2,3"],["4","Эпоксид, RIP, ε = 4"],["4.5","Слюдяная изоляция статора, ε = 4,5"],["6","Фарфор, ε = 6"]];
+const T4={er:4,E:3,ld:-1,p:760};
+let C4=null,C4v=null,T4a=0;
+function t4(){$("#t4").innerHTML=`<div class="lab"><div class="side card">
+ <div><span class="lbl">Изоляция</span>${seg("m4",MAT4,T4.er)}</div>
+ ${rng("E4","Напряжённость в изоляции E<sub>из</sub>, кВ/мм","",0.5,10,0.1,T4.E)}
+ ${rng("d4","Толщина поры d","",-3,0.3,0.01,T4.ld)}
+ <div><span class="lbl">Давление газа в поре</span>${seg("pp4",[[760,"760 мм рт. ст."],[380,"380"],[100,"100"]],T4.p)}</div>
+ <div class="reads">${rd("ev4","Поле в поре E<sub>в</sub> = ε·E<sub>из</sub>","void")}${rd("uv4","Напряжение на поре","")}${rd("ub4","U<sub>пр</sub> поры (Пашен)","paschen")}${rd("eb4","Пробивное поле поры","")}${rd("st4","Пора","")}${rd("ei4","E<sub>из</sub> начала разрядов","")}</div>
+ <div class="log" id="lg4"></div></div>
+ <div class="card">
+ <div class="scr"><div class="scrh"><span><b>Пора в изоляции</b> · вид сбоку</span><span id="h4"></span></div><div id="c4v"></div></div>
+ <div class="scr"><div class="scrh"><span><b>Пробивное напряжение поры и напряжение на ней</b> от толщины поры</span><span><span class="lg"><i style="background:${CY}"></i>U<sub>пр</sub> поры</span><span class="lg"><i style="background:${CO}"></i>напряжение на поре</span><span class="lg"><i style="background:rgba(255,90,78,.5)"></i>поры разряжаются</span></span></div><div id="c4"></div></div>
+ <div class="two"><div class="log" id="lx4"></div><div class="log" id="ly4"></div></div>
+ </div></div>`;
+ bindSeg("m4",v=>{T4.er=+v;upd4()});bindSeg("pp4",v=>{T4.p=+v;upd4()});
+ $("#E4").oninput=e=>{T4.E=+e.target.value;upd4()};$("#d4").oninput=e=>{T4.ld=+e.target.value;upd4()};
+ C4v=canvasBox($("#c4v"),170,draw4v);C4=canvasBox($("#c4"),300,draw4);C4v.fit();C4.fit();upd4();anim4()}
+function anim4(){T4a++;if(curTab==="t4"&&C4v)draw4v();requestAnimationFrame(anim4)}
+function upd4(){const d=Math.pow(10,T4.ld),r=voidCalc(T4.er,T4.E,d,T4.p),dm=voidMin(T4.er,T4.E,T4.p);
+ $("#E4o").textContent=fx(T4.E,1)+" кВ/мм";$("#d4o").textContent=d>=0.1?fx(d,2)+" мм":fx(d*1000,d*1000>=10?0:1)+" мкм";
+ $("#ev4").textContent=fx(r.Ev,1)+" кВ/мм";$("#uv4").textContent=fV(r.Uv);$("#ub4").textContent=fV(r.Ub);$("#eb4").textContent=isFinite(r.Ebv)?fx(r.Ebv,1)+" кВ/мм":"—";
+ $("#st4").innerHTML=r.pd?`<span class="stat hot">разряжается</span>`:`<span class="stat ok">держит</span>`;$("#ei4").textContent=isFinite(r.Einc)?fx(r.Einc,2)+" кВ/мм":"—";
+ $("#h4").innerHTML=r.pd?'<span class="stat hot">частичные разряды в поре</span>':'<span class="stat ok">разрядов нет</span>';
+ $("#lg4").innerHTML=dm?`При E<sub>из</sub> = ${fx(T4.E,1)} кВ/мм разряжаются поры толщиной от <b>${dm>=0.1?fx(dm,2)+" мм":fx(dm*1000,0)+" мкм"}</b>. Норма приёмки должна запрещать поры такого размера.`:`При E<sub>из</sub> = ${fx(T4.E,1)} кВ/мм не разряжается ни одна пора до 2 мм.`;
+ $("#lx4").innerHTML=`<b>Почему пора — слабое место.</b> На границе пора — изоляция непрерывна нормальная составляющая индукции, поэтому в плоской поре поле в ε<sub>r</sub> = ${fx(T4.er,1)} раза больше, чем в изоляции. А пробивное поле газа в десятки раз меньше, чем у твёрдого диэлектрика.`;
+ $("#ly4").innerHTML=`<b>Мелкие поры прочнее по напряжённости.</b> Пробивное поле поры 0,02 мм — ${fx(voidUb(0.02,T4.p)/20,1)} кВ/мм, поры 1 мм — ${fx(voidUb(1,T4.p)/1000,1)} кВ/мм. Но напряжение на маленькой поре мало, и при большой толщине изоляции разряжаются крупные поры. Пониженное давление в поре сдвигает её к минимуму Пашена.`;
+ C4&&C4.fit();C4v&&draw4v()}
+function draw4v(){if(!C4v)return;const {ctx,w,h}=C4v,d=Math.pow(10,T4.ld),r=voidCalc(T4.er,T4.E,d,T4.p);ctx.clearRect(0,0,w,h);ctx.fillStyle=CS;ctx.fillRect(0,0,w,h);
+ const yT=22,yB=h-22;ctx.fillStyle="#B8743A";ctx.fillRect(30,yT-12,w-60,12);ctx.fillRect(30,yB,w-60,12);ctx.fillStyle="#C9D8B5";ctx.fillRect(30,yT,w-60,yB-yT);
+ ctx.fillStyle="#15212A";ctx.font="12px IBM Plex Sans, Arial, sans-serif";ctx.textAlign="left";ctx.fillText("электрод (U)",36,yT-1);ctx.fillStyle="#fff";ctx.fillText("заземлённый электрод",36,yB+10);
+ const th=clamp(6+Math.log10(d/0.001)/3.3*50,6,60),cx=w/2,rx=Math.min(w*0.22,110);ctx.fillStyle=r.pd?"#2A1A3A":"#E8EEF2";ctx.beginPath();ctx.ellipse(cx,(yT+yB)/2,rx,th/2,0,0,7);ctx.fill();ctx.strokeStyle="#6B7C88";ctx.lineWidth=1.2;ctx.stroke();
+ ctx.strokeStyle="rgba(21,33,42,.35)";ctx.lineWidth=1;for(let x=50;x<w-40;x+=26){const inV=Math.abs(x-cx)<rx;ctx.beginPath();ctx.moveTo(x,yT);ctx.lineTo(x,yB);ctx.stroke()}
+ if(r.pd){const k=(T4a%40)/40;ctx.strokeStyle=`rgba(195,155,255,${0.5+0.5*Math.sin(T4a/3)})`;ctx.lineWidth=2;for(let i=0;i<5;i++){const x=cx-rx*0.7+i*rx*0.35+Math.sin(T4a/5+i)*6;ctx.beginPath();ctx.moveTo(x,(yT+yB)/2-th/2+2);ctx.lineTo(x+4,(yT+yB)/2);ctx.lineTo(x-3,(yT+yB)/2+th/2-2);ctx.stroke()}}
+ ctx.fillStyle="#15212A";ctx.textAlign="center";ctx.font="12px IBM Plex Mono, monospace";ctx.fillText(`в изоляции ${fx(T4.E,1)} кВ/мм`,cx-rx-80>40?cx-rx-70:cx,(yT+yB)/2-th/2-8>yT+12?(yT+yB)/2-th/2-8:yT+14);
+ ctx.fillStyle=r.pd?"#C39BFF":"#15212A";ctx.fillText(`в поре ${fx(r.Ev,1)} кВ/мм`,cx,(yT+yB)/2+4)}
+function draw4(){if(!C4)return;const {ctx,w,h}=C4,L=64,R=16,T=12,B=40,W=w-L-R,H=h-T-B;ctx.clearRect(0,0,w,h);ctx.fillStyle=CS;ctx.fillRect(0,0,w,h);
+ const x0=1e-3,x1=2,y0=100,y1=1e5;const {X,Y}=logAx(ctx,L,T,W,H,x0,x1,y0,y1,"толщина поры d, мм","U, В",v=>v>=1?fx(v,0):v>=0.1?fx(v,1):v>=0.01?fx(v,2):fx(v,3),uLab);
+ ctx.save();ctx.beginPath();ctx.rect(L,T,W,H);ctx.clip();
+ const N=300,pt=i=>x0*Math.pow(x1/x0,i/N);
+ ctx.fillStyle="rgba(255,90,78,.22)";for(let i=0;i<N;i++){const a=pt(i),b=pt(i+1),r=voidCalc(T4.er,T4.E,a,T4.p);if(r.pd)ctx.fillRect(X(a),T,X(b)-X(a)+0.5,H)}
+ ctx.strokeStyle=CY;ctx.lineWidth=2.6;ctx.beginPath();let st=false;for(let i=0;i<=N;i++){const d=pt(i),u=voidUb(d,T4.p);if(!isFinite(u)||u>y1*3){st=false;continue}st?ctx.lineTo(X(d),Y(u)):ctx.moveTo(X(d),Y(u));st=true}ctx.stroke();
+ ctx.strokeStyle=CO;ctx.lineWidth=2.6;ctx.beginPath();for(let i=0;i<=N;i++){const d=pt(i),u=T4.er*T4.E*d*1000;i?ctx.lineTo(X(d),Y(Math.max(u,y0/2))):ctx.moveTo(X(d),Y(Math.max(u,y0/2)))}ctx.stroke();
+ const d=Math.pow(10,T4.ld),r=voidCalc(T4.er,T4.E,d,T4.p);ctx.strokeStyle="rgba(255,255,255,.4)";ctx.setLineDash([3,4]);ctx.beginPath();ctx.moveTo(X(d),T);ctx.lineTo(X(d),T+H);ctx.stroke();ctx.setLineDash([]);
+ ctx.fillStyle=CO;ctx.beginPath();ctx.arc(X(d),Y(Math.max(r.Uv,y0)),6,0,7);ctx.fill();if(isFinite(r.Ub)&&r.Ub<y1){ctx.fillStyle=CY;ctx.beginPath();ctx.arc(X(d),Y(r.Ub),6,0,7);ctx.fill()}
+ ctx.restore();ctx.fillStyle=CT;ctx.font="11.5px IBM Plex Sans, Arial, sans-serif";ctx.textAlign="left";ctx.fillText("левее асимптоты Пашена пора не пробивается",L+6,T+14)}
+
+const done5={};
+function t5(){$("#t5").innerHTML=`<div class="card"><h2>Реальные случаи</h2><p>Шесть историй — от ракеты до вакуумного выключателя. Выберите случай, прочитайте и ответьте на вопрос: где здесь закон Пашена и плотность газа.</p><div class="dots" id="dt5">${CASES.map(c=>`<i data-k="${c.id}"></i>`).join("")}</div></div>
+ <div class="cases">${CASES.map((c,i)=>`<button class="cs" data-i="${i}"><span class="tag">${c.tag}</span><b>${i+1}. ${c.t}</b></button>`).join("")}</div><div id="cs5"></div>`;
+ $$("#t5 .cs").forEach(b=>b.onclick=()=>{$$("#t5 .cs").forEach(x=>x.classList.toggle("on",x===b));show5(+b.dataset.i)});show5(0);$("#t5 .cs").classList.add("on")}
+function show5(i){const c=CASES[i];$("#cs5").innerHTML=`<div class="card"><span class="tag">${c.tag}</span><h2 style="margin:4px 0 0">${c.t}</h2><p>${c.x}</p><div class="lbl">${c.q}</div><div class="opts" id="o5">${shuf(c.o,i+40).map(([t,j])=>`<button data-j="${j}">${t}</button>`).join("")}</div><div id="f5"></div></div>`;
+ $$("#o5 button").forEach(b=>b.onclick=()=>{const j=+b.dataset.j;$$("#o5 button").forEach(x=>{x.disabled=true;const k=+x.dataset.j;if(k===c.a)x.classList.add("right");else if(k===j)x.classList.add("wrong")});
+  $("#f5").innerHTML=`<div class="${j===c.a?"good":"bad"}"><b>${j===c.a?"Верно.":"Не совсем."}</b> ${c.e}</div><p style="margin:8px 0 0;font-size:13px;color:var(--muted)">Источник: ${c.src}</p>`;
+  if(j===c.a){done5[c.id]=1;$(`#dt5 i[data-k="${c.id}"]`).className="ok";$$("#t5 .cs")[i].classList.add("done")}})}
+function t6(){$("#t6").innerHTML=`<div class="card"><h2>Задачи с объектов</h2><p>Решите задачу и введите ответ. Знаки «?» рядом с условием — подсказки: наведите мышь или нажмите. Допуск ответа — 2–3 %.</p><div class="dots" id="dt6">${TASKS.map(t=>`<i data-k="${t.id}"></i>`).join("")}</div></div>`+TASKS.map((t,i)=>`<div class="task" id="${t.id}"><h3><span class="mono">${i+1}</span>${t.t}</h3><p>${t.x}</p><div class="chips">${t.h.map((x,j)=>`<span class="chip" tabindex="0" data-tipt="${x.replace(/"/g,"&quot;")}">подсказка ${j+1}</span>`).join("")}</div><div class="ans"><input type="text" inputmode="decimal" aria-label="Ответ"><button class="btn">Проверить</button><button class="btn ghost">Решение</button></div><div class="fb"></div></div>`).join("");
+ TASKS.forEach(t=>{const box=$("#"+t.id),inp=box.querySelector("input"),[b1,b2]=box.querySelectorAll(".ans button"),fb=box.querySelector(".fb");
+  const chk=()=>{const v=parseFloat(inp.value.replace(/\s/g,"").replace(",","."));if(!isFinite(v)){fb.innerHTML=`<div class="warn">Введите число.</div>`;return}const ok=Math.abs(v-t.a)<=Math.abs(t.a)*t.tol;fb.innerHTML=ok?`<div class="good"><b>Верно.</b> ${t.s}</div>`:`<div class="bad"><b>Пока не так.</b> Проверьте единицы и порядок величины, загляните в подсказки.</div>`;if(ok){$(`#dt6 i[data-k="${t.id}"]`).className="ok"}};
+  b1.onclick=chk;inp.onkeydown=e=>{if(e.key==="Enter")chk()};b2.onclick=()=>{fb.innerHTML=`<div class="warn"><b>Решение.</b> ${t.s}</div>`}})}
+function shuf(a,seed){let s=(Math.imul(seed+11,2654435761)>>>0)^0x9E3779B9;const r=()=>{s^=s<<13;s>>>=0;s^=s>>>17;s^=s<<5;s>>>=0;return s/4294967296};for(let k=0;k<7;k++)r();const o=a.map((x,i)=>[x,i]);for(let i=o.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[o[i],o[j]]=[o[j],o[i]]}return o}
+const LET="АБВГД";
+const T7={v:0,i:0,ans:[],done:false};
+const SEED7=(v,i)=>i+100*v;
+function grade7(s){return s>=14?[5,"отлично"]:s>=11?[4,"хорошо"]:s>=8?[3,"удовлетворительно"]:[2,"неудовлетворительно"]}
+const vsel7=()=>`<div class="seg" id="v7">${TV.map((x,k)=>`<button data-v="${k}" class="${k===T7.v?"on":""}">Вариант ${k+1}</button>`).join("")}</div>`;
+function bindV7(){$$("#v7 button").forEach(b=>b.onclick=()=>{const v=+b.dataset.v;if(v===T7.v&&!T7.done&&!T7.ans.length)return;Object.assign(T7,{v,i:0,ans:[],done:false});t7()})}
+function t7(){const TEST=TV[T7.v],q=TEST[T7.i],n=TEST.length;
+ if(T7.done){const s=TEST.reduce((a,q,k)=>a+(T7.ans[k]===q.a),0),[g,gt]=grade7(s);
+  $("#t7").innerHTML=`<div class="card" style="align-items:center;text-align:center"><span class="tag">Тест завершён · вариант ${T7.v+1}</span><div style="font-size:80px;font-weight:700;line-height:1;color:${g>=4?"var(--ok)":g===3?"var(--warn)":"var(--hot)"}">${g}</div><h2 style="margin:0">Оценка: ${gt}</h2><p style="margin:0">Верных ответов: <b>${s} из ${n}</b>. Шкала: 14–15 — «5», 11–13 — «4», 8–10 — «3», меньше 8 — «2».</p><div class="btns" style="justify-content:center"><button class="btn" id="rv7">Показать разбор ответов</button><button class="btn ghost" id="rs7">Пройти заново</button></div></div><div id="rev7"></div>`;
+  $("#rs7").onclick=()=>{Object.assign(T7,{i:0,ans:[],done:false});t7()};
+  $("#rv7").onclick=()=>{$("#rev7").innerHTML=TEST.map((q,k)=>{const ok=T7.ans[k]===q.a;return `<div class="tq"><div class="qq">${k+1}. ${q.q}</div><div class="${ok?"good":"bad"}"><b>${ok?"Верно":"Неверно"}.</b> ${ok?"":"Ваш ответ: "+(T7.ans[k]==null?"нет ответа":q.o[T7.ans[k]])+". "}Правильно: ${q.o[q.a]}. ${q.e}</div></div>`}).join("");$("#rv7").disabled=true};return}
+ $("#t7").innerHTML=`<div class="card"><h2>Тест: 5 вариантов по 15 вопросов</h2><p style="margin:0">Выберите вариант, который назвал преподаватель, и отвечайте по порядку. Правильные ответы и оценка появятся только в конце. Смена варианта начинает тест заново.</p>${vsel7()}<div class="dots">${TEST.map((x,k)=>`<i class="${T7.ans[k]!=null?"ok":""}" style="${k===T7.i?"outline:2px solid var(--accent)":""}"></i>`).join("")}</div></div>
+ <div class="tq"><div class="qq">Вариант ${T7.v+1} · вопрос ${T7.i+1} из ${n}. ${q.q}</div>${shuf(q.o,SEED7(T7.v,T7.i)).map(([t,j],k)=>`<label><input type="radio" name="r7" value="${j}" ${T7.ans[T7.i]===j?"checked":""}><span><b>${LET[k]})</b> ${t}</span></label>`).join("")}
+ <div class="btns"><button class="btn ghost" id="pv7" ${T7.i?"":"disabled"}>← Назад</button><button class="btn" id="nx7">${T7.i<n-1?"Дальше →":"Завершить тест"}</button></div><div id="w7"></div></div>`;
+ bindV7();
+ $$("#t7 input").forEach(x=>x.onchange=()=>{T7.ans[T7.i]=+x.value});
+ $("#pv7").onclick=()=>{T7.i--;t7()};
+ $("#nx7").onclick=()=>{if(T7.ans[T7.i]==null){$("#w7").innerHTML=`<div class="warn">Выберите вариант ответа.</div>`;return}if(T7.i<n-1){T7.i++;t7()}else{const miss=TEST.findIndex((x,k)=>T7.ans[k]==null);if(miss>=0){T7.i=miss;t7();$("#w7").innerHTML=`<div class="warn">Остался вопрос без ответа.</div>`;return}T7.done=true;t7()}};}
+const built={},FIT={t1:()=>upd1(),t2:()=>upd2(),t3:()=>upd3(),t4:()=>upd4()};
+function onTab(t){if(!built[t]){built[t]=1;({t1,t2,t3,t4,t5,t6,t7})[t]()}else if(FIT[t])FIT[t]()}
+onTab("t1");
+
+</script>
+<a href="../" title="Все материалы" style="position:fixed;right:10px;bottom:10px;z-index:99999;background:rgba(31,95,175,.92);color:#fff;font:600 13px system-ui,sans-serif;padding:6px 11px;border-radius:999px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.25)">⌂ Все материалы</a><script>addEventListener("load",function(){var h=location.hash.slice(1),b=h&&document.querySelector("[data-tab="+h+"]");if(b)b.click()})</script></html>

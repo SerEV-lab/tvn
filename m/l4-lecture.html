@@ -1,0 +1,927 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Лекция 4. Закон Пашена, давление и плотность газа</title><style>:root{--ink:#16202c;--muted:#5b6675;--line:#d9dde3;--acc:#1f5faf;--bg:#fff;--soft:#f3f5f8}
+@media (prefers-color-scheme:dark){:root{--ink:#e6eaf0;--muted:#9aa6b5;--line:#33404f;--acc:#7fb3f0;--bg:#121820;--soft:#1b2430}img{background:#fff}}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 "PT Serif",Georgia,"Times New Roman",serif}
+.bar{position:sticky;top:0;display:flex;justify-content:space-between;gap:12px;padding:10px 16px;background:var(--soft);border-bottom:1px solid var(--line);font:600 14px system-ui,-apple-system,"Segoe UI",sans-serif;z-index:5}
+.bar a{color:var(--acc);text-decoration:none}.bar .pdf{border:1px solid var(--acc);border-radius:999px;padding:2px 12px}
+main{max-width:820px;margin:0 auto;padding:16px 16px 64px}
+h1,h2,h3,h4{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.25;margin:1.6em 0 .5em}
+h1{font-size:1.5em}h2{font-size:1.25em}h3{font-size:1.08em}
+p{margin:.5em 0}img{max-width:100%;height:auto;display:block;margin:12px auto;border-radius:6px}
+figure{margin:16px 0}figcaption{text-align:center;color:var(--muted);font-size:.9em}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:.92em;display:block;overflow-x:auto}
+td,th{border:1px solid var(--line);padding:6px 8px;vertical-align:top}th{background:var(--soft);text-align:left}
+math{font-size:1.08em}math[display=block]{overflow-x:auto;overflow-y:hidden;margin:10px 0}
+blockquote{margin:12px 0;padding:8px 14px;border-left:4px solid var(--acc);background:var(--soft)}
+@media print{.bar{display:none}body{font-size:12pt}main{max-width:none;padding:0}table{display:table}img{background:none}}
+</style></head><body><nav class="bar"><a href="../">← Техника высоких напряжений</a><a class="pdf" href="l4-lecture.pdf" download>Скачать PDF</a></nav><main><p>Техника высоких напряжений</p>
+<p><strong>Конспект лекции</strong></p>
+<p><strong>Лекция 4. Закон Пашена, давление и плотность
+газа</strong></p>
+<p><em>Почему прочность газа зависит от p·d, погоды и высоты · материал
+для студентов</em></p>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><p><strong>О чём лекция.</strong> В лекции 2 условие
+самостоятельности разряда γ(e<sup>αd</sup> − 1) = 1 привело к лавине и
+пробою, в лекции 3 — к стримеру и лидеру. Теперь посмотрим, как
+пробивное напряжение газа зависит от давления и расстояния: от вакуума
+до сжатого элегаза, от тибетского высокогорья до морозного Кольского
+антициклона.</p>
+<p><strong>Интерактив.</strong> «Закон Пашена» на сайте курса: вкладки
+1–4 повторяют разделы конспекта, вкладка 5 — реальные случаи, 6 —
+задачи, 7 — тест (5 вариантов). Задачи с разбором — в пособии студента к
+лекции 4.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>После лекции вы сможете:</strong></p>
+<ol type="1">
+<li><p>вывести формулу Пашена из условия самостоятельности разряда и
+рассчитать по ней пробивное напряжение;</p></li>
+<li><p>объяснить физику правой и левой ветвей кривой и найти минимум
+Пашена;</p></li>
+<li><p>применить закон подобия и объяснить, почему в разреженном газе
+разряд идёт по длинному пути;</p></li>
+<li><p>рассчитать относительную плотность воздуха и атмосферную поправку
+K<sub>t</sub> при испытаниях;</p></li>
+<li><p>учесть высоту установки оборудования;</p></li>
+<li><p>объяснить, почему опасны потеря вакуума в камере выключателя и
+утечка элегаза из КРУЭ;</p></li>
+<li><p>найти, при каком поле начнёт разряжаться газовая пора в
+изоляции.</p></li>
+</ol>
+<h2>1. Обозначения и сокращения</h2>
+<table>
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 56%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Обозначение</strong></th>
+<th><strong>Смысл</strong></th>
+<th><strong>Единица</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>U<sub>пр</sub></td>
+<td>пробивное напряжение промежутка</td>
+<td>В, кВ</td>
+</tr>
+<tr class="even">
+<td>p</td>
+<td>давление газа</td>
+<td>мм рт. ст., Па, МПа</td>
+</tr>
+<tr class="odd">
+<td>d</td>
+<td>расстояние между электродами (толщина поры)</td>
+<td>см, мм</td>
+</tr>
+<tr class="even">
+<td>p·d</td>
+<td>произведение давления на расстояние</td>
+<td>мм рт. ст.·см (1 мм рт. ст.·см = 1,333 Па·м)</td>
+</tr>
+<tr class="odd">
+<td>A, B</td>
+<td>постоянные ударной ионизации газа</td>
+<td>1/(см·мм рт. ст.), В/(см·мм рт. ст.)</td>
+</tr>
+<tr class="even">
+<td>γ</td>
+<td>коэффициент вторичной эмиссии катода</td>
+<td>—</td>
+</tr>
+<tr class="odd">
+<td>α</td>
+<td>коэффициент ударной ионизации</td>
+<td>1/см</td>
+</tr>
+<tr class="even">
+<td>λ, λ<sub>e</sub></td>
+<td>длина свободного пробега молекулы и электрона</td>
+<td>м, мкм</td>
+</tr>
+<tr class="odd">
+<td>δ</td>
+<td>относительная плотность воздуха</td>
+<td>—</td>
+</tr>
+<tr class="even">
+<td>h</td>
+<td>абсолютная влажность воздуха</td>
+<td>г/м³</td>
+</tr>
+<tr class="odd">
+<td>K<sub>t</sub></td>
+<td>атмосферный поправочный коэффициент
+(k<sub>1</sub>·k<sub>2</sub>)</td>
+<td>—</td>
+</tr>
+<tr class="even">
+<td>K<sub>a</sub></td>
+<td>высотный коэффициент</td>
+<td>—</td>
+</tr>
+<tr class="odd">
+<td>H</td>
+<td>высота над уровнем моря</td>
+<td>м</td>
+</tr>
+<tr class="even">
+<td>ε<sub>r</sub></td>
+<td>относительная диэлектрическая проницаемость изоляции</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 76%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Сокращение</strong></th>
+<th><strong>Расшифровка</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>КРУЭ</td>
+<td>комплектное распределительное устройство с элегазовой изоляцией</td>
+</tr>
+<tr class="even">
+<td>SF<sub>6</sub></td>
+<td>элегаз, гексафторид серы</td>
+</tr>
+<tr class="odd">
+<td>ЧР</td>
+<td>частичный разряд</td>
+</tr>
+<tr class="even">
+<td>МЭК</td>
+<td>Международная электротехническая комиссия (IEC)</td>
+</tr>
+<tr class="odd">
+<td>СПЭ</td>
+<td>сшитый полиэтилен</td>
+</tr>
+<tr class="even">
+<td>RIP</td>
+<td>изоляция из бумаги, пропитанной смолой (resin impregnated
+paper)</td>
+</tr>
+</tbody>
+</table>
+<h2>2. Закон Пашена</h2>
+<h3>2.1. Опыт и закон</h3>
+<p>В 1889 г. Фридрих Пашен измерял пробивное напряжение газа между
+плоскими электродами, меняя давление и расстояние. Оказалось, что для
+данного газа и материала электродов напряжение зависит не от p и d по
+отдельности, а только от их произведения. Это закон Пашена:</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mrow><mi>п</mi><mi>р</mi></mrow></msub><mo>=</mo><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>p</mi><mo>⋅</mo><mi>d</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">U_{пр} = f(p \cdot d).</annotation></semantics></math>
+(1)</p>
+<p>Произведение pd показывает, сколько молекул стоит у электрона на пути
+через зазор. Позже Таунсенд вывел закон из теории электронной лавины,
+которую мы разбирали в лекции 2.</p>
+<h3>2.2. Вывод из условия самостоятельности разряда</h3>
+<p>Разряд становится самостоятельным, когда каждый электрон, ушедший с
+катода, за счёт лавины и вторичной эмиссии возвращает на катод хотя бы
+одного нового:</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>e</mi><mrow><mi>α</mi><mi>d</mi></mrow></msup><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>1</mn><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mo>⇒</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mi>α</mi><mi>d</mi><mo>=</mo><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>+</mo><mfrac><mn>1</mn><mi>γ</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">\gamma\left( e^{\alpha d} - 1 \right) = 1\ \  \Rightarrow \ \ \alpha d = \ln\left( 1 + \frac{1}{\gamma} \right).</annotation></semantics></math>
+(2)</p>
+<p>Коэффициент ударной ионизации в однородном поле E = U/d описывают
+формулой</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mi>α</mi><mi>p</mi></mfrac><mo>=</mo><mi>A</mi><mo>⋅</mo><msup><mi>e</mi><mrow><mo>−</mo><mfrac><mrow><mi>B</mi><mo>⋅</mo><mi>p</mi></mrow><mi>E</mi></mfrac></mrow></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">\frac{\alpha}{p} = A \cdot e^{- \frac{B \cdot p}{E}}.</annotation></semantics></math>
+(3)</p>
+<p>Подставим её в условие самостоятельности, учитывая E = U/d:</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>⋅</mo><mi>p</mi><mi>d</mi><mo>⋅</mo><msup><mi>e</mi><mrow><mo>−</mo><mfrac><mrow><mi>B</mi><mo>⋅</mo><mi>p</mi><mi>d</mi></mrow><mi>U</mi></mfrac></mrow></msup><mo>=</mo><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>+</mo><mfrac><mn>1</mn><mi>γ</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">A \cdot pd \cdot e^{- \frac{B \cdot pd}{U}} = \ln\left( 1 + \frac{1}{\gamma} \right).</annotation></semantics></math>
+(4)</p>
+<p>Прологарифмируем: ln(A·pd) − B·pd/U = ln ln(1 + 1/γ). Отсюда формула
+Пашена:</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mrow><mi>п</mi><mi>р</mi></mrow></msub><mo>=</mo><mfrac><mrow><mi>B</mi><mo>⋅</mo><mi>p</mi><mi>d</mi></mrow><mrow><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>A</mi><mo>⋅</mo><mi>p</mi><mi>d</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mi>l</mi><mi>n</mi><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>+</mo><mfrac><mn>1</mn><mi>γ</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">U_{пр} = \frac{B \cdot pd}{\ln(A \cdot pd) - ln\ln\left( 1 + \frac{1}{\gamma} \right)}.</annotation></semantics></math>
+(5)</p>
+<p>В учебнике Важова и Лавриновича (формулы 1.20–1.25) расстояние
+обозначено S, давление P, а B = A·U<sub>и</sub>, где U<sub>и</sub> —
+потенциал ионизации газа. Для воздуха примем справочные A = 15 1/(см·мм
+рт. ст.), B = 365 В/(см·мм рт. ст.) (Райзер) и γ = 0,01; тогда ln ln(1 +
+1/γ) = ln 4,615 = 1,529. Постоянные других газов — в таблице 1.</p>
+<table>
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 13%" />
+<col style="width: 16%" />
+<col style="width: 11%" />
+<col style="width: 17%" />
+<col style="width: 18%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Газ</strong></th>
+<th><strong>A</strong></th>
+<th><strong>B</strong></th>
+<th><strong>γ (модель)</strong></th>
+<th><strong>Минимум по формуле</strong></th>
+<th><strong>Минимум, измерения</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Воздух</td>
+<td>15</td>
+<td>365</td>
+<td>0,01</td>
+<td>305 В при 0,84</td>
+<td>327 В при 0,57</td>
+</tr>
+<tr class="even">
+<td>Азот</td>
+<td>12</td>
+<td>342</td>
+<td>0,041</td>
+<td>251 В при 0,73</td>
+<td>251 В при 0,67</td>
+</tr>
+<tr class="odd">
+<td>Аргон</td>
+<td>12</td>
+<td>180</td>
+<td>0,036</td>
+<td>137 В при 0,76</td>
+<td>137 В при 0,90</td>
+</tr>
+<tr class="even">
+<td>Гелий</td>
+<td>3</td>
+<td>34</td>
+<td>0,0064</td>
+<td>156 В при 4,58</td>
+<td>156 В при 4,00</td>
+</tr>
+<tr class="odd">
+<td>Водород</td>
+<td>5</td>
+<td>130</td>
+<td>0,021</td>
+<td>273 В при 2,10</td>
+<td>273 В при 1,15</td>
+</tr>
+<tr class="even">
+<td>Углекислый газ</td>
+<td>20</td>
+<td>466</td>
+<td>0,0013</td>
+<td>421 В при 0,90</td>
+<td>420 В при 0,51</td>
+</tr>
+</tbody>
+</table>
+<p>Таблица 1. Постоянные Таунсенда (Райзер) и минимумы Пашена (Naidu,
+Kamaraju), pd — в мм рт. ст.·см. Для воздуха γ = 0,01 — типичное
+значение для металлического катода; для других газов γ в модели подобран
+так, чтобы минимум по напряжению совпал с измеренным.</p>
+<p><img
+src="l4-lecture/media/d105328b1ee389ca3ed69926f8875f055ba7152b.webp"
+title="Кривая Пашена воздуха (интерактив, вкладка 1). Над жёлтой линией — пробой, под ней — промежуток держит; ромб — минимум по формуле, белое кольцо — по измерениям, белый пунктир — пробой воздуха по измерениям, кружок — зазор 1 мм при 3 кВ"
+style="width:6.30208in;height:2.85417in"
+alt="Кривая Пашена воздуха (интерактив, вкладка 1). Над жёлтой линией — пробой, под ней — промежуток держит; ромб — минимум по формуле, белое кольцо — по измерениям, белый пунктир — пробой воздуха по измерениям, кружок — зазор 1 мм при 3 кВ" /></p>
+<p><strong>Рис. 1.</strong> Кривая Пашена воздуха (интерактив, вкладка
+1). Над жёлтой линией — пробой, под ней — промежуток держит; ромб —
+минимум по формуле, белое кольцо — по измерениям, белый пунктир — пробой
+воздуха по измерениям, кружок — зазор 1 мм при 3 кВ</p>
+<p><strong>Пример.</strong> Зазор 1 мм в воздухе при 760 мм рт. ст.: pd
+= 76, U<sub>пр</sub> = 365·76/(ln 1140 − 1,529) = 27 740/5,51 = 5,03 кВ.
+Измерения дают ≈ 4,3 кВ: постоянные A и B подходят лишь в ограниченном
+диапазоне E/p, поэтому формула — оценка с точностью 10–20 %. В учебнике
+отмечено ещё два отличия опыта от расчёта: при очень малых pd пробой
+приближается к вакуумному и определяется процессами на поверхности
+электродов, а при очень больших pd сказывается неоднородность поля
+(сегодня это объясняют и переходом к стримерному механизму). Минимум для
+воздуха — около 300 В, прочность при атмосферном давлении — около 30
+кВ/см.</p>
+<h2>3. Две ветви кривой и минимум</h2>
+<h3>3.1. Пробег электрона</h3>
+<p>Электрон между столкновениями пролетает в среднем длину свободного
+пробега λ<sub>e</sub>. Для молекул воздуха λ ≈ 6,6 мм при 1 Па и обратно
+пропорциональна давлению; у электрона пробег примерно в 4√2 ≈ 5,7 раза
+больше. При атмосферном давлении λ<sub>e</sub> ≈ 0,37 мкм.</p>
+<p>На одном пробеге в поле E электрон набирает энергию</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi><mo>≈</mo><mi>e</mi><mo>⋅</mo><mi>E</mi><mo>⋅</mo><msub><mi>λ</mi><mi>e</mi></msub><mo>∝</mo><mfrac><mi>E</mi><mi>p</mi></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">\varepsilon \approx e \cdot E \cdot \lambda_{e} \propto \frac{E}{p}.</annotation></semantics></math>
+(6)</p>
+<p>Чтобы ионизировать молекулу азота, нужно ≈ 15,6 эВ, кислорода — ≈
+12,1 эВ. На пути через зазор электрон делает d/λ<sub>e</sub> ∝ pd
+столкновений. Пробой определяют оба числа: сколько энергии на пробеге и
+сколько пробегов.</p>
+<h3>3.2. Правая ветвь</h3>
+<p>При большом pd газ плотный: пробегов много, но каждый короткий. В
+зазоре 1 мм при атмосферном давлении — около 2700 пробегов по ≈ 1 эВ при
+3 кВ. Чтобы электрон набирал энергию для ионизации, нужно большее поле —
+и напряжение растёт с pd почти линейно.</p>
+<p><img
+src="l4-lecture/media/7c333e140726bf867b6f540c78747bbcd8659d26.webp"
+title="Правая ветвь: зазор 1 мм при 760 мм рт. ст. и 3 кВ — тысячи пробегов, ионизаций αd ≈ 0,1 (интерактив, вкладка 1; показано 70 пробегов)"
+style="width:6.10417in;height:1.5in"
+alt="Правая ветвь: зазор 1 мм при 760 мм рт. ст. и 3 кВ — тысячи пробегов, ионизаций αd ≈ 0,1 (интерактив, вкладка 1; показано 70 пробегов)" /></p>
+<p><strong>Рис. 2.</strong> Правая ветвь: зазор 1 мм при 760 мм рт. ст.
+и 3 кВ — тысячи пробегов, ионизаций αd ≈ 0,1 (интерактив, вкладка 1;
+показано 70 пробегов)</p>
+<h3>3.3. Левая ветвь</h3>
+<p>При малом pd газ разрежен: электрон пролетает зазор, сделав лишь
+несколько столкновений. Энергии на пробеге много, но ионизаций мало, а
+для самостоятельного разряда их нужно ln(1 + 1/γ) ≈ 4,6 на пути.
+Уменьшаем давление — пробивное напряжение растёт. По формуле оно уходит
+в бесконечность при</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>p</mi><mi>d</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>*</mo></msub><mo>=</mo><mfrac><mrow><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>+</mo><mfrac><mn>1</mn><mi>γ</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mi>A</mi></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">{(pd)}_{*} = \frac{\ln\left( 1 + \frac{1}{\gamma} \right)}{A}.</annotation></semantics></math>
+(7)</p>
+<p>Для воздуха (pd)* = 4,615/15 = 0,31 мм рт. ст.·см: при меньшем pd
+знаменатель формулы Пашена становится отрицательным.</p>
+<p><img
+src="l4-lecture/media/72ecf1b0fecbd112a3c689579faf9b940f3645b5.webp"
+title="Левая ветвь: зазор 1 см при 0,4 мм рт. ст. и 700 В — 14 пробегов, из них ≈ 5 ионизирующих (жёлтые точки)"
+style="width:6.10417in;height:1.5in"
+alt="Левая ветвь: зазор 1 см при 0,4 мм рт. ст. и 700 В — 14 пробегов, из них ≈ 5 ионизирующих (жёлтые точки)" /></p>
+<p><strong>Рис. 3.</strong> Левая ветвь: зазор 1 см при 0,4 мм рт. ст. и
+700 В — 14 пробегов, из них ≈ 5 ионизирующих (жёлтые точки)</p>
+<h3>3.4. Минимум Пашена</h3>
+<p>Между ветвями есть наименьшее пробивное напряжение. Приравняв к нулю
+производную формулы Пашена по pd, получим</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>p</mi><mi>d</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>min</mo></msub><mo>=</mo><mfrac><mrow><mi>e</mi><mo>⋅</mo><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>+</mo><mfrac><mn>1</mn><mi>γ</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mi>A</mi></mfrac><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><msub><mi>U</mi><mo>min</mo></msub><mo>=</mo><mfrac><mrow><mi>e</mi><mo>⋅</mo><mi>B</mi></mrow><mi>A</mi></mfrac><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>+</mo><mfrac><mn>1</mn><mi>γ</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">{(pd)}_{\min} = \frac{e \cdot \ln\left( 1 + \frac{1}{\gamma} \right)}{A},\ \ \ U_{\min} = \frac{e \cdot B}{A}\ln\left( 1 + \frac{1}{\gamma} \right).</annotation></semantics></math>
+(8)</p>
+<p>Для воздуха по формуле U<sub>min</sub> = 305 В при pd = 0,84 мм рт.
+ст.·см; по измерениям — 327 В при 0,57. При атмосферном давлении это
+зазор около 7–11 мкм.</p>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Главное следствие.</strong> Ниже минимума Пашена (для
+воздуха ≈ 330 В) чистый газовый промежуток не пробивается ни при каком
+давлении и зазоре. Поэтому амплитуда сетевого напряжения 230 В (325 В)
+не пробивает воздушный зазор, а искра при размыкании контактов — дуга в
+парах металла, начавшаяся из замкнутого состояния, а не пробой по
+Пашену.</td>
+</tr>
+</tbody>
+</table>
+<h2>4. Закон подобия, длинный путь и границы формулы</h2>
+<h3>4.1. Закон подобия</h3>
+<p>Увеличим давление в k раз и уменьшим зазор в k раз. Число пробегов на
+пути (∝ pd) не изменится, энергия на пробеге (∝ E/p = U/(pd)) при том же
+U тоже. Значит, пробивное напряжение то же. Закон подобия позволяет
+испытывать уменьшенные модели газовой изоляции при повышенном давлении и
+переносить результаты на натуру.</p>
+<h3>4.2. Длинный путь на левой ветви</h3>
+<p>На левой ветви длинный промежуток пробивается легче короткого: больше
+столкновений — pd ближе к минимуму. В воздухе при 0,4 мм рт. ст. зазор 1
+см пробивается при 556 В, а 2 см — при ≈ 306 В. Поэтому в разреженном
+газе разряд идёт в обход: по стенке камеры, между выводами, между
+дальними частями электродов. Конструкторы вакуумных и газоразрядных
+приборов закрывают такие пути экранами и изоляционными вставками.</p>
+<p><img
+src="l4-lecture/media/bce5819c2916cd81c3c198187f165e6083a02023.webp"
+title="Парадокс левой ветви: точка при pd = 0,4 мм рт. ст.·см (интерактив, вкладка 1, кнопка «Парадокс левой ветви»)"
+style="width:6.30208in;height:2.85417in"
+alt="Парадокс левой ветви: точка при pd = 0,4 мм рт. ст.·см (интерактив, вкладка 1, кнопка «Парадокс левой ветви»)" /></p>
+<p><strong>Рис. 4.</strong> Парадокс левой ветви: точка при pd = 0,4 мм
+рт. ст.·см (интерактив, вкладка 1, кнопка «Парадокс левой ветви»)</p>
+<h3>4.3. Где формула работает плохо</h3>
+<p><strong>Правая ветвь, большие pd.</strong> Для однородного поля в
+воздухе при pd больше ≈ 10 мм рт. ст.·см используют формулу, построенную
+по измерениям (Kuffel, Zaengl):</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mrow><mi>п</mi><mi>р</mi></mrow></msub><mo>≈</mo><mn>24</mn><mo>,</mo><mn>22</mn><mo>⋅</mo><mi>δ</mi><mi>d</mi><mo>+</mo><mn>6</mn><mo>,</mo><mn>08</mn><mo>⋅</mo><msqrt><mrow><mi>δ</mi><mi>d</mi></mrow></msqrt><mi>.</mi></mrow><annotation encoding="application/x-tex">U_{пр} \approx 24,22 \cdot \delta d + 6,08 \cdot \sqrt{\delta d}.</annotation></semantics></math>
+(9)</p>
+<p>Здесь U<sub>пр</sub> в киловольтах, d — в сантиметрах.</p>
+<p>Она даёт 30,3 кВ для зазора 1 см — известные «30 кВ/см».
+<strong>Сжатый газ.</strong> Выше ≈ 0,5 МПа на пробой влияют эмиссия с
+микроострий электродов и пылинки, прочность ниже расчётной по Пашену.
+<strong>Глубокий вакуум.</strong> Газ в разряде не участвует, прочность
+задают электроды (раздел 6).</p>
+<h2>5. Плотность воздуха и атмосферные поправки</h2>
+<h3>5.1. Относительная плотность δ</h3>
+<p>В воздухе при обычных условиях пробивное напряжение определяется не
+давлением, а плотностью газа. Её выражают относительно нормальных
+условий (760 мм рт. ст., 20 °C):</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mo>=</mo><mfrac><mi>p</mi><mn>760</mn></mfrac><mo>⋅</mo><mfrac><mn>293</mn><mrow><mn>273</mn><mo>+</mo><mi>t</mi></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">\delta = \frac{p}{760} \cdot \frac{293}{273 + t}.</annotation></semantics></math>
+(10)</p>
+<table>
+<colgroup>
+<col style="width: 44%" />
+<col style="width: 18%" />
+<col style="width: 18%" />
+<col style="width: 18%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Погода</strong></th>
+<th><strong>p, мм рт. ст.</strong></th>
+<th><strong>t, °C</strong></th>
+<th><strong>δ</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Нормальные условия</td>
+<td>760</td>
+<td>20</td>
+<td>1,00</td>
+</tr>
+<tr class="even">
+<td>Апатиты, мороз и антициклон</td>
+<td>775</td>
+<td>−30</td>
+<td>1,23</td>
+</tr>
+<tr class="odd">
+<td>Оттепель, циклон</td>
+<td>735</td>
+<td>+1</td>
+<td>1,03</td>
+</tr>
+<tr class="even">
+<td>Лето, жара</td>
+<td>750</td>
+<td>+28</td>
+<td>0,96</td>
+</tr>
+</tbody>
+</table>
+<p>Пробивное напряжение воздушных промежутков примерно пропорционально
+δ: в морозный антициклон воздушная изоляция на 20–25 % прочнее, в жару —
+на несколько процентов слабее.</p>
+<h3>5.2. Поправки по ГОСТ 1516.2 и МЭК 60060-1</h3>
+<p>Испытательные напряжения в нормах заданы для нормальных условий:
+101,3 кПа, 20 °C, абсолютная влажность 11 г/м³. В день испытания вводят
+атмосферный поправочный коэффициент</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mi>t</mi></msub><mo>=</mo><msub><mi>k</mi><mn>1</mn></msub><mo>⋅</mo><msub><mi>k</mi><mn>2</mn></msub><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><msub><mi>k</mi><mn>1</mn></msub><mo>=</mo><msup><mi>δ</mi><mi>m</mi></msup><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><msub><mi>k</mi><mn>2</mn></msub><mo>=</mo><msup><mi>k</mi><mi>w</mi></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">K_{t} = k_{1} \cdot k_{2},\ \ \ k_{1} = \delta^{m},\ \ \ k_{2} = k^{w}.</annotation></semantics></math>
+(11)</p>
+<p>Коэффициент k учитывает влажность; для переменного напряжения k = 1 +
+0,012(h/δ − 11) при 1 ≤ h/δ ≤ 15. Показатели m и w зависят от типа
+разряда через параметр</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mo>=</mo><mfrac><msub><mi>U</mi><mn>50</mn></msub><mrow><mn>500</mn><mo>⋅</mo><mi>L</mi><mo>⋅</mo><mi>δ</mi><mo>⋅</mo><mi>k</mi></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">g = \frac{U_{50}}{500 \cdot L \cdot \delta \cdot k}.</annotation></semantics></math>
+(12)</p>
+<p>Здесь U<sub>50</sub> — 50-процентное разрядное напряжение в
+киловольтах (амплитуда), L — длина разрядного пути в метрах.</p>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 36%" />
+<col style="width: 37%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>g</strong></th>
+<th><strong>m</strong></th>
+<th><strong>w</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>&lt; 0,2</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>0,2…1,0</td>
+<td>g(g − 0,2)/0,8</td>
+<td>g(g − 0,2)/0,8</td>
+</tr>
+<tr class="odd">
+<td>1,0…1,2</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>1,2…2,0</td>
+<td>1</td>
+<td>(2,2 − g)(2,0 − g)/0,8</td>
+</tr>
+<tr class="odd">
+<td>&gt; 2,0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>Короткий однородный промежуток (g &gt; 2): K<sub>t</sub> = δ,
+влажность не влияет — пробой идёт без длинных стримеров. Длинный
+промежуток стержень — плоскость (g ≈ 1): важны и плотность, и влажность.
+Применение: в день испытания подают U = U<sub>0</sub>·K<sub>t</sub>;
+измеренное разрядное напряжение приводят к нормальным условиям делением
+U<sub>0</sub> = U/K<sub>t</sub>.</p>
+<p><img
+src="l4-lecture/media/f350995bac450604dd4d4932810361ddb976ae44.png"
+title="Поправки в морозный антициклон: −30 °C, 775 мм рт. ст., 80 % (интерактив, вкладка 2)"
+style="width:6.30208in;height:0.77083in"
+alt="Поправки в морозный антициклон: −30 °C, 775 мм рт. ст., 80 % (интерактив, вкладка 2)" /></p>
+<p><strong>Рис. 5.</strong> Поправки в морозный антициклон: −30 °C, 775
+мм рт. ст., 80 % (интерактив, вкладка 2)</p>
+<p><img
+src="l4-lecture/media/af2a05f65aa0551c2798723573b64d3e14e754bb.webp"
+title="Kt двух промежутков в зависимости от температуры (интерактив, вкладка 2)"
+style="width:6.30208in;height:1.84375in"
+alt="Kt двух промежутков в зависимости от температуры (интерактив, вкладка 2)" /></p>
+<p><strong>Рис. 6.</strong> K<sub>t</sub> двух промежутков в зависимости
+от температуры (интерактив, вкладка 2)</p>
+<p><strong>Пример.</strong> Норма — 95 кВ, в день испытания 735 мм рт.
+ст. и +25 °C, промежутки короткие: δ = 0,951, подают 95·0,951 = 90,3 кВ.
+Подав 95 кВ, мы испытали бы изоляцию жёстче нормы.</p>
+<p>Морозный воздух очень сухой: при −30 °C абсолютная влажность — доли
+грамма на кубометр, h/δ &lt; 1 — вне диапазона формулы. Такие испытания
+на Кольском полуострове лучше проводить в помещении или учитывать
+погрешность поправки.</p>
+<h2>6. Высота над уровнем моря</h2>
+<p>Давление падает с высотой примерно как</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>≈</mo><mn>760</mn><mo>⋅</mo><msup><mi>e</mi><mrow><mo>−</mo><mfrac><mi>H</mi><mn>8150</mn></mfrac></mrow></msup><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mi>δ</mi><mo>≈</mo><msup><mi>e</mi><mrow><mo>−</mo><mfrac><mi>H</mi><mn>8150</mn></mfrac></mrow></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">p \approx 760 \cdot e^{- \frac{H}{8150}},\ \ \ \delta \approx e^{- \frac{H}{8150}}.</annotation></semantics></math>
+(13)</p>
+<p>Здесь p в мм рт. ст., H — высота в метрах; 8150 м — характерная
+высота атмосферы, на которой давление падает в e раз.</p>
+<p>На 1000 м δ ≈ 0,88, на 4500 м — 0,58. Оборудование нормального
+исполнения рассчитано на высоту до 1000 м; выше требуемый уровень
+изоляции при нормальных условиях увеличивают высотным коэффициентом (МЭК
+60071-2)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mi>a</mi></msub><mo>=</mo><msup><mi>e</mi><mrow><mi>m</mi><mo>⋅</mo><mfrac><mrow><mi>H</mi><mo>−</mo><mn>1000</mn></mrow><mn>8150</mn></mfrac></mrow></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">K_{a} = e^{m \cdot \frac{H - 1000}{8150}}.</annotation></semantics></math>
+(14)</p>
+<p>Для воздушных промежутков при грозовом импульсе и переменном
+напряжении m = 1.</p>
+<p><strong>Пример.</strong> Уровень 75 кВ для высоты 2500 м:
+K<sub>a</sub> = e<sup>1500/8150</sup> = 1,20, нужен уровень 90 кВ.</p>
+<p><img
+src="l4-lecture/media/7193949964587b552916565e1101c39efef70005.png"
+title="δ и высотный коэффициент Ka (интерактив, вкладка 2)"
+style="width:6.30208in;height:1.63542in"
+alt="δ и высотный коэффициент Ka (интерактив, вкладка 2)" /></p>
+<p><strong>Рис. 7.</strong> δ и высотный коэффициент K<sub>a</sub>
+(интерактив, вкладка 2)</p>
+<p>Самый известный пример — линия постоянного тока Гэрмо — Лхаса (Тибет,
+2011): 88 % трассы выше 4000 м. Её проектировали на ±500 кВ, но
+построили на ±400 кВ — в том числе из-за ограничений внешней изоляции на
+высоте; композитные изоляторы удлинили до 12–14 м. В Хибинах на 400–1000
+м прочность воздуха ниже на 5–12 %, но мороз отчасти это
+компенсирует.</p>
+<h2>7. От вакуума до сжатого газа</h2>
+<p>Если менять давление при неизменном зазоре, пробивное напряжение
+проходит всю кривую Пашена: глубокий вакуум — левая ветвь — минимум —
+правая ветвь — сжатый газ (рис. ниже).</p>
+<p><img
+src="l4-lecture/media/62583166f4df98b983f91c4b6044831709a508f7.webp"
+title="Прочность зазора 10 мм от давления: исправная вакуумная камера (интерактив, вкладка 3)"
+style="width:6.30208in;height:2.94792in"
+alt="Прочность зазора 10 мм от давления: исправная вакуумная камера (интерактив, вкладка 3)" /></p>
+<p><strong>Рис. 8.</strong> Прочность зазора 10 мм от давления:
+исправная вакуумная камера (интерактив, вкладка 3)</p>
+<h3>7.1. Вакуум</h3>
+<p>При давлении ниже ≈ 10<sup>−2</sup> Па пробег электрона — метры и
+километры, в зазоре нет молекул для лавины. Пробой определяют электроды:
+автоэлектронная эмиссия с микроострий, испарение металла, микрочастицы.
+Для оценки принимают U ≈ K·√d; в модели интерактива K = 40 кВ/√мм, то
+есть ≈ 130 кВ на 10 мм. Так работают вакуумные камеры выключателей 6–35
+кВ.</p>
+<p>Если камера теряет вакуум, давление растёт к области 1–100 Па. Внутри
+камеры есть пути длиной в сантиметры, и разряд находит путь с pd около
+минимума: прочность падает до сотен вольт. Поэтому вакуумную камеру в
+эксплуатации проверяют высоким напряжением на разомкнутых контактах.</p>
+<p><img
+src="l4-lecture/media/1686b3b52bbfb5280d17efebcbda423b86bba375.webp"
+title="Камера потеряла вакуум, давление 50 Па: точка у минимума Пашена (интерактив, вкладка 3)"
+style="width:6.30208in;height:2.94792in"
+alt="Камера потеряла вакуум, давление 50 Па: точка у минимума Пашена (интерактив, вкладка 3)" /></p>
+<p><strong>Рис. 9.</strong> Камера потеряла вакуум, давление 50 Па:
+точка у минимума Пашена (интерактив, вкладка 3)</p>
+<h3>7.2. Элегаз</h3>
+<p>Элегаз SF<sub>6</sub> — электроотрицательный газ: его молекулы
+захватывают электроны, лавине труднее развиться. При одинаковом давлении
+он примерно в 3 раза прочнее воздуха: при 0,1 МПа ≈ 89 кВ/см против ≈ 30
+кВ/см. Для однородного поля применяют оценку</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mo>≈</mo><mfrac><mrow><mn>230</mn><mo>⋅</mo><mi>p</mi><mo>+</mo><mn>1</mn><mo>,</mo><mn>61</mn></mrow><mn>26</mn></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">E \approx \frac{230 \cdot p + 1,61}{26}.</annotation></semantics></math>
+(15)</p>
+<p>Здесь E в кВ/мм, p — абсолютное давление в барах (1 бар = 0,1 МПа).
+При 1 бар E = 8,91 кВ/мм.</p>
+<p>В КРУЭ элегаз держат под давлением 0,4–0,6 МПа (абс.), и изоляционные
+расстояния рассчитаны на это давление. Прочность почти пропорциональна
+давлению: утечка с 0,5 до 0,35 МПа снижает её на 30 %. Поэтому каждый
+отсек снабжают датчиком плотности с двумя ступенями: сигнал о снижении и
+блокировка оперирования.</p>
+<p><img
+src="l4-lecture/media/b050157577a9e64249fadfaeca7534b754a68f29.webp"
+title="Утечка элегаза до 0,35 МПа (интерактив, вкладка 3): зелёная кривая — элегаз, жёлтая — воздух"
+style="width:6.30208in;height:2.94792in"
+alt="Утечка элегаза до 0,35 МПа (интерактив, вкладка 3): зелёная кривая — элегаз, жёлтая — воздух" /></p>
+<p><strong>Рис. 10.</strong> Утечка элегаза до 0,35 МПа (интерактив,
+вкладка 3): зелёная кривая — элегаз, жёлтая — воздух</p>
+<h2>8. Газ внутри твёрдой изоляции</h2>
+<p>Поры, расслоения и трещины в твёрдой изоляции заполнены газом, и к
+ним применим закон Пашена. На границе пора — изоляция непрерывна
+нормальная составляющая электрической индукции, поэтому поле в плоской
+поре поперёк поля</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mi>в</mi></msub><mo>=</mo><msub><mi>ε</mi><mi>r</mi></msub><mo>⋅</mo><msub><mi>E</mi><mrow><mi>и</mi><mi>з</mi></mrow></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">E_{в} = \varepsilon_{r} \cdot E_{из}.</annotation></semantics></math>
+(16)</p>
+<p>Для сферической поры усиление меньше:</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mi>в</mi></msub><mo>=</mo><mfrac><mrow><mn>3</mn><msub><mi>ε</mi><mi>r</mi></msub></mrow><mrow><mn>2</mn><msub><mi>ε</mi><mi>r</mi></msub><mo>+</mo><mn>1</mn></mrow></mfrac><mo>⋅</mo><msub><mi>E</mi><mrow><mi>и</mi><mi>з</mi></mrow></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">E_{в} = \frac{3\varepsilon_{r}}{2\varepsilon_{r} + 1} \cdot E_{из}.</annotation></semantics></math>
+(17)</p>
+<p>Пора разряжается, когда напряжение на ней E<sub>в</sub>·d достигает
+пробивного напряжения газа по Пашену при pd поры. Это и есть частичный
+разряд — тема лекции 10.</p>
+<p><strong>Пример.</strong> Плоская пора 0,1 мм в эпоксидной изоляции
+(ε<sub>r</sub> = 4) при 760 мм рт. ст.: pd = 7,6, U<sub>пр</sub> = 865
+В, пробивное поле поры 8,65 кВ/мм. Разряды начнутся при поле в изоляции
+8,65/4 = 2,16 кВ/мм — это в пределах рабочих полей литой изоляции,
+поэтому поры такого размера недопустимы.</p>
+<p><img
+src="l4-lecture/media/ed12952513776693038eaf5fe8e679d15d91e005.png"
+title="Пора в эпоксидной изоляции при 3 кВ/мм: поле в поре 12 кВ/мм, разряды есть (интерактив, вкладка 4)"
+style="width:6.10417in;height:1.35417in"
+alt="Пора в эпоксидной изоляции при 3 кВ/мм: поле в поре 12 кВ/мм, разряды есть (интерактив, вкладка 4)" /></p>
+<p><strong>Рис. 11.</strong> Пора в эпоксидной изоляции при 3 кВ/мм:
+поле в поре 12 кВ/мм, разряды есть (интерактив, вкладка 4)</p>
+<p><img
+src="l4-lecture/media/2ec182897340b06014b81eedda9f19006dab3ace.webp"
+title="Пробивное напряжение поры и напряжение на ней от толщины поры: красная область — поры, которые разряжаются"
+style="width:6.30208in;height:2.34375in"
+alt="Пробивное напряжение поры и напряжение на ней от толщины поры: красная область — поры, которые разряжаются" /></p>
+<p><strong>Рис. 12.</strong> Пробивное напряжение поры и напряжение на
+ней от толщины поры: красная область — поры, которые разряжаются</p>
+<p>Мелкие поры прочнее по напряжённости: пробивное поле поры 0,02 мм ≈
+17 кВ/мм, поры 1 мм ≈ 5 кВ/мм. Но с ростом толщины поры напряжение на
+ней растёт быстрее её прочности, поэтому норма приёмки задаёт наибольший
+допустимый размер поры. Если газ в поре разрежён (например, остался
+после вакуумной заливки), pd меньше и пора ближе к минимуму Пашена — она
+слабее. Такой расчёт встречается и в расчётных заданиях — например, при
+выборе допустимого размера поры в кабеле или во вводе.</p>
+<p><img
+src="l4-lecture/media/0c34938170238a240d35732b9e5e4d02cc891bc1.webp"
+title="То же при давлении в поре 100 мм рт. ст.: разряжаются и более мелкие поры"
+style="width:6.30208in;height:2.34375in"
+alt="То же при давлении в поре 100 мм рт. ст.: разряжаются и более мелкие поры" /></p>
+<p><strong>Рис. 13.</strong> То же при давлении в поре 100 мм рт. ст.:
+разряжаются и более мелкие поры</p>
+<h2>9. Реальные случаи</h2>
+<p>Случаи 1–5 описаны в открытых источниках, случай 6 разбирает
+известный факт. Все они есть во вкладке 5 интерактива с вопросами.</p>
+<h3>9.1. Ракета Electron, 19 сентября 2023</h3>
+<table>
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 78%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>Что случилось</td>
+<td>Примерно на 151-й секунде полёта упало напряжение источника питания
+второй ступени, ракета не вышла на орбиту. Наиболее вероятная причина по
+расследованию — дуга в высоковольтной системе питания, закоротившая
+аккумуляторы. Совпали: скопление гелия и азота в межступенчатом отсеке,
+дефект изоляции жгута, неблагоприятная форма напряжения.</td>
+</tr>
+<tr class="even">
+<td>Физика</td>
+<td>При подъёме давление в отсеке упало, pd зазоров дошло до минимума
+Пашена — прочность снизилась до сотен вольт. Гелий ещё ослабляет
+промежуток.</td>
+</tr>
+<tr class="odd">
+<td>Урок</td>
+<td>Высоковольтные цепи в негерметичных отсеках проектируют с учётом
+прохождения минимума Пашена; Rocket Lab изменила конструкцию отсека,
+чтобы сохранять в нём давление.</td>
+</tr>
+<tr class="even">
+<td>Источник</td>
+<td>The Register, 09.11.2023 (по отчёту Rocket Lab).</td>
+</tr>
+</tbody>
+</table>
+<h3>9.2. Линия ±400 кВ Гэрмо — Лхаса, 2011</h3>
+<table>
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 78%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>Что случилось</td>
+<td>88 % трассы выше 4000 м, перевал Тангула — 5300 м. Проект ±500 кВ
+снизили до ±400 кВ, в том числе из-за ограничений внешней изоляции на
+высоте. Изоляторы удлинили до 12–14 м, удельную длину пути утечки
+увеличили в 1,28 раза.</td>
+</tr>
+<tr class="even">
+<td>Физика</td>
+<td>δ ≈ e<sup>−4500/8150</sup> ≈ 0,58: разрядные напряжения воздушных
+промежутков на 40 % ниже, чем у моря.</td>
+</tr>
+<tr class="odd">
+<td>Урок</td>
+<td>Выше 1000 м уровень изоляции увеличивают в K<sub>a</sub> =
+e<sup>(H−1000)/8150</sup> раз.</td>
+</tr>
+<tr class="even">
+<td>Источник</td>
+<td>INMR, «15th Anniversary of World’s Highest HVDC Line».</td>
+</tr>
+</tbody>
+</table>
+<h3>9.3. Перекрытие в отсеке КРУЭ 400 кВ, CIGRE 2026</h3>
+<table>
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 78%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>Что случилось</td>
+<td>Инженеры POWERGRID (Индия) представили разбор перекрытия в отсеке
+КРУЭ 400 кВ из-за незамеченного снижения давления элегаза и стратегию
+восстановления.</td>
+</tr>
+<tr class="even">
+<td>Физика</td>
+<td>Прочность элегаза на правой ветви почти пропорциональна давлению;
+потеря части газа снимает изоляционный запас.</td>
+</tr>
+<tr class="odd">
+<td>Урок</td>
+<td>Датчики плотности с сигналом и блокировкой, контроль трендов
+давления.</td>
+</tr>
+<tr class="even">
+<td>Источник</td>
+<td>CIGRE Session 2026, доклад A3-10328.</td>
+</tr>
+</tbody>
+</table>
+<h3>9.4. Проверка вакуумной камеры выключателя</h3>
+<table>
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 78%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>Что случилось</td>
+<td>В эксплуатации вакуумные камеры проверяют высоким напряжением между
+разомкнутыми контактами — 75–80 % заводского испытательного; отказ при
+обеих полярностях — камера негодна, при одной — возможна эмиссия с
+микроострия.</td>
+</tr>
+<tr class="even">
+<td>Физика</td>
+<td>При потере вакуума давление поднимается к минимуму Пашена, и в
+камере находится путь с оптимальным pd: прочность падает до сотен
+вольт.</td>
+</tr>
+<tr class="odd">
+<td>Урок</td>
+<td>Испытание показывает, на какой ветви кривой Пашена находится
+камера.</td>
+</tr>
+<tr class="even">
+<td>Источник</td>
+<td>Megger, Electrical Tester, март 2020.</td>
+</tr>
+</tbody>
+</table>
+<h3>9.5. Частичные разряды в авиационной проводке</h3>
+<table>
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 78%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>Что случилось</td>
+<td>Лаборатория Lectromec: напряжения возникновения и погасания ЧР в
+проводах и кабелях на высоте ниже, чем у земли, — «до определённого
+предела».</td>
+</tr>
+<tr class="even">
+<td>Физика</td>
+<td>Разреженный воздух в порах и зазорах изоляции: pd уменьшается к
+минимуму Пашена; дальше — левая ветвь, и напряжение снова растёт.</td>
+</tr>
+<tr class="odd">
+<td>Урок</td>
+<td>Проводку для высоты испытывают при пониженном давлении.</td>
+</tr>
+<tr class="even">
+<td>Источник</td>
+<td>Lectromec, «Partial Discharge at Altitude».</td>
+</tr>
+</tbody>
+</table>
+<h3>9.6. Может ли 230 В пробить воздух?</h3>
+<table>
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 78%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>Что случилось</td>
+<td>Амплитуда 230 В — 325 В, минимум Пашена воздуха — 327 В. Однако
+искра при размыкании контактов под нагрузкой видна всегда.</td>
+</tr>
+<tr class="even">
+<td>Физика</td>
+<td>Газовый промежуток ниже минимума не пробивается. Дуга размыкания
+начинается из замкнутого состояния: ток идёт через последнюю точку
+контакта, металл плавится и испаряется.</td>
+</tr>
+<tr class="odd">
+<td>Урок</td>
+<td>Закон Пашена описывает пробой изолирующего промежутка, но не дугу
+размыкания.</td>
+</tr>
+<tr class="even">
+<td>Источник</td>
+<td>Naidu, Kamaraju «High Voltage Engineering»; «Paschen's law»,
+Википедия.</td>
+</tr>
+</tbody>
+</table>
+<h2>10. Главное</h2>
+<ol type="1">
+<li><p>Пробивное напряжение однородного промежутка в газе зависит только
+от p·d (закон Пашена).</p></li>
+<li><p>Справа от минимума газ плотный — мало энергии на пробеге; слева
+разрежен — мало столкновений.</p></li>
+<li><p>Минимум Пашена воздуха ≈ 327 В: ниже него чистый газовый
+промежуток не пробить.</p></li>
+<li><p>На левой ветви длинный путь пробивается легче короткого.</p></li>
+<li><p>Прочность воздуха пропорциональна δ; при испытаниях вводят
+K<sub>t</sub> = δ<sup>m</sup>·k<sup>w</sup>.</p></li>
+<li><p>Выше 1000 м уровень изоляции увеличивают в K<sub>a</sub> =
+e<sup>(H−1000)/8150</sup> раз.</p></li>
+<li><p>Элегаз в КРУЭ работает на правой ветви: прочность пропорциональна
+давлению; вакуумная камера — левее всей кривой, и потеря вакуума
+опасна.</p></li>
+<li><p>Газовая пора в изоляции разряжается раньше, чем пробивается
+изоляция: поле в ней в ε<sub>r</sub> раз больше.</p></li>
+</ol>
+<h2>11. Вопросы для самопроверки</h2>
+<ol type="1">
+<li><p>От чего зависит пробивное напряжение по закону Пашена и
+почему?</p></li>
+<li><p>Почему на правой ветви напряжение растёт с pd, а на левой — при
+уменьшении pd?</p></li>
+<li><p>Чему равен минимум Пашена для воздуха и какое из этого следует
+практическое правило?</p></li>
+<li><p>Как изменится пробивное напряжение, если давление увеличить в 4
+раза, а зазор уменьшить в 4 раза?</p></li>
+<li><p>Почему в разреженном газе разряд идёт не по кратчайшему
+пути?</p></li>
+<li><p>Как рассчитать δ и как применить K<sub>t</sub> при
+испытании?</p></li>
+<li><p>Почему влажность важна для длинных промежутков и не важна для
+коротких однородных?</p></li>
+<li><p>Почему оборудование для высокогорья выбирают с повышенным уровнем
+изоляции?</p></li>
+<li><p>Почему утечка элегаза из КРУЭ опасна, даже если газ ещё
+остался?</p></li>
+<li><p>Почему камера, потерявшая вакуум, держит меньше, чем камера,
+полная воздуха?</p></li>
+<li><p>При каком поле в изоляции начнёт разряжаться пора 0,1 мм в
+эпоксиде?</p></li>
+</ol>
+<h2>12. Источники</h2>
+<ol type="1">
+<li><p>Важов В. Ф., Лавринович В. А. Техника высоких напряжений:
+учебник. — Томск: ТПУ, 2014. — Разд. 1.</p></li>
+<li><p>Райзер Ю. П. Физика газового разряда. — М.: Наука.</p></li>
+<li><p>Kuffel E., Zaengl W. S., Kuffel J. High Voltage Engineering:
+Fundamentals. — Newnes, 2000.</p></li>
+<li><p>Naidu M. S., Kamaraju V. High Voltage Engineering. —
+McGraw-Hill.</p></li>
+<li><p>ГОСТ 1516.2-97. Электрооборудование и электроустановки
+переменного тока на напряжение 3 кВ и выше. Общие методы испытаний
+электрической прочности изоляции.</p></li>
+<li><p>IEC 60060-1:2010. High-voltage test techniques — Part 1: General
+definitions and test requirements.</p></li>
+<li><p>IEC 60071-2. Insulation co-ordination — Part 2: Application
+guidelines.</p></li>
+<li><p>Paschen's law. Wikipedia:
+https://en.wikipedia.org/wiki/Paschen%27s_law</p></li>
+<li><p>The Register, 09.11.2023:
+https://www.theregister.com/2023/11/09/rocket_lab_investigation</p></li>
+<li><p>INMR. 15th Anniversary of World’s Highest HVDC Line:
+https://www.inmr.com/10th-anniversary-of-worlds-highest-hvdc-line/</p></li>
+<li><p>CIGRE Session 2026, A3-10328:
+https://www.e-cigre.org/publications/detail/a3-10328-2026-case-study-on-flashover-in-a-400-kv-gis-compartment-due-to-undetected-sf6-pressure-drop-and-restoration-strategy.html</p></li>
+<li><p>Megger. DC testing of vacuum integrity in MV switchgear, 2020:
+https://www.megger.com/en/et-online/march-2020/dc-testing-of-vacuum-integrity-in-mv-switchgear</p></li>
+<li><p>Lectromec. Partial Discharge at Altitude:
+https://www.lectromec.com/blog/partial-discharge-at-altitude/</p></li>
+<li><p>LBL. High-pressure gas breakdown (SF₆ и воздух):
+https://www-eng.lbl.gov/~shuman/NEXT/MATERIALS&amp;COMPONENTS/HV/hp_gas_breakdown.pdf</p></li>
+</ol>
+</main></body></html>

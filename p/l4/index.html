@@ -1,0 +1,442 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Лекция 4. Закон Пашена, давление и плотность газа — презентация</title><link rel="stylesheet" href="../fonts/fonts.css"><style>*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#0e131a;overflow:hidden}
+#stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+#deck{width:1920px;height:1080px;position:relative;flex:none;transform-origin:center center}
+#deck>section{position:absolute;inset:0;width:1920px;height:1080px;overflow:hidden}
+body:not(.print) #deck>section:not(.on){display:none!important}
+section ul,section ol{padding-left:1.2em}section li{margin:.25em 0}
+section table{border-collapse:collapse;width:100%}
+section th,section td{text-align:left;vertical-align:top;padding:.45em .6em;border-bottom:1px solid rgba(128,128,128,.35)}
+section th{font-weight:600;border-bottom:2px solid currentColor}
+section img{display:block}
+#ui{position:fixed;left:0;right:0;bottom:0;display:flex;gap:6px;align-items:center;justify-content:center;padding:8px;font:600 14px system-ui,sans-serif;z-index:9;opacity:.9}
+#ui a,#ui button{background:rgba(20,29,43,.85);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:7px 14px;font:inherit;text-decoration:none;cursor:pointer}
+#ui span{background:rgba(20,29,43,.85);color:#fff;border-radius:999px;padding:7px 12px;min-width:76px;text-align:center}
+body.print{overflow:visible;background:#fff}body.print #stage{position:static;display:block}
+body.print #deck{transform:none!important;height:auto}
+body.print #deck>section{position:relative!important;page-break-after:always;break-after:page}
+body.print #ui{display:none}
+@page{size:1920px 1080px;margin:0}</style></head><body><div id="stage"><div id="deck"><section id="cover" data-transition="fade" style="background:#121B2B;color:#F4F2EC;font-family:'Public Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:space-between">
+<img src="img/f27cb6e536.webp" alt="" style="position:absolute;left:880px;top:120px;width:980px;height:420px;object-fit:contain;opacity:0.25">
+<p style="font-size:28px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#F0A26B">Техника высоких напряжений · лекция 4</p>
+<div style="display:flex;flex-direction:column;gap:32px;width:1300px">
+<h1 style="font-family:'Rubik', Arial, sans-serif;font-size:104px;font-weight:700;line-height:1.05">Закон Пашена, давление и плотность газа</h1>
+<p style="font-size:36px;line-height:1.35;color:#C3CEDC">Почему прочность газа зависит от p·d, от погоды и высоты — от вакуумной камеры до элегазового КРУЭ</p>
+</div>
+<p style="font-size:24px;color:#93A3B8">13.03.02 · интерактив «Закон Пашена» · по учебнику Важова и Лавриновича, разд. 1</p>
+
+</section>
+<section id="goals" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">Цели лекции</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">После пары вы сможете</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;flex:1">
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:32px"><p style="font-size:48px;font-weight:700;color:#1F5FAF">1</p><p style="font-size:28px;line-height:1.4">Вывести формулу Пашена и посчитать по ней пробивное напряжение</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:32px"><p style="font-size:48px;font-weight:700;color:#1F5FAF">2</p><p style="font-size:28px;line-height:1.4">Объяснить две ветви кривой и минимум Пашена</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:32px"><p style="font-size:48px;font-weight:700;color:#1F5FAF">3</p><p style="font-size:28px;line-height:1.4">Применить закон подобия и объяснить разряд по длинному пути</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:32px"><p style="font-size:48px;font-weight:700;color:#1F5FAF">4</p><p style="font-size:28px;line-height:1.4">Посчитать δ и поправку K<sub>t</sub> при испытании</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:32px"><p style="font-size:48px;font-weight:700;color:#1F5FAF">5</p><p style="font-size:28px;line-height:1.4">Объяснить, чем опасны потеря вакуума и утечка элегаза</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:32px"><p style="font-size:48px;font-weight:700;color:#1F5FAF">6</p><p style="font-size:28px;line-height:1.4">Найти, при каком поле разряжается пора в изоляции</p></div>
+</div>
+
+</section>
+<section id="riddle" data-transition="fade" style="background:#B4531B;color:#FBF4EC;font-family:'Public Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:48px">
+<p style="font-size:28px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#FBE3D0">Два вопроса на всю пару</p>
+<div style="display:flex;gap:40px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#93410F;border-radius:20px;padding:44px"><p style="font-family:'Rubik', Arial, sans-serif;font-size:96px;font-weight:700;line-height:1">30 кВ → ?</p><p style="font-size:32px;line-height:1.4">Зазор 1 см в воздухе держит 30 кВ. Будем откачивать воздух. Прочность вырастет, упадёт или исчезнет?</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#93410F;border-radius:20px;padding:44px"><p style="font-family:'Rubik', Arial, sans-serif;font-size:96px;font-weight:700;line-height:1">325 В</p><p style="font-size:32px;line-height:1.4">Амплитуда сети 230 В — 325 В. Может ли она пробить чистый воздушный зазор хоть какой-то длины?</p></div>
+</div>
+
+</section>
+<section id="recap" data-transition="fade" style="background:#E6ECF2;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">1 · Из лекции 2</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Разряд самостоятелен, когда электрон «окупается»</h2>
+</div>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:40px;background:#FFFDF8;border-left:8px solid #1F5FAF;padding:28px 36px">γ(e<sup>αd</sup> − 1) = 1   ⇒   αd = ln(1 + 1/γ)</p>
+<div style="display:flex;gap:28px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border-radius:16px;padding:32px"><h3 style="font-size:32px;font-weight:600;color:#1F5FAF">α — ионизация в объёме</h3><p style="font-size:27px;line-height:1.45">Сколько пар ионов рождает электрон на 1 см пути: α/p = A·e<sup>−Bp/E</sup></p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border-radius:16px;padding:32px"><h3 style="font-size:32px;font-weight:600;color:#1F5FAF">γ — вторичная эмиссия</h3><p style="font-size:27px;line-height:1.45">Сколько электронов выбивает из катода один ион. Для воздуха — около 0,01</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border-radius:16px;padding:32px"><h3 style="font-size:32px;font-weight:600;color:#1F5FAF">Итог</h3><p style="font-size:27px;line-height:1.45">На пути через зазор нужно ln(1 + 1/γ) ≈ 4,6 ионизаций на один электрон</p></div>
+</div>
+
+</section>
+<section id="law" data-transition="fade" style="background:#121B2B;color:#F4F2EC;font-family:'Public Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:44px">
+<p style="font-size:28px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#F0A26B">2 · Пашен, 1889</p>
+<h1 style="font-family:'Rubik', Arial, sans-serif;font-size:120px;font-weight:700;line-height:1.05">U<sub>пр</sub> = f(p·d)</h1>
+<p style="font-size:40px;line-height:1.35;color:#C3CEDC;width:1500px">Для данного газа и электродов пробивное напряжение однородного промежутка зависит не от давления и расстояния по отдельности, а только от их произведения</p>
+<p style="font-size:28px;color:#93A3B8">p·d — сколько молекул стоит у электрона на пути через зазор</p>
+
+</section>
+<section id="derive" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">2 · Вывод</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Три шага от Таунсенда к Пашену</h2>
+</div>
+<div style="display:flex;flex-direction:column;gap:20px;flex:1">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:32px;background:#FFFDF8;border-left:6px solid #1F5FAF;padding:18px 28px">1)  αd = ln(1 + 1/γ)</p>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:32px;background:#FFFDF8;border-left:6px solid #1F5FAF;padding:18px 28px">2)  α = A·p·e<sup>−Bp/E</sup>,   E = U/d</p>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:38px;background:#FFF1E4;border-left:6px solid #B4531B;padding:24px 28px">3)  U<sub>пр</sub> = B·pd / [ ln(A·pd) − ln ln(1 + 1/γ) ]</p>
+<p style="font-size:28px;line-height:1.45">Воздух: A = 15 1/(см·мм рт. ст.), B = 365 В/(см·мм рт. ст.), γ = 0,01 → ln ln(1 + 1/γ) = 1,529</p>
+</div>
+
+</section>
+<section id="gases" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">2 · Разные газы</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">У каждого газа своя кривая и свой минимум</h2>
+</div>
+<table style="font-size:28px;color:#141D2B">
+<tr><th style="width:28%">Газ</th><th style="width:12%">A</th><th style="width:12%">B</th><th style="width:24%">Минимум, измерения</th><th style="width:24%">pd в минимуме</th></tr>
+<tr><td>Воздух</td><td>15</td><td>365</td><td>327 В</td><td>0,57</td></tr>
+<tr><td>Азот</td><td>12</td><td>342</td><td>251 В</td><td>0,67</td></tr>
+<tr><td>Аргон</td><td>12</td><td>180</td><td>137 В</td><td>0,9</td></tr>
+<tr><td>Гелий</td><td>3</td><td>34</td><td>156 В</td><td>4,0</td></tr>
+<tr><td>Водород</td><td>5</td><td>130</td><td>273 В</td><td>1,15</td></tr>
+<tr><td>Углекислый газ</td><td>20</td><td>466</td><td>420 В</td><td>0,51</td></tr>
+</table>
+<p style="font-size:24px;color:#4A5568">A в 1/(см·мм рт. ст.), B в В/(см·мм рт. ст.), pd в мм рт. ст.·см · Райзер; Naidu, Kamaraju</p>
+
+</section>
+<section id="curve" data-transition="fade" style="background:#E6ECF2;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">2 · Кривая Пашена воздуха · вкладка 1</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Выше кривой — пробой, ниже — промежуток держит</h2>
+</div>
+<img src="img/f27cb6e536.webp" alt="Кривая Пашена воздуха: область пробоя над кривой, ветви, минимум, зазор 1 мм при 3 кВ" style="width:1664px;height:530px;object-fit:contain;background:#0D171E;border-radius:16px">
+<p style="font-size:26px;line-height:1.4;color:#4A5568">◆ минимум по формуле · ○ минимум по измерениям · белый пунктир — пробой воздуха по измерениям · кружок — зазор 1 мм при 3 кВ: держит</p>
+
+</section>
+<section id="ex1mm" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">2 · Пример</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Зазор 1 мм в воздухе при атмосферном давлении</h2>
+</div>
+<div style="display:flex;gap:40px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:32px">pd = 760 · 0,1 = 76</p>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:32px">ln(15 · 76) = ln 1140 = 7,039</p>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:32px">U = 365·76 / (7,039 − 1,529)</p>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:40px;font-weight:600;color:#B4531B">U<sub>пр</sub> = 5,03 кВ</p>
+</div>
+<div style="width:620px;display:flex;flex-direction:column;gap:16px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:36px">
+<h3 style="font-size:32px;font-weight:600;color:#1F5FAF">Сверка с опытом</h3>
+<p style="font-size:27px;line-height:1.45">Измерения: ≈ 4,3 кВ. Для воздуха при pd больше 10 используют формулу по опытам:</p>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:28px">U ≈ 24,22·δd + 6,08·√(δd) кВ</p>
+<p style="font-size:27px;line-height:1.45">1 см → 30,3 кВ: те самые «30 кВ/см»</p>
+</div>
+</div>
+
+</section>
+<section id="lam" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">3 · Пробег электрона</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Пробой решают два числа</h2>
+</div>
+<div style="display:flex;gap:28px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:36px"><p style="font-family:'Rubik', Arial, sans-serif;font-size:64px;font-weight:700;color:#1F5FAF">d / λ<sub>e</sub></p><h3 style="font-size:32px;font-weight:600">Сколько пробегов</h3><p style="font-size:27px;line-height:1.45">Число столкновений на пути ∝ pd. При 101 кПа λ<sub>e</sub> ≈ 0,37 мкм: в зазоре 1 мм — ≈ 2700 пробегов</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:36px"><p style="font-family:'Rubik', Arial, sans-serif;font-size:64px;font-weight:700;color:#B4531B">e·E·λ<sub>e</sub></p><h3 style="font-size:32px;font-weight:600">Сколько энергии на пробеге</h3><p style="font-size:27px;line-height:1.45">∝ E/p. Ионизировать N₂ нужно ≈ 15,6 эВ, O₂ — ≈ 12,1 эВ</p></div>
+</div>
+
+</section>
+<section id="right" data-transition="fade" style="background:#E6ECF2;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">3 · Правая ветвь</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Плотный газ: пробегов много, энергии мало</h2>
+</div>
+<img src="img/6b923990d7.webp" alt="Путь электрона в правой ветви: тысячи коротких пробегов, редкие ионизации" style="width:1664px;height:330px;object-fit:contain;background:#0D171E;border-radius:16px">
+<div style="display:flex;gap:28px">
+<p style="flex:1;font-size:28px;line-height:1.45">1 мм, 760 мм рт. ст., 3 кВ: ≈ 2700 пробегов по ≈ 1 эВ. Серые точки — удары без ионизации, ионизаций на пути αd ≈ 0,1.</p>
+<p style="flex:1;font-size:28px;line-height:1.45">Чтобы пробить, нужно αd ≥ 4,6 — большее поле: <b>U<sub>пр</sub> растёт с pd почти линейно</b>.</p>
+</div>
+
+</section>
+<section id="left" data-transition="fade" style="background:#E6ECF2;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">3 · Левая ветвь</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Разреженный газ: энергии много, столкновений мало</h2>
+</div>
+<img src="img/cf4bda6d7b.webp" alt="Путь электрона в левой ветви: несколько пробегов через весь зазор" style="width:1664px;height:330px;object-fit:contain;background:#0D171E;border-radius:16px">
+<div style="display:flex;gap:28px">
+<p style="flex:1;font-size:28px;line-height:1.45">1 см, 0,4 мм рт. ст., 700 В: всего 14 пробегов, из них ≈ 5 ионизаций (жёлтые). Нужно ≈ 4,6 — едва хватает. Уменьшаем давление — U<sub>пр</sub> растёт.</p>
+<p style="flex:1;font-size:28px;line-height:1.45">При pd меньше <b>0,31 мм рт. ст.·см</b> формула не даёт пробоя ни при каком U — асимптота кривой.</p>
+</div>
+
+</section>
+<section id="minimum" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">3 · Минимум Пашена</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Наименьшее напряжение, которым можно пробить газ</h2>
+</div>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:34px;background:#FFFDF8;border-left:6px solid #1F5FAF;padding:22px 30px">(pd)<sub>min</sub> = e·ln(1 + 1/γ)/A     U<sub>min</sub> = (e·B/A)·ln(1 + 1/γ)</p>
+<div style="display:flex;gap:28px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:32px"><h3 style="font-size:32px;font-weight:600;color:#1F5FAF">По формуле</h3><p style="font-family:'Rubik', Arial, sans-serif;font-size:72px;font-weight:700">305 В</p><p style="font-size:27px">при pd = 0,84 мм рт. ст.·см</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:32px"><h3 style="font-size:32px;font-weight:600;color:#B4531B">По измерениям</h3><p style="font-family:'Rubik', Arial, sans-serif;font-size:72px;font-weight:700">327 В</p><p style="font-size:27px">при pd = 0,57 — зазор ≈ 7,5 мкм в атмосфере</p></div>
+</div>
+
+</section>
+<section id="mains" data-transition="fade" style="background:#121B2B;color:#F4F2EC;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#F0A26B">Реальный случай · быт и электроника</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">325 В не пробивают воздух. Откуда же искра в выключателе?</h2>
+</div>
+<div style="display:flex;gap:28px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#1C2840;border-radius:16px;padding:36px"><h3 style="font-size:34px;font-weight:600;color:#7FB3F0">Закон Пашена</h3><p style="font-size:27px;line-height:1.45;color:#C3CEDC">Амплитуда 230 В — 325 В, минимум воздуха — 327 В. Изолирующий воздушный промежуток такой сеть не пробьёт ни при каком зазоре.</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#1C2840;border-radius:16px;padding:36px"><h3 style="font-size:34px;font-weight:600;color:#F0A26B">Дуга размыкания</h3><p style="font-size:27px;line-height:1.45;color:#C3CEDC">Разряд начинается из замкнутого состояния: ток идёт через последнюю точку контакта, металл плавится и испаряется, в парах металла горит дуга. Механизм Таунсенда здесь ни при чём.</p></div>
+</div>
+
+</section>
+<section id="similar" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">4 · Закон подобия</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Давление ×k, зазор ÷k — напряжение то же</h2>
+</div>
+<div style="display:flex;gap:28px;align-items:center;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:36px"><p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:40px">0,1 МПа · 10 мм</p><p style="font-size:27px;color:#4A5568">натура</p></div>
+<x-shape kind="arrow-right" style="width:120px;height:60px;background:#B4531B"></x-shape>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:36px"><p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:40px">0,5 МПа · 2 мм</p><p style="font-size:27px;color:#4A5568">модель, тот же U<sub>пр</sub></p></div>
+</div>
+<p style="font-size:28px;line-height:1.45">Число пробегов ∝ pd и энергия на пробеге ∝ U/(pd) не изменились. Так испытывают уменьшенные модели газовой изоляции — с оговоркой: в сжатом газе выше 0,5 МПа уже влияют электроды.</p>
+
+</section>
+<section id="paradox" data-transition="fade" style="background:#E6ECF2;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">4 · Парадокс левой ветви · вкладка 1</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">В разреженном газе длинный путь пробивается легче</h2>
+</div>
+<div style="display:flex;gap:40px;flex:1">
+<img src="img/e5cb48cedb.webp" alt="Точка на левой ветви кривой Пашена при pd = 0,4" style="width:1060px;height:450px;object-fit:contain;background:#0D171E;border-radius:16px">
+<div style="flex:1;display:flex;flex-direction:column;gap:18px">
+<p style="font-size:28px;line-height:1.45">Воздух, 0,4 мм рт. ст.:</p>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:32px">1 см → 556 В</p>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:32px">2 см → 306 В</p>
+<p style="font-size:27px;line-height:1.45">Разряд обходит: по стенкам камеры, между выводами, между дальними частями электродов.</p>
+</div>
+</div>
+
+</section>
+<section id="limits" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">4 · Границы формулы</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Где закон Пашена работает плохо</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;flex:1">
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:32px"><h3 style="font-size:32px;font-weight:600;color:#1F5FAF">Постоянные A и B</h3><p style="font-size:27px;line-height:1.45">Верны в ограниченном диапазоне E/p: для воздуха при атмосферном давлении формула завышает на 10–15 %</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:32px"><h3 style="font-size:32px;font-weight:600;color:#1F5FAF">Сжатый газ</h3><p style="font-size:27px;line-height:1.45">Выше ≈ 0,5 МПа влияют эмиссия с микроострий электродов и пылинки — прочность ниже расчётной</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:32px"><h3 style="font-size:32px;font-weight:600;color:#1F5FAF">Глубокий вакуум</h3><p style="font-size:27px;line-height:1.45">Газа почти нет — прочность задают электроды: эмиссия и пары металла</p></div>
+</div>
+
+</section>
+<section id="delta" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">5 · Плотность воздуха</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Прочность воздуха следует за его плотностью δ</h2>
+</div>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:36px;background:#FFFDF8;border-left:6px solid #1F5FAF;padding:20px 30px">δ = (p/760) · 293/(273 + t)</p>
+<table style="font-size:28px;color:#141D2B">
+<tr><th style="width:46%">Погода</th><th style="width:18%">p, мм рт. ст.</th><th style="width:18%">t, °C</th><th style="width:18%">δ</th></tr>
+<tr><td>Нормальные условия</td><td>760</td><td>20</td><td>1,00</td></tr>
+<tr><td>Апатиты: мороз, антициклон</td><td>775</td><td>−30</td><td><b>1,23</b></td></tr>
+<tr><td>Оттепель, циклон</td><td>735</td><td>+1</td><td>1,03</td></tr>
+<tr><td>Лето, жара</td><td>750</td><td>+28</td><td>0,96</td></tr>
+</table>
+
+</section>
+<section id="kt" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:30px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">5 · Поправки при испытаниях · ГОСТ 1516.2, МЭК 60060-1</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Норма задана для 760 мм рт. ст., 20 °C и 11 г/м³</h2>
+</div>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:32px;background:#FFFDF8;border-left:6px solid #1F5FAF;padding:18px 28px">K<sub>t</sub> = δ<sup>m</sup>·k<sup>w</sup>,  k = 1 + 0,012(h/δ − 11),  g = U<sub>50</sub>/(500·L·δ·k)</p>
+<div style="display:flex;gap:28px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:32px"><h3 style="font-size:32px;font-weight:600;color:#1F5FAF">Короткий однородный</h3><p style="font-size:27px;line-height:1.45">g &gt; 2: m = 1, w = 0. K<sub>t</sub> = δ, влажность не учитывают</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:32px"><h3 style="font-size:32px;font-weight:600;color:#1F5FAF">Длинный неоднородный</h3><p style="font-size:27px;line-height:1.45">g ≈ 1: m = w ≈ 1. Важны и плотность, и влажность — вода тормозит стримеры</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FFF1E4;border:1px solid #E8C7A8;border-radius:16px;padding:32px"><h3 style="font-size:32px;font-weight:600;color:#B4531B">Как применять</h3><p style="font-size:27px;line-height:1.45">Подаём U = U<sub>0</sub>·K<sub>t</sub>. Измеренное приводим: U<sub>0</sub> = U/K<sub>t</sub></p></div>
+</div>
+
+</section>
+<section id="ktdemo" data-transition="fade" style="background:#E6ECF2;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">5 · Мороз в Апатитах · вкладка 2</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Короткий промежуток +23 %, длинный — лишь +6 %</h2>
+</div>
+<img src="img/b252ba4fb6.webp" alt="Таблица поправок двух промежутков при −30 °C и 775 мм рт. ст." style="width:1664px;height:180px;object-fit:contain;background:#FFFFFF;border-radius:16px">
+<img src="img/ebfbffa26f.webp" alt="Kt двух промежутков в зависимости от температуры" style="width:1664px;height:380px;object-fit:contain;background:#0D171E;border-radius:16px">
+
+</section>
+<section id="altitude" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">6 · Высота над уровнем моря</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Выше 1000 м изоляцию усиливают</h2>
+</div>
+<div style="display:flex;gap:40px;flex:1">
+<img src="img/9442377196.webp" alt="δ и высотный коэффициент Ka от высоты" style="width:1000px;height:520px;object-fit:contain;background:#0D171E;border-radius:16px">
+<div style="flex:1;display:flex;flex-direction:column;gap:18px">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:30px;background:#FFFDF8;border-left:6px solid #1F5FAF;padding:16px 22px">δ ≈ e<sup>−H/8150</sup></p>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:30px;background:#FFFDF8;border-left:6px solid #1F5FAF;padding:16px 22px">K<sub>a</sub> = e<sup>(H−1000)/8150</sup></p>
+<p style="font-size:27px;line-height:1.45">2500 м: K<sub>a</sub> = 1,20 — уровень 75 кВ превращается в 90 кВ.</p>
+<p style="font-size:27px;line-height:1.45">Хибины, 400–1000 м: прочность ниже на 5–12 %.</p>
+</div>
+</div>
+
+</section>
+<section id="tibet" data-transition="fade" style="background:#121B2B;color:#F4F2EC;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#F0A26B">Реальный случай · Тибет, 2011</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Линию ±500 кВ построили на ±400 кВ</h2>
+</div>
+<div style="display:flex;gap:28px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#1C2840;border-radius:16px;padding:36px"><h3 style="font-size:34px;font-weight:600;color:#7FB3F0">Что случилось</h3><p style="font-size:27px;line-height:1.45;color:#C3CEDC">Линия постоянного тока Гэрмо — Лхаса: 88 % трассы выше 4000 м, перевал Тангула — 5300 м. Напряжение снизили с ±500 до ±400 кВ — в том числе из-за внешней изоляции на высоте. Изоляторы — 12–14 м вместо 9,75 м на равнине.</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#1C2840;border-radius:16px;padding:36px"><h3 style="font-size:34px;font-weight:600;color:#F0A26B">Физика</h3><p style="font-size:27px;line-height:1.45;color:#C3CEDC">δ ≈ e<sup>−4500/8150</sup> ≈ 0,58: разрядные напряжения воздушных промежутков на 40 % ниже, чем у моря. Удельную длину пути утечки увеличили в 1,28 раза.</p></div>
+</div>
+
+</section>
+<section id="pressure" data-transition="fade" style="background:#E6ECF2;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">7 · От вакуума до сжатого газа · вкладка 3</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Зазор 10 мм: вакуум, минимум, атмосфера, КРУЭ</h2>
+</div>
+<img src="img/ac5f290a3f.webp" alt="Прочность зазора 10 мм от давления от 10⁻⁴ Па до 1 МПа" style="width:1664px;height:520px;object-fit:contain;background:#0D171E;border-radius:16px">
+<p style="font-size:26px;line-height:1.4;color:#4A5568">Вакуум ≈ 130 кВ (оценка) → потеря вакуума ≈ 300 В → воздух 0,1 МПа ≈ 30 кВ → элегаз 0,5 МПа ≈ 440 кВ</p>
+
+</section>
+<section id="vaclost" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">7 · Вакуумная камера выключателя</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Немного воздуха опаснее, чем много</h2>
+</div>
+<div style="display:flex;gap:40px;flex:1">
+<img src="img/75f5d6422d.webp" alt="Камера потеряла вакуум: давление 50 Па, точка у минимума Пашена" style="width:1000px;height:520px;object-fit:contain;background:#0D171E;border-radius:16px">
+<div style="flex:1;display:flex;flex-direction:column;gap:18px">
+<p style="font-size:27px;line-height:1.45">Натекло до 50 Па: pd ≈ 0,4 — у минимума, прочность <b>≈ 300 В</b>.</p>
+<p style="font-size:27px;line-height:1.45">Камера, полная воздуха, держит ≈ 30 кВ.</p>
+<p style="font-size:27px;line-height:1.45">В эксплуатации камеру проверяют напряжением на разомкнутых контактах — 75–80 % заводского испытательного.</p>
+</div>
+</div>
+
+</section>
+<section id="sf6" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">7 · Элегаз в КРУЭ</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Прочность почти пропорциональна давлению</h2>
+</div>
+<div style="display:flex;gap:40px;flex:1">
+<img src="img/56c4d46c62.webp" alt="Утечка элегаза до 0,35 МПа: прочность зазора 10 мм 310 кВ" style="width:1000px;height:520px;object-fit:contain;background:#0D171E;border-radius:16px">
+<div style="flex:1;display:flex;flex-direction:column;gap:18px">
+<p style="font-size:27px;line-height:1.45">Электроотрицательный газ: SF₆ захватывает электроны, при равном давлении в ≈ 3 раза прочнее воздуха.</p>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:28px">E ≈ (230p + 1,61)/26 кВ/мм</p>
+<p style="font-size:27px;line-height:1.45">0,5 → 0,35 МПа: 443 → 310 кВ, <b>−30 %</b>.</p>
+<p style="font-size:27px;line-height:1.45">CIGRE 2026: перекрытие в отсеке КРУЭ 400 кВ из-за незамеченного снижения давления.</p>
+</div>
+</div>
+
+</section>
+<section id="rocket" data-transition="fade" style="background:#121B2B;color:#F4F2EC;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#F0A26B">Реальный случай · 19 сентября 2023</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Ракета Electron потеряла вторую ступень из-за дуги</h2>
+</div>
+<div style="display:flex;gap:28px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#1C2840;border-radius:16px;padding:36px"><h3 style="font-size:34px;font-weight:600;color:#7FB3F0">Что случилось</h3><p style="font-size:27px;line-height:1.45;color:#C3CEDC">На 151-й секунде упало напряжение питания второй ступени. Наиболее вероятная причина — дуга, закоротившая аккумуляторы. Совпали: гелий и азот в отсеке, дефект изоляции жгута, неблагоприятная форма напряжения.</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#1C2840;border-radius:16px;padding:36px"><h3 style="font-size:34px;font-weight:600;color:#F0A26B">Физика</h3><p style="font-size:27px;line-height:1.45;color:#C3CEDC">При подъёме давление в отсеке падает, pd зазоров проходит минимум Пашена: прочность — сотни вольт. Решение Rocket Lab — сохранять давление в отсеке.</p></div>
+</div>
+
+</section>
+<section id="void" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">8 · Газ в твёрдой изоляции · вкладка 4</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Пора разряжается раньше изоляции</h2>
+</div>
+<div style="display:flex;gap:40px;flex:1">
+<div style="width:980px;display:flex;flex-direction:column;gap:16px">
+<img src="img/d06c927ffb.webp" alt="Пора в эпоксидной изоляции, в поре идут разряды" style="width:980px;height:200px;object-fit:contain;background:#0D171E;border-radius:16px">
+<img src="img/50c33f6b7e.webp" alt="Пробивное напряжение поры и напряжение на ней от толщины поры" style="width:980px;height:340px;object-fit:contain;background:#0D171E;border-radius:16px">
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:18px">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:30px;background:#FFFDF8;border-left:6px solid #1F5FAF;padding:16px 22px">E<sub>в</sub> = ε<sub>r</sub>·E<sub>из</sub></p>
+<p style="font-size:27px;line-height:1.45">Эпоксид, ε<sub>r</sub> = 4, пора 0,1 мм: U<sub>пр</sub> = 865 В, разряды с <b>2,16 кВ/мм</b> в изоляции.</p>
+<p style="font-size:27px;line-height:1.45">Мелкие поры прочнее по напряжённости, но норма задаёт наибольший размер поры.</p>
+</div>
+</div>
+
+</section>
+<section id="void100" data-transition="fade" style="background:#E6ECF2;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">8 · Разреженный газ в поре</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Меньше давление в поре — ближе к минимуму</h2>
+</div>
+<img src="img/3fe4279eee.webp" alt="Пробивное напряжение пор при давлении газа 100 мм рт. ст." style="width:1664px;height:470px;object-fit:contain;background:#0D171E;border-radius:16px">
+<p style="font-size:28px;line-height:1.45">Газ, оставшийся в поре после вакуумной заливки, разрежен: pd меньше — разряжаются и более мелкие поры.</p>
+
+</section>
+<section id="aviation" data-transition="fade" style="background:#121B2B;color:#F4F2EC;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#F0A26B">Реальный случай · авиация</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Частичные разряды в проводке на высоте</h2>
+</div>
+<div style="display:flex;gap:28px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#1C2840;border-radius:16px;padding:36px"><h3 style="font-size:34px;font-weight:600;color:#7FB3F0">Что заметили</h3><p style="font-size:27px;line-height:1.45;color:#C3CEDC">Лаборатория Lectromec: напряжения возникновения и погасания ЧР в проводах и кабелях на высоте ниже, чем у земли, — «до определённого предела».</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#1C2840;border-radius:16px;padding:36px"><h3 style="font-size:34px;font-weight:600;color:#F0A26B">Физика</h3><p style="font-size:27px;line-height:1.45;color:#C3CEDC">Воздух в порах и зазорах изоляции разрежен — pd идёт к минимуму Пашена. Дальше левая ветвь: напряжение снова растёт. Это и есть «предел».</p></div>
+</div>
+
+</section>
+<section id="practice" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">Практика · вкладка 6 и пособие студента</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Десять задач</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px 24px;flex:1">
+<p style="font-size:26px;line-height:1.4;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:16px 22px"><b>1.</b> Миллиметровый зазор</p>
+<p style="font-size:26px;line-height:1.4;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:16px 22px"><b>6.</b> Зазор летом в циклон</p>
+<p style="font-size:26px;line-height:1.4;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:16px 22px"><b>2.</b> Где минимум при атмосферном давлении</p>
+<p style="font-size:26px;line-height:1.4;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:16px 22px"><b>7.</b> Поправка при испытании</p>
+<p style="font-size:26px;line-height:1.4;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:16px 22px"><b>3.</b> Трубка с разреженным воздухом</p>
+<p style="font-size:26px;line-height:1.4;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:16px 22px"><b>8.</b> Оборудование для высокогорья</p>
+<p style="font-size:26px;line-height:1.4;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:16px 22px"><b>4.</b> Давление худшего случая в отсеке</p>
+<p style="font-size:26px;line-height:1.4;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:16px 22px"><b>9.</b> Утечка элегаза</p>
+<p style="font-size:26px;line-height:1.4;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:16px 22px"><b>5.</b> Морозный антициклон в Апатитах</p>
+<p style="font-size:26px;line-height:1.4;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:16px 22px"><b>10.</b> Пора в литой изоляции</p>
+</div>
+
+</section>
+<section id="check" data-transition="fade" style="background:#E6ECF2;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">Итог</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Проверьте себя</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:22px 48px">
+<p style="font-size:28px;line-height:1.4">1. Почему U<sub>пр</sub> зависит только от pd?</p>
+<p style="font-size:28px;line-height:1.4">5. Как применить K<sub>t</sub> при испытании?</p>
+<p style="font-size:28px;line-height:1.4">2. Что ограничивает правую и левую ветви?</p>
+<p style="font-size:28px;line-height:1.4">6. Зачем K<sub>a</sub> выше 1000 м?</p>
+<p style="font-size:28px;line-height:1.4">3. Почему 230 В не пробивают воздух?</p>
+<p style="font-size:28px;line-height:1.4">7. Чем опасна частичная потеря вакуума?</p>
+<p style="font-size:28px;line-height:1.4">4. Почему разряд идёт по длинному пути?</p>
+<p style="font-size:28px;line-height:1.4">8. Почему пора разряжается раньше изоляции?</p>
+</div>
+<p style="font-size:28px;line-height:1.4;color:#4A5568">Тест — вкладка 7: 5 вариантов по 15 вопросов, оценка в конце</p>
+
+</section>
+<section id="final" data-transition="fade" style="background:#121B2B;color:#F4F2EC;font-family:'Public Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:44px">
+<p style="font-size:28px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#F0A26B">Главное</p>
+<div style="display:flex;flex-direction:column;gap:26px;width:1600px">
+<p style="font-size:42px;line-height:1.3">U<sub>пр</sub> однородного промежутка зависит только от p·d; минимум воздуха ≈ 327 В</p>
+<p style="font-size:42px;line-height:1.3">Справа мало энергии на пробеге, слева мало столкновений — и длинный путь легче короткого</p>
+<p style="font-size:42px;line-height:1.3">Прочность воздуха ∝ δ: испытывают с поправкой K<sub>t</sub>, высоту учитывают через K<sub>a</sub></p>
+<p style="font-size:42px;line-height:1.3">Вакуум, элегаз и поры в изоляции — разные точки одной кривой</p>
+</div>
+<p style="font-size:28px;color:#93A3B8">Дома: задачи вкладки 6, тест — вкладка 7. Следующая лекция — коронный разряд</p>
+
+</section>
+</div></div><div id="ui"><a href="../../">⌂</a><button id="pv" aria-label="Назад">←</button><span id="cnt"></span><button id="nx" aria-label="Вперёд">→</button><button id="fsb" aria-label="Во весь экран">⛶</button><a href="l4.pdf" download>PDF</a></div><script>var D=document.getElementById('deck'),S=[].slice.call(D.children),i=0,n=S.length,C=document.getElementById('cnt');
+function fit(){var k=Math.min(innerWidth/1920,(innerHeight-(innerWidth<700?0:0))/1080);D.style.transform='scale('+k+')'}
+function go(j){i=Math.max(0,Math.min(n-1,j));S.forEach(function(s,k){s.classList.toggle('on',k===i)});C.textContent=(i+1)+' / '+n;try{history.replaceState(null,'','#'+(i+1))}catch(e){}}
+if(location.search.indexOf('print')>=0){document.body.classList.add('print')}else{
+addEventListener('resize',fit);fit();go((parseInt(location.hash.slice(1))||1)-1);
+addEventListener('keydown',function(e){if(['ArrowRight','PageDown',' ','Enter'].indexOf(e.key)>=0){go(i+1);e.preventDefault()}else if(['ArrowLeft','PageUp','Backspace'].indexOf(e.key)>=0){go(i-1);e.preventDefault()}else if(e.key==='Home')go(0);else if(e.key==='End')go(n-1);else if(e.key==='f')fs()});
+var x0=null;addEventListener('touchstart',function(e){x0=e.touches[0].clientX},{passive:true});addEventListener('touchend',function(e){if(x0===null)return;var dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>40)go(i+(dx<0?1:-1));x0=null});
+document.getElementById('stage').addEventListener('click',function(e){if(e.target.closest('a'))return;go(i+(e.clientX>innerWidth/3?1:-1))});
+document.getElementById('pv').onclick=function(){go(i-1)};document.getElementById('nx').onclick=function(){go(i+1)};
+document.getElementById('fsb').onclick=fs}
+function fs(){var d=document.documentElement;if(!document.fullscreenElement){d.requestFullscreen&&d.requestFullscreen()}else{document.exitFullscreen()}}</script></body></html>

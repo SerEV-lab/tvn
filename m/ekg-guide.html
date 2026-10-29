@@ -1,0 +1,764 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Изоляция привода подъёма ЭКГ-10. Методические указания</title><style>:root{--ink:#16202c;--muted:#5b6675;--line:#d9dde3;--acc:#1f5faf;--bg:#fff;--soft:#f3f5f8}
+@media (prefers-color-scheme:dark){:root{--ink:#e6eaf0;--muted:#9aa6b5;--line:#33404f;--acc:#7fb3f0;--bg:#121820;--soft:#1b2430}img{background:#fff}}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 "PT Serif",Georgia,"Times New Roman",serif}
+.bar{position:sticky;top:0;display:flex;justify-content:space-between;gap:12px;padding:10px 16px;background:var(--soft);border-bottom:1px solid var(--line);font:600 14px system-ui,-apple-system,"Segoe UI",sans-serif;z-index:5}
+.bar a{color:var(--acc);text-decoration:none}.bar .pdf{border:1px solid var(--acc);border-radius:999px;padding:2px 12px}
+main{max-width:820px;margin:0 auto;padding:16px 16px 64px}
+h1,h2,h3,h4{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.25;margin:1.6em 0 .5em}
+h1{font-size:1.5em}h2{font-size:1.25em}h3{font-size:1.08em}
+p{margin:.5em 0}img{max-width:100%;height:auto;display:block;margin:12px auto;border-radius:6px}
+figure{margin:16px 0}figcaption{text-align:center;color:var(--muted);font-size:.9em}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:.92em;display:block;overflow-x:auto}
+td,th{border:1px solid var(--line);padding:6px 8px;vertical-align:top}th{background:var(--soft);text-align:left}
+math{font-size:1.08em}math[display=block]{overflow-x:auto;overflow-y:hidden;margin:10px 0}
+blockquote{margin:12px 0;padding:8px 14px;border-left:4px solid var(--acc);background:var(--soft)}
+@media print{.bar{display:none}body{font-size:12pt}main{max-width:none;padding:0}table{display:table}img{background:none}}
+</style></head><body><nav class="bar"><a href="../">← Техника высоких напряжений</a><a class="pdf" href="ekg-guide.pdf" download>Скачать PDF</a></nav><main><p>Техника высоких напряжений</p>
+<p><strong>Методические указания для студентов</strong></p>
+<p><strong>Изоляция привода подъёма ЭКГ-10</strong></p>
+<p><em>Деловая игра по сквозному заданию, вариант 2, недели
+1–15</em></p>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><p><strong>Цель занятия.</strong> Закрепить расчёты 15 недель
+задания на одном объекте — главном приводе подъёма экскаватора ЭКГ-10 по
+системе Г-Д — и научиться принимать по ним решения: выбирать толщины,
+материалы, номиналы и режимы так, чтобы изоляция работала с запасом в
+условиях карьера.</p>
+<p><strong>Что понадобится:</strong> компьютер или телефон с браузером,
+калькулятор с натуральным логарифмом и степенями, эти указания. Ссылку
+на игру выдаёт преподаватель.</p>
+<p><strong>Продолжительность:</strong> 60–90 минут; прогресс сохраняется
+в браузере.</p></td>
+</tr>
+</tbody>
+</table>
+<h2>1. Объект: привод подъёма ЭКГ-10</h2>
+<p>Сеть 6 кВ через приключательный пункт и гибкий кабель питает сетевой
+двигатель агрегата Г-Д и трансформатор собственных нужд. Генератор
+питает якоря двух двигателей подъёма (2 × 270 кВт); его возбуждение
+регулирует тиристорный возбудитель через обмотку возбуждения генератора,
+при аварии поле гасится на разрядный резистор. Якорная цепь не
+заземлена: её изоляцию относительно корпуса контролирует реле РКИ, а
+варисторный ОПН, включённый между полюсами «+» и «−», ограничивает
+перенапряжения при отключении тока. В игре шесть узлов, они открываются
+по порядку недель.</p>
+<p><img
+src="ekg-guide/media/ffc2615c20d2cbfbc714b956f21dca163866c241.webp"
+title="Мнемосхема ЭКГ-10 после прохождения всех этапов: сеть 6 кВ → приключательный пункт ЯКНО-6 → агрегат Г-Д (СД и генератор, ТВ, обмотка возбуждения с разрядным резистором) → якорная цепь с QF и ОПН → двигатель подъёма и ковш; ТСН 6/0,4 кВ; узлы «Нагрев» и «Диагностика»"
+style="width:6.30208in;height:4.57292in"
+alt="Мнемосхема ЭКГ-10 после прохождения всех этапов: сеть 6 кВ → приключательный пункт ЯКНО-6 → агрегат Г-Д (СД и генератор, ТВ, обмотка возбуждения с разрядным резистором) → якорная цепь с QF и ОПН → двигатель подъёма и ковш; ТСН 6/0,4 кВ; узлы «Нагрев» и «Диагностика»" /></p>
+<p><strong>Рис. 1.</strong> Мнемосхема ЭКГ-10 после прохождения всех
+этапов: сеть 6 кВ → приключательный пункт ЯКНО-6 → агрегат Г-Д (СД и
+генератор, ТВ, обмотка возбуждения с разрядным резистором) → якорная
+цепь с QF и ОПН → двигатель подъёма и ковш; ТСН 6/0,4 кВ; узлы «Нагрев»
+и «Диагностика»</p>
+<table>
+<colgroup>
+<col style="width: 32%" />
+<col style="width: 13%" />
+<col style="width: 54%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Узел</strong></th>
+<th><strong>Этапы</strong></th>
+<th><strong>Что выбирается на стенде</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Двигатели подъёма</td>
+<td>А1–А3</td>
+<td>толщина изоляции; кратность токоограничения; материал
+изоляторов</td>
+</tr>
+<tr class="even">
+<td>Трансформатор СН 6/0,4 кВ</td>
+<td>Б1–Б2</td>
+<td>положение барьера; решение по пробе масла</td>
+</tr>
+<tr class="odd">
+<td>Агрегат Г-Д</td>
+<td>В1–В2</td>
+<td>где возникают ЧР; разрядный резистор</td>
+</tr>
+<tr class="even">
+<td>Защита ОПН якорной цепи</td>
+<td>Г1–Г2</td>
+<td>класс и число варисторов; вид защиты</td>
+</tr>
+<tr class="odd">
+<td>Тепловой режим</td>
+<td>Д1–Д2</td>
+<td>ток копания; источник нагрева</td>
+</tr>
+<tr class="even">
+<td>Диагностика и сервис</td>
+<td>Е1–Е4</td>
+<td>подогреватель; решения по машинам; испытательное напряжение; ток
+сушки</td>
+</tr>
+</tbody>
+</table>
+<h2>2. Правила игры</h2>
+<ol type="1">
+<li><p>Нажмите на аппарат на схеме или на карточку узла под ней —
+откроется справка: что это за аппарат и что на нём считают. Значок «?» в
+тексте задания поясняет термин и бесплатен.</p></li>
+<li><p>Каждый из 15 этапов состоит из двух шагов:
+<strong>расчёт</strong> (ввести число) и <strong>решение</strong> на
+интерактивном стенде. Всего 30 проверок.</p></li>
+<li><p>Числовой ответ принимается с допуском ±3 %; дробную часть можно
+отделять запятой или точкой.</p></li>
+<li><p>«Жизни» — мегаомметр в углу экрана: каждая ошибка снижает
+сопротивление изоляции якоря (500 → 100 → 20 → 4 → 1 → 0,4 МОм), шестая
+— пробой на корпус, игра начинается заново. Три верных ответа подряд с
+первой попытки «подсушивают» изоляцию — стрелка возвращается на
+деление.</p></li>
+<li><p>Очки: верно с первой попытки — 100, после ошибки — 50; подсказка
+(одна на игру) снимает 50. Максимум — 3000.</p></li>
+<li><p>На стенде зелёные показания — условие выполнено, красные — нет.
+Часто нужно наименьшее или наибольшее подходящее значение — читайте
+задание до конца.</p></li>
+<li><p>После последнего этапа нажмите «Пуск», затем «Скопировать итог» и
+отправьте текст преподавателю.</p></li>
+</ol>
+<p><img
+src="ekg-guide/media/e6076a54c8334a1ecf9e9a21ccb0029980bc1df0.webp"
+title="Пример стенда: этап Г1, выбор варисторов. Слева — переключатели и кнопка «Принять решение», справа — ВАХ блока и показания"
+style="width:6.30208in;height:4.21875in"
+alt="Пример стенда: этап Г1, выбор варисторов. Слева — переключатели и кнопка «Принять решение», справа — ВАХ блока и показания" /></p>
+<p><strong>Рис. 2.</strong> Пример стенда: этап Г1, выбор варисторов.
+Слева — переключатели и кнопка «Принять решение», справа — ВАХ блока и
+показания</p>
+<h2>3. Порядок работы на этапе</h2>
+<ol type="1">
+<li><p>Прочитайте «Дано» и пояснение, выпишите формулы.</p></li>
+<li><p>Выполните расчёт, следите за единицами и за тем, где нужна
+амплитуда, а где действующее значение. Запишите ответ в бланк.</p></li>
+<li><p>Введите ответ в игре. Ошиблись — проверьте единицы и порядок
+действий.</p></li>
+<li><p>На стенде сначала оцените решение расчётом, затем подтвердите
+его. Запишите решение в бланк.</p></li>
+</ol>
+<h2>4. Этапы</h2>
+<h3>Двигатели подъёма</h3>
+<p>Два двигателя постоянного тока независимого возбуждения по 270 кВт,
+450 об/мин, ПВ<sub>н</sub> = 80 % (учебник Фащиленко, табл. 4.2). Расчёт
+ведём для одного двигателя: U<sub>н</sub> = 375 В, I<sub>н</sub> = 770
+А; двигатели некомпенсированные, класс нагревостойкости H. Три этапа:
+корпусная изоляция якоря, межламельное напряжение, изоляция
+щёткодержателей.</p>
+<h4>А1 · Корпусная изоляция якоря (неделя 1)</h4>
+<p><strong>Дано.</strong> U<sub>н</sub> = 375 В. Заводское испытание
+корпусной изоляции якоря: U<sub>исп</sub> = 2U<sub>н</sub> + 1000 В
+(действующее, 50 Гц, 1 мин). Кратковременная прочность микаленты
+E<sub>пр</sub> = 20 кВ/мм (амплитуда), коэффициент запаса k<sub>з</sub>
+= 4. Ряд толщин: 0,3; 0,4; 0,5; 0,6; 0,8; 1,0 мм.</p>
+<p><strong>Пояснение.</strong> Корпусную изоляцию рассчитывают по
+заводскому испытательному напряжению: оно выше рабочего и самое тяжёлое
+для новой машины. Запас k<sub>з</sub> учитывает старение, вибрацию и
+загрязнение. Толстая изоляция хуже отводит тепло из паза и отнимает
+место у меди. В эксплуатации испытывают меньшим напряжением — по
+ПУЭ.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mrow><mi>и</mi><mi>с</mi><mi>п</mi></mrow></msub><mo>=</mo><mn>2</mn><msub><mi>U</mi><mi>н</mi></msub><mo>+</mo><mn>1000</mn><mspace width="0.222em"></mspace><mi>В</mi></mrow><annotation encoding="application/x-tex">U_{исп} = 2U_{н} + 1000\ В</annotation></semantics></math>
+(1)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>δ</mi><mo>min</mo></msub><mo>=</mo><mfrac><mrow><msub><mi>k</mi><mi>з</mi></msub><mo>⋅</mo><msqrt><mn>2</mn></msqrt><mo>⋅</mo><msub><mi>U</mi><mrow><mi>и</mi><mi>с</mi><mi>п</mi></mrow></msub></mrow><msub><mi>E</mi><mrow><mi>п</mi><mi>р</mi></mrow></msub></mfrac></mrow><annotation encoding="application/x-tex">\delta_{\min} = \frac{k_{з} \cdot \sqrt{2} \cdot U_{исп}}{E_{пр}}</annotation></semantics></math>
+(2)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mrow><mi>и</mi><mi>с</mi><mi>п</mi><mi>.</mi><mi>э</mi></mrow></msub><mo>=</mo><mn>1</mn><mo>,</mo><mn>6</mn><msub><mi>U</mi><mi>н</mi></msub><mo>+</mo><mn>0</mn><mo>,</mo><mn>8</mn><mspace width="0.222em"></mspace><mi>к</mi><mi>В</mi><mspace width="0.222em"></mspace><mo>≥</mo><mspace width="0.222em"></mspace><mn>1</mn><mo>,</mo><mn>2</mn><mspace width="0.222em"></mspace><mi>к</mi><mi>В</mi></mrow><annotation encoding="application/x-tex">U_{исп.э} = 1,6U_{н} + 0,8\ кВ\  \geq \ 1,2\ кВ</annotation></semantics></math>
+(3)</p>
+<p><strong>Расчёт.</strong> Найти: наименьшая толщина корпусной
+изоляции, мм.</p>
+<p><strong>Решение на стенде.</strong> Выбрать из ряда толщину, при
+которой поле при заводском испытании не больше
+E<sub>пр</sub>/k<sub>з</sub> = 5 кВ/мм, а изоляция как можно тоньше.</p>
+<p>Ответ: расчёт ____________ мм; решение ______________________</p>
+<h4>А2 · Межламельное напряжение (неделя 2)</h4>
+<p><strong>Дано.</strong> 2p = 4; число коллекторных пластин K = 150;
+расчётный коэффициент полюсного перекрытия α = 0,65; машина без
+компенсационной обмотки — искажение поля реакцией якоря учитывает
+множитель (1 + 0,35·I/I<sub>н</sub>). Предел e<sub>max</sub> = 30 В. Ряд
+кратностей токоограничения: 2,0; 2,2; 2,5; 3,0 (рекомендуется
+M<sub>ст</sub> = (2…2,5)M<sub>н</sub>, учебник Фащиленко, табл.
+4.4).</p>
+<p><strong>Пояснение.</strong> Напряжение между соседними пластинами —
+это ЭДС вращения секции. При стопоре скорость равна нулю, и ЭДС вращения
+нет: между пластинами остаётся только падение напряжения в обмотке. В
+Г-Д при стопоре ЭДС генератора E<sub>г</sub> =
+I<sub>ст</sub>R<sub>я</sub> (учебник Фащиленко, ф. 4.83) — всего десятки
+вольт. Опасен наброс большого тока на номинальной скорости: реакция
+якоря сгущает поле под краем полюса, межламельное напряжение растёт, и
+по загрязнённому коллектору может пойти круговой огонь. Форсировка
+генератора поднимает напряжение до 1,1U<sub>н</sub>.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>e</mi><mrow><mi>с</mi><mi>р</mi></mrow></msub><mo>=</mo><mfrac><mrow><mn>2</mn><mi>p</mi><mo>⋅</mo><mi>U</mi></mrow><mi>K</mi></mfrac></mrow><annotation encoding="application/x-tex">e_{ср} = \frac{2p \cdot U}{K}</annotation></semantics></math>
+(4)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>e</mi><mo>max</mo></msub><mo>=</mo><mfrac><msub><mi>e</mi><mrow><mi>с</mi><mi>р</mi></mrow></msub><mi>α</mi></mfrac><mo>⋅</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>+</mo><msub><mi>k</mi><mi>q</mi></msub><mo>⋅</mo><mfrac><mi>I</mi><msub><mi>I</mi><mi>н</mi></msub></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">e_{\max} = \frac{e_{ср}}{\alpha} \cdot \left( 1 + k_{q} \cdot \frac{I}{I_{н}} \right)</annotation></semantics></math>
+(5)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>k</mi><mrow><mi>с</mi><mi>т</mi><mi>о</mi><mi>п</mi></mrow></msub><mo>≤</mo><mfrac><mrow><mfrac><mrow><mn>30</mn><mo>⋅</mo><mi>α</mi></mrow><msub><mi>e</mi><mrow><mi>с</mi><mi>р</mi></mrow></msub></mfrac><mo>−</mo><mn>1</mn></mrow><msub><mi>k</mi><mi>q</mi></msub></mfrac></mrow><annotation encoding="application/x-tex">k_{стоп} \leq \frac{\frac{30 \cdot \alpha}{e_{ср}} - 1}{k_{q}}</annotation></semantics></math>
+(6)</p>
+<p><strong>Расчёт.</strong> Найти: e<sub>max</sub> при набросе тока
+2,5I<sub>н</sub> на номинальной скорости, U = U<sub>н</sub>, В.</p>
+<p><strong>Решение на стенде.</strong> Выбрать наибольшую кратность
+k<sub>стоп</sub> из ряда, при которой e<sub>max</sub> при форсировке
+1,1U<sub>н</sub> не превышает 30 В.</p>
+<p>Ответ: расчёт ____________ В; решение ______________________</p>
+<h4>А3 · Щёткодержатели: зазор и путь утечки (неделя 3)</h4>
+<p><strong>Дано.</strong> Зазор между пальцем щёткодержателя (375 В) и
+траверсой 3 мм, поле близко к однородному; воздух, 760 мм рт. ст.
+Постоянные Пашена воздуха A = 15, B = 365, γ = 0,01. Изоляторы пальцев:
+путь утечки 5,5 мм, рёбра не помещаются. Степень загрязнения 3. ГОСТ Р
+МЭК 60664.1, строка 400 В: группа I — 5,0 мм; II — 5,6 мм; IIIa и IIIb —
+6,3 мм. Материалы: гетинакс (CTI 150), стеклотекстолит СТЭФ (CTI 200),
+стеклотекстолит с трекингостойким покрытием (CTI 400), пресс-материал
+ДСВ (CTI 600).</p>
+<p><strong>Пояснение.</strong> Чтобы возникла корона, нужно поле порядка
+десятков киловольт на сантиметр у электрода — при 375 В в миллиметровых
+зазорах её нет. Минимум Пашена воздуха около 300 В достигается лишь при
+pd ≈ 0,6…0,8 мм рт. ст.·см, то есть в микронных зазорах. В запылённой
+машине опасен трекинг: по слою угольной и рудной пыли с конденсатом
+течёт ток, поверхность обугливается, образуется проводящая дорожка.
+Стойкость материала к трекингу — сравнительный индекс трекингостойкости
+CTI; от группы материала зависит требуемый путь утечки.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mrow><mi>п</mi><mi>р</mi></mrow></msub><mo>=</mo><mfrac><mrow><mi>B</mi><mo>⋅</mo><mi>p</mi><mi>d</mi></mrow><mrow><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>A</mi><mo>⋅</mo><mi>p</mi><mi>d</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mi>l</mi><mi>n</mi><mspace width="0.222em"></mspace><mi>l</mi><mi>n</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>+</mo><mfrac><mn>1</mn><mi>γ</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac></mrow><annotation encoding="application/x-tex">U_{пр} = \frac{B \cdot pd}{\ln(A \cdot pd) - ln\ ln\left( 1 + \frac{1}{\gamma} \right)}</annotation></semantics></math>
+(7)</p>
+<p><strong>Расчёт.</strong> Найти: пробивное напряжение зазора 3 мм по
+формуле Пашена, кВ.</p>
+<p><strong>Решение на стенде.</strong> Выбрать материал изолятора, при
+котором пути утечки 5,5 мм достаточно.</p>
+<p>Ответ: расчёт ____________ кВ; решение ______________________</p>
+<h3>Трансформатор СН 6/0,4 кВ</h3>
+<p>Масляный трансформатор собственных нужд 160 кВ·А питает тиристорный
+возбудитель и вспомогательные приводы. Два этапа: поле у вывода 6 кВ с
+картонным барьером и влага в масле.</p>
+<h4>Б1 · Маслобарьерная изоляция вывода (неделя 4)</h4>
+<p><strong>Дано.</strong> Вывод 6 кВ в баке — коаксиальная система:
+r<sub>0</sub> = 10 мм, R = 60 мм; цилиндр из электрокартона
+r<sub>x</sub> = 25 мм, δ = 4 мм; ε<sub>масла</sub> = 2,2,
+ε<sub>картона</sub> = 4,4. Заводское испытание 25 кВ, 50 Гц (при вводе в
+работу 22,5 кВ, ПУЭ, табл. 1.8.11).</p>
+<p><strong>Пояснение.</strong> В слоистой коаксиальной изоляции заряд на
+единицу длины одинаков во всех слоях, поэтому E =
+q/(2πε<sub>0</sub>ε<sub>i</sub>r): в слое с большей ε поле меньше, и на
+масло приходится большая часть напряжения. Поэтому картон
+электростатически поле у вывода не снижает. Выигрыш барьера — барьерный
+эффект: заряды и волокна оседают на картоне, мостики не замыкают
+промежуток. По рис. 1.31 учебника Важова барьер действует сильнее всего
+на расстоянии (0,2…0,3)S от электрода с сильным полем.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>r</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mfrac><msub><mi>U</mi><mi>m</mi></msub><mrow><mi>r</mi><mo>⋅</mo><msub><mi>ε</mi><mi>i</mi></msub><mo>⋅</mo><mi>Σ</mi><mfrac><mrow><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><msub><mi>r</mi><mrow><mi>k</mi><mo>+</mo><mn>1</mn></mrow></msub><msub><mi>r</mi><mi>k</mi></msub></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mrow><msub><mi>ε</mi><mi>k</mi></msub></mfrac></mrow></mfrac></mrow><annotation encoding="application/x-tex">E(r) = \frac{U_{m}}{r \cdot \varepsilon_{i} \cdot \Sigma\frac{\ln\left( \frac{r_{k + 1}}{r_{k}} \right)}{\varepsilon_{k}}}</annotation></semantics></math>
+(8)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mn>0</mn></msub><mo>=</mo><mfrac><msub><mi>U</mi><mi>m</mi></msub><mrow><msub><mi>r</mi><mn>0</mn></msub><mo>⋅</mo><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mi>R</mi><msub><mi>r</mi><mn>0</mn></msub></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac></mrow><annotation encoding="application/x-tex">E_{0} = \frac{U_{m}}{r_{0} \cdot \ln\left( \frac{R}{r_{0}} \right)}</annotation></semantics></math>
+(9)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><msub><mi>S</mi><mi>б</mi></msub><mi>S</mi></mfrac><mo>=</mo><mfrac><mrow><msub><mi>r</mi><mi>x</mi></msub><mo>−</mo><msub><mi>r</mi><mn>0</mn></msub></mrow><mrow><mi>R</mi><mo>−</mo><msub><mi>r</mi><mn>0</mn></msub></mrow></mfrac><mo>=</mo><mn>0</mn><mo>,</mo><mn>2</mn><mi>…</mi><mn>0</mn><mo>,</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">\frac{S_{б}}{S} = \frac{r_{x} - r_{0}}{R - r_{0}} = 0,2\ldots 0,3</annotation></semantics></math>
+(10)</p>
+<p><strong>Расчёт.</strong> Найти: наибольшая напряжённость в масле у
+вывода при испытании с барьером (амплитуда), кВ/мм.</p>
+<p><strong>Решение на стенде.</strong> Ползунком r<sub>x</sub>
+установить барьер в зону наибольшего барьерного эффекта.</p>
+<p>Ответ: расчёт ____________ кВ/мм; решение ______________________</p>
+<h4>Б2 · Влага в масле и мостики (неделя 5)</h4>
+<p><strong>Дано.</strong> Растворимость воды в минеральном масле
+(учебник Важова): при 80 °C — 400·10⁻⁶, при 20 °C — 40·10⁻⁶ по объёму.
+Проба масла в стандартном разряднике 2,5 мм: 17; 19; 22; 16; 20; 18 кВ.
+Нормы для аппаратов до 15 кВ: после заливки — не менее 25 кВ, в
+эксплуатации — не менее 20 кВ.</p>
+<p><strong>Пояснение.</strong> При остывании растворённая вода выпадает
+в эмульсию — самое опасное состояние. Капли (ε = 80) и волокна целлюлозы
+втягиваются в сильное поле, вытягиваются вдоль силовых линий и образуют
+мостики. Ток по мостику разогревает его до вскипания, в пузырьках
+начинается ионизация — так развивается пробой (учебник Важова, разд.
+1.2.1.2). Барьер разрывает мостики, но воду не убирает.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>д</mi><mi>о</mi><mi>л</mi><mi>я</mi><mo>=</mo><mfrac><mrow><msub><mi>c</mi><mn>80</mn></msub><mo>−</mo><msub><mi>c</mi><mn>20</mn></msub></mrow><msub><mi>c</mi><mn>80</mn></msub></mfrac></mrow><annotation encoding="application/x-tex">доля = \frac{c_{80} - c_{20}}{c_{80}}</annotation></semantics></math>
+(11)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mrow><mi>с</mi><mi>р</mi></mrow></msub><mo>=</mo><mfrac><mrow><mi>Σ</mi><msub><mi>U</mi><mi>i</mi></msub></mrow><mn>6</mn></mfrac><mo>≥</mo><mn>20</mn><mspace width="0.222em"></mspace><mi>к</mi><mi>В</mi></mrow><annotation encoding="application/x-tex">U_{ср} = \frac{\Sigma U_{i}}{6} \geq 20\ кВ</annotation></semantics></math>
+(12)</p>
+<p><strong>Расчёт.</strong> Найти: доля растворённой воды, выпадающей в
+эмульсию при остывании с 80 до 20 °C, %.</p>
+<p><strong>Решение на стенде.</strong> По пробе масла выбрать
+решение.</p>
+<p>Ответ: расчёт ____________ %; решение ______________________</p>
+<h3>Агрегат Г-Д</h3>
+<p>Сетевой двигатель 6 кВ, 800 кВт вращает генератор постоянного тока;
+генератор питает якорь двигателя подъёма, его поле регулирует
+тиристорный возбудитель. Два этапа: расслоение изоляции от вибрации и
+коммутационные перенапряжения.</p>
+<h4>В1 · Вибрация и расслоение изоляции (неделя 6)</h4>
+<p><strong>Дано.</strong> Сетевой двигатель 6 кВ: пазовая изоляция δ =
+2,2 мм, ε<sub>r</sub> = 4,5; вибрация расслоила изоляцию, воздушный
+зазор d = 0,15 мм. Двигатель подъёма: изоляция 0,5 мм (этап А1), в
+работе до 1,15U<sub>н</sub> = 431 В. Газ в зазоре — воздух при
+атмосферном давлении.</p>
+<p><strong>Пояснение.</strong> Зазор и оставшаяся изоляция —
+последовательные конденсаторы: в зазоре с ε = 1 поле в ε<sub>r</sub> раз
+больше, чем в изоляции. Частичные разряды возникают, если напряжение на
+зазоре больше пробивного по кривой Пашена при pd = 760·d. Минимум Пашена
+воздуха около 300 В, поэтому в машинах до ≈ 0,5 кВ ЧР в работе
+практически невозможны: расслоение опасно другим — ухудшением
+теплоотвода и истиранием.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mi>з</mi></msub><mo>=</mo><mfrac><mrow><msub><mi>U</mi><mi>m</mi></msub><mo>⋅</mo><mi>d</mi></mrow><mrow><mi>d</mi><mo>+</mo><mfrac><mrow><mi>δ</mi><mo>−</mo><mi>d</mi></mrow><msub><mi>ε</mi><mi>r</mi></msub></mfrac></mrow></mfrac></mrow><annotation encoding="application/x-tex">U_{з} = \frac{U_{m} \cdot d}{d + \frac{\delta - d}{\varepsilon_{r}}}</annotation></semantics></math>
+(13)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mi>m</mi></msub><mo>=</mo><mfrac><mrow><msqrt><mn>2</mn></msqrt><mo>⋅</mo><msub><mi>U</mi><mi>л</mi></msub></mrow><msqrt><mn>3</mn></msqrt></mfrac></mrow><annotation encoding="application/x-tex">U_{m} = \frac{\sqrt{2} \cdot U_{л}}{\sqrt{3}}</annotation></semantics></math>
+(14)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Ч</mi><mi>Р</mi><mspace width="0.222em"></mspace><mi>п</mi><mi>р</mi><mi>и</mi><mspace width="0.222em"></mspace><msub><mi>U</mi><mi>з</mi></msub><mo>&gt;</mo><msub><mi>U</mi><mrow><mi>п</mi><mi>р</mi></mrow></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>p</mi><mi>d</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">ЧР\ при\ U_{з} &gt; U_{пр}(pd)</annotation></semantics></math>
+(15)</p>
+<p><strong>Расчёт.</strong> Найти: напряжение на зазоре расслоения d =
+0,15 мм в изоляции СД, В.</p>
+<p><strong>Решение на стенде.</strong> Сравнить напряжение на зазоре с
+кривой Пашена для двух машин и указать, где расслоение 0,1…0,4 мм даёт
+ЧР в работе.</p>
+<p>Ответ: расчёт ____________ В; решение ______________________</p>
+<h4>В2 · Отключение тока и гашение поля (неделя 7)</h4>
+<p><strong>Дано.</strong> Индуктивность якорной цепи Г-Д L = 3 мГн;
+отключается стопорный ток 2,2I<sub>н</sub> = 1694 А (решение этапа А2).
+Обмотка возбуждения генератора: L<sub>в</sub> = 8 Гн, R<sub>в</sub> = 10
+Ом, I<sub>в</sub> = 18 А, U<sub>в</sub> = 180 В; испытательное
+напряжение обмотки 1,2 кВ (ПУЭ, табл. 1.8.6), запас 1,25. Разрядные
+резисторы: 20; 30; 50; 80; 100 Ом. Гашение поля — за время переходного
+процесса не более 0,75 с (учебник Фащиленко, разд. 4.6.2).</p>
+<p><strong>Пояснение.</strong> При разрыве цепи с индуктивностью энергия
+магнитного поля должна куда-то уйти: без ограничителя ток заряжает
+ёмкость обмоток на землю до I·√(L/C) — сотен киловольт, и изоляция
+пробивается. Поле генератора при аварии гасят на разрядный резистор: чем
+он больше, тем быстрее гашение, но тем выше напряжение на обмотке.
+Экспонента практически затухает за 3τ.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>W</mi><mo>=</mo><mfrac><mrow><mi>L</mi><msup><mi>I</mi><mn>2</mn></msup></mrow><mn>2</mn></mfrac></mrow><annotation encoding="application/x-tex">W = \frac{LI^{2}}{2}</annotation></semantics></math>
+(16)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mi>в</mi></msub><mo>=</mo><msub><mi>I</mi><mi>в</mi></msub><msub><mi>R</mi><mi>р</mi></msub><mo>≤</mo><mfrac><mrow><msqrt><mn>2</mn></msqrt><mo>⋅</mo><msub><mi>U</mi><mrow><mi>и</mi><mi>с</mi><mi>п</mi></mrow></msub></mrow><mrow><mn>1</mn><mo>,</mo><mn>25</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">U_{в} = I_{в}R_{р} \leq \frac{\sqrt{2} \cdot U_{исп}}{1,25}</annotation></semantics></math>
+(17)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>τ</mi><mo>=</mo><mfrac><msub><mi>L</mi><mi>в</mi></msub><mrow><msub><mi>R</mi><mi>в</mi></msub><mo>+</mo><msub><mi>R</mi><mi>р</mi></msub></mrow></mfrac><mo>,</mo><mspace width="0.222em"></mspace><mn>3</mn><mi>τ</mi><mspace width="0.222em"></mspace><mo>≤</mo><mspace width="0.222em"></mspace><mn>0</mn><mo>,</mo><mn>75</mn><mspace width="0.222em"></mspace><mi>с</mi></mrow><annotation encoding="application/x-tex">\tau = \frac{L_{в}}{R_{в} + R_{р}},\ 3\tau\  \leq \ 0,75\ с</annotation></semantics></math>
+(18)</p>
+<p><strong>Расчёт.</strong> Найти: энергия в индуктивности якорной цепи
+при отключении стопорного тока, кДж.</p>
+<p><strong>Решение на стенде.</strong> Выбрать разрядный резистор: 3τ ≤
+0,75 с, I<sub>в</sub>R<sub>р</sub> не больше допустимого; из подходящих
+— с меньшим напряжением на обмотке.</p>
+<p>Ответ: расчёт ____________ кДж; решение ______________________</p>
+<h3>Защита ОПН якорной цепи</h3>
+<p>Варисторный ограничитель перенапряжений на зажимах якоря. Два этапа:
+выбор варисторов и координация с вольт-секундной характеристикой
+изоляции.</p>
+<h4>Г1 · Варисторы ОПН постоянного тока (неделя 8)</h4>
+<p><strong>Дано.</strong> ВАХ варистора U = U<sub>1мА</sub>·(I/1
+мА)<sup>α</sup>, коэффициент нелинейности α = 1/30 ≈ 0,033 (учебник
+Важова, разд. 4: для ОПН α = 0,02…0,1). Классы, В пост. тока
+(U<sub>1мА</sub>, В): 350 (430), 385 (470), 420 (510), 460 (560), 505
+(620), 560 (680). Энергия блока 1,5 кДж, использовать не более 80 %.
+Энергия якорной цепи 4,30 кДж (этап В2). Форсировка генератора до
+1,15U<sub>н</sub>.</p>
+<p><strong>Пояснение.</strong> Варистор почти не проводит при рабочем
+напряжении и резко открывается при перенапряжении. Его длительное
+напряжение должно быть не ниже наибольшего рабочего, иначе ток утечки
+греет блок до теплового пробоя. Остающееся напряжение растёт с током
+очень слабо — в степени 1/α. Блоки в параллель делят ток и энергию.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mrow><mi>о</mi><mi>с</mi><mi>т</mi></mrow></msub><mo>=</mo><msub><mi>U</mi><mrow><mn>1</mn><mi>м</mi><mi>А</mi></mrow></msub><mo>⋅</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mi>I</mi><mrow><mi>n</mi><mo>⋅</mo><mn>1</mn><mspace width="0.222em"></mspace><mi>м</mi><mi>А</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mi>α</mi></msup></mrow><annotation encoding="application/x-tex">U_{ост} = U_{1мА} \cdot \left( \frac{I}{n \cdot 1\ мА} \right)^{\alpha}</annotation></semantics></math>
+(19)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mi>c</mi></msub><mo>≥</mo><mn>1</mn><mo>,</mo><mn>15</mn><msub><mi>U</mi><mi>н</mi></msub></mrow><annotation encoding="application/x-tex">U_{c} \geq 1,15U_{н}</annotation></semantics></math>
+(20)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mspace width="0.222em"></mspace><mo>≥</mo><mfrac><mi>W</mi><mrow><mn>0</mn><mo>,</mo><mn>8</mn><mo>⋅</mo><msub><mi>W</mi><mrow><mi>б</mi><mi>л</mi></mrow></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">n\  \geq \frac{W}{0,8 \cdot W_{бл}}</annotation></semantics></math>
+(21)</p>
+<p><strong>Расчёт.</strong> Найти: остающееся напряжение одного блока
+класса 460 В при токе 1694 А, В.</p>
+<p><strong>Решение на стенде.</strong> Выбрать наименьший подходящий
+класс и наименьшее число блоков в параллель.</p>
+<p>Ответ: расчёт ____________ В; решение ______________________</p>
+<h4>Г2 · Координация с ВСХ изоляции (неделя 9)</h4>
+<p><strong>Дано.</strong> Прочность изоляции якоря в эксплуатации —
+амплитуда испытательного напряжения по ПУЭ: √2·1,4 кВ. ОПН: 4 блока
+класса 460 В (этап Г1). Требуемый коэффициент защиты k ≥ 1,25 во всём
+диапазоне 1 мкс…10 мс. Альтернативы: без защиты; искровой разрядник 1,5
+кВ; варисторы 350 В × 4.</p>
+<p><strong>Пояснение.</strong> Вольт-секундная характеристика (лекция 3)
+показывает, какое напряжение выдерживает промежуток при данной
+длительности воздействия. У изоляции она на коротких временах
+поднимается умеренно, у искрового разрядника — круто: при быстром фронте
+он срабатывает выше прочности изоляции. Варистор открывается за
+наносекунды, его остающееся напряжение от длительности почти не
+зависит.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>=</mo><mfrac><msub><mi>U</mi><mrow><mi>и</mi><mi>з</mi><mi>о</mi><mi>л</mi></mrow></msub><msub><mi>U</mi><mrow><mi>о</mi><mi>с</mi><mi>т</mi></mrow></msub></mfrac><mo>≥</mo><mn>1</mn><mo>,</mo><mn>25</mn></mrow><annotation encoding="application/x-tex">k = \frac{U_{изол}}{U_{ост}} \geq 1,25</annotation></semantics></math>
+(22)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mrow><mi>и</mi><mi>з</mi><mi>о</mi><mi>л</mi></mrow></msub><mo>=</mo><msqrt><mn>2</mn></msqrt><mo>⋅</mo><msub><mi>U</mi><mrow><mi>и</mi><mi>с</mi><mi>п</mi><mi>.</mi><mi>э</mi></mrow></msub></mrow><annotation encoding="application/x-tex">U_{изол} = \sqrt{2} \cdot U_{исп.э}</annotation></semantics></math>
+(23)</p>
+<p><strong>Расчёт.</strong> Найти: коэффициент защиты для 4 блоков
+класса 460 В.</p>
+<p><strong>Решение на стенде.</strong> Выбрать защиту, обеспечивающую k
+≥ 1,25 при всех длительностях и работающую без нагрева.</p>
+<p>Ответ: расчёт ____________; решение ______________________</p>
+<h3>Тепловой режим</h3>
+<p>Режим S8 с пусками, реверсами и электрическим торможением, цикл
+копания 26 с. Два этапа: эквивалентный ток и источник нагрева
+изоляции.</p>
+<h4>Д1 · Эквивалентный ток цикла (неделя 10)</h4>
+<p><strong>Дано.</strong> Цикл копания T<sub>ц</sub> = 26 с (учебник
+Фащиленко, табл. 4.1): стопорение 1 с при 2,2I<sub>н</sub>; копание 6 с
+при 1,5I<sub>н</sub>; подъём с поворотом 6 с при 0,8I<sub>н</sub>; спуск
+порожнего ковша 7 с при 0,4I<sub>н</sub>; пауза 6 с (разгрузка, ковш на
+тормозе). Вентиляция принудительная (β = 1). Номинальная ПВ<sub>н</sub>
+= 80 %.</p>
+<p><strong>Пояснение.</strong> Нагрев обмоток определяется потерями в
+меди, пропорциональными I², поэтому нагрузку заменяют эквивалентным
+током (учебник Ильинского, разд. 7.4). Его считают по времени работы и
+приводят к номинальной ПВ двигателя (учебник Бекишева, пример 29;
+учебник Фащиленко, ф. 4.76–4.77). Двигатель выбран правильно, если
+I<sub>э</sub> ≤ I<sub>н</sub> и ПВ<sub>р</sub> ≤ ПВ<sub>н</sub>.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mrow><mi>э</mi><mi>.</mi><mi>р</mi></mrow></msub><mo>=</mo><msqrt><mfrac><mrow><mi>Σ</mi><msup><msub><mi>I</mi><mi>i</mi></msub><mn>2</mn></msup><msub><mi>t</mi><mi>i</mi></msub></mrow><msub><mi>t</mi><mi>р</mi></msub></mfrac></msqrt></mrow><annotation encoding="application/x-tex">I_{э.р} = \sqrt{\frac{\Sigma{I_{i}}^{2}t_{i}}{t_{р}}}</annotation></semantics></math>
+(24)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mi>П</mi><mi>В</mi></mrow><mi>р</mi></msub><mo>=</mo><mfrac><msub><mi>t</mi><mi>р</mi></msub><msub><mi>T</mi><mi>ц</mi></msub></mfrac></mrow><annotation encoding="application/x-tex">{ПВ}_{р} = \frac{t_{р}}{T_{ц}}</annotation></semantics></math>
+(25)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mi>э</mi></msub><mo>=</mo><msub><mi>I</mi><mrow><mi>э</mi><mi>.</mi><mi>р</mi></mrow></msub><mo>⋅</mo><msqrt><mfrac><msub><mrow><mi>П</mi><mi>В</mi></mrow><mi>р</mi></msub><msub><mrow><mi>П</mi><mi>В</mi></mrow><mi>н</mi></msub></mfrac></msqrt><mo>≤</mo><msub><mi>I</mi><mi>н</mi></msub></mrow><annotation encoding="application/x-tex">I_{э} = I_{э.р} \cdot \sqrt{\frac{{ПВ}_{р}}{{ПВ}_{н}}} \leq I_{н}</annotation></semantics></math>
+(26)</p>
+<p><strong>Расчёт.</strong> Найти: эквивалентный ток, приведённый к ПВ
+80 %, А.</p>
+<p><strong>Решение на стенде.</strong> Ползунком выбрать наибольший ток
+копания, при котором I<sub>э</sub> ≤ I<sub>н</sub>.</p>
+<p>Ответ: расчёт ____________ А; решение ______________________</p>
+<h4>Д2 · Что греет изоляцию за цикл (неделя 11)</h4>
+<p><strong>Дано.</strong> Ток копания оставили 1,5I<sub>н</sub>
+(I<sub>э</sub> = 1,058I<sub>н</sub>, этап Д1). Перегрев при номинальном
+токе Δθ<sub>н</sub> = 120 К. Правило 10 градусов: +10 К сокращают срок
+службы изоляции вдвое. R<sub>я</sub> = 0,015 Ом; R<sub>из</sub> = 50
+МОм.</p>
+<p><strong>Пояснение.</strong> Изоляцию греет медь: потери I²R в обмотке
+якоря и дополнительных полюсов. Диэлектрические потери на постоянном
+напряжении сводятся к току утечки и ничтожны. Срок службы изоляции
+экспоненциально зависит от температуры. Оценка Δθ ∝ I<sub>э</sub>² — с
+запасом: постоянные потери от тока не зависят.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><mi>θ</mi><mo>=</mo><msub><mrow><mi>Δ</mi><mi>θ</mi></mrow><mi>н</mi></msub><mo>⋅</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><msub><mi>I</mi><mi>э</mi></msub><msub><mi>I</mi><mi>н</mi></msub></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">\Delta\theta = {\Delta\theta}_{н} \cdot \left( \frac{I_{э}}{I_{н}} \right)^{2}</annotation></semantics></math>
+(27)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mi>T</mi><msub><mi>T</mi><mi>н</mi></msub></mfrac><mo>=</mo><msup><mn>2</mn><mrow><mo>−</mo><mfrac><mrow><mi>Δ</mi><mi>θ</mi><mo>−</mo><msub><mrow><mi>Δ</mi><mi>θ</mi></mrow><mi>н</mi></msub></mrow><mn>10</mn></mfrac></mrow></msup></mrow><annotation encoding="application/x-tex">\frac{T}{T_{н}} = 2^{- \frac{\Delta\theta - {\Delta\theta}_{н}}{10}}</annotation></semantics></math>
+(28)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>W</mi><mi>м</mi></msub><mo>=</mo><msub><mi>R</mi><mi>я</mi></msub><mi>Σ</mi><msup><mi>I</mi><mn>2</mn></msup><mi>t</mi><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><msub><mi>W</mi><mi>д</mi></msub><mo>=</mo><mfrac><mrow><msup><mi>U</mi><mn>2</mn></msup><msub><mi>T</mi><mi>ц</mi></msub></mrow><msub><mi>R</mi><mrow><mi>и</mi><mi>з</mi></mrow></msub></mfrac></mrow><annotation encoding="application/x-tex">W_{м} = R_{я}\Sigma I^{2}t,\ \ W_{д} = \frac{U^{2}T_{ц}}{R_{из}}</annotation></semantics></math>
+(29)</p>
+<p><strong>Расчёт.</strong> Найти: оставшаяся доля ресурса изоляции при
+I<sub>коп</sub> = 1,5I<sub>н</sub>, %.</p>
+<p><strong>Решение на стенде.</strong> Выбрать главный источник нагрева
+изоляции.</p>
+<p>Ответ: расчёт ____________ %; решение ______________________</p>
+<h3>Диагностика и сервис</h3>
+<p>Обслуживание изоляции в карьере: конденсат, мегаомметр, испытания
+повышенным напряжением, сушка. Четыре этапа.</p>
+<h4>Е1 · Конденсат после ночной смены (неделя 12)</h4>
+<p><strong>Дано.</strong> Ночью экскаватор стоял, обмотки остыли до +2
+°C. Утром воздух t = 12 °C, φ = 85 %. Тепловое сопротивление двигателя
+без вентиляции 25 К/кВт. Подогрев должен держать обмотку на 5 К теплее
+воздуха. Ряд подогревателей: 0,1; 0,2; 0,3; 0,5; 1,0 кВт.</p>
+<p><strong>Пояснение.</strong> Если поверхность холоднее точки росы
+окружающего воздуха, на ней выпадает вода; в пыльной машине она образует
+проводящую плёнку, сопротивление изоляции падает в десятки раз.
+Стояночный подогрев держит обмотку теплее воздуха.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi><mo>=</mo><mi>l</mi><mi>n</mi><mfrac><mi>φ</mi><mn>100</mn></mfrac><mo>+</mo><mfrac><mrow><mn>17</mn><mo>,</mo><mn>62</mn><mi>t</mi></mrow><mrow><mn>243</mn><mo>,</mo><mn>12</mn><mo>+</mo><mi>t</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">\gamma = ln\frac{\varphi}{100} + \frac{17,62t}{243,12 + t}</annotation></semantics></math>
+(30)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>t</mi><mi>р</mi></msub><mo>=</mo><mfrac><mrow><mn>243</mn><mo>,</mo><mn>12</mn><mi>γ</mi></mrow><mrow><mn>17</mn><mo>,</mo><mn>62</mn><mo>−</mo><mi>γ</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">t_{р} = \frac{243,12\gamma}{17,62 - \gamma}</annotation></semantics></math>
+(31)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>=</mo><mfrac><mrow><mi>Δ</mi><mi>T</mi></mrow><msub><mi>R</mi><mrow><mi>t</mi><mi>h</mi></mrow></msub></mfrac></mrow><annotation encoding="application/x-tex">P = \frac{\Delta T}{R_{th}}</annotation></semantics></math>
+(32)</p>
+<p><strong>Расчёт.</strong> Найти: точка росы утреннего воздуха, °C.</p>
+<p><strong>Решение на стенде.</strong> Выбрать наименьший подогреватель
+из ряда.</p>
+<p>Ответ: расчёт ____________ °C; решение ______________________</p>
+<h4>Е2 · Коэффициент абсорбции (неделя 13)</h4>
+<p><strong>Дано.</strong> Измерения при 20 °C: двигатель подъёма —
+R<sub>15</sub> = 0,30 МОм, R<sub>60</sub> = 0,45 МОм; генератор — 3,1 и
+3,4 МОм; сетевой двигатель 6 кВ — 600 и 1100 МОм. Нормы: K<sub>абс</sub>
+≥ 1,3; R<sub>60</sub> ≥ 0,5 МОм для машин до 1 кВ (ПУЭ), ≥
+U<sub>кВ</sub> + 1 = 7 МОм для обмотки 6 кВ (IEEE 43).</p>
+<p><strong>Пояснение.</strong> Сухая изоляция медленно поляризуется: ток
+абсорбции спадает, и сопротивление за минуту заметно растёт. У влажной
+изоляции велик ток сквозной проводимости, и R<sub>60</sub> ≈
+R<sub>15</sub>. Поэтому смотрят и на коэффициент абсорбции, и на
+абсолютное сопротивление.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mrow><mi>а</mi><mi>б</mi><mi>с</mi></mrow></msub><mo>=</mo><mfrac><msub><mi>R</mi><mn>60</mn></msub><msub><mi>R</mi><mn>15</mn></msub></mfrac><mo>≥</mo><mn>1</mn><mo>,</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">K_{абс} = \frac{R_{60}}{R_{15}} \geq 1,3</annotation></semantics></math>
+(33)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mn>60</mn></msub><mo>≥</mo><msub><mi>R</mi><mo>min</mo></msub></mrow><annotation encoding="application/x-tex">R_{60} \geq R_{\min}</annotation></semantics></math>
+(34)</p>
+<p><strong>Расчёт.</strong> Найти: коэффициент абсорбции генератора.</p>
+<p><strong>Решение на стенде.</strong> Принять решение по каждой машине:
+в работу или сушить.</p>
+<p>Ответ: расчёт ____________; решение ______________________</p>
+<h4>Е3 · Испытание повышенным напряжением (неделя 14)</h4>
+<p><strong>Дано.</strong> Сетевой двигатель 6 кВ, 800 кВт. ПУЭ, табл.
+1.8.9: обмотка статора машин до 1 МВт — 1,6U<sub>ном</sub> + 0,8 кВ (50
+Гц, 1 мин). Якорь ДПТ (табл. 1.8.6) — 1,6U<sub>н</sub> + 0,8 кВ, не
+менее 1,2 кВ. Диагностика статора выпрямленным напряжением до 15,6 кВ
+ступенями: токи утечки при 7,8 и 15,6 кВ — фаза A 8 и 18 мкА; B 9 и 21
+мкА; C 10 и 70 мкА. Ориентиры задания: K<sub>н</sub> ≤ 3, асимметрия ≤
+2.</p>
+<p><strong>Пояснение.</strong> Заводское испытание 2U<sub>н</sub> + 1 кВ
+проводят на новой машине; в эксплуатации напряжение снижают, чтобы не
+повредить состарившуюся изоляцию. У машины постоянного тока нет фаз,
+поэтому токи утечки по фазам сравнивают на статоре трёхфазного сетевого
+двигателя. Нелинейный рост тока с напряжением и различие фаз указывают
+на местный дефект.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mrow><mi>и</mi><mi>с</mi><mi>п</mi></mrow></msub><mo>=</mo><mn>1</mn><mo>,</mo><mn>6</mn><msub><mi>U</mi><mrow><mi>н</mi><mi>о</mi><mi>м</mi></mrow></msub><mo>+</mo><mn>0</mn><mo>,</mo><mn>8</mn><mspace width="0.222em"></mspace><mi>к</mi><mi>В</mi></mrow><annotation encoding="application/x-tex">U_{исп} = 1,6U_{ном} + 0,8\ кВ</annotation></semantics></math>
+(35)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mi>н</mi></msub><mo>=</mo><mfrac><msub><mi>I</mi><mi>U</mi></msub><mrow><mn>2</mn><mo>⋅</mo><msub><mi>I</mi><mrow><mn>0</mn><mo>,</mo><mn>5</mn><mi>U</mi></mrow></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">K_{н} = \frac{I_{U}}{2 \cdot I_{0,5U}}</annotation></semantics></math>
+(36)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mrow><mi>а</mi><mi>с</mi></mrow></msub><mo>=</mo><mfrac><msub><mi>I</mi><mo>max</mo></msub><msub><mi>I</mi><mo>min</mo></msub></mfrac></mrow><annotation encoding="application/x-tex">K_{ас} = \frac{I_{\max}}{I_{\min}}</annotation></semantics></math>
+(37)</p>
+<p><strong>Расчёт.</strong> Найти: испытательное напряжение обмотки
+статора сетевого двигателя по ПУЭ, кВ.</p>
+<p><strong>Решение на стенде.</strong> Выбрать испытательное напряжение
+якоря ДПТ и заключение по статору.</p>
+<p>Ответ: расчёт ____________ кВ; решение ______________________</p>
+<h4>Е4 · Сушка обмоток током (неделя 15)</h4>
+<p><strong>Дано.</strong> Сушка якорей ДПТ и генератора током от
+генератора при пониженном возбуждении. R<sub>Σ</sub> = 0,03 Ом; тепловое
+сопротивление агрегата при выключенной вентиляции 12,5 К/кВт; воздух 20
+°C; температура сушки 100 ± 5 °C. Ток — от 0,4 до 0,8I<sub>н</sub>.</p>
+<p><strong>Пояснение.</strong> Нагрев током удобен на месте: не нужна
+внешняя печь. Температуру поднимают ступенями, не быстрее 5…8 К/ч, чтобы
+влага выходила из толщи изоляции, а не образовывала пузыри. Сушку
+заканчивают, когда R<sub>60</sub> стабильно 3…5 ч при постоянной
+температуре и K<sub>абс</sub> ≥ 1,3; затем обмотки пропитывают лаком
+класса H и запекают.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>=</mo><mfrac><mrow><msub><mi>θ</mi><mi>с</mi></msub><mo>−</mo><msub><mi>θ</mi><mn>0</mn></msub></mrow><msub><mi>R</mi><mrow><mi>t</mi><mi>h</mi></mrow></msub></mfrac></mrow><annotation encoding="application/x-tex">P = \frac{\theta_{с} - \theta_{0}}{R_{th}}</annotation></semantics></math>
+(38)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>=</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>k</mi><msub><mi>I</mi><mi>н</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><msub><mi>R</mi><mi>Σ</mi></msub></mrow><annotation encoding="application/x-tex">P = \left( kI_{н} \right)^{2}R_{\Sigma}</annotation></semantics></math>
+(39)</p>
+<p><strong>Расчёт.</strong> Найти: мощность нагрева для сушки при 100
+°C, кВт.</p>
+<p><strong>Решение на стенде.</strong> Ползунком выбрать ток сушки, при
+котором установившаяся температура 100 ± 5 °C.</p>
+<p>Ответ: расчёт ____________ кВт; решение ______________________</p>
+<h2>5. Справочные данные</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Величина</strong></th>
+<th><strong>Значение</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>√2; √3; e</td>
+<td>1,414; 1,732; 2,718</td>
+</tr>
+<tr class="even">
+<td>ln ln(1 + 1/γ) при γ = 0,01</td>
+<td>1,529</td>
+</tr>
+<tr class="odd">
+<td>pd для воздуха при 760 мм рт. ст.</td>
+<td>760·d, d в сантиметрах</td>
+</tr>
+<tr class="even">
+<td>Корень n-й степени</td>
+<td>x<sup>1/n</sup> = e<sup>(ln x)/n</sup></td>
+</tr>
+<tr class="odd">
+<td>1 мГн; 1 мкФ; 1 мкА</td>
+<td>10⁻³ Гн; 10⁻⁶ Ф; 10⁻⁶ А</td>
+</tr>
+<tr class="even">
+<td>Перевод температуры</td>
+<td>T, К = t, °C + 273</td>
+</tr>
+</tbody>
+</table>
+<h2>6. Контрольные вопросы</h2>
+<ol type="1">
+<li><p>(А1) Почему корпусную изоляцию нельзя делать «чем толще, тем
+лучше»?</p></li>
+<li><p>(А2) Почему межламельное напряжение при стопоре мало, хотя ток
+наибольший?</p></li>
+<li><p>(А3) Почему для низковольтной машины в карьере важнее
+трекингостойкость, чем электрическая прочность воздуха?</p></li>
+<li><p>(Б1) Почему барьер с большей ε, чем у масла, всё же повышает
+прочность маслобарьерной изоляции?</p></li>
+<li><p>(Б2) Почему ночные остановки опасны и для масла
+трансформатора?</p></li>
+<li><p>(В1) Почему для двигателя на 375 В расслоение изоляции не
+приводит к ЧР, но всё равно опасно?</p></li>
+<li><p>(В2) Почему нельзя просто разорвать цепь обмотки
+возбуждения?</p></li>
+<li><p>(Г1) Чем опасен варистор со слишком низким длительным
+напряжением?</p></li>
+<li><p>(Г2) Почему искровой разрядник плохо защищает от перенапряжений с
+крутым фронтом?</p></li>
+<li><p>(Д1) Почему эквивалентный ток считают по квадратам
+токов?</p></li>
+<li><p>(Д2) Как стопорные токи сокращают срок службы изоляции, если они
+её не нагружают по напряжению?</p></li>
+<li><p>(Е1) Почему конденсат выпадает утром, а не ночью?</p></li>
+<li><p>(Е2) Почему у увлажнённой изоляции коэффициент абсорбции близок к
+единице?</p></li>
+<li><p>(Е3) Почему при местном дефекте сушка всех фаз не
+помогает?</p></li>
+<li><p>(Е4) Почему сушку ведут медленным подъёмом температуры?</p></li>
+</ol>
+<h2>7. Отчёт и оценка</h2>
+<p>В отчёт входят: заполненный бланк, текст итога из игры и письменные
+ответы на три контрольных вопроса по выбору преподавателя.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Очки (максимум 3000)</strong></th>
+<th><strong>Оценка</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2700 и больше</td>
+<td>«отлично»</td>
+</tr>
+<tr class="even">
+<td>2250–2699</td>
+<td>«хорошо»</td>
+</tr>
+<tr class="odd">
+<td>1700–2249</td>
+<td>«удовлетворительно»</td>
+</tr>
+<tr class="even">
+<td>меньше 1700 или пробой</td>
+<td>повторное прохождение</td>
+</tr>
+</tbody>
+</table>
+<h2>Приложение. Бланк отчёта</h2>
+<p>ФИО ______________________________ Группа ________ Дата ________</p>
+<table>
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 32%" />
+<col style="width: 18%" />
+<col style="width: 28%" />
+<col style="width: 11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Этап</strong></th>
+<th><strong>Что найти</strong></th>
+<th><strong>Расчёт</strong></th>
+<th><strong>Решение</strong></th>
+<th><strong>Ошибок</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>А1</td>
+<td>Наименьшая толщина корпусной изоляции, мм</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>А2</td>
+<td>Emax при набросе тока 2,5Iн на номинальной скорости, U = Uн, В</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>А3</td>
+<td>Пробивное напряжение зазора 3 мм по формуле Пашена, кВ</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Б1</td>
+<td>Наибольшая напряжённость в масле у вывода при испытании с барьером
+(амплитуда), кВ/мм</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Б2</td>
+<td>Доля растворённой воды, выпадающей в эмульсию при остывании с 80 до
+20 °C, %</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>В1</td>
+<td>Напряжение на зазоре расслоения d = 0,15 мм в изоляции СД, В</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>В2</td>
+<td>Энергия в индуктивности якорной цепи при отключении стопорного тока,
+кДж</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Г1</td>
+<td>Остающееся напряжение одного блока класса 460 В при токе 1694 А,
+В</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Г2</td>
+<td>Коэффициент защиты для 4 блоков класса 460 В</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Д1</td>
+<td>Эквивалентный ток, приведённый к ПВ 80 %, А</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Д2</td>
+<td>Оставшаяся доля ресурса изоляции при Iкоп = 1,5Iн, %</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Е1</td>
+<td>Точка росы утреннего воздуха, °C</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Е2</td>
+<td>Коэффициент абсорбции генератора</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Е3</td>
+<td>Испытательное напряжение обмотки статора сетевого двигателя по ПУЭ,
+кВ</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Е4</td>
+<td>Мощность нагрева для сушки при 100 °C, кВт</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Итог игры: очки ______ запас прочности ______ время ______ оценка
+______</p>
+</main></body></html>

@@ -1,0 +1,787 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Изоляция ЭКГ-10</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=PT+Mono&family=PT+Sans+Narrow:wght@400;700&family=PT+Sans:wght@400;700&display=swap">
+<style>
+:root{
+  --bg:#E2E5DF; --panel:#F2F3EF; --well:#E9ECE6; --ink:#1B241F; --muted:#59655E; --line:#B7BEB6;
+  --off:#A9B1A8; --go:#1C9450; --goglow:rgba(28,148,80,.35); --hv:#E0A40F; --hvglow:rgba(224,164,15,.45);
+  --bad:#B8381F; --accent:#1C5A84; --accent-ink:#FFFFFF; --spark:#6A4CE0;
+  --m1:#C9CFCC; --m2:#8E9894; --m3:#5E6864; --cab:#D9DBD3; --paint:#A9B5A6; --cu:#C47A3C; --por:#8B4A2B; --res:#2E3A36; --semi:#262A28; --scr:#10251C; --glass:#9FC5D8;
+  --f-disp:"PT Sans Narrow","Arial Narrow",Arial,sans-serif;
+  --f-body:"PT Sans",Arial,sans-serif;
+  --f-mono:"PT Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121714; --panel:#1A211D; --well:#151B18; --ink:#E2E7E0; --muted:#94A198; --line:#323E37;
+  --off:#3F4A44; --go:#3CCB7B; --goglow:rgba(60,203,123,.32); --hv:#F2C230; --hvglow:rgba(242,194,48,.38);
+  --bad:#EB6A51; --accent:#63AEDF; --accent-ink:#0D1922; --spark:#A99BFF; --m1:#7A8480; --m2:#5C6661; --m3:#3A4340; --cab:#4C5550; --paint:#5E6B5C; --cu:#D08A4C; --por:#A35A38; --res:#1B2320; --semi:#0E100F; --scr:#08140F; --glass:#4C7A8F; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121714; --panel:#1A211D; --well:#151B18; --ink:#E2E7E0; --muted:#94A198; --line:#323E37;
+  --off:#3F4A44; --go:#3CCB7B; --goglow:rgba(60,203,123,.32); --hv:#F2C230; --hvglow:rgba(242,194,48,.38);
+  --bad:#EB6A51; --accent:#63AEDF; --accent-ink:#0D1922; --spark:#A99BFF; --m1:#7A8480; --m2:#5C6661; --m3:#3A4340; --cab:#4C5550; --paint:#5E6B5C; --cu:#D08A4C; --por:#A35A38; --res:#1B2320; --semi:#0E100F; --scr:#08140F; --glass:#4C7A8F; color-scheme:dark}
+html,body{background:var(--bg);color:var(--ink)}
+body{font-family:var(--f-body);font-size:16px;line-height:1.5;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:18px 40px}
+.wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+h1,h2,h3{font-family:var(--f-disp);margin:0;line-height:1.1;text-wrap:balance}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+sub,sup{font-size:.72em}
+
+header{display:grid;grid-template-columns:1fr auto;gap:12px 20px;align-items:end}
+.eyebrow{font-family:var(--f-disp);text-transform:uppercase;letter-spacing:.12em;font-size:13px;color:var(--muted)}
+h1{font-size:clamp(32px,4.6vw,50px);font-weight:700}
+.board{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.cell{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:5px 12px;display:flex;flex-direction:column;min-width:92px}
+.cell b{font-family:var(--f-mono);font-weight:400;font-size:21px;line-height:1.25}
+.cell span{font-family:var(--f-disp);font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.cell.hint b{color:var(--hv)} .cell.hint.used b{color:var(--muted)}
+.gapbox{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:8px 12px;display:flex;gap:10px;align-items:center}
+.gapbox svg{width:84px;height:118px;flex:none}
+.gapbox .gt{display:flex;flex-direction:column;gap:2px;min-width:0}
+.gapbox .gt b{font-family:var(--f-disp);font-size:18px}
+.gapbox .gt span{font-size:13px;color:var(--muted)}
+.gapbox .meter{display:flex;gap:3px;margin-top:4px}
+.gapbox .meter i{width:12px;height:6px;border-radius:2px;background:var(--line)}
+.gapbox .meter i.on{background:var(--spark)}
+.gapbox.hot{border-color:var(--spark);box-shadow:0 0 0 1px var(--spark)}
+.str{stroke:var(--spark);stroke-width:2.2;fill:none;stroke-linecap:round;filter:drop-shadow(0 0 3px var(--spark))}
+.gapbox.shake{animation:shake .4s}
+.qh{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;border:1.6px solid var(--accent);background:var(--panel);color:var(--accent);font:700 14px/1 var(--f-body);cursor:help;padding:0;margin:0 3px;vertical-align:middle}
+.qh:hover,.qh:focus-visible,.qh[aria-describedby]{background:var(--accent);color:var(--accent-ink)}
+#qtip{box-sizing:border-box;position:fixed;z-index:60;left:0;top:0;max-width:min(360px,calc(100vw - 16px));background:var(--panel);color:var(--ink);border:1px solid var(--accent);border-left:4px solid var(--accent);border-radius:4px;padding:9px 12px;font:15px/1.45 var(--f-body);box-shadow:0 6px 22px rgba(0,0,0,.25);opacity:0;visibility:hidden;transition:opacity .12s;pointer-events:none}
+#qtip.on{opacity:1;visibility:visible}
+#dcard{box-sizing:border-box;position:fixed;z-index:70;width:min(360px,calc(100vw - 16px));max-height:calc(100vh - 16px);overflow-y:auto;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-top:4px solid var(--accent);border-radius:6px;padding:10px 12px 12px;box-shadow:0 10px 30px rgba(0,0,0,.28);display:flex;flex-direction:column;gap:8px}
+#dcard[hidden]{display:none!important}
+#dcard .dh{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+#dcard .dh b{font-family:var(--f-disp);font-size:18px;line-height:1.2}
+#dcard .dx{border:0;background:none;font-size:22px;line-height:1;padding:0 4px;color:var(--muted)}
+#dcard p{margin:0;font-size:14.5px;line-height:1.45}
+#dcard .dw{background:var(--well);border-left:3px solid var(--hv);padding:6px 9px;border-radius:3px}
+#dcard .btn{align-self:flex-start}
+#dcard .dimg{background:var(--well);border:1px solid var(--line);border-radius:4px;padding:4px}
+#dcard .illus{display:block;width:100%;height:auto}
+#msvg .cnt{font-family:var(--f-mono);font-size:11px;fill:var(--muted)}
+#msvg .ap.done .cnt{fill:var(--go)}
+.lb{font-family:var(--f-body);font-size:12px;fill:var(--muted)}
+.lb.b{font-weight:700;font-size:14px;fill:var(--ink)}.lb.s{font-size:11px}.lb.h{font-family:var(--f-disp);font-size:15px;fill:var(--ink)}
+.lb.big{font-family:var(--f-disp);font-size:17px;font-weight:700;fill:var(--ink);paint-order:stroke;stroke:var(--panel);stroke-width:4px}
+[data-dev]{cursor:pointer;outline:none}
+[data-dev] .ring{pointer-events:all}
+[data-dev]:hover .ring,[data-dev]:focus-visible .ring{stroke:var(--accent);stroke-dasharray:3 3}
+.ap.plain .ring{stroke:transparent}
+.route{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:6px}
+.chip{display:grid;grid-template-columns:auto 1fr auto;gap:2px 8px;align-items:baseline;text-align:left;border:1px solid var(--line);border-left:4px solid var(--off);background:var(--well);border-radius:4px;padding:6px 10px;font:inherit;color:inherit;cursor:pointer}
+.chip .cs{font-family:var(--f-mono);color:var(--muted)}.chip .cn{font-family:var(--f-disp);font-size:16px}.chip .cc{font-family:var(--f-mono);font-size:13px;color:var(--muted)}
+.chip .ct{grid-column:1/-1;font-size:12.5px;color:var(--muted);line-height:1.35}
+.chip.active{border-left-color:var(--accent)}.chip.active .cs{color:var(--accent)}
+.chip.done{border-left-color:var(--go)}.chip.done .cs,.chip.done .cc{color:var(--go)}
+.chip:hover,.chip:focus-visible{border-color:var(--accent)}
+.gapbox svg{width:132px;height:96px}
+
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
+
+.mnemo{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:14px 14px 10px;display:flex;flex-direction:column;gap:8px}
+.mhead{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.mhead h2{font-size:20px}
+.status{font-family:var(--f-disp);font-size:15px;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:3px;border:1px solid var(--line);color:var(--muted)}
+.status.ok{background:var(--go);border-color:var(--go);color:var(--accent-ink)}
+.mscroll{overflow-x:auto}
+.mscroll svg{display:block;width:100%;min-width:720px;height:auto}
+.w{stroke:var(--off);stroke-width:3;fill:none}
+.w.live{stroke:var(--hv);filter:drop-shadow(0 0 3px var(--hvglow))}
+.w.live.flow{stroke-dasharray:10 6;animation:dash 1s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-16}}
+.wd{stroke:var(--off);stroke-width:1.5;stroke-dasharray:4 4;fill:none}
+.wd.live{stroke:var(--go)}
+.ap .sym{stroke:var(--off);stroke-width:2.4;fill:var(--panel)}
+.ap .lbl{font-family:var(--f-disp);font-size:15px;fill:var(--muted)}
+.ap .cnt{font-family:var(--f-mono);font-size:11px;fill:var(--muted)}
+.ap .ring{fill:none;stroke:transparent;stroke-width:2}
+.ap.active{cursor:pointer}
+.ap.active .sym{stroke:var(--accent)}
+.ap.active .ring{stroke:var(--accent);stroke-dasharray:5 4;animation:dash 1.2s linear infinite}
+.ap.active .lbl{fill:var(--ink)}
+.ap.done{cursor:pointer}
+.ap.done .sym{stroke:var(--go);filter:drop-shadow(0 0 5px var(--goglow))}
+.ap.done .lbl{fill:var(--ink)}
+.ap.done .cnt{fill:var(--go)}
+.ap.lit .sym{animation:strike 1.1s ease-out}
+@keyframes strike{0%{opacity:.2}12%{opacity:1}22%{opacity:.3}34%{opacity:1}44%{opacity:.55}60%,100%{opacity:1}}
+.rot{transform-box:fill-box;transform-origin:center}
+.mnemo.run .rot{animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.legend{display:flex;gap:6px 18px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.legend i{display:inline-block;width:18px;height:3px;vertical-align:4px;margin-right:6px;background:var(--off)}
+
+.stand{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.shead{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline}
+.shead h3{font-size:26px}
+.smeta{font-family:var(--f-mono);font-size:13px;color:var(--muted)}
+.steps{display:flex;gap:6px;align-items:center;font-family:var(--f-disp);font-size:15px;color:var(--muted);flex-wrap:wrap}
+.steps span{padding:2px 10px;border:1px solid var(--line);border-radius:3px}
+.steps span.on{border-color:var(--accent);color:var(--accent)}
+.steps span.ok{border-color:var(--go);color:var(--go)}
+.task{font-size:17px;max-width:76ch;margin:0}
+.answer{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.answer input{font-family:var(--f-mono);font-size:20px;width:11ch;max-width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:4px;background:var(--well);color:var(--ink)}
+.unit{font-family:var(--f-mono);color:var(--muted)}
+.btn{border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);border-radius:4px;padding:9px 16px;font-family:var(--f-disp);font-size:17px;letter-spacing:.03em}
+.btn.ghost{background:transparent;color:var(--accent)}
+.btn.hv{background:var(--hv);border-color:var(--hv);color:#1B1A10}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.fb{border:1px solid var(--line);border-radius:4px;padding:10px 14px;background:var(--well);max-width:80ch}
+.fb strong{font-family:var(--f-disp);font-size:17px;display:block}
+.fb.ok{border-color:var(--go)} .fb.ok strong{color:var(--go)}
+.fb.no{border-color:var(--bad)} .fb.no strong{color:var(--bad)}
+.fb.tip{border-color:var(--hv)} .fb.tip strong{color:var(--hv)}
+.tune{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:16px;align-items:start}
+.ctrl{display:flex;flex-direction:column;gap:12px;min-width:0}
+.ctrl label,.lab{font-family:var(--f-disp);font-size:14px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.seg{display:flex;flex-wrap:wrap;gap:4px}
+.seg button{border:1px solid var(--line);background:var(--well);border-radius:3px;padding:6px 11px;font-family:var(--f-mono);font-size:15px}
+.seg.col{flex-direction:column;align-items:stretch}
+.seg.col button{font-family:var(--f-body);text-align:left}
+.seg button.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.rng{display:flex;flex-direction:column;gap:4px}
+.rng input{width:100%;accent-color:var(--accent)}
+.rng output{font-family:var(--f-mono);font-size:20px}
+.viz{background:var(--well);border:1px solid var(--line);border-radius:4px;padding:10px;min-width:0;display:flex;flex-direction:column;gap:8px}
+.viz svg{width:100%;height:auto;display:block}
+.viz text{font-family:var(--f-mono);font-size:11px;fill:var(--muted)}
+.viz .ax{stroke:var(--line);stroke-width:1}
+.viz .gr{stroke:var(--line);stroke-width:.6;stroke-dasharray:2 3}
+.viz .cv{stroke:var(--accent);stroke-width:2.2;fill:none}
+.viz .cv2{stroke:var(--hv);stroke-width:2.2;fill:none}
+.viz .lim{stroke:var(--bad);stroke-width:1.4;stroke-dasharray:6 4}
+.viz .mk{fill:var(--accent);stroke:var(--panel);stroke-width:2}
+.viz .mk.sel{fill:var(--hv)}
+.viz .fillA{fill:var(--accent);opacity:.85}
+.viz .fillG{fill:var(--go)}
+.viz .fillB{fill:var(--bad)}
+.viz .fillH{fill:var(--hv)}
+.viz .fillO{fill:var(--off)}
+.viz .lineI{stroke:var(--ink);stroke-width:1.6;fill:none}
+.viz .lt{fill:var(--ink);font-size:12px}
+.reads{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:6px}
+.rd{border:1px solid var(--line);border-radius:3px;padding:4px 8px;background:var(--panel)}
+.rd span{display:block;font-size:12px;color:var(--muted)}
+.rd b{font-family:var(--f-mono);font-weight:400;font-size:17px}
+.rd.ok{border-color:var(--go)} .rd.ok b{color:var(--go)}
+.rd.no{border-color:var(--bad)} .rd.no b{color:var(--bad)}
+.prgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.pr{display:flex;flex-direction:column;gap:4px}
+.pr select,.pt select{font:inherit;font-size:14px;padding:4px;border:1px solid var(--line);border-radius:3px;background:var(--panel);color:var(--ink);max-width:100%}
+.pt{width:100%;border-collapse:collapse;font-size:14px}
+.pt td,.pt th{border-bottom:1px solid var(--line);padding:5px 6px;text-align:left;vertical-align:middle}
+.pt th{font-family:var(--f-disp);font-weight:400;color:var(--muted);text-transform:uppercase;font-size:12px;letter-spacing:.06em}
+.small{font-size:13px;color:var(--muted)}
+.tbl{overflow-x:auto}
+.res{border-collapse:collapse;font-size:14px;min-width:460px}
+.res td,.res th{border-bottom:1px solid var(--line);padding:5px 8px;text-align:left}
+.res th{font-family:var(--f-disp);font-weight:400;color:var(--muted);text-transform:uppercase;font-size:12px;letter-spacing:.06em}
+
+.over{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(10,8,25,.72);z-index:10;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.over .card{background:var(--panel);border:2px solid var(--spark);border-radius:8px;padding:22px;max-width:520px;display:flex;flex-direction:column;gap:12px}
+.over h2{font-size:32px;color:var(--spark)}
+.flash{position:fixed;inset:0;background:#fff;pointer-events:none;z-index:11;animation:flash .7s ease-out forwards}
+@keyframes flash{0%{opacity:.95}15%{opacity:.1}25%{opacity:.8}100%{opacity:0}}
+
+@media (max-width:820px){
+  header{grid-template-columns:1fr}
+  .tune{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  .w.live.flow,.ap.active .ring,.ap.lit .sym,.mnemo.run .rot,.gapbox.shake,.flash{animation:none}
+}
+</style>
+
+<div class="wrap">
+<header>
+  <div>
+    <span class="eyebrow">Техника высоких напряжений · профиль «Электропривод и автоматика» · сквозное задание, вариант 2, недели 1–15</span>
+    <h1>Изоляция привода подъёма ЭКГ-10</h1>
+    <div class="board">
+      <div class="cell"><b id="sc">0</b><span>очки из 3000</span></div>
+      <div class="cell"><b id="pg">0/15</b><span>этапов</span></div>
+      <div class="cell"><b id="tm">00:00</b><span>время</span></div>
+      <div class="cell hint" id="hcell"><b id="hc">1</b><span>подсказка</span></div>
+    </div>
+  </div>
+  <div class="gapbox" id="gapbox" aria-live="polite">
+    <svg viewBox="0 0 132 96" id="gapsvg" aria-label="Мегаомметр: сопротивление изоляции якоря"></svg>
+    <div class="gt"><b>Изоляция якоря</b><span id="gaptxt">R = 500 МОм</span><div class="meter" id="gapm"></div><span class="small">ошибка — изоляция увлажняется; 3 верных подряд — подсушка</span></div>
+  </div>
+</header>
+
+<section class="mnemo" id="mnemo" aria-label="Мнемосхема привода">
+  <div class="mhead"><h2>Мнемосхема ЭКГ-10 · главный привод подъёма по системе Г-Д</h2><span class="status" id="st">Экскаватор остановлен</span></div>
+  <div class="mscroll"><svg id="msvg" viewBox="0 0 900 410"></svg></div>
+  <p class="small" style="margin:0">Нажмите на аппарат на схеме или на карточку узла — откроется справка: что это и что здесь считаем.</p>
+  <div class="route" id="route"></div>
+  <div class="legend"><span><i></i>Не начат</span><span><i style="background:var(--accent)"></i>В работе</span><span><i style="background:var(--go)"></i>Пройден</span><span><i style="background:var(--hv)"></i>Под напряжением</span><span><i style="background:none;border-top:2px dashed var(--off);height:0"></i>Цепи измерения</span></div>
+</section>
+
+<section class="stand" id="stand" aria-live="polite"></section>
+
+<p class="small">Правила: каждый этап — сначала расчёт (допуск ±3 %), затем наладка на стенде. Каждая ошибка снижает сопротивление изоляции якоря на мегаомметре; шестая — пробой на корпус и игра заново. Верно с первой попытки — 100 очков, после ошибки — 50, подсказка (одна на игру) снимает 50. Прогресс сохраняется в этом браузере. <button class="btn ghost" id="rs0" style="font-size:14px;padding:3px 10px">Начать заново</button></p>
+</div>
+
+<script>
+(function(root){
+const M={};
+M.D={P:270,U:375,I:770,n:450,PV:0.8,p2:4,K:150,alpha:0.65,kq:0.35,Ra:0.015,Rs:0.03,
+  k0:2.5,Eins:20,kz:4,lam:0.25,q:3000,
+  Usd:6,Psd:800,Ttr:25,r0:10,R:60,rx:25,db:4,eb:4.4,eo:2.2,
+  dsd:2.2,epsm:4.5,dgap:0.15,
+  La:3e-3,Cs:0.5e-6,Lf:8,Rf:10,If:18,Uf:180,tauMax:0.25,
+  Wbl:1.5,der:0.8,alphaV:30,
+  Tc:26,tw:20,kc0:1.5,
+  dTn:120,Rins:50e6,
+  tA:12,RH:85,RthM:25,dTh:5,
+  RthA:12.5,tDry:100,tAmb:20};
+const D=M.D;
+M.pas=(pd)=>365*pd/(Math.log(15*pd)-Math.log(Math.log(1+1/0.01)));
+M.UtestF=U=>2*U+1000;
+M.UtestPUE=U=>Math.max(1.6*U+800,1200);
+M.dmin=()=>D.kz*Math.SQRT2*M.UtestF(D.U)/(D.Eins*1000);
+M.THK=[0.3,0.4,0.5,0.6,0.8,1.0];
+M.Eins=d=>Math.SQRT2*M.UtestF(D.U)/1000/d;
+M.dTins=d=>D.q*d*1e-3/D.lam;
+M.eavg=u=>D.p2*u/D.K;
+M.emax=(u,i)=>M.eavg(u)/D.alpha*(1+D.kq*i);
+M.kmax=()=>((30*D.alpha/M.eavg(1.1*D.U))-1)/D.kq;
+M.KS=[2.0,2.2,2.5,3.0];
+M.kst=2.2;
+M.clear=d=>M.pas(760*d/10);
+M.MAT=[{k:"get",n:"Гетинакс",cti:150,g:"IIIb"},{k:"stef",n:"Стеклотекстолит СТЭФ",cti:200,g:"IIIa"},{k:"cov",n:"Стеклотекстолит с трекингостойким покрытием",cti:400,g:"II"},{k:"dsv",n:"Пресс-материал ДСВ",cti:600,g:"I"}];
+M.CRP={I:5.0,II:5.6,IIIa:6.3,IIIb:6.3};
+M.Lsup=5.5;
+M.coaxE=(U,r,rx)=>{rx=rx??D.rx;const S=Math.log(rx/D.r0)/D.eo+Math.log((rx+D.db)/rx)/D.eb+Math.log(D.R/(rx+D.db))/D.eo;
+  const inB=r>=rx&&r<=rx+D.db;return U/(r*(inB?D.eb:D.eo)*S)};
+M.coaxE0=(U,r)=>U/(r*Math.log(D.R/D.r0));
+M.UtrA=()=>D.Ttr*Math.SQRT2;
+M.bar=x=>1+Math.exp(-Math.pow((x-0.25)/0.17,2));
+M.water=()=>(400-40)/400;
+M.OIL=[17,19,22,16,20,18];
+M.Uph=()=>D.Usd*1000/Math.sqrt(3)*Math.SQRT2;
+M.Ugap=(U,d,del,er)=>U*d/(d+(del-d)/er);
+M.dcrit=()=>{let best=0;for(let k=2;k<=50;k++){const d=k/100;if(M.Ugap(M.Uph(),d,D.dsd,D.epsm)<M.clear(d))best=d}return best};
+M.Ist=()=>M.kst*D.I;
+M.Wa=()=>0.5*D.La*M.Ist()**2;
+M.Uchop=()=>M.Ist()*Math.sqrt(D.La/D.Cs);
+M.RP=[20,30,50,80,100];
+M.UfTest=()=>M.UtestPUE(D.Uf)*Math.SQRT2;
+M.Uf=R=>D.If*R;M.tauF=R=>D.Lf/(D.Rf+R);
+M.VAR=[[350,430],[385,470],[420,510],[460,560],[505,620],[560,680]];
+M.Uc=()=>1.15*D.U;
+M.Uost=(v1,I,n)=>v1*Math.pow(I/n/1e-3,1/D.alphaV);
+M.nBl=()=>Math.ceil(M.Wa()/1000/(D.Wbl*D.der)-1e-9);
+M.Uins=()=>M.UtestPUE(D.U)*Math.SQRT2;
+M.vsIns=t=>M.Uins()*(1+0.5*Math.pow(1e-6/t,0.5));
+M.vsGap=t=>1500*(1+2*Math.pow(1e-6/t,0.5));
+M.SEG=kc=>[["стопорение",1,M.kst],["копание",6,kc],["подъём с поворотом",6,0.8],["спуск порожнего ковша",7,0.4],["пауза: разгрузка, ковш на тормозе",6,0]];
+M.sumI2=(kc,ks)=>{ks=ks??M.kst;kc=kc??D.kc0;return ks*ks*1+kc*kc*6+0.8*0.8*6+0.4*0.4*7};
+M.PVr=()=>D.tw/D.Tc;
+M.IeqW=kc=>Math.sqrt(M.sumI2(kc)/D.tw);
+M.Ieq=(kc,ks)=>Math.sqrt(M.sumI2(kc,ks)/(D.Tc*D.PV));
+M.kcMax=()=>Math.sqrt((D.Tc*D.PV-M.kst**2-0.64*6-0.16*7)/6);
+M.dT=(kc)=>D.dTn*M.Ieq(kc)**2;
+M.life=(kc)=>Math.pow(2,-(M.dT(kc)-D.dTn)/10);
+M.Wcu=(kc)=>D.Ra*M.sumI2(kc)*D.I**2;
+M.Wdiel=()=>D.U**2/D.Rins*D.Tc;
+M.dew=(t,rh)=>{const g=Math.log(rh/100)+17.62*t/(243.12+t);return 243.12*g/(17.62-g)};
+M.HEAT=[0.1,0.2,0.3,0.5,1.0];
+M.Pheat=()=>D.dTh/D.RthM;
+M.MEAS=[{k:"dpt",n:"Двигатель подъёма М1",R15:0.30,R60:0.45,Rmin:0.5},{k:"gen",n:"Генератор подъёма",R15:3.1,R60:3.4,Rmin:0.5},{k:"sd",n:"Сетевой двигатель 6 кВ",R15:600,R60:1100,Rmin:7}];
+M.kabs=m=>m.R60/m.R15;
+M.UsdTest=()=>1.6*D.Usd+0.8;
+M.Urect=()=>2.4*D.Usd+1.2;
+M.LEAK={A:[8,18],B:[9,21],C:[10,70]};
+M.kn=ph=>M.LEAK[ph][1]/(2*M.LEAK[ph][0]);
+M.asym=()=>{const v=Object.values(M.LEAK).map(x=>x[1]);return Math.max(...v)/Math.min(...v)};
+M.Pdry=()=>(D.tDry-D.tAmb)/D.RthA;
+M.Pi=k=>(k*D.I)**2*D.Rs/1000;
+M.Tdry=k=>D.tAmb+M.Pi(k)*D.RthA;
+if(typeof module!=="undefined")module.exports=M;else root.M=M;
+})(this);
+
+const KEY="izol-ekg10-v1", MAXS=6;
+const fx=(v,d)=>{const s=(+v).toFixed(d);return s.replace(".",",").replace("-","−")};
+const D=M.D;
+const APPS=[
+ {k:"dpt",n:"Двигатели подъёма"},{k:"tsn",n:"Трансформатор СН 6/0,4 кВ"},{k:"agr",n:"Агрегат Г-Д"},
+ {k:"opn",n:"Защита ОПН якорной цепи"},{k:"heat",n:"Тепловой режим"},{k:"diag",n:"Диагностика и сервис"}];
+
+function axes(o){
+  const W=o.w||420,H=o.h||220,L=50,R=12,T=24,B=34;
+  const lx=o.logx?v=>Math.log10(v):v=>v,ly=o.logy?v=>Math.log10(v):v=>v;
+  const X=v=>L+(W-L-R)*(lx(v)-lx(o.x0))/(lx(o.x1)-lx(o.x0));
+  const Y=v=>T+(H-T-B)*(1-(ly(v)-ly(o.y0))/(ly(o.y1)-ly(o.y0)));
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${o.aria||"график"}">`;
+  (o.xt||[]).forEach(t=>{s+=`<line class="gr" x1="${X(t)}" y1="${T}" x2="${X(t)}" y2="${H-B}"/><text x="${X(t)}" y="${H-B+14}" text-anchor="middle">${o.xf?o.xf(t):String(t).replace(".",",")}</text>`});
+  (o.yt||[]).forEach(t=>{s+=`<line class="gr" x1="${L}" y1="${Y(t)}" x2="${W-R}" y2="${Y(t)}"/><text x="${L-5}" y="${Y(t)+4}" text-anchor="end">${o.yf?o.yf(t):String(t).replace(".",",")}</text>`});
+  s+=`<line class="ax" x1="${L}" y1="${H-B}" x2="${W-R}" y2="${H-B}"/><line class="ax" x1="${L}" y1="${T}" x2="${L}" y2="${H-B}"/>`;
+  s+=`<text x="${(L+W-R)/2}" y="${H-4}" text-anchor="middle">${o.xl||""}</text><text x="${L-44}" y="13">${o.yl||""}</text>`;
+  return {s,X,Y,W,H,L,R,T,B,end:"</svg>"};
+}
+const poly=(pts,cls,extra)=>`<polyline class="${cls}" ${extra||""} points="${pts.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join(" ")}"/>`;
+const rd=(lab,val,ok)=>`<div class="rd${ok===true?" ok":ok===false?" no":""}"><span>${lab}</span><b>${val}</b></div>`;
+const seg=(k,opts,cur,fmt)=>`<div class="seg">${opts.map(v=>`<button data-k="${k}" data-v="${v}" class="${v===cur?"on":""}">${fmt?fmt(v):v}</button>`).join("")}</div>`;
+const segL=(k,opts,cur)=>`<div class="seg col">${opts.map(o=>`<button data-k="${k}" data-v="${o[0]}" class="${o[0]===cur?"on":""}">${o[1]}</button>`).join("")}</div>`;
+const rng=(k,min,max,step,v,fmt)=>`<div class="rng"><input type="range" id="r_${k}" data-r="${k}" min="${min}" max="${max}" step="${step}" value="${v}"><output id="o_${k}">${fmt(v)}</output></div>`;
+const near=(a,b)=>Math.abs(a-b)<1e-6;
+const TIPS=[];const qh_=t=>{TIPS.push(t);return `<button type="button" class="qh" data-t="${TIPS.length-1}" aria-label="Справка">?</button>`};
+const hl=(a,x,y,t,anc)=>`<text class="lt" x="${x}" y="${y}" text-anchor="${anc||"start"}">${t}</text>`;
+
+const ST=[
+{id:"А1",app:"dpt",wk:1,t:"Корпусная изоляция якоря",
+ calc:{q:`Двигатель подъёма (один из двух, 270 кВт): U<sub>н</sub> = ${D.U} В, I<sub>н</sub> = ${D.I} А. Заводское испытание корпусной изоляции якоря — U<sub>исп</sub> = 2U<sub>н</sub> + 1000 В (действующее, 50 Гц, 1 мин). Кратковременная прочность микаленты${qh_("Микалента — лента из слюды на стеклоткани или бумаге, пропитанная лаком. Основной материал корпусной изоляции якорей тяговых и экскаваторных машин: держит класс нагревостойкости H (до 180 °C).")} E<sub>пр</sub> = ${D.Eins} кВ/мм (амплитуда), коэффициент запаса на старение, вибрацию и загрязнение k<sub>з</sub> = ${D.kz}${qh_("Новая изоляция пробивается при E<sub>пр</sub>. За годы её ослабляют нагрев, вибрация, влага и пыль, поэтому расчётную толщину берут с запасом в несколько раз.")}. Найдите <b>наименьшую толщину корпусной изоляции</b> δ = k<sub>з</sub>·√2·U<sub>исп</sub>/E<sub>пр</sub>.`,a:M.dmin(),u:"мм",h:"U<sub>исп</sub> = 2·375 + 1000 = 1750 В; амплитуда √2·1750 = 2475 В = 2,475 кВ. Умножьте на k<sub>з</sub> и разделите на 20 кВ/мм."},
+ tune:{task:"Выберите толщину корпусной изоляции из ряда: напряжённость при заводском испытании не больше E<sub>пр</sub>/k<sub>з</sub> = 5 кВ/мм, а изоляция — как можно тоньше: через неё уходит тепло из паза, и она отнимает место у меди.",
+  init:()=>({d:0.8}),
+  ctrl:s=>`<label>Толщина изоляции δ, мм</label>${seg("d",M.THK,s.d,v=>fx(v,1))}`,
+  viz:s=>{const a=axes({x0:0.25,x1:1.05,y0:0,y1:11,xt:[0.3,0.4,0.5,0.6,0.8,1.0],yt:[0,2,4,6,8,10],xl:"толщина δ, мм",yl:"E, кВ/мм",aria:"Напряжённость при испытании в зависимости от толщины изоляции"});
+   let p=[];for(let d=0.25;d<=1.05;d+=0.01)p.push([a.X(d),a.Y(M.Eins(d))]);let o=a.s+poly(p,"cv");
+   o+=`<line class="lim" x1="${a.L}" y1="${a.Y(5)}" x2="${a.W-a.R}" y2="${a.Y(5)}"/>`+hl(a,a.W-a.R-4,a.Y(5)-6,"E<tspan font-size='9'>пр</tspan>/k<tspan font-size='9'>з</tspan> = 5 кВ/мм","end");
+   M.THK.forEach(d=>{o+=`<circle class="mk${d===s.d?" sel":""}" cx="${a.X(d)}" cy="${a.Y(M.Eins(d))}" r="${d===s.d?7:4.5}"/>`});o+=a.end;
+   const E=M.Eins(s.d);
+   return o+`<div class="reads">${rd("E при испытании 1750 В",fx(E,2)+" кВ/мм",E<=5+1e-9)}${rd("Перепад температуры в изоляции",fx(M.dTins(s.d),1)+" К")}${rd("Испытание в эксплуатации (ПУЭ)",fx(M.UtestPUE(D.U)/1000,1)+" кВ")}</div>`},
+  ok:s=>s.d===0.5,h:"Расчёт дал 0,495 мм. Нужна наименьшая толщина из ряда, которая не меньше расчётной.",
+  ex:"δ = 0,5 мм: E = 4,95 кВ/мм при испытании. 0,4 мм не выдерживает (6,19 кВ/мм), 0,6 мм и толще — лишний перепад температуры и меньше меди в пазу."}},
+{id:"А2",app:"dpt",wk:2,t:"Межламельное напряжение",
+ calc:{q:`Якорь: 2p = ${D.p2}, число коллекторных пластин K = ${D.K}, расчётный коэффициент полюсного перекрытия${qh_("α — доля полюсного деления, занятая полюсом. Под полюсом поле сосредоточено на α части окружности, поэтому напряжение на секциях под полюсом в 1/α раз больше среднего.")} α = ${fx(D.alpha,2)}; искажение поля реакцией якоря (машина без компенсационной обмотки${qh_("Компенсационная обмотка в пазах полюсных наконечников гасит реакцию якоря. Экскаваторные двигатели серий ДПЭ и ДЭ-800 её не имеют (учебник Фащиленко, разд. 4.2), поэтому при больших токах поле под краем полюса сгущается.")}) учитывает множитель (1 + ${fx(D.kq,2)}·I/I<sub>н</sub>). Среднее межламельное напряжение e<sub>ср</sub> = 2p·U/K, наибольшее e<sub>max</sub> = e<sub>ср</sub>/α·(1 + ${fx(D.kq,2)}·I/I<sub>н</sub>). Найдите <b>e<sub>max</sub> при набросе стопорного тока 2,5I<sub>н</sub> на номинальной скорости</b> (U = U<sub>н</sub>).`,a:M.emax(D.U,2.5),u:"В",h:"e<sub>ср</sub> = 4·375/150 = 10 В. Дальше: 10/0,65·(1 + 0,35·2,5)."},
+ tune:{task:`Опасен не стопор (при n = 0 ЭДС вращения нет), а наброс тока на скорости. Выберите <b>наибольшую</b> кратность токоограничения k<sub>стоп</sub> из ряда, при которой e<sub>max</sub> на номинальной скорости и при форсировке${qh_("Форсировка — кратковременное повышение напряжения возбуждения генератора для быстрого разгона; напряжение якорной цепи при этом может превысить номинальное на 10…15 %.")} генератора до 1,1U<sub>н</sub> не превышает 30 В${qh_("При e<sub>max</sub> > 30…35 В в некомпенсированной машине дуга от щётки может перекинуться по загрязнённому коллектору на соседние пластины и замкнуть полюса — круговой огонь.")} — предела для машин без компенсационной обмотки.`,
+  init:()=>({k:2.5}),
+  ctrl:s=>`<label>Кратность стопорного тока k<sub>стоп</sub></label>${seg("k",M.KS,s.k,v=>fx(v,1))}`,
+  viz:s=>{const a=axes({x0:0,x1:3.2,y0:0,y1:40,xt:[0,1,2,2.5,3],yt:[0,10,20,30,40],xl:"ток якоря I/Iн",yl:"e, В",aria:"Наибольшее межламельное напряжение от тока"});
+   const c=(u)=>{let p=[];for(let i=0;i<=3.2;i+=0.05)p.push([a.X(i),a.Y(M.emax(u,i))]);return p};
+   let o=a.s+poly(c(1.1*D.U),"cv2")+poly(c(D.U),"cv");
+   let p0=[];for(let i=0;i<=3.2;i+=0.1)p0.push([a.X(i),a.Y(i*D.I*D.Ra*D.p2/D.K)]);o+=poly(p0,"cv","stroke-dasharray='4 3'");
+   o+=`<line class="lim" x1="${a.L}" y1="${a.Y(30)}" x2="${a.W-a.R}" y2="${a.Y(30)}"/>`+hl(a,a.L+6,a.Y(30)-6,"предел 30 В");
+   o+=hl(a,a.X(0.1),a.Y(25),"1,1Uн")+hl(a,a.X(0.1),a.Y(18.5),"Uн")+hl(a,a.X(2.2),a.Y(4.5),"стопор, n = 0");
+   const e=M.emax(1.1*D.U,s.k);o+=`<circle class="mk sel" cx="${a.X(s.k)}" cy="${a.Y(e)}" r="7"/>`+a.end;
+   return o+`<div class="reads">${rd("e<sub>max</sub> при 1,1U<sub>н</sub>, k<sub>стоп</sub>I<sub>н</sub>",fx(e,1)+" В",e<=30)}${rd("e<sub>ср</sub> на пластину при n = 0",fx(s.k*D.I*D.Ra*D.p2/D.K,2)+" В")}${rd("Стопорный ток",fx(s.k*D.I,0)+" А")}</div>`},
+  ok:s=>s.k===2.2,h:"e<sub>ср</sub> при 1,1U<sub>н</sub> = 11 В. Решите 11/0,65·(1 + 0,35k) ≤ 30 относительно k.",
+  ex:"k<sub>стоп</sub> = 2,2: e<sub>max</sub> = 29,9 В. При 2,5 — 31,7 В, риск кругового огня. Дальше по заданию стопорный ток 2,2·770 = 1694 А."}},
+{id:"А3",app:"dpt",wk:3,t:"Щёткодержатели: зазор и путь утечки",
+ calc:{q:"Между пальцем щёткодержателя (375 В) и траверсой воздушный зазор 3 мм, поле близко к однородному. Оцените его пробивное напряжение по формуле Пашена для воздуха (A = 15, B = 365, γ = 0,01; p = 760 мм рт. ст.): U<sub>пр</sub> = B·pd/(ln(A·pd) − ln ln(1 + 1/γ)).",a:M.clear(3)/1000,u:"кВ",h:"pd = 760·0,3 = 228 мм рт. ст.·см; ln(15·228) = 8,137; ln ln 101 = 1,529."},
+ tune:{task:`Воздушный зазор держит в десятки раз больше 375 В — значит, «противокоронный» расчёт здесь ни при чём: опасен трекинг${qh_("Трекинг — образование проводящей обугленной дорожки на поверхности изолятора под действием тока утечки по загрязнённому влажному слою.")} по пыли на поверхности. Изоляторы пальцев имеют путь утечки ${fx(M.Lsup,1)} мм, рёбра не помещаются. Степень загрязнения 3${qh_("По ГОСТ Р МЭК 60664.1: 1 — загрязнения нет; 2 — непроводящее, иногда конденсат; 3 — проводящее или непроводящее, становящееся проводящим от конденсата; 4 — постоянная проводимость (дождь, снег).")} (угольная и рудная пыль, конденсат), строка 400 В таблицы ГОСТ Р МЭК 60664.1: группа I — 5,0 мм; II — 5,6 мм; IIIa и IIIb — 6,3 мм. Выберите материал изолятора по его CTI${qh_("CTI — сравнительный индекс трекингостойкости: наибольшее напряжение, при котором 50 капель электролита на поверхности материала не создают проводящую дорожку (ГОСТ 27473).")}.`,
+  init:()=>({m:"get"}),
+  ctrl:s=>`<label>Материал изолятора</label>${segL("m",M.MAT.map(x=>[x.k,x.n]),s.m)}`,
+  viz:s=>{const m=M.MAT.find(x=>x.k===s.m),need=M.CRP[m.g],ok=M.Lsup>=need;
+   let o=`<svg viewBox="0 0 420 170" role="img" aria-label="Изолятор пальца щёткодержателя"><rect x="40" y="128" width="340" height="14" fill="var(--off)"/><text x="44" y="160">траверса (корпус)</text>`;
+   o+=`<rect x="180" y="58" width="60" height="70" rx="4" fill="${ok?"var(--go)":"var(--bad)"}" opacity=".25" stroke="var(--line)"/><rect x="196" y="22" width="28" height="36" fill="var(--hv)" opacity=".85"/><text x="230" y="34">палец, 375 В</text>`;
+   o+=`<path d="M196 58 C150 70 150 118 180 128" stroke="${ok?"var(--go)":"var(--bad)"}" stroke-width="2.4" fill="none" stroke-dasharray="5 4"/><text x="146" y="80" text-anchor="end">путь утечки</text><text x="146" y="94" text-anchor="end">${fx(M.Lsup,1)} мм</text>`;
+   for(let k=0;k<26;k++){o+=`<circle cx="${184+((k*37)%52)}" cy="${64+((k*23)%60)}" r="1.4" fill="var(--muted)"/>`}
+   o+=`</svg>`;
+   return o+`<div class="reads">${rd("CTI материала",m.cti+" В")}${rd("Группа материала",m.g)}${rd("Требуемый путь утечки",fx(need,1)+" мм",ok)}${rd("Есть на изоляторе",fx(M.Lsup,1)+" мм",ok)}</div>`},
+  ok:s=>s.m==="dsv",h:"Сравните требуемый путь утечки для каждой группы с 5,5 мм. Группа определяется по CTI: I — CTI ≥ 600; II — 400…600; IIIa — 175…400; IIIb — 100…175.",
+  ex:"ДСВ (CTI 600, группа I): нужно 5,0 мм ≤ 5,5 мм. Покрытый стеклотекстолит (группа II) требует 5,6 мм — не проходит на 0,1 мм; гетинакс и СТЭФ — 6,3 мм."}},
+{id:"Б1",app:"tsn",wk:4,t:"Маслобарьерная изоляция вывода",
+ calc:{q:`Вывод 6 кВ трансформатора СН в баке — коаксиальная система: r<sub>0</sub> = ${D.r0} мм, R = ${D.R} мм, цилиндр-барьер из электрокартона${qh_("Электрокартон — плотный картон из сульфатной целлюлозы, пропитанный маслом. Из него делают барьеры, цилиндры и шайбы маслобарьерной изоляции трансформаторов.")} r<sub>x</sub> = ${D.rx} мм толщиной δ = ${D.db} мм; ε<sub>масла</sub> = ${fx(D.eo,1)}, ε<sub>картона</sub> = ${fx(D.eb,1)}. Заводское испытание 25 кВ (действующее, 50 Гц). Найдите <b>наибольшую напряжённость в масле у вывода</b> (амплитуда) при испытании: E = U<sub>m</sub>/(r<sub>0</sub>·ε<sub>м</sub>·Σ ln(r<sub>i+1</sub>/r<sub>i</sub>)/ε<sub>i</sub>).`,a:M.coaxE(M.UtrA(),D.r0),u:"кВ/мм",h:"U<sub>m</sub> = 35,36 кВ. Σ = ln(25/10)/2,2 + ln(29/25)/4,4 + ln(60/29)/2,2 = 0,7807. E = 35,36/(10·2,2·0,7807)."},
+ tune:{task:`Сравните кривые: картон с большей ε почти не меняет поле у вывода — даже чуть повышает его. Выигрыш барьера — барьерный эффект${qh_("Барьер непроницаем для ионов: они оседают на нём и растекаются, поле между барьером и плоским электродом выравнивается; кроме того, барьер не даёт волокнам и каплям выстроиться в сплошной мостик (учебник Важова, разд. 1.2.1.1).")}: на картоне оседают заряды и волокна, мостики не замыкают промежуток. По рис. 1.31 учебника Важова барьер эффективнее всего на расстоянии (0,2…0,3)S от электрода с сильным полем, S = R − r<sub>0</sub>. Установите барьер в эту зону.`,
+  init:()=>({rx:40}),
+  ctrl:s=>`<label for="r_rx">Радиус барьера r<sub>x</sub>, мм</label>${rng("rx",12,52,0.5,s.rx,v=>"r<sub>x</sub> = "+fx(v,1)+" мм")}`,
+  viz:s=>{const U=M.UtrA(),a=axes({x0:10,x1:60,y0:0,y1:2.4,xt:[10,20,30,40,50,60],yt:[0,0.5,1,1.5,2],xl:"радиус r, мм",yl:"E, кВ/мм",aria:"Распределение поля в масле и барьере"});
+   let p=[],q=[];for(let r=10;r<=60;r+=0.25){q.push([a.X(r),a.Y(M.coaxE0(U,r))])}
+   const pts=[];for(let r=10;r<=60.001;r+=0.25){const e=M.coaxE(U,r,s.rx);pts.push([a.X(r),a.Y(e)])}
+   let o=a.s+`<rect x="${a.X(s.rx)}" y="${a.T}" width="${a.X(s.rx+D.db)-a.X(s.rx)}" height="${a.H-a.B-a.T}" fill="var(--hv)" opacity=".18"/>`;
+   o+=`<rect x="${a.X(20)}" y="${a.H-a.B-6}" width="${a.X(25)-a.X(20)}" height="6" fill="var(--go)" opacity=".6"/>`+hl(a,a.X(22.5),a.H-a.B-10,"0,2…0,3S","middle");
+   o+=poly(q,"cv","stroke-dasharray='5 4'")+poly(pts,"cv2")+`<line class="cv2" x1="${a.X(34)}" y1="${a.Y(1.6)-4}" x2="${a.X(38)}" y2="${a.Y(1.6)-4}"/><line class="cv" stroke-dasharray="5 4" x1="${a.X(34)}" y1="${a.Y(1.85)-4}" x2="${a.X(38)}" y2="${a.Y(1.85)-4}"/>`+hl(a,a.X(39),a.Y(1.6),"с барьером")+hl(a,a.X(39),a.Y(1.85),"без барьера")+a.end;
+   const x=(s.rx-D.r0)/(D.R-D.r0),ok=x>=0.2-1e-9&&x<=0.3+1e-9;
+   return o+`<div class="reads">${rd("E у вывода с барьером",fx(M.coaxE(U,D.r0,s.rx),3)+" кВ/мм")}${rd("E у вывода без барьера",fx(M.coaxE0(U,D.r0),3)+" кВ/мм")}${rd("Положение S<sub>б</sub>/S",fx(x,2),ok)}${rd("U<sub>б</sub>/U<sub>пр</sub> (рис. 1.31)","≈ "+fx(M.bar(x),2),ok)}</div>`},
+  ok:s=>{const x=(s.rx-D.r0)/(D.R-D.r0);return x>=0.2-1e-9&&x<=0.3+1e-9},h:"S = 50 мм; 0,2S…0,3S от вывода — это r<sub>x</sub> = 10 + 10…15 мм.",
+  ex:"Барьер на r<sub>x</sub> = 20…25 мм попадает в оптимум; исходные 25 мм — на границе зоны. Поле у вывода при этом 2,06 кВ/мм против 1,97 кВ/мм без барьера: барьер работает не электростатикой."}},
+{id:"Б2",app:"tsn",wk:5,t:"Влага в масле и мостики",
+ calc:{q:`Растворимость воды в минеральном масле (учебник Важова): при 80 °C — 400·10⁻⁶, при 20 °C — 40·10⁻⁶ по объёму. Днём под нагрузкой масло насытилось влагой при 80 °C, ночью остыло до 20 °C. Какая <b>доля растворённой воды</b> выпадет в эмульсию${qh_("Эмульсия — капли воды размером 2…10 мкм, взвешенные в масле. В таком состоянии вода опаснее всего: капли втягиваются в сильное поле и выстраиваются в мостики.")}?`,a:M.water()*100,u:"%",h:"Выпадает то, что больше не растворяется: (400 − 40)/400."},
+ tune:{task:`Эмульгированная вода — самая опасная: капли втягиваются в сильное поле, вытягиваются в мостики, ток разогревает их до вскипания, и пробой идёт через пузырьки. Проба масла в стандартном разряднике 2,5 мм${qh_("Стандартный маслопробойник: два сферических электрода с зазором 2,5 мм. Проводят шесть пробоев с перемешиванием, результат — среднее.")} дала шесть пробоев. Нормы для аппаратов до 15 кВ: после заливки — не менее 25 кВ, в эксплуатации — не менее 20 кВ. Примите решение.`,
+  init:()=>({v:"work"}),
+  ctrl:s=>`<label>Решение</label>${segL("v",[["work","оставить в работе"],["top","долить свежее масло"],["dry","осушить и дегазировать масло, проверить картон"],["thick","заменить барьер на более толстый"]],s.v)}`,
+  viz:s=>{const a=axes({x0:0.5,x1:6.5,y0:0,y1:30,xt:[1,2,3,4,5,6],yt:[0,10,20,25,30],xl:"номер пробоя",yl:"Uпр, кВ",aria:"Пробивные напряжения пробы масла"});
+   let o=a.s;M.OIL.forEach((u,i)=>{o+=`<rect class="fillA" x="${a.X(i+1)-12}" y="${a.Y(u)}" width="24" height="${a.Y(0)-a.Y(u)}"/>`});
+   const mean=M.OIL.reduce((x,y)=>x+y)/M.OIL.length;
+   o+=`<line class="lim" x1="${a.L}" y1="${a.Y(20)}" x2="${a.W-a.R}" y2="${a.Y(20)}"/>`+hl(a,a.W-a.R-4,a.Y(20)-5,"20 кВ — эксплуатация","end");
+   o+=`<line class="lim" x1="${a.L}" y1="${a.Y(25)}" x2="${a.W-a.R}" y2="${a.Y(25)}" style="stroke:var(--hv)"/>`+hl(a,a.W-a.R-4,a.Y(25)-5,"25 кВ — после заливки","end")+a.end;
+   return o+`<div class="reads">${rd("Среднее из шести",fx(mean,1)+" кВ",mean>=20)}${rd("Поле у вывода в работе",fx(M.coaxE(M.Uph()/1000,D.r0),3)+" кВ/мм")}</div>`},
+  ok:s=>s.v==="dry",h:"Среднее ниже нормы эксплуатации. Свежее масло разбавит, но не уберёт эмульсию; толщина барьера не лечит влагу.",
+  ex:"Среднее 18,7 кВ < 20 кВ: масло сушат и дегазируют (центрифуга, вакуумная установка), картон проверяют — он впитывает воду и отдаёт её обратно при нагреве."}},
+{id:"В1",app:"agr",wk:6,t:"Вибрация и расслоение изоляции",
+ calc:{q:`Вибрация экскаватора расслоила пазовую изоляцию сетевого двигателя 6 кВ: толщина изоляции ${fx(D.dsd,1)} мм, ε<sub>r</sub> = ${fx(D.epsm,1)}, воздушный зазор расслоения d = ${fx(D.dgap,2)} мм. Напряжение на изоляции — амплитуда фазного: √2·6000/√3. Найдите <b>напряжение на зазоре</b> U<sub>з</sub> = U<sub>m</sub>·d/(d + (δ − d)/ε<sub>r</sub>).`,a:M.Ugap(M.Uph(),D.dgap,D.dsd,D.epsm),u:"В",h:"U<sub>m</sub> = 4899 В; (δ − d)/ε<sub>r</sub> = 2,05/4,5 = 0,456 мм."},
+ tune:{task:`Сравните напряжение на зазоре с кривой Пашена${qh_("Пробивное напряжение воздушного зазора d при давлении 760 мм рт. ст. считают по формуле Пашена с pd = 760·d (d в см), A = 15, B = 365, γ = 0,01. Если на зазоре больше — в нём горят частичные разряды.")} (лекция 4) для двух машин: сетевого двигателя 6 кВ и двигателя подъёма 375 В (изоляция 0,5 мм; в работе — до 1,15U<sub>н</sub>). Где расслоение толщиной 0,1…0,4 мм даёт частичные разряды в работе?`,
+  init:()=>({m:"sd",v:"none"}),
+  ctrl:s=>`<label>Машина на графике</label>${seg("m",["sd","dpt"],s.m,v=>v==="sd"?"СД 6 кВ":"ДПТ 375 В")}<label>Вывод</label>${segL("v",[["sd","ЧР только в СД 6 кВ"],["dpt","ЧР только в ДПТ"],["both","ЧР в обеих машинах"],["none","ЧР нет ни в одной"]],s.v)}`,
+  viz:s=>{const sd=s.m==="sd",U=sd?M.Uph():1.15*D.U,del=sd?D.dsd:0.5,a=axes({x0:0.02,x1:0.5,y0:0,y1:3200,xt:[0.1,0.2,0.3,0.4,0.5],yt:[0,1000,2000,3000],xl:"толщина зазора d, мм",yl:"U, В",aria:"Напряжение на зазоре и пробивное по Пашену"});
+   let p=[],q=[];for(let d=0.02;d<=0.5;d+=0.005){p.push([a.X(d),a.Y(M.Ugap(U,d,del,D.epsm))]);q.push([a.X(d),a.Y(M.clear(d))])}
+   let o=a.s+poly(q,"cv")+poly(p,"cv2")+hl(a,a.X(0.3),a.Y(sd?1500:1300),"Пашен")+hl(a,a.X(0.25),a.Y(sd?2300:600),"на зазоре")+a.end;
+   const pd=[];for(let d=0.05;d<=0.4001;d+=0.05){if(M.Ugap(U,d,del,D.epsm)>M.clear(d))pd.push(fx(d,2))}
+   return o+`<div class="reads">${rd("Амплитуда на изоляции",fx(U,0)+" В")}${rd("ЧР при d, мм",pd.length?pd.join("; "):"нет",pd.length?false:true)}${rd("Минимум Пашена воздуха","≈ 305 В")}</div>`},
+  ok:s=>s.v==="sd",h:"В ДПТ на всю изоляцию приходится 431 В — сравните с минимумом кривой Пашена.",
+  ex:"В СД 6 кВ ЧР возникают уже с d ≈ 0,1 мм. В ДПТ на зазор попадает меньше 431 В — ниже, чем требует Пашен при таких d: ЧР нет, расслоение опасно другим — хуже теплоотвод из паза и истирание при вибрации."}},
+{id:"В2",app:"agr",wk:7,t:"Отключение тока и гашение поля",
+ calc:{q:`Индуктивность якорной цепи Г-Д L = ${fx(D.La*1000,0)} мГн. Автомат отключает стопорный ток k<sub>стоп</sub>I<sub>н</sub> = 2,2·${D.I} А (решение этапа А2). Найдите <b>энергию, запасённую в индуктивности</b>, W = LI²/2.`,a:M.Wa()/1000,u:"кДж",h:"I = 1694 А; W = 0,5·0,003·1694² Дж — переведите в кДж."},
+ tune:{task:`Обмотка возбуждения генератора: L<sub>в</sub> = ${D.Lf} Гн, R<sub>в</sub> = ${D.Rf} Ом, I<sub>в</sub> = ${D.If} А, U<sub>в</sub> = ${D.Uf} В. При аварийном отключении возбудителя ток замыкается на разрядный резистор R<sub>р</sub>: напряжение на обмотке I<sub>в</sub>·R<sub>р</sub>, постоянная времени L<sub>в</sub>/(R<sub>в</sub> + R<sub>р</sub>). Испытательное напряжение обмотки 1,2 кВ (ПУЭ${qh_("ПУЭ, табл. 1.8.6: обмотки машин постоянного тока — 1,6U<sub>н</sub> + 0,8 кВ, но не менее 1,2 кВ. Для U<sub>в</sub> = 180 В получается 1,09 кВ, поэтому берут 1,2 кВ.")}), допустимо не более амплитуды испытательного с запасом 1,25. Поле нужно погасить за время переходного процесса не более 0,75 с${qh_("Учебник Фащиленко, разд. 4.6.2: при ограничении стопорного тока гашение поля генератора должно укладываться в t<sub>п.п</sub> ≈ 0,75 с. Экспонента затухает практически полностью за 3τ, отсюда τ ≤ 0,25 с.")}, то есть 3τ ≤ 0,75 с. Из подходящих резисторов выберите тот, при котором напряжение на обмотке меньше.`,
+  init:()=>({R:20}),
+  ctrl:s=>`<label>Разрядный резистор R<sub>р</sub>, Ом</label>${seg("R",M.RP,s.R)}`,
+  viz:s=>{const a=axes({x0:0,x1:0.5,y0:0,y1:2000,xt:[0,0.1,0.2,0.3,0.4,0.5],yt:[0,500,1000,1500,2000],xl:"время, с",yl:"U, В",aria:"Напряжение на обмотке возбуждения при гашении поля"});
+   const lim=M.UfTest()/1.25,u0=M.Uf(s.R),tau=M.tauF(s.R);let p=[];for(let t=0;t<=0.5;t+=0.005)p.push([a.X(t),a.Y(u0*Math.exp(-t/tau))]);
+   let o=a.s+poly(p,"cv2")+`<line class="lim" x1="${a.L}" y1="${a.Y(lim)}" x2="${a.W-a.R}" y2="${a.Y(lim)}"/>`+hl(a,a.W-a.R-4,a.Y(lim)-5,"допустимо "+fx(lim,0)+" В","end")+a.end;
+   return o+`<div class="reads">${rd("Напряжение в первый момент",fx(u0,0)+" В",u0<=lim)}${rd("Время гашения 3τ",fx(3*tau,2)+" с",3*tau<=0.75+1e-9)}${rd("Энергия поля",fx(0.5*D.Lf*D.If**2/1000,2)+" кДж")}</div>`},
+  ok:s=>s.R===30,h:"Условия: τ = L<sub>в</sub>/(R<sub>в</sub> + R<sub>р</sub>) ≤ 0,25 с и I<sub>в</sub>R<sub>р</sub> ≤ 1358 В; из подходящих — меньший R<sub>р</sub>.",
+  ex:"R<sub>р</sub> = 30 Ом: τ = 0,2 с, 3τ = 0,6 с ≤ 0,75 с, на обмотке 540 В. 20 Ом гасит слишком медленно (3τ = 0,8 с); 50 Ом тоже подходит, но даёт 900 В — лишняя нагрузка на изоляцию; 80 Ом — 1440 В, больше допустимого."}},
+{id:"Г1",app:"opn",wk:8,t:"Варисторы ОПН постоянного тока",
+ calc:{q:`ВАХ варистора U = U<sub>1мА</sub>·(I/1 мА)<sup>α</sup>, коэффициент нелинейности α = 1/30 ≈ 0,033${qh_("Учебник Важова, разд. 4: у оксидно-цинковых варисторов ОПН α = 0,02…0,1 — напряжение почти не растёт с током. U<sub>1мА</sub> — классификационное напряжение: при нём через блок идёт 1 мА.")}. Класс 460 В пост. тока, U<sub>1мА</sub> = 560 В. Найдите <b>остающееся напряжение одного блока</b> при отключаемом токе 1694 А.`,a:M.Uost(560,M.Ist(),1),u:"В",h:"I/1 мА = 1,694·10⁶; ln = 14,343; умножаем на α = 1/30 и берём экспоненту: e<sup>0,478</sup> = 1,613."},
+ tune:{task:`Выберите класс варистора и число блоков в параллель. Условия: длительно допустимое напряжение${qh_("Наибольшее постоянное напряжение, которое блок выдерживает неограниченно долго без перегрева. Ток утечки при нём — доли миллиампера.")} не меньше 1,15U<sub>н</sub> = ${fx(M.Uc(),0)} В (форсировка генератора); энергия ${fx(M.Wa()/1000,2)} кДж распределяется по блокам, блок выдерживает ${fx(D.Wbl,1)} кДж, использовать не более ${D.der*100} %. Нужны наименьший подходящий класс и наименьшее число блоков.`,
+  init:()=>({c:350,n:1}),
+  ctrl:s=>`<label>Класс, В пост. тока</label>${seg("c",M.VAR.map(v=>v[0]),s.c)}<label>Блоков в параллель</label>${seg("n",[1,2,3,4,5,6],s.n)}`,
+  viz:s=>{const v1=M.VAR.find(v=>v[0]===s.c)[1],a=axes({x0:1e-3,x1:1e4,y0:300,y1:1200,logx:true,xt:[1e-3,1e-1,10,1e3],xf:t=>t>=1?String(t):t===0.1?"0,1":"0,001",yt:[400,600,800,1000,1200],xl:"ток блока, А",yl:"U, В",aria:"Вольт-амперная характеристика варистора"});
+   let p=[];for(let e=-3;e<=4;e+=0.05){const i=Math.pow(10,e);p.push([a.X(i),a.Y(v1*Math.pow(i/1e-3,1/D.alphaV))])}
+   const Ib=M.Ist()/s.n,u=M.Uost(v1,M.Ist(),s.n);
+   let o=a.s+poly(p,"cv")+`<line class="lim" x1="${a.L}" y1="${a.Y(M.Uc())}" x2="${a.W-a.R}" y2="${a.Y(M.Uc())}" style="stroke:var(--hv)"/>`+hl(a,a.L+6,a.Y(M.Uc())-5,"1,15Uн = 431 В")+`<circle class="mk sel" cx="${a.X(Ib)}" cy="${a.Y(u)}" r="7"/>`+a.end;
+   const e=s.n*D.Wbl*D.der;
+   return o+`<div class="reads">${rd("Длительное напряжение класса",s.c+" В",s.c>=M.Uc())}${rd("Допустимая энергия блоков",fx(e,1)+" кДж",e>=M.Wa()/1000)}${rd("U<sub>ост</sub> при "+fx(Ib,0)+" А",fx(u,0)+" В")}</div>`},
+  ok:s=>s.c===460&&s.n===4,h:"Класс — первый в ряду не меньше 431 В. Блоков: 4,30 кДж / (1,5·0,8) кДж и округлить вверх.",
+  ex:"460 В × 4 блока: 4,8 кДж ≥ 4,30 кДж, U<sub>ост</sub> = 862 В. Класс 420 В в работе перегреется при форсировке, 505 В даст лишнее остающееся напряжение."}},
+{id:"Г2",app:"opn",wk:9,t:"Координация с ВСХ изоляции",
+ calc:{q:"Прочность корпусной изоляции якоря в эксплуатации принимаем равной амплитуде испытательного напряжения по ПУЭ: √2·1,4 кВ. Остающееся напряжение четырёх блоков класса 460 В при 1694 А — по формуле этапа Г1 с током блока I/4. Найдите <b>коэффициент защиты</b> k = U<sub>изол</sub>/U<sub>ост</sub>.",a:M.Uins()/M.Uost(560,M.Ist(),4),u:"",h:"Ток блока 423,5 А; U<sub>ост</sub> = 560·(423 500)<sup>1/30</sup> = 862 В; U<sub>изол</sub> = 1980 В."},
+ tune:{task:`Вольт-секундная характеристика${qh_("ВСХ — зависимость пробивного (или разрядного) напряжения от времени воздействия. Защита работает, если её ВСХ во всём диапазоне времён лежит ниже ВСХ изоляции с запасом.")} (лекция 3): при коротких импульсах изоляция держит больше, а искровой разрядник срабатывает позже — его ВСХ поднимается круче. Выберите защиту, при которой k ≥ 1,25 во всём диапазоне от 1 мкс до 10 мс и которая не перегревается в работе.`,
+  init:()=>({p:"none"}),
+  ctrl:s=>`<label>Защита якорной цепи</label>${segL("p",[["none","без защиты"],["gap","искровой разрядник 1,5 кВ"],["v350","варисторы 350 В × 4"],["v460","варисторы 460 В × 4"]],s.p)}`,
+  viz:s=>{const a=axes({x0:1e-6,x1:1e-2,y0:0,y1:5000,logx:true,xt:[1e-6,1e-5,1e-4,1e-3,1e-2],xf:t=>({1e-6:"1 мкс",1e-5:"10 мкс",1e-4:"0,1 мс",1e-3:"1 мс",1e-2:"10 мс"})[t],yt:[0,1000,2000,3000,4000,5000],xl:"время воздействия",yl:"U, В",aria:"Вольт-секундные характеристики изоляции и защиты"});
+   let pi=[],pp=[];const prot=t=>s.p==="gap"?M.vsGap(t):s.p==="v460"?M.Uost(560,M.Ist(),4):s.p==="v350"?M.Uost(430,M.Ist(),4):null;
+   for(let e=-6;e<=-2;e+=0.05){const t=Math.pow(10,e);pi.push([a.X(t),a.Y(M.vsIns(t))]);const u=prot(t);if(u!==null)pp.push([a.X(t),a.Y(Math.min(u,5000))])}
+   let o=a.s+poly(pi,"cv")+hl(a,a.X(2e-4),a.Y(2500),"изоляция");if(pp.length)o+=poly(pp,"cv2");else o+=hl(a,a.X(1.5e-6),a.Y(4700),"без защиты: I·√(L/C) ≈ "+fx(M.Uchop()/1000,0)+" кВ");o+=a.end;
+   let kmin=0;if(s.p!=="none"){kmin=1e9;for(let e=-6;e<=-2;e+=0.05){const t=Math.pow(10,e);kmin=Math.min(kmin,M.vsIns(t)/prot(t))}}
+   const cont=s.p==="v460"||s.p==="gap"?true:s.p==="v350"?false:null;
+   return o+`<div class="reads">${rd("Наименьший k по времени",s.p==="none"?"< 0,02":fx(kmin,2),kmin>=1.25)}${rd("Работа при 431 В",cont===null?"—":cont?"без нагрева":"перегрев, тепловой пробой",cont===null?undefined:cont)}</div>`},
+  ok:s=>s.p==="v460",h:"Проверьте минимум k на коротких временах и длительную работу при форсировке.",
+  ex:"Варисторы 460 В × 4: k ≥ 2,3 при любых длительностях. Разрядник при фронтах короче ~10 мкс срабатывает выше прочности изоляции; варисторы 350 В ниже 431 В — греются в работе."}},
+{id:"Д1",app:"heat",wk:10,t:"Эквивалентный ток цикла",
+ calc:{q:`Цикл копания T<sub>ц</sub> = ${D.Tc} с (учебник Фащиленко, табл. 4.1): стопорение 1 с при 2,2I<sub>н</sub>; копание 6 с при 1,5I<sub>н</sub>; подъём с поворотом 6 с при 0,8I<sub>н</sub>; спуск порожнего ковша 7 с при 0,4I<sub>н</sub>; пауза 6 с — разгрузка, ковш на тормозе. Вентиляция принудительная${qh_("Вентилятор-наездник обдувает двигатель и в паузах, поэтому коэффициент ухудшения теплоотдачи β = 1 и все участки работы считаются одинаково.")}, номинальная ПВ<sub>н</sub> = 80 %${qh_("ПВ — продолжительность включения: доля времени работы в цикле, ПВ = t<sub>р</sub>/T<sub>ц</sub>. Двигатели подъёма ЭКГ-10 рассчитаны на ПВ<sub>н</sub> = 80 % (учебник Фащиленко, табл. 4.2).")}. Найдите <b>эквивалентный ток, приведённый к ПВ<sub>н</sub></b>: I<sub>э.р</sub> = √(ΣI²t/t<sub>р</sub>); ПВ<sub>р</sub> = t<sub>р</sub>/T<sub>ц</sub>; I<sub>э</sub> = I<sub>э.р</sub>·√(ПВ<sub>р</sub>/ПВ<sub>н</sub>).`,a:M.Ieq()*D.I,u:"А",h:"ΣI²t = 2,2²·1 + 1,5²·6 + 0,8²·6 + 0,4²·7 = 23,3 I<sub>н</sub>²·с; t<sub>р</sub> = 20 с; I<sub>э.р</sub> = 1,079I<sub>н</sub>; ПВ<sub>р</sub> = 20/26 = 0,769."},
+ tune:{task:"I<sub>э</sub> больше номинального — двигатель перегревается. Ограничьте ток копания: выберите наибольшую кратность I<sub>коп</sub>/I<sub>н</sub>, при которой I<sub>э</sub> ≤ I<sub>н</sub> (стопорный ток 2,2I<sub>н</sub> оставить). Проверьте и второе условие учебника: ПВ<sub>р</sub> ≤ ПВ<sub>н</sub>.",
+  init:()=>({kc:1.5}),
+  ctrl:s=>`<label for="r_kc">Ток копания I<sub>коп</sub>/I<sub>н</sub></label>${rng("kc",1,1.6,0.05,s.kc,v=>fx(v,2))}`,
+  viz:s=>{const a=axes({x0:0,x1:26,y0:0,y1:2.5,xt:[0,5,10,15,20,26],yt:[0,0.5,1,1.5,2,2.5],xl:"время цикла, с",yl:"I/Iн",aria:"Нагрузочная диаграмма двигателя подъёма"});
+   let t=0,o=a.s;M.SEG(s.kc).forEach((g,i)=>{if(g[2]>0)o+=`<rect class="${i===1?"fillH":"fillA"}" x="${a.X(t)}" y="${a.Y(g[2])}" width="${a.X(t+g[1])-a.X(t)}" height="${a.Y(0)-a.Y(g[2])}" opacity=".8"/>`;else o+=hl(a,a.X(t+g[1]/2),a.Y(0.15),"пауза","middle");t+=g[1]});
+   const ie=M.Ieq(s.kc);o+=`<line class="lim" x1="${a.L}" y1="${a.Y(ie)}" x2="${a.W-a.R}" y2="${a.Y(ie)}"/>`+hl(a,a.W-a.R-4,a.Y(ie)-5,"Iэ = "+fx(ie,3)+"Iн","end")+a.end;
+   return o+`<div class="reads">${rd("I<sub>э</sub>/I<sub>н</sub> при ПВ 80 %",fx(ie,3),ie<=1+1e-9)}${rd("I<sub>э</sub>",fx(ie*D.I,0)+" А")}${rd("ПВ<sub>р</sub>",fx(M.PVr()*100,1)+" %",M.PVr()<=D.PV)}</div>`},
+  ok:s=>near(s.kc,1.35),h:"I<sub>э</sub>² = ΣI²t/(T<sub>ц</sub>·ПВ<sub>н</sub>) ≤ 1: 4,84 + 6x² + 3,84 + 1,12 ≤ 20,8.",
+  ex:"I<sub>коп</sub> = 1,35I<sub>н</sub>: I<sub>э</sub> = 0,998I<sub>н</sub>; при 1,4 — 1,018I<sub>н</sub>. ПВ<sub>р</sub> = 76,9 % ≤ 80 %."}},
+{id:"Д2",app:"heat",wk:11,t:"Что греет изоляцию за цикл",
+ calc:{q:`Если ток копания оставить 1,5I<sub>н</sub> (I<sub>э</sub> = 1,058I<sub>н</sub>, этап Д1), перегрев обмотки растёт пропорционально квадрату тока: Δθ = ${D.dTn} К·(I<sub>э</sub>/I<sub>н</sub>)², где 120 К — перегрев при номинальном токе. Правило 10 градусов${qh_("Правило Монтзингера: скорость старения изоляции растёт экспоненциально с температурой; для изоляции классов F и H каждые 8…10 К сверх допустимой сокращают срок службы примерно вдвое.")}: каждые +10 К сверх номинального режима сокращают срок службы изоляции вдвое. Найдите <b>оставшуюся долю ресурса</b>.`,a:M.life()*100,u:"%",h:"Δθ = 120·1,058² = 134,4 К, лишние 14,4 К; ресурс = 2<sup>−1,44</sup>."},
+ tune:{task:"В исходной формулировке задания — «потери в изоляции от стопорных токов». Сравните, что действительно выделяет тепло за цикл: выберите главный источник нагрева изоляции.",
+  init:()=>({v:"diel"}),
+  ctrl:s=>`<label>Главный источник нагрева</label>${segL("v",[["diel","диэлектрические потери в изоляции"],["cu","потери в меди якоря и дополнительных полюсов"],["leak","ток утечки по изоляции"]],s.v)}`,
+  viz:s=>{const a=axes({x0:0,x1:4,y0:1e-3,y1:1e6,logy:true,xt:[],yt:[1e-3,1,1e3,1e6],yf:t=>t===1e-3?"10⁻³":t===1?"1":t===1e3?"10³":"10⁶",xl:"",yl:"Дж за цикл",aria:"Энергия потерь за цикл"});
+   const v=[["медь",M.Wcu()],["диэлектрик",M.Wdiel()],["утечка",M.Wdiel()]];let o=a.s;
+   v.forEach((x,i)=>{o+=`<rect class="${i?"fillO":"fillH"}" x="${a.X(i+0.6)}" y="${a.Y(x[1])}" width="${a.X(1.4)-a.X(0.6)}" height="${a.Y(1e-3)-a.Y(x[1])}"/>`+hl(a,a.X(i+1),a.H-a.B+14,x[0],"middle")});o+=a.end;
+   return o+`<div class="reads">${rd("Медь: R<sub>я</sub>·ΣI²t",fx(M.Wcu()/1000,0)+" кДж")}${rd("Изоляция: U²/R<sub>из</sub>·T<sub>ц</sub>",fx(M.Wdiel(),3)+" Дж")}${rd("Отношение","≈ 3·10⁶")}</div>`},
+  ok:s=>s.v==="cu",h:"При постоянном напряжении 375 В и R<sub>из</sub> = 50 МОм ток через изоляцию — микроамперы.",
+  ex:"Медь выделяет ≈ 207 кДж за цикл, изоляция — 0,07 Дж. Стопорные токи греют медь, медь греет изоляцию; диэлектрические потери на постоянном напряжении ничтожны."}},
+{id:"Е1",app:"diag",wk:12,t:"Конденсат после ночной смены",
+ calc:{q:`Ночью экскаватор стоял, обмотки остыли до +2 °C. Утром воздух прогрелся до t = ${D.tA} °C при влажности φ = ${D.RH} %. Найдите <b>точку росы</b>${qh_("Точка росы — температура, до которой надо охладить воздух, чтобы водяной пар в нём стал насыщенным. Поверхность холоднее точки росы покрывается конденсатом.")} по формуле Магнуса: γ = ln(φ/100) + 17,62t/(243,12 + t); t<sub>р</sub> = 243,12γ/(17,62 − γ).`,a:M.dew(D.tA,D.RH),u:"°C",h:"γ = ln 0,85 + 17,62·12/255,12 = −0,1625 + 0,8288 = 0,6663."},
+ tune:{task:`Обмотка при +2 °C холоднее точки росы — на ней выпадет вода, сопротивление изоляции упадёт. Стояночный подогрев должен держать обмотку на 5 К теплее воздуха. Тепловое сопротивление двигателя без вентиляции ${D.RthM} К/кВт. Выберите наименьший подогреватель из ряда.`,
+  init:()=>({p:0.1}),
+  ctrl:s=>`<label>Мощность подогрева, кВт</label>${seg("p",M.HEAT,s.p,v=>fx(v,1))}`,
+  viz:s=>{const a=axes({x0:0,x1:12,y0:-2,y1:22,xt:[0,3,6,9,12],xf:t=>(20+t)%24+":00",yt:[0,5,10,15,20],xl:"время",yl:"t, °C",aria:"Температура воздуха и обмотки ночью и утром"});
+   const air=t=>t<8?2:2+(t-8)/4*(D.tA-2);let pa=[],pw=[];for(let t=0;t<=12;t+=0.1){pa.push([a.X(t),a.Y(air(t))]);pw.push([a.X(t),a.Y(air(t)+s.p*D.RthM)])}
+   const td=M.dew(D.tA,D.RH);
+   let o=a.s+poly(pa,"cv")+poly(pw,"cv2")+`<line class="lim" x1="${a.X(8)}" y1="${a.Y(td)}" x2="${a.W-a.R}" y2="${a.Y(td)}"/>`+hl(a,a.X(8)-4,a.Y(td)+4,"точка росы утром","end")+hl(a,a.X(0.3),a.Y(air(0)+s.p*D.RthM)-6,"обмотка")+hl(a,a.X(0.3),a.Y(2)+14,"воздух")+a.end;
+   const dT=s.p*D.RthM;
+   return o+`<div class="reads">${rd("Обмотка теплее воздуха на",fx(dT,1)+" К",dT>=D.dTh-1e-9)}${rd("Энергия за 8 ч простоя",fx(s.p*8,1)+" кВт·ч")}</div>`},
+  ok:s=>s.p===0.2,h:"P = ΔT/R<sub>th</sub> = 5/25.",
+  ex:"0,2 кВт держат обмотку на 5 К теплее воздуха — конденсат не выпадает. Без подогрева обмотка всё утро холоднее точки росы."}},
+{id:"Е2",app:"diag",wk:13,t:"Коэффициент абсорбции",
+ calc:{q:"Мегаомметром измерены R<sub>15</sub> и R<sub>60</sub> трёх машин при 20 °C (таблица на стенде). Найдите <b>коэффициент абсорбции генератора</b>: R<sub>15</sub> = 3,1 МОм, R<sub>60</sub> = 3,4 МОм.",a:M.kabs(M.MEAS[1]),u:"",h:"K<sub>абс</sub> = R<sub>60</sub>/R<sub>15</sub>."},
+ tune:{task:`Норма: K<sub>абс</sub> ≥ 1,3 (учебник Важова, формула 3.17${qh_("K<sub>абс</sub> = R<sub>60</sub>/R<sub>15</sub>. В сухой изоляции поляризация идёт медленно, сопротивление за минуту растёт, K<sub>абс</sub> > 1,3. Во влажной ток проводимости велик, R<sub>60</sub> ≈ R<sub>15</sub>. Одновременно оценивают и сопротивление утечки R<sub>у</sub> = R<sub>60</sub>.")}); кроме того, R<sub>60</sub> не ниже минимума: 0,5 МОм для машин до 1 кВ (ПУЭ) и kV + 1 = 7 МОм для обмотки 6 кВ (IEEE 43${qh_("Международный стандарт IEEE 43 на измерение сопротивления изоляции вращающихся машин: минимум R<sub>1мин</sub> = U<sub>ном</sub>(кВ) + 1 МОм при 40 °C для старых обмоток.")}). Примите решение по каждой машине.`,
+  init:()=>({dpt:"work",gen:"work",sd:"work"}),
+  ctrl:s=>M.MEAS.map(m=>`<label>${m.n}</label>${seg(m.k,["work","dry"],s[m.k],v=>v==="work"?"в работу":"сушить")}`).join(""),
+  viz:s=>`<div class="tbl"><table class="res"><thead><tr><th>Машина</th><th>R<sub>15</sub>, МОм</th><th>R<sub>60</sub>, МОм</th><th>K<sub>абс</sub></th><th>R<sub>min</sub>, МОм</th></tr></thead><tbody>${M.MEAS.map(m=>`<tr><td>${m.n}</td><td class="mono">${fx(m.R15,m.R15<10?2:0)}</td><td class="mono">${fx(m.R60,m.R60<10?2:0)}</td><td class="mono">${fx(M.kabs(m),2)}</td><td class="mono">${fx(m.Rmin,1)}</td></tr>`).join("")}</tbody></table></div>`,
+  ok:s=>s.dpt==="dry"&&s.gen==="dry"&&s.sd==="work",h:"Проверяйте оба условия: и K<sub>абс</sub>, и абсолютное R<sub>60</sub>.",
+  ex:"ДПТ: K = 1,5, но R<sub>60</sub> = 0,45 < 0,5 МОм — сушить. Генератор: K = 1,10 < 1,3 — увлажнён. СД: K = 1,83, R<sub>60</sub> = 1100 МОм — в работу."}},
+{id:"Е3",app:"diag",wk:14,t:"Испытание повышенным напряжением",
+ calc:{q:"Сетевой двигатель 6 кВ, 800 кВт (до 1 МВт). По табл. 1.8.9 ПУЭ испытательное напряжение обмотки статора (50 Гц, 1 мин) равно 1,6U<sub>ном</sub> + 0,8 кВ. Найдите его.",a:M.UsdTest(),u:"кВ",h:"U<sub>ном</sub> подставляется в киловольтах."},
+ tune:{task:`У машины постоянного тока нет фаз — асимметрию токов утечки по фазам меряют на статоре сетевого двигателя (выпрямленное напряжение до 15,6 кВ, ступени от 0,5U). Выберите испытательное напряжение якоря ДПТ по ПУЭ (табл. 1.8.6: 1,6U<sub>н</sub> + 0,8 кВ, не менее 1,2 кВ) и заключение по статору: K<sub>н</sub> = I<sub>U</sub>/(2I<sub>0,5U</sub>) ≤ 3${qh_("Коэффициент нелинейности — во сколько раз растёт проводимость изоляции при удвоении напряжения. У исправной изоляции ток растёт почти пропорционально напряжению, K<sub>н</sub> ≈ 1.")}, асимметрия I<sub>max</sub>/I<sub>min</sub> ≤ 2 (ориентир задания).`,
+  init:()=>({u:1.75,v:"ok"}),
+  ctrl:s=>`<label>Испытание якоря ДПТ, кВ</label>${seg("u",[1.2,1.4,1.75,2.0],s.u,v=>fx(v,v===1.75?2:1))}<label>Заключение по статору СД</label>${segL("v",[["ok","изоляция годна"],["C","фаза C: дефект — искать место, ремонт"],["all","сушить все фазы и повторить"]],s.v)}`,
+  viz:s=>{const Um=M.Urect(),a=axes({x0:0.4*Um,x1:1.05*Um,y0:0,y1:80,xt:[8,10,12,14,16],yt:[0,20,40,60,80],xl:"U, кВ",yl:"I, мкА",aria:"Токи утечки по фазам"});let o=a.s;
+   [["A","cv"],["B","cv"],["C","cv2"]].forEach(([ph,c])=>{const L=M.LEAK[ph],m=Math.log(L[1]/L[0])/Math.log(2);let p=[];for(let k=0.5;k<=1.0001;k+=0.1){p.push([a.X(k*Um),a.Y(L[0]*Math.pow(k/0.5,m))]);o+=`<circle class="mk" cx="${a.X(k*Um)}" cy="${a.Y(L[0]*Math.pow(k/0.5,m))}" r="3"/>`}o+=poly(p,c)+hl(a,a.X(Um)+2,a.Y(L[1])+(ph==="A"?10:ph==="B"?-4:0),ph,"end")});o+=a.end;
+   return o+`<div class="reads">${["A","B","C"].map(ph=>rd("K<sub>н</sub> фазы "+ph,fx(M.kn(ph),2),M.kn(ph)<=3)).join("")}${rd("Асимметрия",fx(M.asym(),2),M.asym()<=2)}</div>`},
+  ok:s=>near(s.u,1.4)&&s.v==="C",h:"2U<sub>н</sub> + 1 кВ — заводская норма. В эксплуатации по ПУЭ берут меньше. У статора смотрите на фазу с выпадающей кривой.",
+  ex:"Якорь испытывают 1,4 кВ (заводские 1,75 кВ на старой изоляции опасны). Фаза C: K<sub>н</sub> = 3,5 и асимметрия 3,9 — местный дефект, сушка всех фаз его не уберёт."}},
+{id:"Е4",app:"diag",wk:15,t:"Сушка обмоток током",
+ calc:{q:`Сушка якорей ДПТ и генератора током от генератора при пониженном возбуждении. Тепловое сопротивление${qh_("R<sub>th</sub> — перегрев на 1 кВт потерь в установившемся режиме: Δθ = P·R<sub>th</sub>. Без вентиляции оно в несколько раз больше, чем при обдуве.")} агрегата при выключенной вентиляции ${fx(D.RthA,1)} К/кВт, воздух ${D.tAmb} °C, температура сушки ${D.tDry} °C. Найдите <b>необходимую мощность нагрева</b>.`,a:M.Pdry(),u:"кВт",h:"P = (100 − 20)/12,5."},
+ tune:{task:`Мощность выделяется в сопротивлении якорной цепи R<sub>Σ</sub> = ${fx(D.Rs,2)} Ом: P = (kI<sub>н</sub>)²R<sub>Σ</sub>. Выберите ток сушки, при котором установившаяся температура обмоток ${D.tDry} ± 5 °C.`,
+  init:()=>({k:0.4}),
+  ctrl:s=>`<label for="r_k">Ток сушки kI<sub>н</sub></label>${rng("k",0.4,0.8,0.05,s.k,v=>"k = "+fx(v,2))}`,
+  viz:s=>{const a=axes({x0:0.4,x1:0.8,y0:40,y1:180,xt:[0.4,0.5,0.6,0.7,0.8],yt:[40,80,120,160],xl:"k = I/Iн",yl:"θ, °C",aria:"Установившаяся температура от тока сушки"});
+   let p=[];for(let k=0.4;k<=0.8;k+=0.01)p.push([a.X(k),a.Y(M.Tdry(k))]);
+   let o=a.s+`<rect x="${a.L}" y="${a.Y(105)}" width="${a.W-a.R-a.L}" height="${a.Y(95)-a.Y(105)}" fill="var(--go)" opacity=".18"/>`+poly(p,"cv")+`<circle class="mk sel" cx="${a.X(s.k)}" cy="${a.Y(M.Tdry(s.k))}" r="7"/>`+a.end;
+   const T=M.Tdry(s.k);
+   return o+`<div class="reads">${rd("Ток",fx(s.k*D.I,0)+" А")}${rd("Мощность",fx(M.Pi(s.k),2)+" кВт")}${rd("Установившаяся температура",fx(T,1)+" °C",T>=95&&T<=105)}</div>`},
+  ok:s=>near(s.k,0.6),h:"(kI<sub>н</sub>)²·0,03 = 6,4 кВт.",
+  ex:"0,6I<sub>н</sub> = 462 А: 6,4 кВт и 100 °C. Ток поднимают ступенями, чтобы нагрев шёл не быстрее 5…8 К/ч; сушку заканчивают, когда R<sub>60</sub> стабильно 3–5 ч и K<sub>абс</sub> ≥ 1,3, затем пропитка лаком класса H."}}
+];
+
+const L2=(x,y,t,a,c)=>`<text x="${x}" y="${y}" text-anchor="${a||"middle"}" style="font:11px var(--f-body);fill:${c||"var(--ink)"}">${t}</text>`;
+const ill=b=>`<svg viewBox="0 0 280 170" role="img" class="illus">${b}</svg>`;
+const grnd=y=>`<path d="M6 ${y}H274" stroke="var(--m2)" stroke-width="2"/>`;
+const shed=(x,y,n,w,h,c)=>{let s=`<rect x="${x-w*.28}" y="${y}" width="${w*.56}" height="${n*h}" fill="${c}"/>`;for(let i=0;i<n;i++)s+=`<ellipse cx="${x}" cy="${y+i*h+h*.55}" rx="${w/2}" ry="${h*.32}" fill="${c}" stroke="var(--m3)" stroke-width=".6"/>`;return s};
+const motor=(x,y,w,h,col)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="10" fill="${col||"var(--paint)"}" stroke="var(--m3)" stroke-width="1.4"/>${Array.from({length:Math.floor(w/9)},(_,i)=>`<path d="M${x+6+i*9} ${y+6}V${y+h-6}" stroke="var(--m3)" stroke-width="1" opacity=".5"/>`).join("")}<rect x="${x+8}" y="${y+h}" width="${w-16}" height="8" fill="var(--m3)"/>`;
+const comm=(x,y,h)=>`<rect x="${x}" y="${y}" width="22" height="${h}" fill="var(--cu)" stroke="var(--m3)"/>${Array.from({length:Math.floor(h/4)},(_,i)=>`<path d="M${x} ${y+2+i*4}H${x+22}" stroke="var(--res)" stroke-width=".8"/>`).join("")}`;
+const DEV={
+net:{t:"Сеть 6 кВ, приключательный пункт ЯКНО-6, гибкий кабель",d:"Карьерная ЛЭП 6 кВ подходит к приключательному пункту — передвижной ячейке ЯКНО-6 (ячейка карьерная наружной установки) на салазках. «Приключить» в горной электротехнике — подсоединить: к пункту приключают гибкий экранированный кабель КГЭ экскаватора. В ячейке — разъединитель, вакуумный выключатель, трансформаторы тока и защита от замыканий на землю. Экскаватор передвигается по забою и тянет кабель за собой.",w:["Учитываем","Сеть питает весь экскаватор; отдельных расчётов здесь нет."],
+ s:()=>ill(`${grnd(156)}<path d="M30 160V20M18 30H42M18 44H42" stroke="var(--m3)" stroke-width="3"/>${[20,40].map(x=>shed(x,18,3,8,5,"var(--por)")).join("")}<path d="M30 30C70 40 90 60 110 72" stroke="var(--m3)" stroke-width="1.4" fill="none"/>
+<rect x="96" y="70" width="80" height="78" fill="var(--cab)" stroke="var(--m3)" stroke-width="1.5"/><path d="M90 70L136 52L182 70Z" fill="var(--m2)"/><rect x="104" y="80" width="30" height="40" fill="var(--paint)" stroke="var(--m3)"/><rect x="140" y="80" width="28" height="22" fill="var(--scr)"/><circle cx="148" cy="112" r="4" fill="var(--go)"/><circle cx="160" cy="112" r="4" fill="var(--bad)"/>
+<path d="M88 148H184" stroke="var(--m3)" stroke-width="4"/><path d="M84 152l8-4M188 152l-8-4" stroke="var(--m3)" stroke-width="2"/>${L2(136,168,"ЯКНО-6 на салазках")}
+<path d="M176 132C210 136 220 150 270 150" stroke="var(--semi)" stroke-width="7" fill="none"/>${L2(236,124,"Кабель КГЭ")}`)},
+tsn:{app:"tsn",t:"Трансформатор собственных нужд 6/0,4 кВ",d:"Масляный трансформатор 160 кВ·А на поворотной платформе. Питает тиристорный возбудитель, вентиляторы-наездники, освещение и обогрев. Вывод 6 кВ проходит в бак через масло — здесь работает маслобарьерная изоляция: картонный цилиндр вокруг вывода.",w:["Что считаем (Б1–Б2)","Б1 — поле у вывода 6 кВ в масле с картонным барьером (слоистый коаксиал, учебник Важова, ф. 1.51–1.53) и положение барьера. Б2 — сколько воды выпадает в эмульсию при остывании масла и годно ли масло по пробе."],
+ s:()=>ill(`${grnd(156)}<rect x="70" y="50" width="120" height="104" rx="4" fill="var(--paint)" stroke="var(--m3)" stroke-width="1.4"/>${[0,1,2,3,4,5,6].map(i=>`<rect x="${196+i*7}" y="62" width="4" height="84" fill="var(--m2)"/>`).join("")}<path d="M192 62H244M192 146H244" stroke="var(--m3)" stroke-width="2"/>
+${[95,130,165].map(x=>shed(x,22,5,14,6,"var(--por)")).join("")}<rect x="62" y="44" width="136" height="8" fill="var(--m3)"/><rect x="80" y="30" width="22" height="14" rx="6" fill="var(--m1)" stroke="var(--m3)"/>
+<rect x="104" y="70" width="52" height="70" fill="var(--glass)" opacity=".35" stroke="var(--m3)" stroke-dasharray="3 2"/><path d="M130 52V138" stroke="var(--cu)" stroke-width="3"/><rect x="118" y="76" width="24" height="58" fill="none" stroke="var(--hv)" stroke-width="2"/>${L2(130,168,"Вывод 6 кВ в баке и картонный барьер")}`)},
+sd:{app:"agr",t:"Сетевой синхронный двигатель 6 кВ (СДЭ2)",d:"Синхронный двигатель 800 кВт вращает генераторы преобразовательного агрегата Г-Д с постоянной скоростью (на экскаваторах с сетевым двигателем свыше 500 кВт — синхронный, учебник Фащиленко, разд. 4.2). Его статорная обмотка 6 кВ — единственная высоковольтная обмотка вращающихся машин экскаватора.",w:["Что считаем (В1, Е2, Е3)","В1 — напряжение на расслоении пазовой изоляции и возникают ли в нём частичные разряды (закон Пашена). Е2–Е3 — коэффициент абсорбции, испытание 50 Гц и токи утечки по фазам."],
+ s:()=>ill(`${grnd(156)}${motor(40,46,150,98)}<rect x="190" y="88" width="60" height="12" fill="var(--m2)"/><rect x="72" y="28" width="56" height="20" rx="3" fill="var(--m2)" stroke="var(--m3)"/>${L2(100,42,"6 кВ","middle","#fff")}
+<g transform="translate(200 18)"><rect x="0" y="0" width="70" height="60" fill="var(--well)" stroke="var(--m3)"/><rect x="8" y="20" width="54" height="18" fill="var(--hv)" opacity=".5"/><rect x="8" y="24" width="54" height="3" fill="var(--glass)"/><path d="M8 20H62M8 38H62" stroke="var(--res)" stroke-width="3"/>${L2(35,54,"Паз: расслоение")}</g>`)},
+gen:{app:"agr",t:"Генератор постоянного тока подъёма",d:"Генератор экскаваторной серии ГПЭ (режим S7) питает якоря двигателей подъёма. Напряжение и направление тока задаёт ток его обмотки возбуждения: так регулируют скорость ковша и ограничивают стопорный ток. Генераторы мощнее 250 кВт выполняют с компенсационной обмоткой.",w:["Что считаем (В2)","Энергию, запасённую в индуктивности якорной цепи, — её поглотит ограничитель перенапряжений при отключении тока."],
+ s:()=>ill(`${grnd(156)}${motor(70,50,130,92)}${comm(48,64,64)}${[0,1,2].map(i=>`<rect x="40" y="${70+i*20}" width="10" height="10" fill="var(--res)"/>`).join("")}<rect x="200" y="88" width="50" height="12" fill="var(--m2)"/>${L2(60,46,"Коллектор")}${L2(135,40,"Генератор ГПЭ")}`)},
+tv:{app:"agr",t:"Тиристорный возбудитель ТВ",d:"Шкаф с управляемым выпрямителем на тиристорах питает от сети 0,4 кВ обмотку возбуждения генератора. Форсировка напряжения ТВ ускоряет разгон, токовая отсечка формирует экскаваторную характеристику (учебник Фащиленко, разд. 4.6).",w:["Учитываем","Форсировка поднимает напряжение якорной цепи до 1,1…1,15U<sub>н</sub> — это входит в расчёт межламельного напряжения (А2) и выбор варисторов (Г1)."],
+ s:()=>ill(`${grnd(156)}<rect x="80" y="14" width="120" height="146" fill="var(--cab)" stroke="var(--m3)" stroke-width="1.5"/><rect x="90" y="24" width="100" height="40" fill="var(--scr)"/><path d="M96 52l10-14 10 10 10-18 10 22 10-8 10 4" stroke="var(--go)" fill="none" stroke-width="1.4"/>
+${[0,1,2].map(i=>`<rect x="${96+i*32}" y="78" width="24" height="54" fill="var(--m2)" stroke="var(--m3)"/>${[0,1,2,3].map(j=>`<rect x="${98+i*32}" y="${82+j*12}" width="20" height="4" fill="var(--m1)"/>`).join("")}<path d="M${108+i*32} 104l-6 10h12z" fill="var(--res)"/>`).join("")}${L2(140,150,"Тиристоры с радиаторами")}`)},
+ovg:{app:"agr",t:"Обмотка возбуждения генератора и разрядный резистор Rр",d:"Обмотка возбуждения генератора — катушки на его главных полюсах, создающие магнитный поток. При аварийном отключении возбудителя ток обмотки нельзя разорвать: энергия поля переходит в разрядный резистор R<sub>р</sub>, включённый параллельно обмотке.",w:["Что считаем (В2)","Выбор R<sub>р</sub>: напряжение на обмотке I<sub>в</sub>R<sub>р</sub> не больше допустимого, время гашения 3τ ≤ 0,75 с."],
+ s:()=>ill(`${grnd(156)}<circle cx="100" cy="88" r="66" fill="var(--paint)" stroke="var(--m3)" stroke-width="1.4"/><circle cx="100" cy="88" r="34" fill="var(--m1)" stroke="var(--m3)"/>${[0,90,180,270].map(a=>`<g transform="rotate(${a} 100 88)"><rect x="88" y="24" width="24" height="26" fill="var(--m2)"/><rect x="82" y="28" width="36" height="14" fill="var(--cu)" stroke="var(--m3)"/></g>`).join("")}
+<rect x="200" y="60" width="54" height="56" fill="var(--cab)" stroke="var(--m3)"/>${[0,1,2,3].map(i=>`<path d="M208 ${70+i*11}H246" stroke="var(--res)" stroke-width="5"/>`).join("")}${L2(227,130,"Резистор Rр")}${L2(100,169,"Полюса с катушками возбуждения")}`)},
+qf:{t:"Автоматический выключатель якорной цепи QF",d:"Быстродействующий автомат постоянного тока отключает якорную цепь при коротком замыкании и стопоре сверх уставки. Дуга гаснет в дугогасительной камере, но разрыв цепи с индуктивностью всё равно вызывает перенапряжение L·di/dt.",w:["Учитываем","Ток отключения — стопорный ток 2,2I<sub>н</sub> = 1694 А (решение этапа А2)."],
+ s:()=>ill(`${grnd(156)}<rect x="90" y="40" width="100" height="116" fill="var(--paint)" stroke="var(--m3)" stroke-width="1.4"/><rect x="104" y="14" width="72" height="34" fill="var(--m2)" stroke="var(--m3)"/>${[0,1,2,3,4,5].map(i=>`<path d="M${110+i*11} 18V44" stroke="var(--m1)" stroke-width="3"/>`).join("")}<rect x="120" y="96" width="40" height="24" fill="var(--res)"/><path d="M60 140H90M190 140H220" stroke="var(--cu)" stroke-width="8"/>${L2(140,10,"Дугогасительная камера")}`)},
+opn:{app:"opn",t:"Ограничитель перенапряжений ОПН",d:"Колонка оксидно-цинковых варисторов. Варисторы включены между полюсами «+» и «−» на зажимах якоря: якорная цепь Г-Д не заземлена, а перенапряжение при отключении тока возникает между полюсами цепи, на её индуктивности. В сетях переменного тока ОПН включают между фазой и землёй (учебник Важова, разд. 4).",w:["Что считаем (Г1–Г2)","Г1 — класс варистора, число блоков по энергии и остающееся напряжение. Г2 — запас по вольт-секундной характеристике изоляции якоря."],
+ s:()=>ill(`${grnd(156)}${[0,1,2,3].map(i=>`<g transform="translate(${30+i*60} 0)"><rect x="0" y="56" width="44" height="90" rx="4" fill="var(--m1)" stroke="var(--m3)"/>${[0,1,2,3,4,5].map(j=>`<rect x="6" y="${62+j*13}" width="32" height="10" rx="2" fill="var(--res)"/>`).join("")}<path d="M22 56V36M22 146V156" stroke="var(--cu)" stroke-width="3"/></g>`).join("")}<path d="M52 36H232" stroke="var(--cu)" stroke-width="4"/>${L2(142,28,"«+» якоря")}${L2(142,169,"4 блока в параллель, к «−»")}`)},
+rki:{t:"Реле контроля изоляции РКИ",d:"Якорная цепь не имеет глухой связи с корпусом. Реле РКИ включено между цепью и заземлённым корпусом экскаватора и сигнализирует, если сопротивление изоляции цепи относительно корпуса упало, — первое замыкание на корпус ещё не авария, но его надо найти до второго.",w:["Учитываем","Корпусная изоляция якоря (А1) и испытания (Е3) — это изоляция именно относительно корпуса."],
+ s:()=>ill(`${grnd(156)}<rect x="90" y="24" width="100" height="94" rx="4" fill="var(--cab)" stroke="var(--m3)" stroke-width="1.4"/><circle cx="140" cy="62" r="26" fill="var(--well)" stroke="var(--m3)"/><path d="M140 62l16-14" stroke="var(--bad)" stroke-width="2"/><path d="M118 62a22 22 0 0 1 44 0" stroke="var(--go)" stroke-width="4" fill="none"/><circle cx="118" cy="104" r="5" fill="var(--hv)"/>${L2(140,100,"кОм")}
+<path d="M140 118V140M124 140H156M130 146H150M136 152H144" stroke="var(--m3)" stroke-width="2"/>${L2(196,150,"Корпус экскаватора")}`)},
+dpt:{app:"dpt",t:"Двигатели подъёма М1, М2 (2 × 270 кВт)",d:"Два двигателя постоянного тока независимого возбуждения по 270 кВт, 450 об/мин, ПВ 80 % вращают лебёдку подъёма (учебник Фащиленко, табл. 4.2). Расчёт ведём для одного двигателя: U<sub>н</sub> = 375 В, I<sub>н</sub> = 770 А. Двигатели некомпенсированные, на коллекторе работают щёткодержатели с изолированными пальцами.",w:["Что считаем (А1–А3)","А1 — толщина корпусной изоляции якоря по испытательному напряжению. А2 — межламельное напряжение коллектора и допустимый стопорный ток. А3 — зазоры и пути утечки щёткодержателей в пыли."],
+ s:()=>ill(`${grnd(156)}${motor(110,52,130,90)}${comm(80,62,68)}${[0,1,2].map(i=>`<g><rect x="60" y="${66+i*22}" width="20" height="10" fill="var(--res)"/><rect x="50" y="${64+i*22}" width="12" height="14" fill="var(--hv)" opacity=".9"/></g>`).join("")}<path d="M40 60V140" stroke="var(--m3)" stroke-width="4"/>${L2(60,48,"Щёткодержатели")}${L2(91,152,"Коллектор")}${L2(175,44,"Якорь")}${[0,1,2,3,4,5,6,7,8,9].map(i=>`<circle cx="${50+((i*13)%34)}" cy="${86+((i*17)%40)}" r="1.4" fill="var(--m3)"/>`).join("")}`)},
+heat:{app:"heat",t:"Нагрев обмоток",d:"Подъёмный двигатель работает циклами копания по 26 с с пиками тока, реверсами и торможением. Нагрев определяется потерями в меди I²R: ток, а не напряжение, старит изоляцию через температуру. Вентилятор-наездник обдувает двигатель и в паузах.",w:["Что считаем (Д1–Д2)","Д1 — эквивалентный ток цикла, приведённый к ПВ 80 % (метод эквивалентного тока), и допустимый ток копания. Д2 — перегрев и сокращение ресурса изоляции, сравнение потерь в меди и в диэлектрике."],
+ s:()=>ill(`${grnd(156)}<rect x="30" y="20" width="220" height="110" fill="var(--well)" stroke="var(--m3)"/>${[[30,1,2.2],[42,6,1.5],[114,6,0.8],[186,7,0.4]].map(([x,w,h])=>`<rect x="${x}" y="${130-h*40}" width="${w*12}" height="${h*40}" fill="${h>2?"var(--bad)":"var(--accent)"}" opacity=".75"/>`).join("")}<path d="M30 90H250" stroke="var(--bad)" stroke-dasharray="5 3"/>${L2(222,86,"Iн")}${L2(140,148,"Нагрузочная диаграмма цикла 26 с")}`)},
+diag:{app:"diag",t:"Диагностика и сервис изоляции",d:"Мегаомметр, испытательная установка и сушка — инструменты электролаборатории карьера. Измерения ведут на остановленном экскаваторе, обычно в ремонтную смену; перед измерением обмотку разряжают на землю.",w:["Что считаем (Е1–Е4)","Е1 — точка росы и мощность стояночного подогрева. Е2 — коэффициент абсорбции. Е3 — испытательные напряжения и токи утечки по фазам. Е4 — ток и мощность сушки обмоток."],
+ s:()=>ill(`${grnd(156)}<rect x="60" y="30" width="130" height="110" rx="8" fill="var(--hv)" stroke="var(--m3)"/><rect x="74" y="44" width="102" height="44" fill="var(--scr)"/><text x="125" y="72" text-anchor="middle" style="font:16px var(--f-mono);fill:var(--go)">1100 МΩ</text>${[0,1,2].map(i=>`<circle cx="${90+i*35}" cy="112" r="10" fill="var(--m3)"/>`).join("")}
+<path d="M190 70C230 70 236 120 260 130M190 90C220 96 226 140 250 150" stroke="var(--bad)" stroke-width="3" fill="none"/>${L2(125,24,"Мегаомметр 2,5 кВ")}`)},
+drum:{t:"Лебёдка подъёма и ковш 10 м³",d:"Двигатели через двухступенчатый редуктор вращают барабан; канаты через полиспаст поднимают ковш. Стопорение ковша о негабарит — штатный режим копания: его ограничивает токовая отсечка экскаваторной характеристики.",w:["Учитываем","Стопорный ток — (2…2,5)I<sub>н</sub> по рекомендации учебника Фащиленко, табл. 4.4."],
+ s:()=>ill(`${grnd(156)}<path d="M20 150L150 20" stroke="var(--m2)" stroke-width="10"/><circle cx="150" cy="20" r="9" fill="var(--m3)"/><path d="M150 20L190 90" stroke="var(--m3)" stroke-width="1.6"/><path d="M168 86h48l-8 40h-32z" fill="var(--paint)" stroke="var(--m3)" stroke-width="1.4"/>${[0,1,2,3].map(i=>`<path d="M${172+i*12} 126l-2 8" stroke="var(--m3)" stroke-width="2"/>`).join("")}<circle cx="50" cy="128" r="18" fill="var(--m1)" stroke="var(--m3)"/><path d="M50 110L150 20" stroke="var(--m3)" stroke-width="1.2"/>${L2(50,160,"Барабан")}${L2(200,150,"Ковш 10 м³")}`)}};
+
+function route(){
+  const el=document.getElementById("route");if(!el)return;
+  const dv={dpt:"dpt",tsn:"tsn",agr:"gen",opn:"opn",heat:"heat",diag:"diag"};
+  el.innerHTML=APPS.map(a=>{const st=appState(a.k),items=ST.filter(g=>g.app===a.k);return `<button type="button" class="chip ${st}" data-dev="${dv[a.k]}"><span class="cs">${st==="done"?"✓":st==="active"?"●":"○"}</span><span class="cn">${a.n}</span><span class="cc">${appCount(a.k)}</span><span class="ct">${items.map(g=>g.id+" "+g.t).join(" · ")}</span></button>`}).join("");
+}
+function mnemo(){
+  const A=k=>appState(k),cls=k=>"ap "+A(k)+(lastLit===k?" lit":"");
+  const live=k=>A(k)==="done",run=S.launched?" flow":"";
+  const W=(on,d)=>`<path class="w${on?" live"+run:""}" d="${d}"/>`;
+  const cnt=(x,y,k)=>`<text class="cnt" x="${x}" y="${y}" text-anchor="middle">${appCount(k)}</text>`;
+  const L=(x,y,t,a,c)=>`<text class="${c||"lb"}" x="${x}" y="${y}" text-anchor="${a||"middle"}">${t}</text>`;
+  const C=k=>live(k)?"var(--go)":"var(--off)";
+  const G=(x,y,c)=>`<path d="M${x} ${y}v8M${x-10} ${y+8}h20M${x-6} ${y+13}h12M${x-2} ${y+18}h4" stroke="${c||"var(--muted)"}" stroke-width="1.8" fill="none"/>`;
+  const dev=(k,app,body)=>`<g class="${app?cls(app):"ap plain"}" data-dev="${k}" ${app?`data-app="${app}"`:""} tabindex="0" role="button" aria-label="${DEV[k].t}">${body}</g>`;
+  const y0=96,lp=live("opn"),ag=C("agr"),dc=C("dpt");let s="";
+  s+=dev("net",null,`<rect class="ring" x="10" y="54" width="196" height="104" rx="6"/><circle cx="40" cy="${y0}" r="20" fill="var(--panel)" stroke="var(--hv)" stroke-width="2.4"/><path d="M28 ${y0}c4-11 8-11 12 0s8 11 12 0" fill="none" stroke="var(--hv)" stroke-width="2.2"/>${L(40,y0+38,"Сеть 6 кВ")}
+   <path class="w live${run}" d="M60 ${y0}H80"/><rect x="80" y="${y0-15}" width="56" height="30" rx="3" fill="var(--panel)" stroke="var(--hv)" stroke-width="2"/>${L(108,y0+5,"ЯКНО","middle","lb b")}${L(108,y0-34,"Приключательный")}${L(108,y0-21,"пункт")}
+   <path class="w live${run}" d="M136 ${y0}H210"/>${L(170,y0+18,"Кабель КГЭ")}`);
+  s+=`<circle cx="210" cy="${y0}" r="3.5" fill="var(--hv)"/>`;
+  s+=W(live("tsn"),`M210 ${y0}V172`)+W(live("agr"),`M210 ${y0}H280`);
+  s+=dev("tsn","tsn",`<rect class="ring" x="138" y="166" width="134" height="80" rx="6"/><circle class="sym" cx="210" cy="190" r="17" style="fill:none"/><circle class="sym" cx="210" cy="212" r="17" style="fill:none"/>${L(232,186,"6 кВ","start","lb s")}${L(232,224,"0,4 кВ","start","lb s")}${L(188,198,"ТСН","end","lb b")}${L(188,212,"Собств.","end","lb s")}${L(188,224,"нужды","end","lb s")}${cnt(188,238,"tsn").replace("middle","end")}`);
+  s+=W(live("tsn"),`M210 229V282H300`);
+  s+=dev("sd","agr",`<rect class="ring" x="270" y="50" width="70" height="92" rx="6"/><circle class="sym" cx="310" cy="${y0}" r="28"/><g class="rot"><path d="M310 ${y0-18}v36M292 ${y0}h36" stroke="${ag}" stroke-width="1.6"/></g>${L(310,y0+5,"СД","middle","lb big")}${L(310,y0-36,"Двигатель 6 кВ")}`);
+  s+=`<path d="M338 ${y0-4}H392M338 ${y0+4}H392" stroke="${ag}" stroke-width="2"/>`;
+  s+=dev("gen","agr",`<rect class="ring" x="384" y="50" width="76" height="92" rx="6"/><circle class="sym" cx="420" cy="${y0}" r="28"/><g class="rot"><path d="M420 ${y0-18}v36M402 ${y0}h36" stroke="${ag}" stroke-width="1.6"/></g>${L(420,y0+5,"Г","middle","lb big")}${L(420,y0-36,"Генератор")}`);
+  s+=L(365,26,"Агрегат Г-Д","middle","lb h")+cnt(365,40,"agr");
+  s+=dev("tv","agr",`<rect class="sym" x="300" y="266" width="58" height="34" rx="3"/><path d="M300 300L358 266" stroke="${ag}" stroke-width="1.4"/>${L(316,282,"~","middle","lb s")}${L(343,296,"=","middle","lb s")}${L(329,318,"ТВ — тиристорный")}${L(329,330,"возбудитель")}`);
+  s+=dev("ovg","agr",`<path class="sym" style="fill:none" d="M358 274H384c0-9 9-9 9 0c0-9 9-9 9 0c0-9 9-9 9 0c0-9 9-9 9 0H446V292H358"/><rect class="sym" x="440" y="276" width="12" height="14" style="fill:var(--panel)"/>${L(402,262,"Обмотка возбуждения Г")}${L(462,288,"R","start","lb")}<text class="lb s" x="471" y="291">р</text>`);
+  s+=`<path d="M402 262V${y0+40}" stroke="var(--muted)" stroke-width="1" stroke-dasharray="2 3"/>`;
+  s+=W(lp,`M448 ${y0}H496`)+L(472,y0-8,"+","middle","lb b");
+  s+=dev("qf",null,`<rect class="ring" x="490" y="${y0-22}" width="40" height="44" rx="5"/><path d="M496 ${y0}H504L520 ${y0-12}M522 ${y0}H530" stroke="${lp?"var(--hv)":"var(--off)"}" stroke-width="2.4" fill="none"/>${L(512,y0+20,"QF")}`);
+  s+=W(lp,`M530 ${y0}H648`);
+  s+=W(lp,`M420 ${y0+28}V168H680V${y0+32}`)+L(472,182,"−","middle","lb b");
+  s+=dev("opn","opn",`<rect class="ring" x="568" y="${y0+6}" width="64" height="70" rx="6"/><path class="sym" style="fill:none" d="M590 ${y0}V112M590 150V168"/><rect class="sym" x="581" y="112" width="18" height="38"/><path d="M575 146L605 116M605 116h6" stroke="${C("opn")}" stroke-width="1.4"/>${L(612,128,"ОПН","start","lb b")}${cnt(624,142,"opn")}`);
+  s+=dev("rki",null,`<rect class="ring" x="520" y="172" width="44" height="64" rx="5"/><path d="M542 168V180" stroke="var(--muted)" stroke-width="1.6"/><rect x="530" y="180" width="24" height="16" rx="2" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.6"/>${L(542,192,"РКИ","middle","lb s")}${G(542,196)}${L(542,232,"Корпус","middle","lb s")}`);
+  s+=dev("dpt","dpt",`<rect class="ring" x="636" y="44" width="92" height="96" rx="6"/><circle class="sym" cx="680" cy="${y0}" r="32"/><g class="rot"><path d="M680 ${y0-22}v44M658 ${y0}h44" stroke="${dc}" stroke-width="1.6"/></g>${L(680,y0+6,"М","middle","lb big")}${L(682,30,"Двигатели подъёма М1, М2")}${cnt(682,42,"dpt")}`);
+  s+=dev("drum",null,`<path d="M712 ${y0}H770" stroke="${dc}" stroke-width="3"/><g class="rot"><circle cx="790" cy="${y0}" r="20" fill="var(--panel)" stroke="${dc}" stroke-width="2.4"/><path d="M790 ${y0-20}V${y0+20}M770 ${y0}H810" stroke="${dc}" stroke-width="1.4"/></g><path d="M808 ${y0-8}L866 44" stroke="var(--muted)" stroke-width="1.4"/><g><path d="M866 44V150" stroke="var(--muted)" stroke-width="1.4"/><path d="M848 150h36l-6 24h-24z" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.6"/>${S.launched?`<animateTransform attributeName="transform" type="translate" values="0 0;0 -46;0 0" dur="4s" repeatCount="indefinite"/>`:""}</g>${L(866,196,"Ковш")}${L(790,y0+36,"Лебёдка")}`);
+  const hk=live("heat");
+  s+=dev("heat","heat",`<rect class="ring" x="736" y="150" width="88" height="106" rx="6"/><rect class="sym" x="774" y="160" width="12" height="54" rx="6"/><circle class="sym" cx="780" cy="222" r="10"/><rect x="777" y="${hk?184:168}" width="6" height="${hk?38:54}" fill="${hk?"var(--go)":"var(--bad)"}" opacity=".85"/>${L(780,248,"Нагрев обмоток")}${cnt(780,262,"heat")}`);
+  s+=`<path class="wd${live("diag")?" live":""}" d="M310 ${y0+28}V352H426M420 ${y0+28}V176M680 ${y0+32}V352H574"/>`;
+  s+=dev("diag","diag",`<rect class="ring" x="420" y="326" width="160" height="58" rx="6"/><rect class="sym" x="428" y="332" width="144" height="40" rx="3"/><text x="500" y="357" text-anchor="middle" style="font-family:var(--f-mono);font-size:13px;fill:${live("diag")?"var(--go)":"var(--muted)"}">Мегаомметр ${live("diag")?"K = 1,83":"—"}</text>${L(500,398,"Диагностика и сервис · "+appCount("diag"))}`);
+  if(S.i>=ST.length&&!S.launched)s+=`<g id="launch" style="cursor:pointer"><rect x="720" y="300" width="140" height="52" rx="6" fill="var(--hv)"/><text x="790" y="332" text-anchor="middle" style="font-family:var(--f-disp);font-size:22px;fill:#1B1A10;font-weight:700">ПУСК</text></g>`;
+  const svg=document.getElementById("msvg");svg.innerHTML=s;
+  const Lb=document.getElementById("launch");if(Lb)Lb.addEventListener("click",launch);
+  document.getElementById("mnemo").classList.toggle("run",S.launched);
+  const st=document.getElementById("st");
+  if(S.launched){st.textContent="Экскаватор в работе · цикл 26 с";st.className="status ok"}
+  else if(S.i>=ST.length){st.textContent="Изоляция проверена · нажмите «Пуск»";st.className="status ok"}
+  else{st.textContent="Этап "+(S.i+1)+" из "+ST.length;st.className="status"}
+  route();
+}
+
+
+const qtip=document.createElement("div");qtip.id="qtip";qtip.setAttribute("role","tooltip");document.body.appendChild(qtip);
+let tipFor=null;
+function showTip(b){if(tipFor&&tipFor!==b)tipFor.removeAttribute("aria-describedby");tipFor=b;qtip.innerHTML=TIPS[+b.dataset.t]||"";b.setAttribute("aria-describedby","qtip");qtip.classList.add("on");
+  const r=b.getBoundingClientRect(),w=qtip.offsetWidth,h=qtip.offsetHeight;let x=Math.min(Math.max(8,r.left+r.width/2-w/2),innerWidth-w-8),y=r.bottom+8;if(y+h>innerHeight-8&&r.top-h-8>0)y=r.top-h-8;qtip.style.left=x+"px";qtip.style.top=y+"px"}
+function hideTip(){qtip.classList.remove("on");if(tipFor)tipFor.removeAttribute("aria-describedby");tipFor=null}
+document.addEventListener("mouseover",e=>{const b=e.target.closest&&e.target.closest(".qh");if(b)showTip(b)});
+document.addEventListener("mouseout",e=>{const b=e.target.closest&&e.target.closest(".qh");if(b&&!(e.relatedTarget&&b.contains(e.relatedTarget))&&document.activeElement!==b)hideTip()});
+document.addEventListener("focusin",e=>{const b=e.target.closest&&e.target.closest(".qh");if(b)showTip(b)});
+document.addEventListener("focusout",e=>{if(e.target.closest&&e.target.closest(".qh"))hideTip()});
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest(".qh");if(b){e.preventDefault();e.stopPropagation();b.focus({preventScroll:true});showTip(b)}else if(tipFor)hideTip()},true);
+document.addEventListener("keydown",e=>{if(e.key==="Escape")hideTip()});
+addEventListener("scroll",()=>{if(tipFor)hideTip()},true);
+const dcard=document.createElement("div");dcard.id="dcard";dcard.hidden=true;dcard.setAttribute("role","dialog");document.body.appendChild(dcard);
+let dFor=null;
+function showDev(el){const k=el.dataset.dev,d=DEV[k];if(!d)return;dFor=el;
+  const cur=d.app&&S.i<ST.length&&ST[S.i].app===d.app;
+  dcard.innerHTML=`<div class="dh"><b>${d.t}</b><button class="dx" type="button" aria-label="Закрыть">×</button></div>${d.s?`<div class="dimg">${d.s()}</div>`:""}<p>${d.d}</p><p class="dw"><b>${d.w[0]}.</b> ${d.w[1]}</p>${cur?`<button class="btn" type="button" id="dgo">К текущему этапу</button>`:""}`;
+  dcard.hidden=false;
+  const r=el.getBoundingClientRect(),w=dcard.offsetWidth,h=dcard.offsetHeight;
+  let x=Math.min(Math.max(8,r.left+r.width/2-w/2),innerWidth-w-8),y=r.bottom+8;
+  if(y+h>innerHeight-8){y=r.top-h-8;if(y<8)y=Math.max(8,innerHeight-h-8)}
+  dcard.style.left=x+"px";dcard.style.top=y+"px";
+  dcard.querySelector(".dx").onclick=ev=>{ev.stopPropagation();hideDev()};
+  const g=document.getElementById("dgo");if(g)g.onclick=ev=>{ev.stopPropagation();hideDev();document.getElementById("stand").scrollIntoView({behavior:"smooth",block:"start"})};
+}
+function hideDev(){dcard.hidden=true;dFor=null}
+document.addEventListener("click",e=>{const el=e.target.closest&&e.target.closest("[data-dev]");if(el&&(document.getElementById("msvg").contains(el)||document.getElementById("route").contains(el))){e.stopPropagation();showDev(el);return}if(!dcard.hidden&&!dcard.contains(e.target))hideDev()});
+document.addEventListener("keydown",e=>{const el=e.target.closest&&e.target.closest("[data-dev]");if(el&&(e.key==="Enter"||e.key===" ")){e.preventDefault();showDev(el)}if(e.key==="Escape"&&!dcard.hidden)hideDev()});
+addEventListener("scroll",()=>{if(!dcard.hidden)hideDev()},true);
+const fresh=()=>({i:0,step:"calc",done:{},tries:0,streak:0,s:0,score:0,hint:null,hintNow:false,tune:{},t0:null,el:0,res:[],over:false,started:false,launched:false});
+let S=fresh(), lastLit=null, fb=null;
+function load(){try{const t=localStorage.getItem(KEY);if(t){const o=JSON.parse(t);if(o&&typeof o.i==="number")S=Object.assign(fresh(),o)}}catch(e){}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+
+function appState(k){const idx=ST.map((s,i)=>s.app===k?i:-1).filter(i=>i>=0);const lo=idx[0],hi=idx[idx.length-1];if(S.i>hi)return"done";if(S.i>=lo)return"active";return"off"}
+function appCount(k){const idx=ST.filter(s=>s.app===k);const n=idx.filter(s=>ST.indexOf(s)<S.i).length;return n+"/"+idx.length}
+
+const RS=[500,100,20,4,1,0.4,0];
+function streamer(n){
+  const k=Math.min(n,MAXS),R=RS[k],cx=66,cy=78,rr=56,ang=v=>Math.PI*(1-(Math.log10(Math.max(v,0.1))+1)/4);
+  const P=(v,r)=>[cx+r*Math.cos(ang(v)),cy-r*Math.sin(ang(v))];
+  const arc=(v1,v2,c,w)=>{const [x1,y1]=P(v1,rr),[x2,y2]=P(v2,rr);return `<path d="M${x1.toFixed(1)} ${y1.toFixed(1)}A${rr} ${rr} 0 0 1 ${x2.toFixed(1)} ${y2.toFixed(1)}" stroke="${c}" stroke-width="${w}" fill="none"/>`};
+  let s=arc(0.1,0.5,"var(--bad)",7)+arc(0.5,1000,"var(--go)",3);
+  [0.1,1,10,100,1000].forEach(v=>{const [x1,y1]=P(v,rr-6),[x2,y2]=P(v,rr+3),[xt,yt]=P(v,rr-16);s+=`<path d="M${x1.toFixed(1)} ${y1.toFixed(1)}L${x2.toFixed(1)} ${y2.toFixed(1)}" stroke="var(--muted)" stroke-width="1.2"/><text x="${xt.toFixed(1)}" y="${(yt+3).toFixed(1)}" text-anchor="middle" style="font:8px var(--f-mono);fill:var(--muted)">${v<1?"0,1":v}</text>`});
+  const [nx,ny]=P(R>0?R:0.1,rr-4);s+=`<path d="M${cx} ${cy}L${nx.toFixed(1)} ${ny.toFixed(1)}" stroke="${k>=MAXS-1?"var(--bad)":"var(--ink)"}" stroke-width="2.4" stroke-linecap="round"/><circle cx="${cx}" cy="${cy}" r="4" fill="var(--ink)"/><text x="${cx}" y="94" text-anchor="middle" style="font:9px var(--f-mono);fill:var(--muted)">МОм · 1000 В</text>`;
+  document.getElementById("gapsvg").innerHTML=s;
+  document.getElementById("gapm").innerHTML=Array.from({length:MAXS},(_,j)=>`<i class="${j<n?"on":""}"></i>`).join("");
+  document.getElementById("gaptxt").textContent=k>=MAXS?"ПРОБОЙ НА КОРПУС":"R = "+String(R).replace(".",",")+" МОм"+(R<0.5?" — ниже нормы 0,5 МОм":"");
+  document.getElementById("gapbox").classList.toggle("hot",n>=MAXS-2);
+}
+
+function board(){
+  document.getElementById("sc").textContent=S.score;
+  document.getElementById("pg").textContent=Math.min(S.i,ST.length)+"/"+ST.length;
+  document.getElementById("hc").textContent=S.hint?"0":"1";
+  const hc=document.getElementById("hcell");hc.classList.toggle("used",!!S.hint);
+  hc.querySelector("span").textContent=S.hint?"подсказка истрачена":"подсказка в запасе";
+  const t=Math.floor(S.el/1000);document.getElementById("tm").textContent=String(Math.floor(t/60)).padStart(2,"0")+":"+String(t%60).padStart(2,"0");
+  streamer(S.s);
+}
+
+function parseNum(s){s=String(s).trim().replace(/\s/g,"").replace(",",".");if(s==="")return NaN;return Number(s)}
+
+function stand(){
+  const el=document.getElementById("stand");
+  if(S.i>=ST.length){el.innerHTML=finalHTML();bindFinal();return}
+  const g=ST[S.i],app=APPS.find(a=>a.k===g.app).n,key=g.id+(S.step==="calc"?"c":"t");
+  const hintHere=S.hint===key;
+  let h=`<div class="shead"><h3>${g.id} · ${g.t}</h3><span class="smeta">${app} · расчётная неделя ${g.wk} · этап ${S.i+1} из ${ST.length}</span></div>`;
+  h+=`<div class="steps"><span class="${S.step==="calc"?"on":"ok"}">1. Расчёт</span>→<span class="${S.step==="tune"?"on":""}">2. Наладка на стенде</span></div>`;
+  if(S.step==="calc"){
+    h+=`<p class="task">${g.calc.q}</p><div class="answer"><label class="small" for="inp">Ответ</label><input id="inp" inputmode="decimal" autocomplete="off"><span class="unit">${g.calc.u}</span><button class="btn" id="chk">Проверить</button></div>`;
+    if(hintHere)h+=`<div class="fb tip"><strong>Подсказка</strong>${g.calc.h}</div>`;
+  } else {
+    const st=S.tune[g.id]||(S.tune[g.id]=g.tune.init());
+    h+=`<p class="task">${g.tune.task}</p><div class="tune"><div class="ctrl" id="ctrl">${g.tune.ctrl(st)}<button class="btn hv" id="acc">Принять решение</button></div><div class="viz" id="viz">${g.tune.viz(st)}</div></div>`;
+    if(hintHere)h+=`<div class="fb tip"><strong>Подсказка</strong>${g.tune.h}</div>`;
+  }
+  if(fb)h+=`<div class="fb ${fb.ok?"ok":"no"}"><strong>${fb.title}</strong>${fb.text}</div>`;
+  h+=`<div class="row"><button class="btn ghost" id="hb"${S.hint?" disabled":""}>${S.hint?"Подсказка уже истрачена":"Подсказка (−50 очков, одна на игру)"}</button></div>`;
+  el.innerHTML=h;
+  const inp=document.getElementById("inp");
+  if(inp){inp.addEventListener("keydown",e=>{if(e.key==="Enter")checkCalc()});document.getElementById("chk").onclick=checkCalc}
+  if(S.step==="tune")bindTune(g);
+  document.getElementById("hb").onclick=()=>{if(S.hint)return;S.hint=key;touch();save();stand();board()};
+}
+
+function bindTune(g){
+  const st=S.tune[g.id],ctrl=document.getElementById("ctrl"),viz=document.getElementById("viz");
+  const redraw=()=>{viz.innerHTML=g.tune.viz(st);bindSel()};
+  const bindSel=()=>{document.querySelectorAll("[data-sel]").forEach(x=>x.addEventListener("change",()=>{st[x.dataset.sel]=x.value;touch();save();redraw()}))};
+  ctrl.querySelectorAll("[data-k]").forEach(b=>b.addEventListener("click",()=>{const v=b.dataset.v;st[b.dataset.k]=isNaN(+v)?v:+v;touch();save();ctrl.querySelectorAll(`[data-k="${b.dataset.k}"]`).forEach(x=>x.classList.toggle("on",x===b));redraw()}));
+  ctrl.querySelectorAll("[data-r]").forEach(r=>r.addEventListener("input",()=>{const k=r.dataset.r;st[k]=+r.value;touch();const o=document.getElementById("o_"+k);const tmp=document.createElement("div");tmp.innerHTML=g.tune.ctrl(st);const no=tmp.querySelector("#o_"+k);if(o&&no)o.textContent=no.textContent;save();redraw()}));
+  bindSel();
+  document.getElementById("acc").onclick=()=>judge(g.tune.ok(st),g,"t");
+}
+
+function touch(){if(!S.started){S.started=true;S.t0=Date.now()-S.el}}
+function checkCalc(){
+  const g=ST[S.i],inp=document.getElementById("inp"),v=parseNum(inp.value);
+  if(!isFinite(v)){inp.setCustomValidity("Введите число, например 2,45");inp.reportValidity();inp.setCustomValidity("");return}
+  judge(Math.abs(v-g.calc.a)<=Math.abs(g.calc.a)*.03,g,"c",v);
+}
+function judge(ok,g,kind,v){
+  touch();const key=g.id+kind;
+  if(ok){
+    let pts=S.tries===0?100:50;if(S.hint===key)pts=Math.max(0,pts-50);S.score+=pts;
+    S.res.push({id:g.id,k:kind,pts,err:S.tries,h:S.hint===key});
+    let dried=false;if(S.tries===0){S.streak++;if(S.streak>=3){S.streak=0;if(S.s>0){S.s--;dried=true}}}else S.streak=0;
+    S.tries=0;
+    const extra=dried?"Изоляция подсушена: R вырос на деление. ":"";
+    if(kind==="c"){S.step="tune";fb={ok:true,title:extra+"Расчёт верен: +"+pts+". Стенд включён",text:"Ответ: "+fx(g.calc.a,g.calc.a<1?3:g.calc.a<10?2:g.calc.a<100?1:0)+(g.calc.u?" "+g.calc.u:"")+". Теперь наладка."}}
+    else{const prevApp=g.app;S.i++;S.step="calc";fb={ok:true,title:extra+"Налажено: +"+pts,text:g.tune.ex};
+      if(S.i>=ST.length||ST[S.i].app!==prevApp)lastLit=prevApp}
+  } else {
+    S.tries++;S.streak=0;S.s++;
+    const gb=document.getElementById("gapbox");gb.classList.remove("shake");void gb.offsetWidth;gb.classList.add("shake");
+    fb={ok:false,title:"Неверно: сопротивление изоляции упало до "+String(RS[Math.min(S.s,MAXS)]).replace(".",",")+" МОм",text:kind==="c"?"Проверьте единицы и формулу, попробуйте ещё раз.":"Решение не проходит по условию — посмотрите на красные показания стенда."};
+    if(S.s>=MAXS){S.over=true;save();board();boom();return}
+  }
+  save();board();mnemo();stand();
+  setTimeout(()=>{lastLit=null},1300);
+  if(ok&&kind==="t")document.getElementById("stand").scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+function boom(){
+  const f=document.createElement("div");f.className="flash";document.body.appendChild(f);setTimeout(()=>f.remove(),800);
+  const o=document.createElement("div");o.className="over";o.id="over";
+  o.innerHTML=`<div class="card" role="alertdialog" aria-labelledby="ot"><h2 id="ot">Пробой изоляции на корпус</h2><p>Сопротивление изоляции якоря упало до нуля, реле контроля изоляции отключило экскаватор. Пройдено этапов: ${S.i} из ${ST.length}, очков: ${S.score}.</p><p class="small">Наладку придётся начать сначала. Методичка и подсказки помогут не ошибаться.</p><div class="row"><button class="btn" id="again">Начать заново</button></div></div>`;
+  document.body.appendChild(o);document.getElementById("again").onclick=()=>{o.remove();S=fresh();fb=null;save();all()};
+}
+function launch(){S.launched=true;save();mnemo();stand()}
+function resultText(){
+  let t="Изоляция ЭКГ-10 — итог\nОчки: "+S.score+" из "+ST.length*200+"\nВремя: "+document.getElementById("tm").textContent+"\nИзоляция якоря: R = "+String(RS[Math.min(S.s,MAXS)]).replace(".",",")+" МОм ("+S.s+" ошибок)"+"\nПодсказка: "+(S.hint?"использована ("+S.hint.slice(0,2)+")":"не использована")+"\n";
+  ST.forEach(g=>{const r=S.res.filter(x=>x.id===g.id);t+=g.id+" "+g.t+": "+r.map(x=>(x.k==="c"?"расчёт ":"наладка ")+(x.err?"ошибок "+x.err:"с первой")).join(", ")+"\n"});return t;
+}
+function finalHTML(){
+  const grade=S.score>=2700?"отлично":S.score>=2250?"хорошо":S.score>=1700?"удовлетворительно":"нужно повторить";
+  let h=`<div class="shead"><h3>${S.launched?"Экскаватор в работе":"Все "+ST.length+" этапов пройдены"}</h3><span class="smeta">итог · ${grade}</span></div>`;
+  if(!S.launched)h+=`<div class="row"><button class="btn hv" id="go">Пуск экскаватора</button><span class="small">Кнопка «Пуск» есть и на мнемосхеме.</span></div>`;
+  if(fb)h+=`<div class="fb ok"><strong>${fb.title}</strong>${fb.text}</div>`;
+  h+=`<div class="board"><div class="cell"><b>${S.score}</b><span>очков из ${ST.length*200}</span></div><div class="cell"><b>${document.getElementById("tm").textContent}</b><span>время</span></div><div class="cell"><b>${String(RS[Math.min(S.s,MAXS)]).replace(".",",")} МОм</b><span>изоляция якоря</span></div></div>`;
+  h+=`<div class="tbl"><table class="res"><thead><tr><th>Этап</th><th>Тема</th><th>Расчёт</th><th>Наладка</th></tr></thead><tbody>`;
+  ST.forEach(g=>{const c=S.res.find(x=>x.id===g.id&&x.k==="c"),u=S.res.find(x=>x.id===g.id&&x.k==="t");const f=x=>x?(x.err?`<span style="color:var(--bad)">${x.pts} (ош. ${x.err}${x.h?", подск.":""})</span>`:`<span style="color:var(--go)">${x.pts}${x.h?" (подск.)":""}</span>`):"—";h+=`<tr><td class="mono">${g.id}</td><td>${g.t}</td><td class="mono">${f(c)}</td><td class="mono">${f(u)}</td></tr>`});
+  h+=`</tbody></table></div><div class="row"><button class="btn" id="cp">Скопировать итог для преподавателя</button><button class="btn ghost" id="rs1">Начать заново</button><span class="small" id="cpm"></span></div><pre class="small mono" id="rt" hidden></pre>`;
+  return h;
+}
+function bindFinal(){
+  const go=document.getElementById("go");if(go)go.onclick=launch;
+  document.getElementById("rs1").onclick=reset;
+  document.getElementById("cp").onclick=()=>{const t=resultText(),m=document.getElementById("cpm");
+    const fbk=()=>{const p=document.getElementById("rt");p.hidden=false;p.textContent=t;const r=document.createRange();r.selectNodeContents(p);const s=getSelection();s.removeAllRanges();s.addRange(r);m.textContent="Текст выделен — скопируйте его вручную."};
+    try{navigator.clipboard.writeText(t).then(()=>{m.textContent="Скопировано."},fbk)}catch(e){fbk()}};
+}
+function reset(){const el=document.getElementById("stand");el.innerHTML=`<div class="row"><span>Стереть прогресс и начать наладку заново?</span><button class="btn" id="y">Стереть</button><button class="btn ghost" id="n">Отмена</button></div>`;
+  document.getElementById("y").onclick=()=>{S=fresh();fb=null;save();all()};document.getElementById("n").onclick=stand;el.scrollIntoView({behavior:"smooth",block:"nearest"})}
+function all(){board();mnemo();stand()}
+document.getElementById("rs0").onclick=reset;
+setInterval(()=>{if(S.started&&!S.over&&S.i<ST.length){S.el=Date.now()-S.t0;board()}},1000);
+function start(d){if(d&&typeof d.i==="number")S=Object.assign(fresh(),d);else load();if(S.started)S.t0=Date.now()-S.el;all();if(S.over)boom()}
+window.claude?.hot?.snapshot?.(()=>S);
+window.claude?.hot?.ready?window.claude.hot.ready(start):start(window.claude?.hot?.data??{});
+</script>
+<a href="../" title="Все материалы" style="position:fixed;right:10px;bottom:10px;z-index:99999;background:rgba(31,95,175,.92);color:#fff;font:600 13px system-ui,sans-serif;padding:6px 11px;border-radius:999px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.25)">⌂ Все материалы</a><script>addEventListener("load",function(){var h=location.hash.slice(1),b=h&&document.querySelector("[data-tab="+h+"]");if(b)b.click()})</script></html>

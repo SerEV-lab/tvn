@@ -1,0 +1,188 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Задание. Вариант 5. Наладка привода ВД-6300</title><style>:root{--ink:#16202c;--muted:#5b6675;--line:#d9dde3;--acc:#1f5faf;--bg:#fff;--soft:#f3f5f8}
+@media (prefers-color-scheme:dark){:root{--ink:#e6eaf0;--muted:#9aa6b5;--line:#33404f;--acc:#7fb3f0;--bg:#121820;--soft:#1b2430}img{background:#fff}}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 "PT Serif",Georgia,"Times New Roman",serif}
+.bar{position:sticky;top:0;display:flex;justify-content:space-between;gap:12px;padding:10px 16px;background:var(--soft);border-bottom:1px solid var(--line);font:600 14px system-ui,-apple-system,"Segoe UI",sans-serif;z-index:5}
+.bar a{color:var(--acc);text-decoration:none}.bar .pdf{border:1px solid var(--acc);border-radius:999px;padding:2px 12px}
+main{max-width:820px;margin:0 auto;padding:16px 16px 64px}
+h1,h2,h3,h4{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.25;margin:1.6em 0 .5em}
+h1{font-size:1.5em}h2{font-size:1.25em}h3{font-size:1.08em}
+p{margin:.5em 0}img{max-width:100%;height:auto;display:block;margin:12px auto;border-radius:6px}
+figure{margin:16px 0}figcaption{text-align:center;color:var(--muted);font-size:.9em}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:.92em;display:block;overflow-x:auto}
+td,th{border:1px solid var(--line);padding:6px 8px;vertical-align:top}th{background:var(--soft);text-align:left}
+math{font-size:1.08em}math[display=block]{overflow-x:auto;overflow-y:hidden;margin:10px 0}
+blockquote{margin:12px 0;padding:8px 14px;border-left:4px solid var(--acc);background:var(--soft)}
+@media print{.bar{display:none}body{font-size:12pt}main{max-width:none;padding:0}table{display:table}img{background:none}}
+</style></head><body><nav class="bar"><a href="../">← Техника высоких напряжений</a><a class="pdf" href="vd-task.pdf" download>Скачать PDF</a></nav><main><p>Техника высоких напряжений</p>
+<p><strong>Сквозное задание · вариант 5</strong></p>
+<p><strong>Наладка привода ВД-6300</strong></p>
+<p><em>Высоковольтный вентильный двигатель компрессорной станции 10 кВ:
+вводы RIP, преобразователь, двигатель, мониторинг частичных
+разрядов</em></p>
+<h2>Технологический объект</h2>
+<p>Главная компрессорная станция. Синхронный двигатель 6300 кВт, 10 кВ
+питается от преобразователя частоты с автономным инвертором тока (АИТ)
+на запираемых тиристорах GTO/IGCT; вместе они образуют вентильный
+двигатель (ВД). Питание — от сети 35 кВ через согласующий сухой
+трансформатор 35/10 кВ с литой изоляцией; ввод 35 кВ — с твёрдой
+изоляцией RIP (бумага, пропитанная эпоксидной смолой). В звене
+постоянного тока установлен сглаживающий реактор L<sub>d</sub>.</p>
+<h2>Исходные данные</h2>
+<table>
+<colgroup>
+<col style="width: 59%" />
+<col style="width: 40%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Параметр</strong></th>
+<th><strong>Значение</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Номинальное напряжение двигателя U<sub>ном</sub></td>
+<td>10,0 кВ</td>
+</tr>
+<tr class="even">
+<td>Номинальная мощность P<sub>ном</sub></td>
+<td>6300 кВт</td>
+</tr>
+<tr class="odd">
+<td>Частота вращения n</td>
+<td>1500 об/мин</td>
+</tr>
+<tr class="even">
+<td>Частота сети f</td>
+<td>50 Гц</td>
+</tr>
+<tr class="odd">
+<td>Согласующий трансформатор</td>
+<td>35/10 кВ, сухой, 8 МВ·А; вводы 35 кВ с RIP-изоляцией</td>
+</tr>
+<tr class="even">
+<td>Испытательное напряжение ввода 35 кВ, 50 Гц, 1 мин</td>
+<td>95 кВ</td>
+</tr>
+<tr class="odd">
+<td>Сглаживающий реактор звена постоянного тока L<sub>d</sub></td>
+<td>0,15 Гн</td>
+</tr>
+<tr class="even">
+<td>Частота коммутации инвертора</td>
+<td>до 300 Гц</td>
+</tr>
+<tr class="odd">
+<td>Принять для двигателя (уточнить по паспорту)</td>
+<td>η = 0,97; cos φ = 0,9 (опережающий); x″<sub>d</sub> = 0,15 о.е.</td>
+</tr>
+</tbody>
+</table>
+<p>Недостающие для расчёта величины (размеры ввода, параметры приборов
+инвертора, характеристики RIP, данные измерений ЧР) даны в методических
+указаниях к соответствующим неделям.</p>
+<h2>Еженедельный календарный план</h2>
+<table>
+<colgroup>
+<col style="width: 13%" />
+<col style="width: 86%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Неделя</strong></th>
+<th><strong>Задача</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Корпусная изоляция статора синхронного двигателя 10 кВ при питании
+прямоугольными импульсами тока от автономного инвертора тока: расчётное
+напряжение с учётом коммутационных всплесков, толщина изоляции.</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Коммутационные перенапряжения при переключении фазных обмоток
+двигателя: коммутирующая ёмкость АИТ, всплеск напряжения и угол
+коммутации.</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Электрические поля в пазовой и лобовой частях статора с учётом формы
+тока инвертора; противокоронное покрытие на выходе из паза.</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Конструкция ввода 35 кВ с твёрдой RIP-изоляцией: поле у токоведущей
+трубы, выбор её диаметра.</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>Расположение уравнительных обкладок (фольговых обкладок) в RIP-вводе
+для выравнивания радиальной напряжённости E<sub>r</sub>: число
+обкладок.</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>Краевой эффект у фланца ввода; длина пути утечки и размеры
+покрышки.</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>Демпфирующие RC-цепочки (снабберы), подключаемые параллельно
+тиристорам АИТ для ограничения dU/dt и dI/dt.</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>Потери мощности в резисторах снабберов при частоте коммутации
+инвертора до 300 Гц; выбор резисторов.</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>Выбор нелинейных ограничителей перенапряжений (ОПН) для защиты звена
+постоянного тока со сглаживающим реактором L<sub>d</sub>.</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>Длительная электрическая прочность RIP-изоляции: кривая жизни и
+допустимое рабочее поле на срок службы 30 лет.</td>
+</tr>
+<tr class="odd">
+<td>11</td>
+<td>Частичные разряды в газовых включениях RIP-изоляции: допустимый
+размер пустоты, интенсивность ЧР и риск роста электрических
+деревьев.</td>
+</tr>
+<tr class="even">
+<td>12</td>
+<td>Тепловой расчёт сухого трансформатора с литой изоляцией и
+сглаживающего реактора L<sub>d</sub> при непрерывной работе с учётом
+высших гармоник тока.</td>
+</tr>
+<tr class="odd">
+<td>13</td>
+<td>Схема непрерывного (online) акустического и электрического
+мониторинга частичных разрядов в изоляции двигателя и вводах 35 кВ;
+отстройка от помех инвертора.</td>
+</tr>
+<tr class="even">
+<td>14</td>
+<td>Обработка сигналов ЧР по фазовым диаграммам PRPD (Phase Resolved
+Partial Discharge): распознавание пустоты, поверхностного разряда,
+короны и помехи.</td>
+</tr>
+<tr class="odd">
+<td>15</td>
+<td>Комплексный паспорт технического состояния изоляции вентильного
+электропривода: баллы узлов и индекс состояния HI. Оформление итогового
+отчёта. Защита работы.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Нормативная база:</strong> ПУЭ, гл. 1.8; ГОСТ 1516.3; ГОСТ Р
+55191-2012 (МЭК 60270); IEC 60137 (вводы). <strong>Учебники:</strong>
+Важов В. Ф., Лавринович В. А. Техника высоких напряжений. — Томск: ТПУ,
+2014; Фащиленко В. Н., Плащанский Л. А. Электропривод горных машин;
+Ильинский Н. Ф. Общий курс электропривода.</p>
+</main></body></html>

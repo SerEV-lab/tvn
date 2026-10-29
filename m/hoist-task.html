@@ -1,0 +1,207 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Задание. Вариант 1. Наладка ЧРП шахтного подъёма 6 кВ</title><style>:root{--ink:#16202c;--muted:#5b6675;--line:#d9dde3;--acc:#1f5faf;--bg:#fff;--soft:#f3f5f8}
+@media (prefers-color-scheme:dark){:root{--ink:#e6eaf0;--muted:#9aa6b5;--line:#33404f;--acc:#7fb3f0;--bg:#121820;--soft:#1b2430}img{background:#fff}}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 "PT Serif",Georgia,"Times New Roman",serif}
+.bar{position:sticky;top:0;display:flex;justify-content:space-between;gap:12px;padding:10px 16px;background:var(--soft);border-bottom:1px solid var(--line);font:600 14px system-ui,-apple-system,"Segoe UI",sans-serif;z-index:5}
+.bar a{color:var(--acc);text-decoration:none}.bar .pdf{border:1px solid var(--acc);border-radius:999px;padding:2px 12px}
+main{max-width:820px;margin:0 auto;padding:16px 16px 64px}
+h1,h2,h3,h4{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.25;margin:1.6em 0 .5em}
+h1{font-size:1.5em}h2{font-size:1.25em}h3{font-size:1.08em}
+p{margin:.5em 0}img{max-width:100%;height:auto;display:block;margin:12px auto;border-radius:6px}
+figure{margin:16px 0}figcaption{text-align:center;color:var(--muted);font-size:.9em}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:.92em;display:block;overflow-x:auto}
+td,th{border:1px solid var(--line);padding:6px 8px;vertical-align:top}th{background:var(--soft);text-align:left}
+math{font-size:1.08em}math[display=block]{overflow-x:auto;overflow-y:hidden;margin:10px 0}
+blockquote{margin:12px 0;padding:8px 14px;border-left:4px solid var(--acc);background:var(--soft)}
+@media print{.bar{display:none}body{font-size:12pt}main{max-width:none;padding:0}table{display:table}img{background:none}}
+</style></head><body><nav class="bar"><a href="../">← Техника высоких напряжений</a><a class="pdf" href="hoist-task.pdf" download>Скачать PDF</a></nav><main><p>Техника высоких напряжений</p>
+<p><strong>Сквозное задание · вариант 1</strong></p>
+<p><strong>Наладка ЧРП шахтного подъёма 6 кВ</strong></p>
+<p><em>Частотно-регулируемый электропривод скиповой подъёмной установки
+6 кВ: волновые процессы в кабеле, изоляция двигателя, диагностика и
+испытания</em></p>
+<h2>Технологический объект</h2>
+<p>Скиповая подъёмная установка глубокой шахты. Асинхронный двигатель
+2500 кВт, 6 кВ питается от многоуровневого транзисторного
+преобразователя частоты с ШИМ по кабельной линии с изоляцией из сшитого
+полиэтилена (СПЭ). Крутые фронты ШИМ распространяются по кабелю как
+волны, отражаются от зажимов двигателя и нагружают его изоляцию,
+особенно межвитковую изоляцию первых катушек фазы.</p>
+<h2>Исходные данные</h2>
+<table>
+<colgroup>
+<col style="width: 59%" />
+<col style="width: 40%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Параметр</strong></th>
+<th><strong>Значение</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Номинальное напряжение U<sub>ном</sub></td>
+<td>6,0 кВ</td>
+</tr>
+<tr class="even">
+<td>Номинальная мощность двигателя P<sub>ном</sub></td>
+<td>2500 кВт</td>
+</tr>
+<tr class="odd">
+<td>Длина кабельной линии L<sub>каб</sub></td>
+<td>350 м</td>
+</tr>
+<tr class="even">
+<td>Изоляция кабеля СПЭ: ε<sub>r</sub>; толщина d</td>
+<td>2,3; 3,4 мм</td>
+</tr>
+<tr class="odd">
+<td>Волновое сопротивление кабеля Z<sub>каб</sub></td>
+<td>45 Ом</td>
+</tr>
+<tr class="even">
+<td>Волновое сопротивление обмотки двигателя Z<sub>дв</sub></td>
+<td>800 Ом</td>
+</tr>
+<tr class="odd">
+<td>Крутизна фронта ШИМ dU/dt</td>
+<td>8,0 кВ/мкс</td>
+</tr>
+<tr class="even">
+<td>Допустимая крутизна на зажимах двигателя</td>
+<td>не более 1,5 кВ/мкс</td>
+</tr>
+<tr class="odd">
+<td>Кратковременная прочность корпусной изоляции статора
+E<sub>пр</sub></td>
+<td>250 кВ/см (25 кВ/мм)</td>
+</tr>
+<tr class="even">
+<td>Класс нагревостойкости изоляции обмотки</td>
+<td>F (155 °C)</td>
+</tr>
+<tr class="odd">
+<td>Испытательное напряжение кабеля</td>
+<td>35 кВ (выпрямленное)</td>
+</tr>
+<tr class="even">
+<td>Испытательное напряжение обмотки статора, 50 Гц, 1 мин</td>
+<td>15 кВ</td>
+</tr>
+</tbody>
+</table>
+<p>Недостающие для расчёта величины (ε и tgδ изоляции обмотки, параметры
+фильтра, данные измерений ЧР и tgδ) даны в методических указаниях к
+соответствующим неделям.</p>
+<h2>Еженедельный календарный план</h2>
+<table>
+<colgroup>
+<col style="width: 13%" />
+<col style="width: 86%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Неделя</strong></th>
+<th><strong>Задача</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Скорость распространения волны v = c/√ε<sub>r</sub> в кабеле СПЭ и
+время пробега волны τ<sub>каб</sub> по линии длиной 350 м.</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Отражение импульса на зажимах статора: коэффициент отражения β =
+(Z<sub>дв</sub> − Z<sub>каб</sub>)/(Z<sub>дв</sub> + Z<sub>каб</sub>) и
+наибольший пик напряжения на зажимах двигателя.</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Критическая длина кабеля L<sub>крит</sub>, начиная с которой
+отражённая волна успевает полностью наложиться на фронт и напряжение на
+зажимах двигателя близко к удвоенному; нагрузка на межвитковую изоляцию
+первых витков.</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Корпусная (пазовая) изоляция статора — слюдосодержащая лента,
+пропитанная эпоксидным компаундом (VPI), E<sub>пр</sub> = 25 кВ/мм:
+выбор толщины с учётом длительной прочности и запаса.</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>Электрическое поле в лобовых частях обмотки на выходе из паза;
+двухступенчатое полупроводящее противокоронное покрытие против
+скользящих разрядов.</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>Тепловой расчёт пазовой изоляции при импульсах ШИМ повышенной
+частоты: диэлектрические потери P<sub>д</sub> = ωCU²tgδ на 50 Гц и на
+частоте ШИМ.</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>Параметры фильтра dU/dt (L<sub>ф</sub>, C<sub>ф</sub>) на выходе
+преобразователя, ограничивающего крутизну фронта на зажимах двигателя до
+1,5 кВ/мкс.</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>Форма напряжения на зажимах двигателя с фильтром и без него;
+снижение перенапряжений на межвитковой изоляции первых катушек
+фазы.</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>Подшипниковые токи от синфазного напряжения (напряжения нулевой
+последовательности): выбор синфазного дросселя, изолированного
+подшипника и щётки заземления вала.</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>Старение изоляции СПЭ кабеля под действием высокочастотных частичных
+разрядов в микропорах: поле в изоляции и условие возникновения ЧР по
+закону Пашена.</td>
+</tr>
+<tr class="odd">
+<td>11</td>
+<td>Ресурс изоляции обмотки статора по кривой жизни t = A·E<sup>−n</sup>
+при повышенных импульсных градиентах поля, с фильтром и без него.</td>
+</tr>
+<tr class="even">
+<td>12</td>
+<td>Температурный режим изоляции класса F (155 °C) с учётом
+поверхностного эффекта в проводниках обмотки статора на высших
+гармониках ШИМ.</td>
+</tr>
+<tr class="odd">
+<td>13</td>
+<td>Измерение частичных разрядов под рабочим напряжением без остановки
+привода: кажущийся заряд Q<sub>чр</sub>, частота импульсов, датчики и
+полоса измерения.</td>
+</tr>
+<tr class="even">
+<td>14</td>
+<td>Обработка измерений tgδ = f(U): определение напряжения зажигания ЧР
+в пазовой изоляции.</td>
+</tr>
+<tr class="odd">
+<td>15</td>
+<td>Сводный регламент приёмо-сдаточных испытаний: испытание обмотки
+повышенным напряжением промышленной частоты 15 кВ (сравнить с нормой
+ПУЭ, табл. 1.8.9 — 2U<sub>ном</sub>, и заводской — 2U<sub>ном</sub> + 1
+кВ), выбор испытательного трансформатора. Оформление итогового отчёта.
+Защита работы.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Нормативная база:</strong> ПУЭ, гл. 1.8; ГОСТ IEC 60034-1;
+ГОСТ Р 55191-2012 (МЭК 60270). <strong>Учебники:</strong> Важов В. Ф.,
+Лавринович В. А. Техника высоких напряжений. — Томск: ТПУ, 2014;
+Фащиленко В. Н. Автоматизированный электропривод горных машин; Ильинский
+Н. Ф. Общий курс электропривода.</p>
+</main></body></html>

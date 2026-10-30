@@ -1,0 +1,726 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Кабельная сеть конвейера 6 кВ. Методические указания и шпаргалка</title><style>:root{--ink:#16202c;--muted:#5b6675;--line:#d9dde3;--acc:#1f5faf;--bg:#fff;--soft:#f3f5f8}
+@media (prefers-color-scheme:dark){:root{--ink:#e6eaf0;--muted:#9aa6b5;--line:#33404f;--acc:#7fb3f0;--bg:#121820;--soft:#1b2430}img{background:#fff}}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 "PT Serif",Georgia,"Times New Roman",serif}
+.bar{position:sticky;top:0;display:flex;justify-content:space-between;gap:12px;padding:10px 16px;background:var(--soft);border-bottom:1px solid var(--line);font:600 14px system-ui,-apple-system,"Segoe UI",sans-serif;z-index:5}
+.bar a{color:var(--acc);text-decoration:none}.bar .pdf{border:1px solid var(--acc);border-radius:999px;padding:2px 12px}
+main{max-width:820px;margin:0 auto;padding:16px 16px 64px}
+h1,h2,h3,h4{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.25;margin:1.6em 0 .5em}
+h1{font-size:1.5em}h2{font-size:1.25em}h3{font-size:1.08em}
+p{margin:.5em 0}img{max-width:100%;height:auto;display:block;margin:12px auto;border-radius:6px}
+figure{margin:16px 0}figcaption{text-align:center;color:var(--muted);font-size:.9em}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:.92em;display:block;overflow-x:auto}
+td,th{border:1px solid var(--line);padding:6px 8px;vertical-align:top}th{background:var(--soft);text-align:left}
+math{font-size:1.08em}math[display=block]{overflow-x:auto;overflow-y:hidden;margin:10px 0}
+blockquote{margin:12px 0;padding:8px 14px;border-left:4px solid var(--acc);background:var(--soft)}
+@media print{.bar{display:none}body{font-size:12pt}main{max-width:none;padding:0}table{display:table}img{background:none}}
+</style></head><body><nav class="bar"><a href="../">← Техника высоких напряжений</a><a class="pdf" href="kon-guide.pdf" download>Скачать PDF</a></nav><main><p>Техника высоких напряжений</p>
+<p><strong>Методические указания для студентов</strong></p>
+<p><strong>Кабельная сеть магистрального конвейера 6 кВ</strong></p>
+<p><em>Деловая игра и шпаргалка по сквозному заданию, вариант 4, недели
+1–15</em></p>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><p><strong>Цель занятия.</strong> Закрепить расчёты 15 недель
+задания на одном объекте — кабельной сети 6 кВ магистрального конвейера
+шахты — и научиться принимать по ним решения: выбирать толщину изоляции,
+настройку дугогасящего реактора, защиту, число кабелей и программу
+испытаний.</p>
+<p><strong>Что понадобится:</strong> компьютер или телефон с браузером,
+калькулятор с натуральным логарифмом, эти указания. Ссылку на игру и
+номер подварианта (К1, К2 или К3) выдаёт преподаватель.</p>
+<p><strong>Продолжительность:</strong> 60–90 минут; прогресс сохраняется
+в браузере.</p></td>
+</tr>
+</tbody>
+</table>
+<h2>1. Объект: кабельная сеть конвейера</h2>
+<p>Центральная подземная подстанция (ЦПП) 6 кВ по кабельной линии длиной
+2 км питает распределительный пункт (РП) приводной станции. От РП
+работают четыре преобразователя частоты (ПЧ) и четыре асинхронных
+двигателя по 630 кВт, вращающие приводные барабаны ленточного конвейера.
+Сеть 6 кВ — с изолированной нейтралью; ёмкостный ток замыкания на землю
+компенсирует дугогасящий реактор (ДГР), подключённый к нейтрали
+нейтралеобразующего трансформатора на ЦПП. Рядом с силовыми кабелями —
+шкаф АСУ ТП с УЗИП; к передвижной концевой станции идёт гибкий
+кабель.</p>
+<p><img
+src="kon-guide/media/efe6d67dbbfbe4f43d0040b90bc6051a2d368d75.webp"
+title="Мнемосхема после прохождения всех этапов: ЦПП 6 кВ с нейтралеобразующим трансформатором и ДГР → кабель 2 км → РП → ПЧ → двигатели → конвейер; реле утечки, консоли штрека, концевая станция, СНЧ-установка и рефлектометр"
+style="width:6.30208in;height:4.83333in"
+alt="Мнемосхема после прохождения всех этапов: ЦПП 6 кВ с нейтралеобразующим трансформатором и ДГР → кабель 2 км → РП → ПЧ → двигатели → конвейер; реле утечки, консоли штрека, концевая станция, СНЧ-установка и рефлектометр" /></p>
+<p><strong>Рис. 1.</strong> Мнемосхема после прохождения всех этапов:
+ЦПП 6 кВ с нейтралеобразующим трансформатором и ДГР → кабель 2 км → РП →
+ПЧ → двигатели → конвейер; реле утечки, консоли штрека, концевая
+станция, СНЧ-установка и рефлектометр</p>
+<p><strong>Зачем треугольник у нейтралеобразующего
+трансформатора.</strong> При замыкании на землю ток реактора входит в
+нейтраль звезды и делится поровну на три фазы — это токи нулевой
+последовательности, одинаковые по фазе. Их магнитный поток в
+трёхстержневом сердечнике не может замкнуться по стали; без треугольника
+сопротивление нейтрали было бы велико, и реактор почти не получал бы
+тока. В замкнутом треугольнике наводится ток, который этот поток гасит.
+Треугольник никуда не подключают.</p>
+<table>
+<colgroup>
+<col style="width: 32%" />
+<col style="width: 13%" />
+<col style="width: 54%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Узел</strong></th>
+<th><strong>Этапы</strong></th>
+<th><strong>Что выбирается на стенде</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Кабель 6 кВ</td>
+<td>А1–А3</td>
+<td>радиус средней напряжённости; толщина изоляции; согласующее
+сопротивление</td>
+</tr>
+<tr class="even">
+<td>Замыкание на землю и ДГР</td>
+<td>Б1–Б3</td>
+<td>мера против перемежающейся дуги; нужна ли компенсация; расстройка
+реактора</td>
+</tr>
+<tr class="odd">
+<td>Защита ПЧ и АСУ ТП</td>
+<td>В1–В3</td>
+<td>длина проводников УЗИП; конденсатор снаббера; схема заземления
+экранов</td>
+</tr>
+<tr class="even">
+<td>Старение кабеля</td>
+<td>Г1–Г3</td>
+<td>допустимая длина водного дерева; радиус изгиба; число параллельных
+кабелей</td>
+</tr>
+<tr class="odd">
+<td>Диагностика и испытания</td>
+<td>Д1–Д3</td>
+<td>оценка фаз по tgδ; методика поиска повреждения; программа
+испытаний</td>
+</tr>
+</tbody>
+</table>
+<h2>2. Подварианты: кабель линии</h2>
+<p>В начале игры выберите кабель своего подварианта (если преподаватель
+дал ссылку с номером, кабель уже выбран). От него зависят исходные
+данные почти всех этапов; после начала работы кабель не меняется.</p>
+<table>
+<colgroup>
+<col style="width: 35%" />
+<col style="width: 21%" />
+<col style="width: 21%" />
+<col style="width: 21%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Подвариант</strong></th>
+<th><strong>К1</strong></th>
+<th><strong>К2</strong></th>
+<th><strong>К3</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Кабель</td>
+<td>СПЭ 3×120</td>
+<td>СПЭ 3×185</td>
+<td>Резина 3×120, гибкий</td>
+</tr>
+<tr class="even">
+<td>Радиус жилы с экраном r, мм</td>
+<td>7,0</td>
+<td>8,5</td>
+<td>8,0</td>
+</tr>
+<tr class="odd">
+<td>Толщина изоляции Δ, мм</td>
+<td>2,5</td>
+<td>2,5</td>
+<td>4,0</td>
+</tr>
+<tr class="even">
+<td>ε изоляции</td>
+<td>2,3</td>
+<td>2,3</td>
+<td>3,0</td>
+</tr>
+<tr class="odd">
+<td>Наружный диаметр D, мм</td>
+<td>58</td>
+<td>68</td>
+<td>72</td>
+</tr>
+<tr class="even">
+<td>I<sub>доп</sub> на воздухе при 25 °C, А</td>
+<td>300</td>
+<td>395</td>
+<td>320</td>
+</tr>
+<tr class="odd">
+<td>θ<sub>доп</sub> жилы, °C</td>
+<td>90</td>
+<td>90</td>
+<td>75</td>
+</tr>
+<tr class="even">
+<td>Экраны и броня, Ом/км</td>
+<td>0,35</td>
+<td>0,25</td>
+<td>0,60</td>
+</tr>
+<tr class="odd">
+<td>E<sub>доп</sub> (в задании), кВ/мм</td>
+<td>2,0</td>
+<td>2,0</td>
+<td>1,5</td>
+</tr>
+<tr class="even">
+<td>Наименьший радиус изгиба</td>
+<td>15D</td>
+<td>15D</td>
+<td>6D</td>
+</tr>
+</tbody>
+</table>
+<h2>3. Правила игры</h2>
+<ol type="1">
+<li><p>Наведите указатель на аппарат на схеме — всплывёт справка;
+нажатие закрепляет её (на телефоне — касание). Значок «?» в тексте
+задания поясняет термин и бесплатен. Сокращения расшифрованы под
+схемой.</p></li>
+<li><p>Каждый из 15 этапов состоит из двух шагов:
+<strong>расчёт</strong> (ввести число) и <strong>решение</strong> на
+интерактивном стенде. Всего 30 проверок.</p></li>
+<li><p>Числовой ответ принимается с допуском ±3 %; дробную часть можно
+отделять запятой или точкой.</p></li>
+<li><p>«Жизни» — реле утечки: каждая ошибка двигает стрелку на деление,
+на шестой реле отключает линию и игра начинается заново. Три верных
+ответа подряд с первой попытки возвращают стрелку на деление.</p></li>
+<li><p>Очки: верно с первой попытки — 100, после ошибки — 50; подсказка
+(одна на игру) снимает 50. Максимум — 3000.</p></li>
+<li><p>На стенде зелёные показания — условие выполнено, красные — нет.
+Часто нужно наименьшее или наибольшее подходящее значение — читайте
+задание до конца.</p></li>
+<li><p>После последнего этапа нажмите «Пуск», затем «Скопировать итог» и
+отправьте текст преподавателю.</p></li>
+</ol>
+<p><img
+src="kon-guide/media/7773839c09607d1afd87260d22f2fe79c54e167c.webp"
+title="Пример стенда: этап Б3, настройка дугогасящего реактора. Слева — выбор расстройки, справа — резонансная кривая смещения нейтрали и показания"
+style="width:6.30208in;height:4.38542in"
+alt="Пример стенда: этап Б3, настройка дугогасящего реактора. Слева — выбор расстройки, справа — резонансная кривая смещения нейтрали и показания" /></p>
+<p><strong>Рис. 2.</strong> Пример стенда: этап Б3, настройка
+дугогасящего реактора. Слева — выбор расстройки, справа — резонансная
+кривая смещения нейтрали и показания</p>
+<h2>4. Шпаргалка по этапам</h2>
+<h3>Кабель 6 кВ</h3>
+<p>Кабельная линия ЦПП — РП приводной станции длиной 2 км; кабель
+выбирается в начале работы (подвариант К1, К2 или К3). Три этапа:
+ёмкость и поле в изоляции, напряжённость у жилы, волновые параметры
+линии.</p>
+<h4>А1 · Ёмкость и поле в кабеле (неделя 1)</h4>
+<p><strong>Дано.</strong> Подвариант кабеля: r — радиус жилы с
+полупроводящим экраном, Δ — толщина изоляции, ε — диэлектрическая
+проницаемость (таблица подвариантов). L = 2 км, U<sub>ф</sub> = 6/√3 =
+3,464 кВ, f = 50 Гц.</p>
+<p><strong>Пояснение.</strong> У кабелей всех трёх подвариантов каждая
+жила имеет свой экран, поле между жилой и экраном радиальное, как в
+коаксиальном кабеле. Ёмкость и напряжённость считают по формулам
+цилиндрического конденсатора (учебник Важова, разд. 3.6). Напряжённость
+максимальна у жилы и убывает к экрану; на радиусе r* = Δ/ln(R/r) она
+равна средней U<sub>ф</sub>/Δ.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mn>0</mn></msub><mo>=</mo><mfrac><mrow><mn>2</mn><mi>π</mi><msub><mi>ε</mi><mn>0</mn></msub><mi>ε</mi></mrow><mrow><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mi>R</mi><mi>r</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mi>R</mi><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mi>r</mi><mspace width="0.222em"></mspace><mo>+</mo><mspace width="0.222em"></mspace><mi>Δ</mi></mrow><annotation encoding="application/x-tex">C_{0} = \frac{2\pi\varepsilon_{0}\varepsilon}{\ln\left( \frac{R}{r} \right)},\ \ R\  = \ r\  + \ \Delta</annotation></semantics></math>
+(1)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mrow><mi>з</mi><mi>а</mi><mi>р</mi></mrow></msub><mo>=</mo><mspace width="0.222em"></mspace><mi>ω</mi><msub><mi>C</mi><mn>0</mn></msub><mi>L</mi><msub><mi>U</mi><mi>ф</mi></msub></mrow><annotation encoding="application/x-tex">I_{зар} = \ \omega C_{0}LU_{ф}</annotation></semantics></math>
+(2)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>r</mi><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.222em"></mspace><mo>=</mo><mfrac><msub><mi>U</mi><mi>ф</mi></msub><mrow><mi>r</mi><mo>⋅</mo><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mi>R</mi><mi>r</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac></mrow><annotation encoding="application/x-tex">E(r)\  = \frac{U_{ф}}{r \cdot \ln\left( \frac{R}{r} \right)}</annotation></semantics></math>
+(3)</p>
+<p><strong>Расчёт.</strong> Найти: зарядный ток одной фазы линии, А.</p>
+<p><strong>Решение на стенде.</strong> Выбрать из ряда радиус, на
+котором напряжённость равна средней.</p>
+<p>Ответ: расчёт ____________ А; решение ______________________</p>
+<h4>А2 · Напряжённость у жилы (неделя 2)</h4>
+<p><strong>Дано.</strong> Размеры кабеля — из А1. Допустимая рабочая
+напряжённость (в задании): сшитый полиэтилен — 2,0 кВ/мм,
+этиленпропиленовая резина — 1,5 кВ/мм. Ряд толщин — на стенде.</p>
+<p><strong>Пояснение.</strong> Наибольшая напряжённость — у поверхности
+жилы. В бумажном кабеле с поясной изоляцией поле нерадиальное, есть
+составляющая вдоль слоёв бумаги, и допустимая напряжённость примерно
+вдвое ниже, чем при радиальном поле (учебник Важова, разд. 3.6.1);
+поэтому поясные кабели применяют только до 10 кВ.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mo>max</mo></msub><mo>=</mo><mfrac><msub><mi>U</mi><mi>ф</mi></msub><mrow><mi>r</mi><mo>⋅</mo><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>r</mi><mo>+</mo><mi>Δ</mi></mrow><mi>r</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac></mrow><annotation encoding="application/x-tex">E_{\max} = \frac{U_{ф}}{r \cdot \ln\left( \frac{r + \Delta}{r} \right)}</annotation></semantics></math>
+(4)</p>
+<p><strong>Расчёт.</strong> Найти: наибольшая напряжённость у жилы,
+кВ/мм.</p>
+<p><strong>Решение на стенде.</strong> Выбрать наименьшую толщину
+изоляции, при которой E<sub>max</sub> ≤ E<sub>доп</sub>.</p>
+<p>Ответ: расчёт ____________ кВ/мм; решение ______________________</p>
+<h4>А3 · Волна в длинной линии (неделя 3)</h4>
+<p><strong>Дано.</strong> c = 300 м/мкс; ε — по подварианту; L = 2 км.
+Ряд согласующих сопротивлений: 5; 10; 15; 25; 50 Ом.</p>
+<p><strong>Пояснение.</strong> Электромагнитная волна идёт в изоляции,
+её скорость v = c/√ε. Волновое сопротивление коаксиальной линии
+Z<sub>в</sub> = (60/√ε)·ln(R/r). Выход рефлектометра согласуют с
+Z<sub>в</sub>, чтобы отражённый импульс не отражался повторно от
+прибора. В реальных кабелях полупроводящие слои замедляют волну до
+160…170 м/мкс — рефлектометр настраивают по известной длине.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mspace width="0.222em"></mspace><mo>=</mo><mfrac><mi>c</mi><msqrt><mi>ε</mi></msqrt></mfrac><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mi>τ</mi><mspace width="0.222em"></mspace><mo>=</mo><mfrac><mi>L</mi><mi>v</mi></mfrac></mrow><annotation encoding="application/x-tex">v\  = \frac{c}{\sqrt{\varepsilon}},\ \ \tau\  = \frac{L}{v}</annotation></semantics></math>
+(5)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Z</mi><mi>в</mi></msub><mo>=</mo><mfrac><mn>60</mn><msqrt><mi>ε</mi></msqrt></mfrac><mo>⋅</mo><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mi>R</mi><mi>r</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">Z_{в} = \frac{60}{\sqrt{\varepsilon}} \cdot \ln\left( \frac{R}{r} \right)</annotation></semantics></math>
+(6)</p>
+<p><strong>Расчёт.</strong> Найти: время пробега волны по линии,
+мкс.</p>
+<p><strong>Решение на стенде.</strong> Выбрать согласующее
+сопротивление, ближайшее к Z<sub>в</sub>.</p>
+<p>Ответ: расчёт ____________ мкс; решение ______________________</p>
+<h3>Замыкание на землю и ДГР</h3>
+<p>Сеть 6 кВ с изолированной нейтралью и дугогасящим реактором (ДГР),
+подключённым к нейтрали нейтралеобразующего трансформатора на ЦПП. Три
+этапа: перемежающаяся дуга, ёмкостный ток сети, настройка реактора.</p>
+<h4>Б1 · Перемежающаяся дуга (неделя 4)</h4>
+<p><strong>Дано.</strong> C = 3C<sub>12</sub> (учебник Важова);
+затухание за полпериода свободных колебаний 0,85; амплитуда фазного
+напряжения √2·6/√3 = 4,90 кВ.</p>
+<p><strong>Пояснение.</strong> По теории Петерсена (учебник Важова,
+разд. 4.8.3) при зажигании дуги заряды здоровых фаз перераспределяются,
+напряжение на ёмкостях становится U<sub>t=0</sub>, источник дозаряжает
+их до 1,5U<sub>ф</sub> с колебаниями. После погасания дуги нейтраль
+смещается, и при повторных зажиганиях перенапряжение растёт. Теория даёт
+верхнюю оценку; на практике обычно не больше 3U<sub>ф</sub>, редко
+3,5U<sub>ф</sub>.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mrow><mi>t</mi><mo>=</mo><mn>0</mn></mrow></msub><mo>=</mo><mfrac><mrow><mn>2</mn><mi>C</mi><mo>⋅</mo><mn>0</mn><mo>,</mo><mn>5</mn><mo>+</mo><mn>2</mn><msub><mi>C</mi><mn>12</mn></msub><mo>⋅</mo><mn>1</mn><mo>,</mo><mn>5</mn></mrow><mrow><mn>2</mn><mi>C</mi><mo>+</mo><mn>2</mn><msub><mi>C</mi><mn>12</mn></msub></mrow></mfrac><msub><mi>U</mi><mi>ф</mi></msub></mrow><annotation encoding="application/x-tex">U_{t = 0} = \frac{2C \cdot 0,5 + 2C_{12} \cdot 1,5}{2C + 2C_{12}}U_{ф}</annotation></semantics></math>
+(7)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mi>m</mi></msub><mo>=</mo><mspace width="0.222em"></mspace><mn>1</mn><mo>,</mo><mn>5</mn><msub><mi>U</mi><mi>ф</mi></msub><mo>+</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>5</mn><msub><mi>U</mi><mi>ф</mi></msub><mo>−</mo><msub><mi>U</mi><mrow><mi>t</mi><mo>=</mo><mn>0</mn></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>⋅</mo><mn>0</mn><mo>,</mo><mn>85</mn></mrow><annotation encoding="application/x-tex">U_{m} = \ 1,5U_{ф} + \left( 1,5U_{ф} - U_{t = 0} \right) \cdot 0,85</annotation></semantics></math>
+(8)</p>
+<p><strong>Расчёт.</strong> Найти: амплитуда перенапряжения на здоровой
+фазе при первом зажигании, кВ.</p>
+<p><strong>Решение на стенде.</strong> Выбрать меру для сети ЦПП.</p>
+<p>Ответ: расчёт ____________ кВ; решение ______________________</p>
+<h4>Б2 · Ёмкостный ток сети (неделя 5)</h4>
+<p><strong>Дано.</strong> Ёмкость фазы остальной сети секции ЦПП — 10,5
+мкФ; ёмкость фазы линии конвейера — C<sub>0</sub>L из А1. Порог
+компенсации — 30 А (ПУЭ, п. 1.2.16).</p>
+<p><strong>Пояснение.</strong> Ток замыкания на землю определяется
+ёмкостью всей электрически связанной сети (учебник Важова, ф. 4.97).
+Дуга в сетях 6–10 кВ быстро гаснет сама только при токах до 20…30 А.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mi>C</mi></msub><mo>=</mo><mspace width="0.222em"></mspace><mn>3</mn><mi>ω</mi><msub><mi>C</mi><mi>Σ</mi></msub><msub><mi>U</mi><mi>ф</mi></msub><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><msub><mi>C</mi><mi>Σ</mi></msub><mo>=</mo><msub><mi>C</mi><mrow><mi>с</mi><mi>е</mi><mi>т</mi><mi>и</mi></mrow></msub><mo>+</mo><msub><mi>C</mi><mn>0</mn></msub><mi>L</mi></mrow><annotation encoding="application/x-tex">I_{C} = \ 3\omega C_{\Sigma}U_{ф},\ \ C_{\Sigma} = C_{сети} + C_{0}L</annotation></semantics></math>
+(9)</p>
+<p><strong>Расчёт.</strong> Найти: ток однофазного замыкания на землю,
+А.</p>
+<p><strong>Решение на стенде.</strong> Решить, нужна ли компенсация.</p>
+<p>Ответ: расчёт ____________ А; решение ______________________</p>
+<h4>Б3 · Настройка ДГР (неделя 6)</h4>
+<p><strong>Дано.</strong> C<sub>Σ</sub> — из Б2. Несимметрия ёмкостей
+U<sub>н0</sub> = 0,75 % U<sub>ф</sub>, затухание сети d = 4 %.
+Требования ПТЭ: смещение нейтрали длительно ≤ 15 % U<sub>ф</sub>,
+расстройка не более 5 %, преимущественно перекомпенсация.</p>
+<p><strong>Пояснение.</strong> Реактор подключают к нейтрали
+нейтралеобразующего трансформатора: обмотка 6 кВ — звезда с выведенной
+нейтралью, вторая — замкнутый треугольник. Треугольник никуда не
+подключают: по нему замыкаются токи нулевой последовательности, и
+сопротивление нейтрали становится малым. При точной настройке частота
+собственных колебаний равна 50 Гц (резонансное заземление нейтрали), а
+смещение нейтрали в 1/d раз больше, чем без реактора (учебник Важова,
+разд. 4.8.4–4.8.5).</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mi>к</mi></msub><mo>=</mo><mfrac><mn>1</mn><mrow><mn>3</mn><msup><mi>ω</mi><mn>2</mn></msup><msub><mi>C</mi><mi>Σ</mi></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">L_{к} = \frac{1}{3\omega^{2}C_{\Sigma}}</annotation></semantics></math>
+(10)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mi>н</mi></msub><mo>=</mo><mfrac><msub><mi>U</mi><mrow><mi>н</mi><mn>0</mn></mrow></msub><msqrt><mrow><msup><mi>d</mi><mn>2</mn></msup><mo>+</mo><msup><mi>ν</mi><mn>2</mn></msup></mrow></msqrt></mfrac></mrow><annotation encoding="application/x-tex">U_{н} = \frac{U_{н0}}{\sqrt{d^{2} + \nu^{2}}}</annotation></semantics></math>
+(11)</p>
+<p><strong>Расчёт.</strong> Найти: индуктивность реактора при точной
+настройке, Гн.</p>
+<p><strong>Решение на стенде.</strong> Выбрать расстройку ν.</p>
+<p>Ответ: расчёт ____________ Гн; решение ______________________</p>
+<h3>Защита ПЧ и АСУ ТП</h3>
+<p>Преобразователи частоты, шкаф АСУ ТП, экраны и броня кабеля. Три
+этапа: УЗИП, снаббер выпрямителя, заземление экранов.</p>
+<h4>В1 · УЗИП шкафа АСУ ТП (неделя 7)</h4>
+<p><strong>Дано.</strong> Питание контроллера 230 В; импульсная
+прочность U<sub>w</sub> = 1,5 кВ (категория I); УЗИП класса III,
+U<sub>p</sub> = 0,9 кВ; L′ = 1 мкГн/м, di/dt = 1 кА/мкс.</p>
+<p><strong>Пояснение.</strong> Индуктивность проводников подключения
+УЗИП добавляет к его уровню защиты падение L′·l·di/dt — около 1 кВ на
+метр (ГОСТ Р МЭК 62305-4). Защита эффективна, если U<sub>p,f</sub> ≤
+0,8U<sub>w</sub>.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mrow><mi>p</mi><mo>,</mo><mi>f</mi></mrow></msub><mo>=</mo><msub><mi>U</mi><mi>p</mi></msub><mo>+</mo><mspace width="0.222em"></mspace><mi>L</mi><mi>′</mi><mo>⋅</mo><mi>l</mi><mo>⋅</mo><mfrac><mrow><mi>d</mi><mi>i</mi></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">U_{p,f} = U_{p} + \ L\prime \cdot l \cdot \frac{di}{dt}</annotation></semantics></math>
+(12)</p>
+<p><strong>Расчёт.</strong> Найти: эффективный уровень защиты при длине
+проводников 0,5 м, кВ.</p>
+<p><strong>Решение на стенде.</strong> Выбрать наибольшую допустимую
+длину проводников.</p>
+<p>Ответ: расчёт ____________ кВ; решение ______________________</p>
+<h4>В2 · Снаббер выпрямителя ПЧ (неделя 8)</h4>
+<p><strong>Дано.</strong> Силовая ячейка ПЧ 690 В; I<sub>rr</sub> = 60
+А; L<sub>σ</sub> = 30 мкГн; допустимое напряжение диодов 1500 В;
+U<sub>d0</sub> = √2·690 = 976 В; паразитная ёмкость 10 нФ.</p>
+<p><strong>Пояснение.</strong> При запирании диода ток обратного
+восстановления обрывается в индуктивности рассеяния, и её энергия
+переходит в ёмкость — как при срезе тока в выключателе. RC-снаббер
+ограничивает выброс; вторая ступень — варистор звена постоянного тока,
+третья — ОПН на вводе 6 кВ.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><mi>U</mi><mspace width="0.222em"></mspace><mo>=</mo><msub><mi>I</mi><mrow><mi>r</mi><mi>r</mi></mrow></msub><msqrt><mfrac><msub><mi>L</mi><mi>σ</mi></msub><mi>C</mi></mfrac></msqrt><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mi>C</mi><mspace width="0.222em"></mspace><mo>≥</mo><mfrac><mrow><msub><mi>L</mi><mi>σ</mi></msub><msup><msub><mi>I</mi><mrow><mi>r</mi><mi>r</mi></mrow></msub><mn>2</mn></msup></mrow><msup><mrow><mo stretchy="true" form="prefix">(</mo><mn>1500</mn><mspace width="0.222em"></mspace><mo>−</mo><msub><mi>U</mi><mrow><mi>d</mi><mn>0</mn></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup></mfrac></mrow><annotation encoding="application/x-tex">\Delta U\  = I_{rr}\sqrt{\frac{L_{\sigma}}{C}},\ \ C\  \geq \frac{L_{\sigma}{I_{rr}}^{2}}{\left( 1500\  - U_{d0} \right)^{2}}</annotation></semantics></math>
+(13)</p>
+<p><strong>Расчёт.</strong> Найти: наименьшая ёмкость снаббера, мкФ.</p>
+<p><strong>Решение на стенде.</strong> Выбрать конденсатор из ряда.</p>
+<p>Ответ: расчёт ____________ мкФ; решение ______________________</p>
+<h4>В3 · Заземление экранов и брони (неделя 9)</h4>
+<p><strong>Дано.</strong> Сопротивление экранов и брони (по
+подварианту), Ом/км; ток I<sub>C</sub> из Б2 возвращается к ЦПП по
+экранам; L = 2 км. Ориентир задания для напряжения прикосновения — 40
+В.</p>
+<p><strong>Пояснение.</strong> Если экраны заземлены только на ЦПП, при
+замыкании на землю в конце линии экран получает потенциал
+I<sub>C</sub>R<sub>э</sub>L. В шахте броню и экраны всех кабелей
+присоединяют к общешахтной сети заземления; у трёхжильного кабеля токи в
+экранах при симметричной нагрузке малы.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mi>э</mi></msub><mo>=</mo><msub><mi>I</mi><mi>C</mi></msub><mo>⋅</mo><msub><mi>R</mi><mi>э</mi></msub><mo>⋅</mo><mi>L</mi></mrow><annotation encoding="application/x-tex">U_{э} = I_{C} \cdot R_{э} \cdot L</annotation></semantics></math>
+(14)</p>
+<p><strong>Расчёт.</strong> Найти: напряжение экрана в конце линии при
+заземлении только на ЦПП, В.</p>
+<p><strong>Решение на стенде.</strong> Выбрать схему заземления.</p>
+<p>Ответ: расчёт ____________ В; решение ______________________</p>
+<h3>Старение кабеля</h3>
+<p>Кабели на консолях конвейерного штрека и гибкий кабель концевой
+станции. Три этапа: триинг, изгиб, нагрев.</p>
+<h4>Г1 · Водный и электрический триинг (неделя 10)</h4>
+<p><strong>Дано.</strong> Размеры кабеля — из А1. Порог зарождения
+электрического триинга (в задании) — 4 кВ/мм. Длина водного дерева в
+расчёте — 0,4Δ.</p>
+<p><strong>Пояснение.</strong> Водные деревья растут в полиэтилене и
+резине под действием поля и влаги. Сами по себе они не канал пробоя, но
+проводят лучше изоляции и сокращают её рабочую толщину; на их вершинах
+зарождаются электрические деревья — каналы частичных разрядов (учебник
+Важова, разд. 1.2.2.4). Грубая модель: дерево проводит, жила как бы
+утолщается до r + l.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mspace width="0.222em"></mspace><mo>=</mo><mfrac><msub><mi>U</mi><mi>ф</mi></msub><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>r</mi><mo>+</mo><mi>l</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>⋅</mo><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mi>R</mi><mrow><mi>r</mi><mo>+</mo><mi>l</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac></mrow><annotation encoding="application/x-tex">E\  = \frac{U_{ф}}{(r + l) \cdot \ln\left( \frac{R}{r + l} \right)}</annotation></semantics></math>
+(15)</p>
+<p><strong>Расчёт.</strong> Найти: напряжённость на фронте водного
+дерева длиной 0,4Δ, кВ/мм.</p>
+<p><strong>Решение на стенде.</strong> Найти наибольшую длину дерева,
+при которой E ≤ 4 кВ/мм.</p>
+<p>Ответ: расчёт ____________ кВ/мм; решение ______________________</p>
+<h4>Г2 · Изгиб кабеля (неделя 11)</h4>
+<p><strong>Дано.</strong> Наружный диаметр D (по подварианту).
+Наименьший радиус изгиба: бронированные кабели из сшитого полиэтилена —
+15D, гибкий резиновый — 6D.</p>
+<p><strong>Пояснение.</strong> При изгибе наружные слои растягиваются на
+ε ≈ D/(2R). Многократный изгиб вызывает микротрещины и отслоение
+полупроводящих экранов; в зазорах загораются частичные разряды.
+Бронированный кабель прокладывают неподвижно; к передвижной концевой
+станции идёт гибкий кабель.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi><mspace width="0.222em"></mspace><mo>≈</mo><mfrac><mi>D</mi><mrow><mn>2</mn><mi>R</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">\varepsilon\  \approx \frac{D}{2R}</annotation></semantics></math>
+(16)</p>
+<p><strong>Расчёт.</strong> Найти: относительное растяжение при радиусе
+0,6 м, %.</p>
+<p><strong>Решение на стенде.</strong> Выбрать наименьший радиус изгиба
+из ряда.</p>
+<p>Ответ: расчёт ____________ %; решение ______________________</p>
+<h4>Г3 · Нагрев в конвейерном штреке (неделя 12)</h4>
+<p><strong>Дано.</strong> I<sub>доп</sub> и θ<sub>доп</sub> — по
+подварианту; воздух в штреке 35 °C; поправка на прокладку пучком 0,85;
+ток линии 275,5 А.</p>
+<p><strong>Пояснение.</strong> Допустимый ток уменьшают, если среда
+теплее 25 °C и кабели лежат пучком. Перегрев ускоряет тепловое старение
+изоляции.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>k</mi><mi>t</mi></msub><mo>=</mo><msqrt><mfrac><mrow><msub><mi>θ</mi><mrow><mi>д</mi><mi>о</mi><mi>п</mi></mrow></msub><mo>−</mo><msub><mi>θ</mi><mrow><mi>с</mi><mi>р</mi></mrow></msub></mrow><mrow><msub><mi>θ</mi><mrow><mi>д</mi><mi>о</mi><mi>п</mi></mrow></msub><mo>−</mo><mspace width="0.222em"></mspace><mn>25</mn></mrow></mfrac></msqrt><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mi>I</mi><mi>′</mi><mspace width="0.222em"></mspace><mo>=</mo><msub><mi>I</mi><mrow><mi>д</mi><mi>о</mi><mi>п</mi></mrow></msub><msub><mi>k</mi><mi>t</mi></msub><msub><mi>k</mi><mi>п</mi></msub></mrow><annotation encoding="application/x-tex">k_{t} = \sqrt{\frac{\theta_{доп} - \theta_{ср}}{\theta_{доп} - \ 25}},\ \ I\prime\  = I_{доп}k_{t}k_{п}</annotation></semantics></math>
+(17)</p>
+<p><strong>Расчёт.</strong> Найти: допустимый ток с поправками, А.</p>
+<p><strong>Решение на стенде.</strong> Выбрать число параллельных
+кабелей.</p>
+<p>Ответ: расчёт ____________ А; решение ______________________</p>
+<h3>Диагностика и испытания</h3>
+<p>Установка сверхнизкой частоты (СНЧ, 0,1 Гц), рефлектометр, установка
+прожига. Три этапа: tgδ на СНЧ, поиск места повреждения, программа
+испытаний и безопасность.</p>
+<h4>Д1 · tgδ на сверхнизкой частоте (неделя 13)</h4>
+<p><strong>Дано.</strong> Испытание 0,1 Гц при 3U<sub>0</sub>,
+U<sub>0</sub> = 3,6 кВ; ёмкость фазы — C<sub>0</sub>L. tgδ при
+0,5U<sub>0</sub>, U<sub>0</sub>, 1,5U<sub>0</sub> (×10⁻³) — на стенде.
+Ориентир задания: сшитый полиэтилен — норма tgδ(U<sub>0</sub>) ≤ 4 и
+Δtgδ ≤ 5, ремонт tgδ &gt; 50 или Δtgδ &gt; 80; резина — норма ≤ 20 и ≤
+10, ремонт &gt; 60 или &gt; 80; между ними — контроль.</p>
+<p><strong>Пояснение.</strong> Ток через ёмкость пропорционален частоте:
+на 0,1 Гц он в 500 раз меньше, чем на 50 Гц, и установка помещается в
+автомобиль. Рост tgδ с напряжением — признак водного триинга и частичных
+разрядов.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mn>2</mn><mi>π</mi><mo>⋅</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>⋅</mo><msub><mi>C</mi><mn>0</mn></msub><mi>L</mi><mo>⋅</mo><mn>3</mn><msub><mi>U</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">I\  = \ 2\pi \cdot 0,1 \cdot C_{0}L \cdot 3U_{0}</annotation></semantics></math>
+(18)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><mi>t</mi><mi>g</mi><mi>δ</mi><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mi>t</mi><mi>g</mi><mi>δ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>5</mn><msub><mi>U</mi><mn>0</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mspace width="0.222em"></mspace><mi>t</mi><mi>g</mi><mi>δ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>5</mn><msub><mi>U</mi><mn>0</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\Delta tg\delta\  = \ tg\delta\left( 1,5U_{0} \right) - \ tg\delta\left( 0,5U_{0} \right)</annotation></semantics></math>
+(19)</p>
+<p><strong>Расчёт.</strong> Найти: ёмкостный ток источника СНЧ, мА.</p>
+<p><strong>Решение на стенде.</strong> Оценить три фазы.</p>
+<p>Ответ: расчёт ____________ мА; решение ______________________</p>
+<h4>Д2 · Поиск места повреждения (неделя 14)</h4>
+<p><strong>Дано.</strong> Время прихода отражения t — по подварианту (на
+стенде); скорость v — из А3. Во второй фазе R<sub>п</sub> = 8 кОм.</p>
+<p><strong>Пояснение.</strong> Импульсный метод: расстояние l = v·t/2.
+Коэффициент отражения от шунтирующего повреждения ρ =
+−Z<sub>в</sub>/(Z<sub>в</sub> + 2R<sub>п</sub>): при R<sub>п</sub> ≫
+Z<sub>в</sub> отражения не видно. Высокоомный дефект прожигают до
+десятков ом, затем находят зону рефлектометром и точное место —
+акустическим методом.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi><mspace width="0.222em"></mspace><mo>=</mo><mfrac><mrow><mi>v</mi><mo>⋅</mo><mi>t</mi></mrow><mn>2</mn></mfrac></mrow><annotation encoding="application/x-tex">l\  = \frac{v \cdot t}{2}</annotation></semantics></math>
+(20)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ρ</mi><mspace width="0.222em"></mspace><mo>=</mo><mfrac><mrow><mo>−</mo><msub><mi>Z</mi><mi>в</mi></msub></mrow><mrow><msub><mi>Z</mi><mi>в</mi></msub><mo>+</mo><mn>2</mn><msub><mi>R</mi><mi>п</mi></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">\rho\  = \frac{- Z_{в}}{Z_{в} + 2R_{п}}</annotation></semantics></math>
+(21)</p>
+<p><strong>Расчёт.</strong> Найти: расстояние до повреждения, м.</p>
+<p><strong>Решение на стенде.</strong> Выбрать методику поиска для
+R<sub>п</sub> = 8 кОм.</p>
+<p>Ответ: расчёт ____________ м; решение ______________________</p>
+<h4>Д3 · Программа испытаний и безопасность (неделя 15)</h4>
+<p><strong>Дано.</strong> Учебник Важова, табл. П3.4: выпрямленное
+напряжение для кабелей 6 кВ — 36 кВ (бумажная и пластмассовая изоляция,
+10 мин), 12 кВ (резиновая, 5 мин). Кабели из сшитого полиэтилена
+испытывают переменным напряжением 0,1 Гц, 3U<sub>0</sub>.</p>
+<p><strong>Пояснение.</strong> Ёмкость фазы линии держит заряд после
+испытания; перед подключением и после испытания линию разряжают через
+штангу и заземляют на время работ.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>W</mi><mspace width="0.222em"></mspace><mo>=</mo><mfrac><mrow><mi>C</mi><msup><mi>U</mi><mn>2</mn></msup></mrow><mn>2</mn></mfrac></mrow><annotation encoding="application/x-tex">W\  = \frac{CU^{2}}{2}</annotation></semantics></math>
+(22)</p>
+<p><strong>Расчёт.</strong> Найти: энергия в одной фазе линии при 15 кВ,
+Дж.</p>
+<p><strong>Решение на стенде.</strong> Выбрать программу испытания для
+своего кабеля.</p>
+<p>Ответ: расчёт ____________ Дж; решение ______________________</p>
+<h2>5. Справочные данные</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Величина</strong></th>
+<th><strong>Значение</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>√2; √3; π</td>
+<td>1,414; 1,732; 3,1416</td>
+</tr>
+<tr class="even">
+<td>ε<sub>0</sub></td>
+<td>8,854·10⁻¹² Ф/м</td>
+</tr>
+<tr class="odd">
+<td>ω при 50 Гц</td>
+<td>314,16 рад/с</td>
+</tr>
+<tr class="even">
+<td>Фазное напряжение сети 6 кВ</td>
+<td>6/√3 = 3,464 кВ; амплитуда 4,899 кВ</td>
+</tr>
+<tr class="odd">
+<td>Скорость света c</td>
+<td>300 м/мкс</td>
+</tr>
+<tr class="even">
+<td>1 мкФ/км; 1 мкГн; 1 мкс</td>
+<td>10⁻⁹ Ф/м; 10⁻⁶ Гн; 10⁻⁶ с</td>
+</tr>
+</tbody>
+</table>
+<h2>6. Контрольные вопросы</h2>
+<ol type="1">
+<li><p>(А1) Почему ёмкость кабеля с экранированными жилами можно считать
+по формуле коаксиала, а поясного кабеля — нет?</p></li>
+<li><p>(А2) Почему кабели с радиальным полем допускают большую
+напряжённость, чем поясные?</p></li>
+<li><p>(А3) Зачем согласовывать выход рефлектометра с линией?</p></li>
+<li><p>(Б1) Почему реактор не снижает предельные перенапряжения, но всё
+равно нужен?</p></li>
+<li><p>(Б2) Почему реактор ставят на ЦПП, а не у конвейера?</p></li>
+<li><p>(Б3) Зачем нейтралеобразующему трансформатору замкнутый
+треугольник?</p></li>
+<li><p>(В1) Почему УЗИП ставят прямо у клемм защищаемого
+прибора?</p></li>
+<li><p>(В2) Что будет без снаббера?</p></li>
+<li><p>(В3) Почему у трёхжильного кабеля заземление экранов с двух
+сторон не даёт заметных потерь?</p></li>
+<li><p>(Г1) Почему опасность растёт лавинообразно при приближении дерева
+к экрану?</p></li>
+<li><p>(Г2) Почему циклический изгиб бронированного кабеля
+недопустим?</p></li>
+<li><p>(Г3) Что изменится в сети, если проложить второй кабель?</p></li>
+<li><p>(Д1) Почему кабель из сшитого полиэтилена испытывают на 0,1 Гц, а
+не выпрямленным напряжением?</p></li>
+<li><p>(Д2) Почему высокоомное повреждение не видно на
+рефлектограмме?</p></li>
+<li><p>(Д3) Почему испытание 50 Гц для 2 км кабеля в шахте
+неприменимо?</p></li>
+</ol>
+<h2>7. Отчёт и оценка</h2>
+<p>В отчёт входят: заполненный бланк, текст итога из игры и письменные
+ответы на три контрольных вопроса по выбору преподавателя.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Очки (максимум 3000)</strong></th>
+<th><strong>Оценка</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2700 и больше</td>
+<td>«отлично»</td>
+</tr>
+<tr class="even">
+<td>2250–2699</td>
+<td>«хорошо»</td>
+</tr>
+<tr class="odd">
+<td>1700–2249</td>
+<td>«удовлетворительно»</td>
+</tr>
+<tr class="even">
+<td>меньше 1700 или отключение линии</td>
+<td>повторное прохождение</td>
+</tr>
+</tbody>
+</table>
+<h2>Приложение. Бланк отчёта</h2>
+<p>ФИО ______________________________ Группа ________ Подвариант ____
+Дата ________</p>
+<table>
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 32%" />
+<col style="width: 18%" />
+<col style="width: 28%" />
+<col style="width: 11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Этап</strong></th>
+<th><strong>Что найти</strong></th>
+<th><strong>Расчёт</strong></th>
+<th><strong>Решение</strong></th>
+<th><strong>Ошибок</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>А1</td>
+<td>Зарядный ток одной фазы линии, А</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>А2</td>
+<td>Наибольшая напряжённость у жилы, кВ/мм</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>А3</td>
+<td>Время пробега волны по линии, мкс</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Б1</td>
+<td>Амплитуда перенапряжения на здоровой фазе при первом зажигании,
+кВ</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Б2</td>
+<td>Ток однофазного замыкания на землю, А</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Б3</td>
+<td>Индуктивность реактора при точной настройке, Гн</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>В1</td>
+<td>Эффективный уровень защиты при длине проводников 0,5 м, кВ</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>В2</td>
+<td>Наименьшая ёмкость снаббера, мкФ</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>В3</td>
+<td>Напряжение экрана в конце линии при заземлении только на ЦПП, В</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Г1</td>
+<td>Напряжённость на фронте водного дерева длиной 0,4Δ, кВ/мм</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Г2</td>
+<td>Относительное растяжение при радиусе 0,6 м, %</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Г3</td>
+<td>Допустимый ток с поправками, А</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Д1</td>
+<td>Ёмкостный ток источника СНЧ, мА</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Д2</td>
+<td>Расстояние до повреждения, м</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Д3</td>
+<td>Энергия в одной фазе линии при 15 кВ, Дж</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Итог игры: очки ______ утечка ______ время ______ оценка ______</p>
+</main></body></html>

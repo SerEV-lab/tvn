@@ -1,0 +1,783 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Кабельная сеть конвейера 6 кВ</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=PT+Mono&family=PT+Sans+Narrow:wght@400;700&family=PT+Sans:wght@400;700&display=swap">
+<style>
+:root{
+  --bg:#E2E5DF; --panel:#F2F3EF; --well:#E9ECE6; --ink:#1B241F; --muted:#59655E; --line:#B7BEB6;
+  --off:#A9B1A8; --go:#1C9450; --goglow:rgba(28,148,80,.35); --hv:#E0A40F; --hvglow:rgba(224,164,15,.45);
+  --bad:#B8381F; --accent:#1C5A84; --accent-ink:#FFFFFF; --spark:#6A4CE0;
+  --m1:#C9CFCC; --m2:#8E9894; --m3:#5E6864; --cab:#D9DBD3; --paint:#A9B5A6; --cu:#C47A3C; --por:#8B4A2B; --res:#2E3A36; --semi:#262A28; --scr:#10251C; --glass:#9FC5D8;
+  --f-disp:"PT Sans Narrow","Arial Narrow",Arial,sans-serif;
+  --f-body:"PT Sans",Arial,sans-serif;
+  --f-mono:"PT Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121714; --panel:#1A211D; --well:#151B18; --ink:#E2E7E0; --muted:#94A198; --line:#323E37;
+  --off:#3F4A44; --go:#3CCB7B; --goglow:rgba(60,203,123,.32); --hv:#F2C230; --hvglow:rgba(242,194,48,.38);
+  --bad:#EB6A51; --accent:#63AEDF; --accent-ink:#0D1922; --spark:#A99BFF; --m1:#7A8480; --m2:#5C6661; --m3:#3A4340; --cab:#4C5550; --paint:#5E6B5C; --cu:#D08A4C; --por:#A35A38; --res:#1B2320; --semi:#0E100F; --scr:#08140F; --glass:#4C7A8F; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121714; --panel:#1A211D; --well:#151B18; --ink:#E2E7E0; --muted:#94A198; --line:#323E37;
+  --off:#3F4A44; --go:#3CCB7B; --goglow:rgba(60,203,123,.32); --hv:#F2C230; --hvglow:rgba(242,194,48,.38);
+  --bad:#EB6A51; --accent:#63AEDF; --accent-ink:#0D1922; --spark:#A99BFF; --m1:#7A8480; --m2:#5C6661; --m3:#3A4340; --cab:#4C5550; --paint:#5E6B5C; --cu:#D08A4C; --por:#A35A38; --res:#1B2320; --semi:#0E100F; --scr:#08140F; --glass:#4C7A8F; color-scheme:dark}
+html,body{background:var(--bg);color:var(--ink)}
+body{font-family:var(--f-body);font-size:16px;line-height:1.5;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:18px 40px}
+.wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+h1,h2,h3{font-family:var(--f-disp);margin:0;line-height:1.1;text-wrap:balance}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+sub,sup{font-size:.72em}
+
+header{display:grid;grid-template-columns:1fr auto;gap:12px 20px;align-items:end}
+.eyebrow{font-family:var(--f-disp);text-transform:uppercase;letter-spacing:.12em;font-size:13px;color:var(--muted)}
+h1{font-size:clamp(32px,4.6vw,50px);font-weight:700}
+.board{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.cell{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:5px 12px;display:flex;flex-direction:column;min-width:92px}
+.cell b{font-family:var(--f-mono);font-weight:400;font-size:21px;line-height:1.25}
+.cell span{font-family:var(--f-disp);font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.cell.hint b{color:var(--hv)} .cell.hint.used b{color:var(--muted)}
+.gapbox{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:8px 12px;display:flex;gap:10px;align-items:center}
+.gapbox svg{width:84px;height:118px;flex:none}
+.gapbox .gt{display:flex;flex-direction:column;gap:2px;min-width:0}
+.gapbox .gt b{font-family:var(--f-disp);font-size:18px}
+.gapbox .gt span{font-size:13px;color:var(--muted)}
+.gapbox .meter{display:flex;gap:3px;margin-top:4px}
+.gapbox .meter i{width:12px;height:6px;border-radius:2px;background:var(--line)}
+.gapbox .meter i.on{background:var(--spark)}
+.gapbox.hot{border-color:var(--spark);box-shadow:0 0 0 1px var(--spark)}
+.str{stroke:var(--spark);stroke-width:2.2;fill:none;stroke-linecap:round;filter:drop-shadow(0 0 3px var(--spark))}
+.gapbox.shake{animation:shake .4s}
+.qh{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;border:1.6px solid var(--accent);background:var(--panel);color:var(--accent);font:700 14px/1 var(--f-body);cursor:help;padding:0;margin:0 3px;vertical-align:middle}
+.qh:hover,.qh:focus-visible,.qh[aria-describedby]{background:var(--accent);color:var(--accent-ink)}
+#qtip{box-sizing:border-box;position:fixed;z-index:60;left:0;top:0;max-width:min(360px,calc(100vw - 16px));background:var(--panel);color:var(--ink);border:1px solid var(--accent);border-left:4px solid var(--accent);border-radius:4px;padding:9px 12px;font:15px/1.45 var(--f-body);box-shadow:0 6px 22px rgba(0,0,0,.25);opacity:0;visibility:hidden;transition:opacity .12s;pointer-events:none}
+#qtip.on{opacity:1;visibility:visible}
+#dcard{box-sizing:border-box;position:fixed;z-index:70;width:min(360px,calc(100vw - 16px));max-height:calc(100vh - 16px);overflow-y:auto;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-top:4px solid var(--accent);border-radius:6px;padding:10px 12px 12px;box-shadow:0 10px 30px rgba(0,0,0,.28);display:flex;flex-direction:column;gap:8px}
+#dcard[hidden]{display:none!important}
+#dcard.peek{pointer-events:none}
+#dcard.peek .dx{visibility:hidden}
+#dcard .dh{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+#dcard .dh b{font-family:var(--f-disp);font-size:18px;line-height:1.2}
+#dcard .dx{border:0;background:none;font-size:22px;line-height:1;padding:0 4px;color:var(--muted)}
+#dcard p{margin:0;font-size:14.5px;line-height:1.45}
+#dcard .dw{background:var(--well);border-left:3px solid var(--hv);padding:6px 9px;border-radius:3px}
+#dcard .btn{align-self:flex-start}
+#dcard .dimg{background:var(--well);border:1px solid var(--line);border-radius:4px;padding:4px}
+#dcard .illus{display:block;width:100%;height:auto}
+#msvg .cnt{font-family:var(--f-mono);font-size:11px;fill:var(--muted)}
+#msvg .ap.done .cnt{fill:var(--go)}
+.lb{font-family:var(--f-body);font-size:12px;fill:var(--muted)}
+.lb.b{font-weight:700;font-size:14px;fill:var(--ink)}.lb.s{font-size:11px}.lb.h{font-family:var(--f-disp);font-size:15px;fill:var(--ink)}
+.lb.big{font-family:var(--f-disp);font-size:17px;font-weight:700;fill:var(--ink);paint-order:stroke;stroke:var(--panel);stroke-width:4px}
+[data-dev]{cursor:pointer;outline:none}
+[data-dev] .ring{pointer-events:all}
+[data-dev]:hover .ring,[data-dev]:focus-visible .ring{stroke:var(--accent);stroke-dasharray:3 3}
+.ap.plain .ring{stroke:transparent}
+.route{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:6px}
+.chip{display:grid;grid-template-columns:auto 1fr auto;gap:2px 8px;align-items:baseline;text-align:left;border:1px solid var(--line);border-left:4px solid var(--off);background:var(--well);border-radius:4px;padding:6px 10px;font:inherit;color:inherit;cursor:pointer}
+.chip .cs{font-family:var(--f-mono);color:var(--muted)}.chip .cn{font-family:var(--f-disp);font-size:16px}.chip .cc{font-family:var(--f-mono);font-size:13px;color:var(--muted)}
+.chip .ct{grid-column:1/-1;font-size:12.5px;color:var(--muted);line-height:1.35}
+.chip.active{border-left-color:var(--accent)}.chip.active .cs{color:var(--accent)}
+.chip.done{border-left-color:var(--go)}.chip.done .cs,.chip.done .cc{color:var(--go)}
+.chip:hover,.chip:focus-visible{border-color:var(--accent)}
+.gapbox svg{width:132px;height:96px}
+
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
+
+.mnemo{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:14px 14px 10px;display:flex;flex-direction:column;gap:8px}
+.mhead{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.mhead h2{font-size:20px}
+.status{font-family:var(--f-disp);font-size:15px;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:3px;border:1px solid var(--line);color:var(--muted)}
+.status.ok{background:var(--go);border-color:var(--go);color:var(--accent-ink)}
+.mscroll{overflow-x:auto}
+.mscroll svg{display:block;width:100%;min-width:720px;height:auto}
+.w{stroke:var(--off);stroke-width:3;fill:none}
+.w.live{stroke:var(--hv);filter:drop-shadow(0 0 3px var(--hvglow))}
+.w.live.flow{stroke-dasharray:10 6;animation:dash 1s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-16}}
+.wd{stroke:var(--off);stroke-width:1.5;stroke-dasharray:4 4;fill:none}
+.wd.live{stroke:var(--go)}
+.ap .sym{stroke:var(--off);stroke-width:2.4;fill:var(--panel)}
+.ap .lbl{font-family:var(--f-disp);font-size:15px;fill:var(--muted)}
+.ap .cnt{font-family:var(--f-mono);font-size:11px;fill:var(--muted)}
+.ap .ring{fill:none;stroke:transparent;stroke-width:2}
+.ap.active{cursor:pointer}
+.ap.active .sym{stroke:var(--accent)}
+.ap.active .ring{stroke:var(--accent);stroke-dasharray:5 4;animation:dash 1.2s linear infinite}
+.ap.active .lbl{fill:var(--ink)}
+.ap.done{cursor:pointer}
+.ap.done .sym{stroke:var(--go);filter:drop-shadow(0 0 5px var(--goglow))}
+.ap.done .lbl{fill:var(--ink)}
+.ap.done .cnt{fill:var(--go)}
+.ap.lit .sym{animation:strike 1.1s ease-out}
+@keyframes strike{0%{opacity:.2}12%{opacity:1}22%{opacity:.3}34%{opacity:1}44%{opacity:.55}60%,100%{opacity:1}}
+.rot{transform-box:fill-box;transform-origin:center}
+.mnemo.run .rot{animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.legend{display:flex;gap:6px 18px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.legend i{display:inline-block;width:18px;height:3px;vertical-align:4px;margin-right:6px;background:var(--off)}
+
+.stand{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.shead{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline}
+.shead h3{font-size:26px}
+.smeta{font-family:var(--f-mono);font-size:13px;color:var(--muted)}
+.steps{display:flex;gap:6px;align-items:center;font-family:var(--f-disp);font-size:15px;color:var(--muted);flex-wrap:wrap}
+.steps span{padding:2px 10px;border:1px solid var(--line);border-radius:3px}
+.steps span.on{border-color:var(--accent);color:var(--accent)}
+.steps span.ok{border-color:var(--go);color:var(--go)}
+.task{font-size:17px;max-width:76ch;margin:0}
+.answer{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.answer input{font-family:var(--f-mono);font-size:20px;width:11ch;max-width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:4px;background:var(--well);color:var(--ink)}
+.unit{font-family:var(--f-mono);color:var(--muted)}
+.btn{border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);border-radius:4px;padding:9px 16px;font-family:var(--f-disp);font-size:17px;letter-spacing:.03em}
+.btn.ghost{background:transparent;color:var(--accent)}
+.btn.hv{background:var(--hv);border-color:var(--hv);color:#1B1A10}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.fb{border:1px solid var(--line);border-radius:4px;padding:10px 14px;background:var(--well);max-width:80ch}
+.fb strong{font-family:var(--f-disp);font-size:17px;display:block}
+.fb.ok{border-color:var(--go)} .fb.ok strong{color:var(--go)}
+.fb.no{border-color:var(--bad)} .fb.no strong{color:var(--bad)}
+.fb.tip{border-color:var(--hv)} .fb.tip strong{color:var(--hv)}
+.tune{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:16px;align-items:start}
+.ctrl{display:flex;flex-direction:column;gap:12px;min-width:0}
+.ctrl label,.lab{font-family:var(--f-disp);font-size:14px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.seg{display:flex;flex-wrap:wrap;gap:4px}
+.seg button{border:1px solid var(--line);background:var(--well);border-radius:3px;padding:6px 11px;font-family:var(--f-mono);font-size:15px}
+.seg.col{flex-direction:column;align-items:stretch}
+.seg.col button{font-family:var(--f-body);text-align:left}
+.seg button.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.rng{display:flex;flex-direction:column;gap:4px}
+.rng input{width:100%;accent-color:var(--accent)}
+.rng output{font-family:var(--f-mono);font-size:20px}
+.viz{background:var(--well);border:1px solid var(--line);border-radius:4px;padding:10px;min-width:0;display:flex;flex-direction:column;gap:8px}
+.viz svg{width:100%;height:auto;display:block}
+.viz text{font-family:var(--f-mono);font-size:11px;fill:var(--muted)}
+.viz .ax{stroke:var(--line);stroke-width:1}
+.viz .gr{stroke:var(--line);stroke-width:.6;stroke-dasharray:2 3}
+.viz .cv{stroke:var(--accent);stroke-width:2.2;fill:none}
+.viz .cv2{stroke:var(--hv);stroke-width:2.2;fill:none}
+.viz .lim{stroke:var(--bad);stroke-width:1.4;stroke-dasharray:6 4}
+.viz .mk{fill:var(--accent);stroke:var(--panel);stroke-width:2}
+.viz .mk.sel{fill:var(--hv)}
+.viz .fillA{fill:var(--accent);opacity:.85}
+.viz .fillG{fill:var(--go)}
+.viz .fillB{fill:var(--bad)}
+.viz .fillH{fill:var(--hv)}
+.viz .fillO{fill:var(--off)}
+.viz .lineI{stroke:var(--ink);stroke-width:1.6;fill:none}
+.viz .lt{fill:var(--ink);font-size:12px}
+.reads{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:6px}
+.rd{border:1px solid var(--line);border-radius:3px;padding:4px 8px;background:var(--panel)}
+.rd span{display:block;font-size:12px;color:var(--muted)}
+.rd b{font-family:var(--f-mono);font-weight:400;font-size:17px}
+.rd.ok{border-color:var(--go)} .rd.ok b{color:var(--go)}
+.rd.no{border-color:var(--bad)} .rd.no b{color:var(--bad)}
+.prgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.pr{display:flex;flex-direction:column;gap:4px}
+.pr select,.pt select{font:inherit;font-size:14px;padding:4px;border:1px solid var(--line);border-radius:3px;background:var(--panel);color:var(--ink);max-width:100%}
+.pt{width:100%;border-collapse:collapse;font-size:14px}
+.pt td,.pt th{border-bottom:1px solid var(--line);padding:5px 6px;text-align:left;vertical-align:middle}
+.pt th{font-family:var(--f-disp);font-weight:400;color:var(--muted);text-transform:uppercase;font-size:12px;letter-spacing:.06em}
+.small{font-size:13px;color:var(--muted)}
+.tbl{overflow-x:auto}
+.res{border-collapse:collapse;font-size:14px;min-width:460px}
+.res td,.res th{border-bottom:1px solid var(--line);padding:5px 8px;text-align:left}
+.res th{font-family:var(--f-disp);font-weight:400;color:var(--muted);text-transform:uppercase;font-size:12px;letter-spacing:.06em}
+
+.over{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(10,8,25,.72);z-index:10;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.over .card{background:var(--panel);border:2px solid var(--spark);border-radius:8px;padding:22px;max-width:520px;display:flex;flex-direction:column;gap:12px}
+.over h2{font-size:32px;color:var(--spark)}
+.flash{position:fixed;inset:0;background:#fff;pointer-events:none;z-index:11;animation:flash .7s ease-out forwards}
+@keyframes flash{0%{opacity:.95}15%{opacity:.1}25%{opacity:.8}100%{opacity:0}}
+
+.cards3{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
+.ccard{display:flex;flex-direction:column;gap:6px;text-align:left;border:1px solid var(--line);border-left:4px solid var(--accent);background:var(--well);border-radius:6px;padding:12px 14px}
+.ccard b{font-family:var(--f-disp);font-size:20px}
+.ccard:hover,.ccard:focus-visible{border-color:var(--accent);background:var(--panel)}
+@media (max-width:820px){
+  header{grid-template-columns:1fr}
+  .tune{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  .w.live.flow,.ap.active .ring,.ap.lit .sym,.mnemo.run .rot,.gapbox.shake,.flash{animation:none}
+}
+</style>
+
+<div class="wrap">
+<header>
+  <div>
+    <span class="eyebrow">Техника высоких напряжений · профиль «Электропривод и автоматика» · сквозное задание, вариант 4, недели 1–15</span>
+    <h1>Кабельная сеть магистрального конвейера 6 кВ</h1>
+    <div class="board">
+      <div class="cell"><b id="sc">0</b><span>очки из 3000</span></div>
+      <div class="cell"><b id="pg">0/15</b><span>этапов</span></div>
+      <div class="cell"><b id="tm">00:00</b><span>время</span></div>
+      <div class="cell" id="ccell"><b id="cb">—</b><span>кабель</span></div>
+      <div class="cell hint" id="hcell"><b id="hc">1</b><span>подсказка</span></div>
+    </div>
+  </div>
+  <div class="gapbox" id="gapbox" aria-live="polite">
+    <svg viewBox="0 0 132 96" id="gapsvg" aria-label="Реле утечки"></svg>
+    <div class="gt"><b>Реле утечки</b><span id="gaptxt">утечка 0 из 6</span><div class="meter" id="gapm"></div><span class="small">ошибка — утечка растёт; 3 верных подряд — стрелка назад на деление</span></div>
+  </div>
+</header>
+
+<section class="mnemo" id="mnemo" aria-label="Мнемосхема привода">
+  <div class="mhead"><h2>Мнемосхема · ЦПП 6 кВ → кабель 2 км → РП → ПЧ → двигатели 4 × 630 кВт → конвейер</h2><span class="status" id="st">Конвейер остановлен</span></div>
+  <div class="mscroll"><svg id="msvg" viewBox="0 0 900 410"></svg></div>
+  <p class="small" style="margin:0">Наведите курсор на аппарат (на телефоне — нажмите) или нажмите на карточку узла — откроется справка: что это и что здесь считаем. Нажатие закрепляет справку.</p>
+  <p class="small" style="margin:0"><b>Сокращения:</b> ЦПП — центральная подземная подстанция; ДГР — дугогасящий реактор; РП — распределительный пункт; ПЧ — преобразователь частоты; АД — асинхронный двигатель; АСУ ТП — автоматизированная система управления технологическим процессом; УЗИП — устройство защиты от импульсных перенапряжений; СНЧ — сверхнизкая частота (0,1 Гц); СПЭ — сшитый полиэтилен.</p>
+  <div class="route" id="route"></div>
+  <div class="legend"><span><i></i>Не начат</span><span><i style="background:var(--accent)"></i>В работе</span><span><i style="background:var(--go)"></i>Пройден</span><span><i style="background:var(--hv)"></i>Под напряжением</span><span><i style="background:none;border-top:2px dashed var(--off);height:0"></i>Цепи измерения</span></div>
+</section>
+
+<section class="stand" id="stand" aria-live="polite"></section>
+
+<p class="small">Правила: каждый этап — сначала расчёт (допуск ±3 %), затем наладка на стенде. В начале выберите кабель линии — от него зависят исходные данные. Каждая ошибка двигает стрелку реле утечки; на шестой реле отключает линию и игра начинается заново. Верно с первой попытки — 100 очков, после ошибки — 50, подсказка (одна на игру) снимает 50. Прогресс сохраняется в этом браузере. <button class="btn ghost" id="rs0" style="font-size:14px;padding:3px 10px">Начать заново</button></p>
+</div>
+
+<script>
+(function(root){
+const M={};
+M.CAB={
+ k1:{n:"СПЭ 3×120",full:"Бронированный кабель 6 кВ с изоляцией из сшитого полиэтилена, 3×120 мм², жилы в экранах",ins:"сшитый полиэтилен",r:7.0,d:2.5,eps:2.3,D:58,Iz:300,T:90,Rs:0.35,r0:0.195,x0:0.08,kb:15,flex:false,dc:false,
+  tg:[[1.1,1.3,1.6],[3.2,6.8,9.5],[18,46,112]],Eal:2.0,THK:[1.5,2.0,2.5,3.0,3.5],lf:1250},
+ k2:{n:"СПЭ 3×185",full:"Бронированный кабель 6 кВ с изоляцией из сшитого полиэтилена, 3×185 мм², жилы в экранах",ins:"сшитый полиэтилен",r:8.5,d:2.5,eps:2.3,D:68,Iz:395,T:90,Rs:0.25,r0:0.126,x0:0.077,kb:15,flex:false,dc:false,
+  tg:[[2.6,3.4,4.8],[1.0,1.2,1.4],[22,61,140]],Eal:2.0,THK:[1.5,2.0,2.5,3.0,3.5],lf:870},
+ k3:{n:"Резина 3×120, гибкий",full:"Гибкий экранированный кабель 6 кВ с резиновой (этиленпропиленовой) изоляцией, 3×120 мм²",ins:"этиленпропиленовая резина",r:8.0,d:4.0,eps:3.0,D:72,Iz:320,T:75,Rs:0.6,r0:0.199,x0:0.09,kb:6,flex:true,dc:true,
+  tg:[[12,14,17],[9,25,48],[30,95,170]],Eal:1.5,THK:[2.0,2.5,3.0,3.5,4.0],lf:1530}};
+M.D={U:6,L:2,Crest:10.5,P:630,n:4,etaM:0.955,etaC:0.97,cosIn:0.95,
+ CC12:3,dmp:0.85,Uno:0.0075,dK:0.04,NU:[-10,-5,0,5,10],
+ Up:0.9,Uw:1.5,Lp:1,didt:1,LEAD:[0.1,0.2,0.3,0.5,1.0],
+ Ls:30,Irr:60,Ud:690,Uvd:1500,Cp:0.01,CSN:[0.1,0.22,0.47,1.0,2.2],
+ tA:35,kg:0.85,Ebr:4.0,Rb0:0.6,RB:[0.4,0.6,0.8,1.0,1.2],U0:3.6,Ut:15,Rf:8000,RES:[5,10,15,25,50],
+ E1d:2.0};
+M.k="k1";M.c=M.CAB.k1;M.set=k=>{if(M.CAB[k]){M.k=k;M.c=M.CAB[k]}};
+const D=M.D,w=2*Math.PI*50,e0=8.854e-12;
+M.Uf=()=>D.U/Math.sqrt(3);M.Ufm=()=>M.Uf()*Math.SQRT2;
+M.R=()=>M.c.r+M.c.d;M.lnR=()=>Math.log(M.R()/M.c.r);
+M.C0=()=>2*Math.PI*e0*M.c.eps/M.lnR()*1e9;
+M.Cl=()=>M.C0()*D.L;
+M.Iz=()=>w*M.Cl()*1e-6*M.Uf()*1e3;
+M.Er=r=>M.Uf()/(r*M.lnR());M.Eav=()=>M.Uf()/M.c.d;M.rav=()=>M.c.d/M.lnR();
+M.Emax=d=>{const dd=d??M.c.d;return M.Uf()/(M.c.r*Math.log((M.c.r+dd)/M.c.r))};
+M.dmin=()=>M.c.THK.find(d=>M.Emax(d)<=M.c.Eal+1e-9);
+M.v=()=>300/Math.sqrt(M.c.eps);M.tau=()=>D.L*1000/M.v();M.Zw=()=>60/Math.sqrt(M.c.eps)*M.lnR();
+M.Rmatch=()=>D.RES.reduce((a,b)=>Math.abs(b-M.Zw())<Math.abs(a-M.Zw())?b:a);
+M.Ut0=k=>{const q=k??D.CC12;return (2*q*0.5+2*1.5)/(2*q+2)};
+M.Um1=k=>1.5+(1.5-M.Ut0(k))*D.dmp;
+M.Um1kV=()=>M.Um1()*M.Ufm();
+M.Ctot=()=>D.Crest+M.Cl();
+M.Ic=()=>3*w*M.Ctot()*1e-6*M.Uf()*1e3;
+M.Iline=()=>D.n*D.P/(D.etaM*D.etaC)/(Math.sqrt(3)*D.U*D.cosIn);
+M.dU=()=>{const sn=Math.sqrt(1-D.cosIn**2);return Math.sqrt(3)*M.Iline()*D.L*(M.c.r0*D.cosIn+M.c.x0*sn)/(D.U*1000)*100};
+M.Lk=()=>1/(3*w*w*M.Ctot()*1e-6);
+M.Un=nu=>D.Uno/Math.sqrt(D.dK**2+(nu/100)**2)*100;
+M.I0=nu=>M.Ic()*Math.sqrt(D.dK**2+(nu/100)**2);
+M.Upf=l=>D.Up+D.Lp*l*D.didt;
+M.Ud0=()=>D.Ud*Math.SQRT2;
+M.dUsn=c=>D.Irr*Math.sqrt(D.Ls*1e-6/(c*1e-6));
+M.Csn=()=>D.Ls*D.Irr**2/(D.Uvd-M.Ud0())**2;
+M.Us=()=>M.Ic()*M.c.Rs*D.L;
+M.Etree=l=>M.Uf()/((M.c.r+l)*Math.log(M.R()/(M.c.r+l)));
+M.TREE=()=>[0.2,0.4,0.6,0.8].map(f=>+(f*M.c.d).toFixed(2));
+M.lmax=()=>M.TREE().filter(l=>M.Etree(l)<=D.Ebr).pop();
+M.eb=R=>M.c.D/2/(R*1000)*100;M.eal=()=>100/(2*M.c.kb);
+M.Rbmin=()=>D.RB.find(R=>M.eb(R)<=M.eal()+1e-9);
+M.kt=()=>Math.sqrt((M.c.T-D.tA)/(M.c.T-25));
+M.Ip=()=>M.c.Iz*M.kt()*D.kg;M.npar=()=>Math.ceil(M.Iline()/M.Ip());
+M.Ivlf=()=>2*Math.PI*0.1*M.Cl()*1e-6*3*D.U0*1e3*1e3;
+M.I50=()=>w*M.Cl()*1e-6*3*D.U0*1e3;
+M.dtd=p=>M.c.tg[p][2]-M.c.tg[p][0];
+M.TH=()=>M.c.flex?{td:[20,60],dtd:[10,80]}:{td:[4,50],dtd:[5,80]};
+M.grade=p=>{const t=M.TH(),td=M.c.tg[p][1],d=M.dtd(p);if(td>t.td[1]||d>t.dtd[1])return"rep";if(td>t.td[0]||d>t.dtd[0])return"ctl";return"ok"};
+M.tf=()=>2*M.c.lf/M.v();M.lfault=t=>M.v()*(t??+M.tf().toFixed(2))/2;
+M.rho=R=>-M.Zw()/(M.Zw()+2*R);
+M.W=()=>M.Cl()*1e-6*(D.Ut*1e3)**2/2;
+if(typeof module!=="undefined")module.exports=M;else root.M=M;
+})(this);
+
+const fx=(v,d)=>{const s=(+v).toFixed(d);return s.replace(".",",").replace("-","−")};
+function axes(o){
+  const W=o.w||420,H=o.h||220,L=50,R=12,T=24,B=34;
+  const lx=o.logx?v=>Math.log10(v):v=>v,ly=o.logy?v=>Math.log10(v):v=>v;
+  const X=v=>L+(W-L-R)*(lx(v)-lx(o.x0))/(lx(o.x1)-lx(o.x0));
+  const Y=v=>T+(H-T-B)*(1-(ly(v)-ly(o.y0))/(ly(o.y1)-ly(o.y0)));
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${o.aria||"график"}">`;
+  (o.xt||[]).forEach(t=>{s+=`<line class="gr" x1="${X(t)}" y1="${T}" x2="${X(t)}" y2="${H-B}"/><text x="${X(t)}" y="${H-B+14}" text-anchor="middle">${o.xf?o.xf(t):String(t).replace(".",",")}</text>`});
+  (o.yt||[]).forEach(t=>{s+=`<line class="gr" x1="${L}" y1="${Y(t)}" x2="${W-R}" y2="${Y(t)}"/><text x="${L-5}" y="${Y(t)+4}" text-anchor="end">${o.yf?o.yf(t):String(t).replace(".",",")}</text>`});
+  s+=`<line class="ax" x1="${L}" y1="${H-B}" x2="${W-R}" y2="${H-B}"/><line class="ax" x1="${L}" y1="${T}" x2="${L}" y2="${H-B}"/>`;
+  s+=`<text x="${(L+W-R)/2}" y="${H-4}" text-anchor="middle">${o.xl||""}</text><text x="${L-44}" y="13">${o.yl||""}</text>`;
+  return {s,X,Y,W,H,L,R,T,B,end:"</svg>"};
+}
+const poly=(pts,cls,extra)=>`<polyline class="${cls}" ${extra||""} points="${pts.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join(" ")}"/>`;
+const rd=(lab,val,ok)=>`<div class="rd${ok===true?" ok":ok===false?" no":""}"><span>${lab}</span><b>${val}</b></div>`;
+const seg=(k,opts,cur,fmt)=>`<div class="seg">${opts.map(v=>`<button data-k="${k}" data-v="${v}" class="${v===cur?"on":""}">${fmt?fmt(v):v}</button>`).join("")}</div>`;
+const segL=(k,opts,cur)=>`<div class="seg col">${opts.map(o=>`<button data-k="${k}" data-v="${o[0]}" class="${o[0]===cur?"on":""}">${o[1]}</button>`).join("")}</div>`;
+const rng=(k,min,max,step,v,fmt)=>`<div class="rng"><input type="range" id="r_${k}" data-r="${k}" min="${min}" max="${max}" step="${step}" value="${v}"><output id="o_${k}">${fmt(v)}</output></div>`;
+const near=(a,b)=>Math.abs(a-b)<1e-6;
+const TIPS=[];const qh_=t=>{TIPS.push(t);return `<button type="button" class="qh" data-t="${TIPS.length-1}" aria-label="Справка">?</button>`};
+const hl=(a,x,y,t,anc)=>`<text class="lt" x="${x}" y="${y}" text-anchor="${anc||"start"}">${t}</text>`;
+const L2=(x,y,t,a,c)=>`<text x="${x}" y="${y}" text-anchor="${a||"middle"}" style="font:11px var(--f-body);fill:${c||"var(--ink)"}">${t}</text>`;
+const ill=b=>`<svg viewBox="0 0 280 170" role="img" class="illus">${b}</svg>`;
+const grnd=y=>`<path d="M6 ${y}H274" stroke="var(--m2)" stroke-width="2"/>`;
+const shed=(x,y,n,w,h,c)=>{let s=`<rect x="${x-w*.28}" y="${y}" width="${w*.56}" height="${n*h}" fill="${c}"/>`;for(let i=0;i<n;i++)s+=`<ellipse cx="${x}" cy="${y+i*h+h*.55}" rx="${w/2}" ry="${h*.32}" fill="${c}" stroke="var(--m3)" stroke-width=".6"/>`;return s};
+const motor=(x,y,w,h,col)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="10" fill="${col||"var(--paint)"}" stroke="var(--m3)" stroke-width="1.4"/>${Array.from({length:Math.floor(w/9)},(_,i)=>`<path d="M${x+6+i*9} ${y+6}V${y+h-6}" stroke="var(--m3)" stroke-width="1" opacity=".5"/>`).join("")}<rect x="${x+8}" y="${y+h}" width="${w-16}" height="8" fill="var(--m3)"/>`;
+
+const KEY="izol-kon6-v1", MAXS=6;
+const D=M.D;
+const APPS=[{k:"cab",n:"Кабель 6 кВ"},{k:"ozz",n:"Замыкание на землю и ДГР"},{k:"prot",n:"Защита ПЧ и АСУ ТП"},{k:"age",n:"Старение кабеля"},{k:"diag",n:"Диагностика и испытания"}];
+const GR={ok:"норма",ctl:"контроль",rep:"ремонт"};
+const nearest=(arr,x)=>arr.reduce((a,b)=>Math.abs(b-x)<Math.abs(a-x)?b:a);
+const radS=()=>{const c=M.c,st=c.d/5;return Array.from({length:6},(_,i)=>+(c.r+i*st).toFixed(2))};
+function mkST(){
+const c=M.c,Uf=M.Uf();
+return [
+{id:"А1",app:"cab",wk:1,t:"Ёмкость и поле в кабеле",
+ calc:{q:`Кабель ${c.n}: радиус жилы с полупроводящим экраном r = ${fx(c.r,1)} мм, изоляция — ${c.ins} толщиной Δ = ${fx(c.d,1)} мм, ε = ${fx(c.eps,1)}. Каждая жила в своём экране${qh_("Поверх изоляции каждой жилы — полупроводящий слой и медный экран. Поле между жилой и экраном радиальное, как в коаксиальном кабеле, и формулы цилиндрического конденсатора применимы. В трёхжильном кабеле с поясной изоляцией (бумажный кабель типа СБ) поле нерадиальное, и ёмкость берут из каталога.")}, поэтому C<sub>0</sub> = 2πε<sub>0</sub>ε/ln(R/r), R = r + Δ. Найдите <b>зарядный ток одной фазы линии</b> длиной ${D.L} км в рабочем режиме: I<sub>зар</sub> = ωC<sub>0</sub>L·U<sub>ф</sub>, U<sub>ф</sub> = 6/√3 кВ.`,a:M.Iz(),u:"А",
+  h:`C<sub>0</sub> = 2π·8,854·10⁻¹²·${fx(c.eps,1)}/ln(${fx(M.R(),1)}/${fx(c.r,1)}) = ${fx(M.C0(),3)} мкФ/км.`},
+ tune:{task:`Напряжённость в изоляции E(r) = U<sub>ф</sub>/(r·ln(R/r)) падает от жилы к экрану. Найдите радиус, на котором она равна средней напряжённости U<sub>ф</sub>/Δ — выберите ближайший из ряда${qh_("Средняя напряжённость — напряжение, делённое на толщину. В цилиндрическом поле у жилы напряжённость выше средней, у экрана — ниже. Радиус, где они равны: r* = Δ/ln(R/r).")}.`,
+  init:()=>({r:radS()[5]}),
+  ctrl:s=>`<label>Радиус r, мм</label>${seg("r",radS(),s.r,v=>fx(v,1))}`,
+  viz:s=>{const R=M.R(),a=axes({x0:c.r-0.3,x1:R+0.3,y0:0,y1:2.2,xt:radS(),yt:[0,0.5,1,1.5,2],xf:v=>fx(v,1),xl:"радиус r, мм",yl:"E, кВ/мм",aria:"Напряжённость по толщине изоляции"});
+   let p=[];for(let r=c.r;r<=R+1e-9;r+=0.02)p.push([a.X(r),a.Y(M.Er(r))]);
+   let o=a.s+`<rect x="${a.X(c.r-0.3)}" y="${a.T}" width="${a.X(c.r)-a.X(c.r-0.3)}" height="${a.H-a.B-a.T}" fill="var(--cu)" opacity=".35"/><rect x="${a.X(R)}" y="${a.T}" width="${a.X(R+0.3)-a.X(R)}" height="${a.H-a.B-a.T}" fill="var(--m2)" opacity=".5"/>`;
+   o+=poly(p,"cv")+`<line class="lim" style="stroke:var(--hv)" x1="${a.L}" y1="${a.Y(M.Eav())}" x2="${a.W-a.R}" y2="${a.Y(M.Eav())}"/>`+hl(a,a.W-a.R-4,a.Y(M.Eav())-5,"средняя "+fx(M.Eav(),2),"end");
+   o+=`<circle class="mk sel" cx="${a.X(s.r)}" cy="${a.Y(M.Er(s.r))}" r="7"/>`+hl(a,a.X(c.r)+4,a.T+12,"жила")+hl(a,a.X(R)-4,a.T+12,"экран","end")+a.end;
+   const e=M.Er(s.r);return o+`<div class="reads">${rd("E на выбранном радиусе",fx(e,3)+" кВ/мм",Math.abs(e-M.Eav())<0.06)}${rd("Средняя U<sub>ф</sub>/Δ",fx(M.Eav(),3)+" кВ/мм")}${rd("У жилы",fx(M.Er(c.r),2)+" кВ/мм")}${rd("У экрана",fx(M.Er(M.R()),2)+" кВ/мм")}</div>`},
+  ok:s=>near(s.r,nearest(radS(),M.rav())),h:`r* = Δ/ln(R/r) = ${fx(c.d,1)}/${fx(M.lnR(),4)}.`,
+  ex:`r* = ${fx(M.rav(),2)} мм — ближе к жиле, чем к середине изоляции: внутренние слои нагружены сильнее. Поэтому жилу покрывают гладким полупроводящим экраном, а выступы и пустоты у жилы опаснее всего.`}},
+{id:"А2",app:"cab",wk:2,t:"Напряжённость у жилы",
+ calc:{q:`Найдите <b>наибольшую напряжённость у жилы</b> E<sub>max</sub> = U<sub>ф</sub>/(r·ln(R/r)) — действующее значение при U<sub>ф</sub> = 6/√3 кВ, размеры кабеля ${c.n} — из этапа А1.`,a:M.Emax(),u:"кВ/мм",h:`3,464/(${fx(c.r,1)}·${fx(M.lnR(),4)}).`},
+ tune:{task:`Для изоляции «${c.ins}» допустимая рабочая напряжённость в задании E<sub>доп</sub> = ${fx(c.Eal,1)} кВ/мм. В бумажном кабеле с поясной изоляцией допустимая напряжённость примерно вдвое ниже, чем при радиальном поле${qh_("Учебник Важова, разд. 3.6.1: в поясном кабеле есть составляющая поля вдоль слоёв бумаги, по которой легче развивается скользящий разряд. Поэтому кабели с поясной изоляцией применяют только до 10 кВ, а допустимые градиенты у кабелей с радиальным полем в два раза выше.")}. Выберите наименьшую толщину изоляции из ряда, при которой E<sub>max</sub> ≤ E<sub>доп</sub>, и сравните её с фактической.`,
+  init:()=>({d:c.THK[0]}),
+  ctrl:s=>`<label>Толщина изоляции Δ, мм</label>${seg("d",c.THK,s.d,v=>fx(v,1))}`,
+  viz:s=>{const a=axes({x0:c.THK[0]-0.3,x1:c.THK[c.THK.length-1]+0.3,y0:0,y1:3,xt:c.THK,yt:[0,1,2,3],xf:v=>fx(v,1),xl:"толщина Δ, мм",yl:"Emax, кВ/мм",aria:"Напряжённость у жилы от толщины"});
+   let p=[];for(let d=c.THK[0]-0.3;d<=c.THK[c.THK.length-1]+0.3;d+=0.02)p.push([a.X(d),a.Y(Math.min(3,M.Emax(d)))]);
+   let o=a.s+poly(p,"cv")+`<line class="lim" x1="${a.L}" y1="${a.Y(c.Eal)}" x2="${a.W-a.R}" y2="${a.Y(c.Eal)}"/>`+hl(a,a.W-a.R-4,a.Y(c.Eal)-5,"Eдоп "+fx(c.Eal,1),"end");
+   c.THK.forEach(d=>{o+=`<circle class="mk${near(d,s.d)?" sel":""}" cx="${a.X(d)}" cy="${a.Y(Math.min(3,M.Emax(d)))}" r="${near(d,s.d)?7:4.5}"/>`});
+   o+=`<line x1="${a.X(c.d)}" y1="${a.T}" x2="${a.X(c.d)}" y2="${a.H-a.B}" stroke="var(--go)" stroke-dasharray="3 3"/>`+hl(a,a.X(c.d)+4,a.T+12,"фактическая")+a.end;
+   const e=M.Emax(s.d);return o+`<div class="reads">${rd("E<sub>max</sub> при Δ = "+fx(s.d,1)+" мм",fx(e,2)+" кВ/мм",e<=c.Eal+1e-9)}${rd("E<sub>доп</sub>",fx(c.Eal,1)+" кВ/мм")}${rd("Фактическая Δ = "+fx(c.d,1)+" мм",fx(M.Emax(),2)+" кВ/мм")}</div>`},
+  ok:s=>near(s.d,M.dmin()),h:"Посчитайте E<sub>max</sub> для двух наименьших толщин ряда.",
+  ex:`Наименьшая толщина — ${fx(M.dmin(),1)} мм (${fx(M.Emax(M.dmin()),2)} кВ/мм). Фактическая ${fx(c.d,1)} мм даёт запас ${fx(c.Eal/M.Emax(),2)} раза: толщину выбирают не только по рабочему полю, но и по испытательному напряжению, технологии и механике.`}},
+{id:"А3",app:"cab",wk:3,t:"Волна в длинной линии",
+ calc:{q:`Скорость волны в кабеле v = c/√ε, c = 300 м/мкс${qh_("Электромагнитная волна в кабеле идёт в изоляции, поэтому медленнее, чем в воздухе: v = c/√ε. Для бумаги около 160 м/мкс, для сшитого полиэтилена — около 200 м/мкс. На этом построен импульсный поиск повреждений (этап Д2).")}. Найдите <b>время пробега волны</b> τ по линии длиной ${D.L} км.`,a:M.tau(),u:"мкс",h:`v = 300/√${fx(c.eps,1)} = ${fx(M.v(),1)} м/мкс; τ = 2000/v.`},
+ tune:{task:`Волновое сопротивление жила — экран Z<sub>в</sub> = (60/√ε)·ln(R/r) Ом. Выход рефлектометра согласуют с линией: при R = Z<sub>в</sub> отражённый импульс не отражается повторно от прибора. Выберите ближайшее согласующее сопротивление из ряда.`,
+  init:()=>({R:50}),
+  ctrl:s=>`<label>Сопротивление на выходе прибора, Ом</label>${seg("R",D.RES,s.R)}`,
+  viz:s=>{const a=axes({x0:0,x1:3.2*M.tau(),y0:-1,y1:1.1,xt:[0,M.tau()*2,M.tau()*4].map(v=>+v.toFixed(1)).slice(0,2),yt:[-1,0,1],xf:v=>fx(v,1),xl:"время, мкс",yl:"о.е.",aria:"Рефлектограмма линии"});
+   const rs=(s.R-M.Zw())/(s.R+M.Zw()),t2=2*M.tau();let p=[[a.X(0),a.Y(0)]];const pk=(t,h)=>{p.push([a.X(t-0.3),a.Y(0)],[a.X(t),a.Y(h)],[a.X(t+0.6),a.Y(0)])};
+   pk(0.2,1);pk(t2,0.9);if(Math.abs(rs)>0.01)pk(2*t2,0.9*0.9*rs*3);p.push([a.X(3.2*M.tau()),a.Y(0)]);
+   let o=a.s+poly(p,"cv")+hl(a,a.X(t2)+6,a.Y(0.9),"конец линии")+(Math.abs(rs)>0.01?hl(a,a.X(2*t2)-6,a.Y(0.5),"ложный отклик","end"):"")+a.end;
+   return o+`<div class="reads">${rd("Z<sub>в</sub>",fx(M.Zw(),1)+" Ом")}${rd("Отражение от прибора",fx(rs,2),Math.abs(rs)<0.2)}${rd("Падение напряжения в линии",fx(M.dU(),1)+" %",M.dU()<=5)}</div>`},
+  ok:s=>s.R===M.Rmatch(),h:`Z<sub>в</sub> = 60/${fx(Math.sqrt(c.eps),3)}·${fx(M.lnR(),4)}.`,
+  ex:`Z<sub>в</sub> = ${fx(M.Zw(),1)} Ом → ${M.Rmatch()} Ом. Отражение от конца приходит через 2τ = ${fx(2*M.tau(),1)} мкс. Падение напряжения при полной нагрузке — ${fx(M.dU(),1)} %: длина 2 км для 6 кВ ещё допустима.`}},
+{id:"Б1",app:"ozz",wk:4,t:"Перемежающаяся дуга",
+ calc:{q:`Однофазное замыкание на землю через перемежающуюся дугу. По теории Петерсена (учебник Важова, разд. 4.8.3)${qh_("Дуга гаснет при переходе высокочастотного тока через нуль, на здоровых фазах остаётся заряд, нейтраль смещается, и при повторном зажигании перенапряжение растёт. Теория Петерсена даёт верхнюю оценку; на практике перенапряжения обычно не выше 3U<sub>ф</sub>, редко до 3,5U<sub>ф</sub>.")} при зажигании напряжение на ёмкостях здоровых фаз U<sub>t=0</sub> = (2C·0,5 + 2C<sub>12</sub>·1,5)U<sub>ф</sub>/(2C + 2C<sub>12</sub>), принужденное 1,5U<sub>ф</sub>, затухание за полпериода свободных колебаний 0,85: U<sub>m</sub> = 1,5U<sub>ф</sub> + (1,5U<sub>ф</sub> − U<sub>t=0</sub>)·0,85. Примите C = 3C<sub>12</sub> и найдите <b>амплитуду перенапряжения</b> на здоровой фазе при первом зажигании, кВ (амплитуда фазного напряжения √2·6/√3).`,a:M.Um1kV(),u:"кВ",h:"U<sub>t=0</sub> = 0,75U<sub>ф</sub>; U<sub>m</sub> = 2,14U<sub>ф</sub>; U<sub>фm</sub> = 4,90 кВ."},
+ tune:{task:"Посмотрите, как восстанавливается напряжение на месте замыкания после погасания дуги. Выберите решение для сети ЦПП.",
+  init:()=>({v:"none"}),
+  ctrl:s=>`<label>Мера</label>${segL("v",[["none","ничего: ток замыкания мал, дуга погаснет сама"],["opn","только ОПН на шинах ЦПП"],["dgr","дугогасящий реактор (ДГР) в нейтрали и селективная защита от замыканий на землю"]],s.v)}`,
+  viz:s=>{const a=axes({x0:0,x1:60,y0:-1.2,y1:2.6,xt:[0,10,20,30,40,50,60],yt:[-1,0,1,2],xl:"время после погасания, мс",yl:"U/Uфm",aria:"Восстановление напряжения на месте замыкания"});
+   const W=2*Math.PI*50/1000;let p=[],q=[];for(let t=0;t<=60;t+=0.25){p.push([a.X(t),a.Y(1.43-Math.cos(W*t))]);q.push([a.X(t),a.Y(1.43*Math.cos(W*t)*Math.exp(-t/40)-Math.cos(W*t))])}
+   let o=a.s+poly(p,s.v==="dgr"?"cv2":"cv",s.v==="dgr"?'opacity=".35"':"");if(s.v==="dgr")o+=poly(q,"cv");
+   if(s.v==="opn")o+=`<line class="lim" x1="${a.L}" y1="${a.Y(2.2)}" x2="${a.W-a.R}" y2="${a.Y(2.2)}"/>`+hl(a,a.W-a.R-4,a.Y(2.2)-5,"уровень ОПН","end");
+   o+=hl(a,a.X(12),a.Y(2.45),"без ДГР: 2,43 через полпериода")+(s.v==="dgr"?hl(a,a.X(30),a.Y(-0.9),"с ДГР: медленный рост"):"")+a.end;
+   const m={none:"Каждые полпериода напряжение поднимается до 2,43U<sub>фm</sub> — дуга зажигается снова, перенапряжения длятся, пока горит дуга.",opn:"ОПН ограничит амплитуду, но перемежающаяся дуга нагружает его каждые полпериода, а ток замыкания не уменьшится.",dgr:"Ток в месте замыкания скомпенсирован, напряжение восстанавливается за несколько периодов — дуга успевает погаснуть окончательно."}[s.v];
+   return o+`<div class="fb ${s.v==="dgr"?"ok":"no"}" style="max-width:none"><strong>${s.v==="dgr"?"Дуга гаснет":"Дуга зажигается снова"}</strong>${m}</div>`},
+  ok:s=>s.v==="dgr",h:"Сравните скорость восстановления напряжения на дуговом промежутке.",
+  ex:"Дугогасящий реактор не снижает предельные перенапряжения, но резко сокращает их длительность и вероятность: ток в месте замыкания мал, а напряжение восстанавливается медленно (учебник Важова, разд. 4.8.4)."}},
+{id:"Б2",app:"ozz",wk:5,t:"Ёмкостный ток сети",
+ calc:{q:`От секции ЦПП кроме конвейерной линии питаются другие кабели: ёмкость фазы остальной сети ${fx(D.Crest,1)} мкФ. Ёмкость фазы конвейерной линии — C<sub>0</sub>L из этапа А1. Найдите <b>ток однофазного замыкания на землю</b> I<sub>C</sub> = 3ωC<sub>Σ</sub>U<sub>ф</sub> (учебник Важова, ф. 4.97).`,a:M.Ic(),u:"А",h:`C<sub>Σ</sub> = ${fx(D.Crest,1)} + ${fx(M.Cl(),3)} = ${fx(M.Ctot(),3)} мкФ.`},
+ tune:{task:`В исходном задании ток считали только для линии конвейера. Оцените, нужна ли компенсация${qh_("ПУЭ, п. 1.2.16: в сетях 3–6 кВ без железобетонных и металлических опор ВЛ ёмкостный ток компенсируют, если он больше 30 А. Учебник Важова: в сетях 6–10 кВ дуга быстро гаснет сама только при токах до 20…30 А.")}.`,
+  init:()=>({v:"line"}),
+  ctrl:s=>`<label>Вывод</label>${segL("v",[["line","не нужна: линия конвейера даёт около 3 А"],["net","нужна: ток всей сети секции больше 30 А"],["run","нужна, только пока работает конвейер"]],s.v)}`,
+  viz:s=>{const a=axes({x0:0,x1:3,y0:0,y1:45,xt:[],yt:[0,10,20,30,40],xl:"",yl:"ток, А",aria:"Ёмкостный ток"});
+   const il=3*2*Math.PI*50*M.Cl()*1e-6*Uf*1e3,bw=(a.X(1)-a.X(0))*0.5;
+   let o=a.s+`<rect class="fillA" x="${a.X(0.75)-bw/2}" y="${a.Y(il)}" width="${bw}" height="${a.Y(0)-a.Y(il)}"/><rect class="fillH" x="${a.X(2.25)-bw/2}" y="${a.Y(M.Ic())}" width="${bw}" height="${a.Y(0)-a.Y(M.Ic())}"/>`;
+   o+=`<line class="lim" x1="${a.L}" y1="${a.Y(30)}" x2="${a.W-a.R}" y2="${a.Y(30)}"/>`+hl(a,a.W-a.R-4,a.Y(30)-5,"30 А (ПУЭ 1.2.16)","end")+hl(a,a.X(0.75),a.H-a.B+14,"линия конвейера","middle")+hl(a,a.X(2.25),a.H-a.B+14,"вся сеть секции","middle")+a.end;
+   return o+`<div class="reads">${rd("Линия конвейера",fx(il,2)+" А")}${rd("Вся сеть",fx(M.Ic(),1)+" А",M.Ic()<=30)}</div>`},
+  ok:s=>s.v==="net",h:"Ток замыкания определяется ёмкостью всей электрически связанной сети, а не одной линии.",
+  ex:`I<sub>C</sub> = ${fx(M.Ic(),1)} А > 30 А — компенсация нужна. Линия конвейера даёт лишь ${fx(3*2*Math.PI*50*M.Cl()*1e-6*Uf*1e3,1)} А; ДГР ставят в нейтраль на ЦПП, а не у конвейера.`}},
+{id:"Б3",app:"ozz",wk:6,t:"Настройка ДГР",
+ calc:{q:`Дугогасящий реактор (ДГР) с подмагничиванием подключён к нейтрали нейтралеобразующего трансформатора${qh_("Обмотки трансформаторов ЦПП 6 кВ соединены в треугольник, выведенной нейтрали нет. Её создают отдельным трансформатором: обмотка 6 кВ — звезда с выведенной нейтралью, вторая — замкнутый треугольник, который никуда не подключают: по нему замыкаются токи нулевой последовательности, и сопротивление нейтрали становится малым. Другой вариант — одна обмотка «зигзаг» (фильтр нулевой последовательности). Реактор с подмагничиванием меняет индуктивность током в обмотке управления, и автоматика держит настройку при включении и отключении линий.")}. Найдите <b>индуктивность реактора при точной настройке</b> L<sub>к</sub> = 1/(3ω²C<sub>Σ</sub>) (учебник Важова, ф. 4.98).`,a:M.Lk(),u:"Гн",h:`3·314,16²·${fx(M.Ctot(),3)}·10⁻⁶.`},
+ tune:{task:`Смещение нейтрали в нормальном режиме U<sub>н</sub> = U<sub>н0</sub>/√(d² + ν²): несимметрия ёмкостей U<sub>н0</sub> = ${fx(D.Uno*100,2)} % U<sub>ф</sub>, затухание сети d = ${fx(D.dK*100,0)} %, расстройка ν = (I<sub>L</sub> − I<sub>C</sub>)/I<sub>C</sub>. Требования ПТЭ электрических станций и сетей: длительное смещение нейтрали ≤ 15 % U<sub>ф</sub>, расстройка не более 5 %, преимущественно перекомпенсация — при отключении линий сеть не должна уходить в резонанс${qh_("Учебник Важова, разд. 4.8.5: при точной настройке смещение нейтрали в 1/d раз больше, чем без реактора. Рекомендуется работать с перекомпенсацией: если отключится одна из линий, ёмкость уменьшится, и сеть при недокомпенсации может попасть точно в резонанс.")}. Выберите расстройку.`,
+  init:()=>({nu:0}),
+  ctrl:s=>`<label>Расстройка ν, %</label>${seg("nu",D.NU,s.nu,v=>(v>0?"+":"")+v)}`,
+  viz:s=>{const a=axes({x0:-12,x1:12,y0:0,y1:22,xt:[-10,-5,0,5,10],yt:[0,5,10,15,20],xl:"расстройка ν, %",yl:"Uн, % Uф",aria:"Резонансная кривая смещения нейтрали"});
+   let p=[];for(let n=-12;n<=12;n+=0.1)p.push([a.X(n),a.Y(M.Un(n))]);let o=a.s+`<rect x="${a.X(-5)}" y="${a.T}" width="${a.X(5)-a.X(-5)}" height="${a.H-a.B-a.T}" fill="var(--go)" opacity=".08"/>`+poly(p,"cv")+`<line class="lim" x1="${a.L}" y1="${a.Y(15)}" x2="${a.W-a.R}" y2="${a.Y(15)}"/>`+hl(a,a.W-a.R-4,a.Y(15)-5,"15 %","end");
+   o+=`<circle class="mk sel" cx="${a.X(s.nu)}" cy="${a.Y(M.Un(s.nu))}" r="7"/>`+hl(a,a.X(-11),a.T+12,"недокомпенсация")+hl(a,a.X(11),a.T+12,"перекомпенсация","end")+a.end;
+   return o+`<div class="reads">${rd("U<sub>н</sub>",fx(M.Un(s.nu),1)+" % U<sub>ф</sub>",M.Un(s.nu)<=15)}${rd("Остаточный ток I<sub>0</sub>",fx(M.I0(s.nu),2)+" А")}${rd("I<sub>L</sub>",fx(M.Ic()*(1+s.nu/100),1)+" А",Math.abs(s.nu)<=5&&s.nu>=0)}</div>`},
+  ok:s=>s.nu===5,h:"Посчитайте U<sub>н</sub> при ν = 0 и ±5 %. Из двух подходящих выберите ту, что безопаснее при отключении линии.",
+  ex:`ν = +5 %: U<sub>н</sub> = ${fx(M.Un(5),1)} % U<sub>ф</sub>, остаточный ток ${fx(M.I0(5),1)} А, I<sub>L</sub> − I<sub>C</sub> = ${fx(M.Ic()*0.05,1)} А. При ν = 0 смещение ${fx(M.Un(0),1)} % — недопустимо; −5 % при отключении линии уйдёт к резонансу.`}},
+{id:"В1",app:"prot",wk:7,t:"УЗИП шкафа АСУ ТП",
+ calc:{q:`Контроллер АСУ ТП питается от сети 230 В. Импульсная прочность его изоляции U<sub>w</sub> = ${fx(D.Uw,1)} кВ (категория I), уровень защиты УЗИП класса III U<sub>p</sub> = ${fx(D.Up,1)} кВ. На проводниках подключения УЗИП добавляется ΔU = L′·l·di/dt${qh_("Индуктивность проводника около 1 мкГн/м. При импульсе 8/20 мкс крутизна тока около 1 кА/мкс, поэтому каждый метр проводника добавляет к уровню защиты около 1 кВ (ГОСТ Р МЭК 62305-4).")}, L′ = 1 мкГн/м, di/dt = 1 кА/мкс. Найдите <b>эффективный уровень защиты</b> U<sub>p,f</sub> при суммарной длине проводников 0,5 м.`,a:M.Upf(0.5),u:"кВ",h:"0,9 + 1·0,5·1."},
+ tune:{task:"Защита эффективна, если U<sub>p,f</sub> ≤ 0,8U<sub>w</sub>. Выберите наибольшую допустимую длину проводников подключения УЗИП.",
+  init:()=>({l:1.0}),
+  ctrl:s=>`<label>Длина проводников, м</label>${seg("l",D.LEAD,s.l,v=>fx(v,1))}`,
+  viz:s=>{const a=axes({x0:0,x1:6,y0:0,y1:2.2,xt:[],yt:[0,0.5,1,1.5,2],xl:"",yl:"кВ",aria:"Уровни защиты"});let o=a.s;
+   D.LEAD.forEach((l,i)=>{const x=a.X(i+0.6),bw=26,u=M.Upf(l);o+=`<rect class="fillA" x="${x}" y="${a.Y(D.Up)}" width="${bw}" height="${a.Y(0)-a.Y(D.Up)}"/><rect class="${u<=0.8*D.Uw+1e-9?"fillG":"fillB"}" x="${x}" y="${a.Y(u)}" width="${bw}" height="${a.Y(D.Up)-a.Y(u)}" ${near(l,s.l)?'stroke="var(--ink)" stroke-width="2"':""}/>`+hl(a,x+bw/2,a.H-a.B+14,fx(l,1)+" м","middle")});
+   o+=`<line class="lim" x1="${a.L}" y1="${a.Y(0.8*D.Uw)}" x2="${a.W-a.R}" y2="${a.Y(0.8*D.Uw)}"/>`+hl(a,a.W-a.R-4,a.Y(0.8*D.Uw)-5,"0,8Uw = 1,2 кВ","end")+a.end;
+   return o+`<div class="reads">${rd("U<sub>p,f</sub>",fx(M.Upf(s.l),2)+" кВ",M.Upf(s.l)<=0.8*D.Uw+1e-9)}${rd("0,8U<sub>w</sub>",fx(0.8*D.Uw,2)+" кВ")}</div>`},
+  ok:s=>near(s.l,0.3),h:"(1,2 − 0,9)/1 = ?",
+  ex:"Не длиннее 0,3 м. Поэтому УЗИП ставят прямо на DIN-рейку у клемм контроллера, а проводники к шине заземления делают короткими и прямыми."}},
+{id:"В2",app:"prot",wk:8,t:"Снаббер выпрямителя ПЧ",
+ calc:{q:`Высоковольтный ПЧ собран из силовых ячеек 690 В с диодным выпрямителем. При запирании диода ток обратного восстановления I<sub>rr</sub> = ${D.Irr} А обрывается в индуктивности рассеяния L<sub>σ</sub> = ${D.Ls} мкГн${qh_("Та же физика, что при срезе тока в выключателе: энергия L·I²/2 переходит в ёмкость. Без снаббера ёмкость — только паразитная, около 10 нФ, и всплеск достигает нескольких киловольт.")}. Выброс над выпрямленным напряжением ΔU = I<sub>rr</sub>·√(L<sub>σ</sub>/C). Допустимое напряжение диодов 1500 В, U<sub>d0</sub> = √2·690 В. Найдите <b>наименьшую ёмкость снаббера</b>.`,a:M.Csn(),u:"мкФ",h:"C ≥ L<sub>σ</sub>I<sub>rr</sub>²/(1500 − 976)²."},
+ tune:{task:"Выберите конденсатор RC-снаббера из ряда.",
+  init:()=>({c:0.1}),
+  ctrl:s=>`<label>Ёмкость снаббера, мкФ</label>${seg("c",D.CSN,s.c,v=>fx(v,2))}`,
+  viz:s=>{const a=axes({x0:0,x1:40,y0:0,y1:2.6,xt:[0,10,20,30,40],yt:[0,0.5,1,1.5,2,2.5],xl:"время, мкс",yl:"U, кВ",aria:"Выброс напряжения на диоде"});
+   const C=s.c*1e-6,Ls=D.Ls*1e-6,w0=1/Math.sqrt(Ls*C),dU=M.dUsn(s.c)/1000,u0=M.Ud0()/1000;let p=[];
+   for(let t=0;t<=40;t+=0.05){const tt=t*1e-6;p.push([a.X(t),a.Y(Math.min(2.6,u0+dU*Math.sin(w0*tt)*Math.exp(-tt/12e-6)))])}
+   let o=a.s+poly(p,"cv2")+`<line class="lim" x1="${a.L}" y1="${a.Y(D.Uvd/1000)}" x2="${a.W-a.R}" y2="${a.Y(D.Uvd/1000)}"/>`+hl(a,a.W-a.R-4,a.Y(D.Uvd/1000)-5,"1500 В","end")+a.end;
+   const pk=M.Ud0()+M.dUsn(s.c);return o+`<div class="reads">${rd("Пик напряжения",fx(pk,0)+" В",pk<=D.Uvd)}${rd("Без снаббера (10 нФ)",fx(M.Ud0()+M.dUsn(D.Cp),0)+" В")}${rd("Резистор снаббера √(L/C)",fx(Math.sqrt(D.Ls/s.c),1)+" Ом")}</div>`},
+  ok:s=>near(s.c,0.47),h:"Наименьший конденсатор ряда, не меньше расчётного.",
+  ex:`0,47 мкФ: пик ${fx(M.Ud0()+M.dUsn(0.47),0)} В. Резистор порядка √(L/C) ≈ 8 Ом гасит колебания. Вторая ступень защиты — варистор на шинах постоянного тока, третья — ОПН на вводе 6 кВ.`}},
+{id:"В3",app:"prot",wk:9,t:"Заземление экранов и брони",
+ calc:{q:`Экраны и броня кабеля ${c.n} вместе имеют сопротивление ${fx(c.Rs,2)} Ом/км. При замыкании на землю в конце линии ток I<sub>C</sub> из этапа Б2 возвращается к ЦПП по экранам. Если экраны заземлены только на ЦПП, найдите <b>напряжение экрана относительно земли в конце линии</b> (до включения ДГР).`,a:M.Us(),u:"В",h:`${fx(M.Ic(),1)}·${fx(c.Rs,2)}·2.`},
+ tune:{task:"Выберите схему заземления экранов и брони.",
+  init:()=>({p:"one"}),
+  ctrl:s=>`<label>Схема</label>${segL("p",[["one","только на ЦПП — чтобы по экранам не шли токи"],["both","на обоих концах и у каждой соединительной муфты — в общешахтную сеть заземления"],["none","не заземлять: экран изолирован"]],s.p)}`,
+  viz:s=>{const a=axes({x0:0,x1:2,y0:0,y1:Math.max(60,M.Us()*1.3),xt:[0,0.5,1,1.5,2],yt:[0,20,40,60],xf:v=>fx(v,1),xl:"расстояние от ЦПП, км",yl:"U, В",aria:"Потенциал экрана вдоль линии"});
+   const prof=s.p==="one"?x=>M.Us()*x/2:s.p==="both"?x=>M.I0(5)*2*(1-Math.abs(x-1)*0.6):x=>Math.max(60,M.Us()*1.3)*0.95;
+   let p=[];for(let x=0;x<=2.001;x+=0.02)p.push([a.X(x),a.Y(prof(x))]);
+   let o=a.s+poly(p,s.p==="both"?"cv":"cv2")+`<line class="lim" x1="${a.L}" y1="${a.Y(40)}" x2="${a.W-a.R}" y2="${a.Y(40)}"/>`+hl(a,a.W-a.R-4,a.Y(40)-5,"ориентир задания 40 В","end")+a.end;
+   const m={one:"Конец линии и корпуса РП оказываются под напряжением прикосновения; по сопротивлению экрана считают и защиту.",both:"Экраны соединены с общей сетью заземления в нескольких точках: потенциал выравнен, при включённом ДГР ток мал.",none:"Изолированный экран заряжается ёмкостным током и наводками до опасного напряжения — так нельзя."}[s.p];
+   return o+`<div class="fb ${s.p==="both"?"ok":"no"}" style="max-width:none"><strong>${s.p==="both"?"Потенциалы выравнены":"Опасно"}</strong>${m}</div>`},
+  ok:s=>s.p==="both",h:"В шахте все металлические оболочки и броню кабелей присоединяют к общей сети заземления.",
+  ex:`При заземлении только на ЦПП в конце линии ${fx(M.Us(),0)} В. Экраны и броню соединяют с общешахтной сетью заземления на обоих концах и у муфт; для трёхжильного кабеля токи в экранах при симметричной нагрузке малы, так что потерь это почти не добавляет.`}},
+{id:"Г1",app:"age",wk:10,t:"Водный и электрический триинг",
+ calc:{q:`От полупроводящего экрана жилы в изоляцию проросло «водное дерево»${qh_("Водный триинг — древовидные области, заполненные водой, в полиэтилене и резине под действием поля и влаги. Сами по себе они не канал пробоя, но проводят лучше изоляции и сокращают её рабочую толщину; на их вершинах зарождаются электрические деревья — каналы частичных разрядов, которые и приводят к пробою (учебник Важова, разд. 1.2.2.4).")} длиной l. Грубая модель: дерево проводит, жила как бы утолщается до r + l. Найдите <b>напряжённость на фронте дерева</b> E = U<sub>ф</sub>/((r + l)·ln(R/(r + l))) при l = ${fx(M.TREE()[1],2)} мм.`,a:M.Etree(M.TREE()[1]),u:"кВ/мм",h:`r + l = ${fx(c.r+M.TREE()[1],2)} мм.`},
+ tune:{task:`Электрический триинг на фронте водного дерева примем возможным при E > ${fx(D.Ebr,1)} кВ/мм. Найдите наибольшую длину водного дерева из ряда, при которой это условие ещё не выполняется.`,
+  init:()=>({l:M.TREE()[3]}),
+  ctrl:s=>`<label>Длина дерева l, мм</label>${seg("l",M.TREE(),s.l,v=>fx(v,2))}`,
+  viz:s=>{const T=M.TREE(),lm=c.d*0.88,a=axes({x0:0,x1:c.d,y0:0,y1:8,xt:[0,...T],yt:[0,2,4,6,8],xf:v=>fx(v,1),xl:"длина дерева l, мм",yl:"E, кВ/мм",aria:"Напряжённость на фронте дерева"});
+   let p=[];for(let l=0;l<=lm;l+=0.01)p.push([a.X(l),a.Y(Math.min(8,M.Etree(l)))]);let o=a.s+poly(p,"cv")+`<line class="lim" x1="${a.L}" y1="${a.Y(D.Ebr)}" x2="${a.W-a.R}" y2="${a.Y(D.Ebr)}"/>`+hl(a,a.L+6,a.Y(D.Ebr)-5,"порог "+fx(D.Ebr,1));
+   T.forEach(l=>{o+=`<circle class="mk${near(l,s.l)?" sel":""}" cx="${a.X(l)}" cy="${a.Y(Math.min(8,M.Etree(l)))}" r="${near(l,s.l)?7:4.5}"/>`});o+=a.end;
+   const e=M.Etree(s.l);return o+`<div class="reads">${rd("E на фронте",fx(e,2)+" кВ/мм",e<=D.Ebr)}${rd("Оставшаяся толщина",fx(c.d-s.l,2)+" мм")}${rd("Доля толщины",fx(s.l/c.d*100,0)+" %")}</div>`},
+  ok:s=>near(s.l,M.lmax()),h:"Напряжённость растёт тем быстрее, чем меньше остаётся изоляции.",
+  ex:`До ${fx(M.lmax(),2)} мм (${fx(M.lmax()/c.d*100,0)} % толщины) поле на фронте ещё ниже порога; дальше оно растёт лавинообразно. Отсюда диагностика по tgδ на СНЧ (этап Д1): водные деревья увеличивают потери задолго до пробоя.`}},
+{id:"Г2",app:"age",wk:11,t:"Изгиб кабеля",
+ calc:{q:`Наружный диаметр кабеля ${c.n} — ${c.D} мм. При изгибе радиусом R наружные слои растягиваются на ε ≈ D/(2R). Найдите <b>относительное растяжение</b> при изгибе радиусом 0,6 м.`,a:M.eb(D.Rb0),u:"%",h:`${c.D}/(2·600)·100.`},
+ tune:{task:`${c.flex?"Гибкий кабель с резиновой изоляцией допускает многократные изгибы":"Бронированный кабель с изоляцией из сшитого полиэтилена прокладывают неподвижно"}: наименьший радиус изгиба — ${c.kb}D, то есть растяжение не больше ${fx(M.eal(),1)} %${qh_("Многократный изгиб и растяжение вызывают микротрещины и отслоение полупроводящих экранов от изоляции; в образовавшихся зазорах загораются частичные разряды. Поэтому у передвижной концевой станции конвейера применяют только гибкие кабели.")}. Выберите наименьший радиус изгиба из ряда.`,
+  init:()=>({R:D.RB[0]}),
+  ctrl:s=>`<label>Радиус изгиба R, м</label>${seg("R",D.RB,s.R,v=>fx(v,1))}`,
+  viz:s=>{const W=420,H=200,cx=40,cy=180,Rp=Math.min(150,s.R*140);
+   let o=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Изгиб кабеля"><path d="M${cx} ${cy-Rp}A${Rp} ${Rp} 0 0 1 ${cx+Rp} ${cy}" stroke="var(--m3)" stroke-width="${Math.max(8,c.D/4)}" fill="none"/><path d="M${cx} ${cy-Rp}A${Rp} ${Rp} 0 0 1 ${cx+Rp} ${cy}" stroke="${M.eb(s.R)<=M.eal()+1e-9?"var(--go)":"var(--bad)"}" stroke-width="3" fill="none"/><path d="M${cx} ${cy}L${cx+Rp*0.7} ${cy-Rp*0.7}" stroke="var(--muted)" stroke-dasharray="3 3"/><text x="${cx+Rp*0.38}" y="${cy-Rp*0.3}">R = ${fx(s.R,1)} м</text></svg>`;
+   const e=M.eb(s.R);return o+`<div class="reads">${rd("Растяжение ε",fx(e,2)+" %",e<=M.eal()+1e-9)}${rd("Допустимо",fx(M.eal(),2)+" %")}${rd("Радиус "+c.kb+"D",fx(c.kb*c.D/1000,2)+" м")}</div>`},
+  ok:s=>near(s.R,M.Rbmin()),h:`${c.kb}·${c.D} мм.`,
+  ex:`R ≥ ${fx(c.kb*c.D/1000,2)} м → ${fx(M.Rbmin(),1)} м. ${c.flex?"Гибкий кабель подходит для передвижной концевой станции.":"Циклический изгиб бронированного кабеля недопустим: у передвижной концевой станции ставят гибкую вставку."}`}},
+{id:"Г3",app:"age",wk:12,t:"Нагрев в конвейерном штреке",
+ calc:{q:`Длительно допустимый ток кабеля ${c.n} на воздухе при 25 °C — ${c.Iz} А, допустимая температура жилы ${c.T} °C. В штреке воздух ${D.tA} °C${qh_("Поправка на температуру среды: k<sub>t</sub> = √((θ<sub>доп</sub> − θ<sub>ср</sub>)/(θ<sub>доп</sub> − 25)). Кабели на одной консоли греют друг друга — поправка на прокладку k<sub>п</sub>. Перегрев ускоряет тепловое старение изоляции.")}, кабели лежат пучком на консолях: k<sub>п</sub> = ${fx(D.kg,2)}. Найдите <b>допустимый ток с поправками</b> I′ = I<sub>доп</sub>·k<sub>t</sub>·k<sub>п</sub>.`,a:M.Ip(),u:"А",h:`k<sub>t</sub> = √((${c.T} − ${D.tA})/(${c.T} − 25)) = ${fx(M.kt(),3)}.`},
+ tune:{task:`Ток линии при работе всех четырёх двигателей: I = 4·630/(η<sub>д</sub>η<sub>ПЧ</sub>·√3·6·cos φ<sub>вх</sub>) = ${fx(M.Iline(),1)} А (η<sub>д</sub> = ${fx(D.etaM,3)}, η<sub>ПЧ</sub> = ${fx(D.etaC,2)}, cos φ<sub>вх</sub> = ${fx(D.cosIn,2)}). Выберите, сколько кабелей проложить параллельно.`,
+  init:()=>({n:3}),
+  ctrl:s=>`<label>Число параллельных кабелей</label>${seg("n",[1,2,3],s.n)}`,
+  viz:s=>{const a=axes({x0:0,x1:4,y0:0,y1:800,xt:[],yt:[0,200,400,600,800],xl:"",yl:"ток, А",aria:"Допустимый и рабочий ток"});let o=a.s;
+   [1,2,3].forEach(n=>{const x=a.X(n)-18,v=n*M.Ip();o+=`<rect class="${v>=M.Iline()?"fillG":"fillB"}" x="${x}" y="${a.Y(v)}" width="36" height="${a.Y(0)-a.Y(v)}" ${n===s.n?'stroke="var(--ink)" stroke-width="2"':""}/>`+hl(a,a.X(n),a.H-a.B+14,n+" каб.","middle")});
+   o+=`<line class="lim" x1="${a.L}" y1="${a.Y(M.Iline())}" x2="${a.W-a.R}" y2="${a.Y(M.Iline())}"/>`+hl(a,a.W-a.R-4,a.Y(M.Iline())-5,"ток линии "+fx(M.Iline(),0)+" А","end")+a.end;
+   const v=s.n*M.Ip();return o+`<div class="reads">${rd("Допустимо",fx(v,0)+" А",v>=M.Iline())}${rd("Загрузка",fx(M.Iline()/v*100,0)+" %")}</div>`},
+  ok:s=>s.n===M.npar(),h:"Наименьшее число кабелей, при котором суммарный допустимый ток не меньше тока линии.",
+  ex:M.npar()===1?`Один кабель: ${fx(M.Ip(),0)} А ≥ ${fx(M.Iline(),0)} А, загрузка ${fx(M.Iline()/M.Ip()*100,0)} %.`:`Нужно ${M.npar()} кабеля: один допускает лишь ${fx(M.Ip(),0)} А. Ёмкость линии при этом удвоится — ток замыкания на землю вырастет на ${fx(3*2*Math.PI*50*M.Cl()*1e-6*Uf*1e3,1)} А, автоматика ДГР перестроит реактор.`}},
+{id:"Д1",app:"diag",wk:13,t:"tgδ на сверхнизкой частоте",
+ calc:{q:`Изоляцию линии испытывают и измеряют tgδ на частоте 0,1 Гц${qh_("Сверхнизкая частота (СНЧ): ток через ёмкость кабеля пропорционален частоте, поэтому на 0,1 Гц он в 500 раз меньше, чем на 50 Гц, и установка помещается в автомобиль. Метод IEEE 400.2 — основной для кабелей с изоляцией из полиэтилена и резины.")} при 3U<sub>0</sub>, U<sub>0</sub> = ${fx(D.U0,1)} кВ. Найдите <b>ёмкостный ток источника СНЧ</b> I = 2π·0,1·C<sub>0</sub>L·3U<sub>0</sub> для одной фазы.`,a:M.Ivlf(),u:"мА",h:`C = ${fx(M.Cl(),3)} мкФ; U = ${fx(3*D.U0,1)} кВ.`},
+ tune:{task:`tgδ измерен при 0,5U<sub>0</sub>, U<sub>0</sub> и 1,5U<sub>0</sub> (×10⁻³). Ориентир задания для изоляции «${c.ins}»: норма — tgδ(U<sub>0</sub>) ≤ ${M.TH().td[0]} и Δtgδ = tgδ(1,5U<sub>0</sub>) − tgδ(0,5U<sub>0</sub>) ≤ ${M.TH().dtd[0]}; ремонт — tgδ(U<sub>0</sub>) > ${M.TH().td[1]} или Δtgδ > ${M.TH().dtd[1]}; между ними — контроль через год. Оцените фазы.`,
+  init:()=>({a:"rep",b:"ok",c:"ok"}),
+  ctrl:s=>["a","b","c"].map((k,i)=>`<label>Фаза ${"ABC"[i]}: ${c.tg[i].map(v=>fx(v,1)).join(" · ")}</label>${seg(k,["ok","ctl","rep"],s[k],v=>GR[v])}`).join(""),
+  viz:s=>{const a=axes({x0:0.4,x1:1.6,y0:0,y1:Math.max(...c.tg.map(t=>t[2]))*1.1,xt:[0.5,1,1.5],yt:[0,50,100,150].filter(v=>v<=Math.max(...c.tg.map(t=>t[2]))*1.1),xl:"U/U0",yl:"tgδ·10³",aria:"Кривые tgδ(U)"});let o=a.s;
+   c.tg.forEach((t,i)=>{o+=poly([[a.X(0.5),a.Y(t[0])],[a.X(1),a.Y(t[1])],[a.X(1.5),a.Y(t[2])]],i===2?"cv2":"cv")+hl(a,a.X(1.52),a.Y(t[2])+4,"ABC"[i])});o+=a.end;
+   return o+`<div class="reads">${c.tg.map((t,i)=>rd("Фаза "+"ABC"[i],"tgδ "+fx(t[1],1)+" · Δ "+fx(M.dtd(i),1))).join("")}</div>`},
+  ok:s=>s.a===M.grade(0)&&s.b===M.grade(1)&&s.c===M.grade(2),h:"Проверьте оба показателя каждой фазы; решает худший.",
+  ex:`A — ${GR[M.grade(0)]}, B — ${GR[M.grade(1)]}, C — ${GR[M.grade(2)]}. Рост tgδ с напряжением — признак водного триинга и частичных разрядов.`}},
+{id:"Д2",app:"diag",wk:14,t:"Поиск места повреждения",
+ calc:{q:`Рефлектометр${qh_("Импульсный метод: в линию посылают короткий импульс и измеряют время прихода отражения от неоднородности. Расстояние l = v·t/2: импульс проходит путь туда и обратно.")} показал отражение через t = ${fx(+M.tf().toFixed(2),2)} мкс. Найдите <b>расстояние до повреждения</b>, скорость волны — из этапа А3.`,a:M.lfault(),u:"м",h:`v = ${fx(M.v(),1)} м/мкс; l = v·t/2.`},
+ tune:{task:`В другой фазе сопротивление в месте повреждения R<sub>п</sub> = ${D.Rf/1000} кОм. Коэффициент отражения от шунтирующего повреждения ρ = −Z<sub>в</sub>/(Z<sub>в</sub> + 2R<sub>п</sub>). Выберите методику поиска.`,
+  init:()=>({v:"refl"}),
+  ctrl:s=>`<label>Методика</label>${segL("v",[["refl","сразу рефлектометр на всю линию"],["burn","прожиг до сопротивления в десятки ом, затем рефлектометр, точное место — акустическим методом на трассе"],["test","повысить испытательное напряжение до 50 кВ"]],s.v)}`,
+  viz:s=>{const R=s.v==="burn"?20:D.Rf,rho=M.rho(R),t2=2*M.lfault()/M.v(),a=axes({x0:0,x1:2.2*M.tau(),y0:-1,y1:1.1,xt:[0,+t2.toFixed(1),+(2*M.tau()).toFixed(1)],yt:[-1,0,1],xf:v=>fx(v,1),xl:"время, мкс",yl:"о.е.",aria:"Рефлектограмма"});
+   let p=[[a.X(0),a.Y(0)]];const pk=(t,h)=>{p.push([a.X(t-0.3),a.Y(0)],[a.X(t),a.Y(h)],[a.X(t+0.6),a.Y(0)])};pk(0.2,1);pk(t2,rho*3);pk(2*M.tau(),0.9*(1-rho*rho));p.push([a.X(2.2*M.tau()),a.Y(0)]);
+   let o=a.s+poly(p,"cv")+hl(a,a.X(t2)+6,a.Y(rho*3)-4,"ρ = "+fx(rho,3))+a.end;
+   const m={refl:"При 8 кОм отражение меньше тысячной доли — на рефлектограмме его не видно.",burn:"После прожига сопротивление падает до десятков ом, отражение хорошо видно; затем место уточняют на трассе по звуку разряда.",test:"Повышать напряжение без нужды нельзя: кабель уже повреждён, а испытание не покажет, где дефект."}[s.v];
+   return o+`<div class="fb ${s.v==="burn"?"ok":"no"}" style="max-width:none"><strong>${s.v==="burn"?"Место найдено":"Место не найти"}</strong>${m}</div>`},
+  ok:s=>s.v==="burn",h:"Сравните R<sub>п</sub> с Z<sub>в</sub>.",
+  ex:`Повреждение — в ${fx(M.lfault(),0)} м от ЦПП. Высокоомный дефект сначала прожигают, затем находят зону рефлектометром и точное место — акустическим или индукционным методом.`}},
+{id:"Д3",app:"diag",wk:15,t:"Программа испытаний и безопасность",
+ calc:{q:`После любого испытания линию разряжают и заземляют: ёмкость фазы держит заряд. Найдите <b>энергию, запасённую в одной фазе</b> линии при напряжении ${D.Ut} кВ.`,a:M.W(),u:"Дж",h:`W = C·U²/2, C = ${fx(M.Cl(),3)} мкФ.`},
+ tune:{task:`Выберите программу испытания линии повышенным напряжением для кабеля ${c.n}${qh_("Учебник Важова, табл. П3.4: выпрямленное напряжение для кабелей 6 кВ — 36 кВ для бумажной и пластмассовой изоляции (10 мин), 12 кВ для резиновой (5 мин). Для сшитого полиэтилена выпрямленное напряжение вредно: в изоляции накапливается объёмный заряд, ускоряется рост водных деревьев. Поэтому кабели из сшитого полиэтилена испытывают переменным напряжением 0,1 Гц.")}.`,
+  init:()=>({v:"ac"}),
+  ctrl:s=>`<label>Программа</label>${segL("v",[["dc36","выпрямленное 36 кВ, 10 мин"],["vlf","0,1 Гц, 3U<sub>0</sub> = 10,8 кВ, 15 мин, с измерением tgδ"],["dc12","выпрямленное 12 кВ, 5 мин"],["ac","50 Гц, 2U<sub>ном</sub> = 12 кВ, 1 мин"]],s.v)}`,
+  viz:s=>{const ok=s.v===(c.dc?"dc12":"vlf");const m={dc36:c.dc?"36 кВ — норма для бумажной и пластмассовой изоляции; резиновую им не испытывают.":"Выпрямленное напряжение оставляет в сшитом полиэтилене объёмный заряд и ускоряет триинг.",vlf:c.dc?"Для резиновой изоляции по табл. П3.4 — выпрямленное 12 кВ.":"Переменное напряжение 0,1 Гц не оставляет объёмного заряда; tgδ показывает водный триинг.",dc12:c.dc?"Табл. П3.4: резиновая изоляция 6 кВ — 12 кВ, 5 мин.":"12 кВ — норма для резиновой изоляции.",ac:"Для 2 км кабеля на 50 Гц нужна установка мощностью десятки киловольт-ампер — в шахте неприменимо."}[s.v];
+   return `<div class="fb ${ok?"ok":"no"}" style="max-width:none"><strong>${ok?"Программа верная":"Не подходит"}</strong>${m}</div><div class="reads">${rd("Энергия в фазе при 15 кВ",fx(M.W(),0)+" Дж")}${rd("После испытания","разряд через штангу, заземление на время работ")}</div>`},
+  ok:s=>s.v===(c.dc?"dc12":"vlf"),h:"Посмотрите, какая у вашего кабеля изоляция.",
+  ex:c.dc?"Резиновая изоляция: выпрямленное 12 кВ, 5 мин (табл. П3.4). Перед испытанием и после него — разряд и заземление: энергия в фазе смертельно опасна.":"Сшитый полиэтилен: 0,1 Гц, 3U<sub>0</sub>, с измерением tgδ. Перед подключением и после — разряд через штангу и заземление: в фазе около сотни джоулей."}}
+];}
+let ST=mkST();
+const DEV={
+cpp:{t:"ЦПП 6 кВ — центральная подземная подстанция",d:"Комплектные ячейки 6 кВ питают все участки шахты. Секция шин сети с изолированной нейтралью; от неё идут кабели к конвейерам, насосам, участковым подстанциям.",w:["Учитываем","Ёмкость всей сети, присоединённой к секции, определяет ток замыкания на землю (этап Б2)."],
+ s:()=>ill(`${grnd(156)}${[0,1,2,3].map(i=>`<rect x="${30+i*58}" y="26" width="50" height="130" fill="var(--paint)" stroke="var(--m3)"/><rect x="${38+i*58}" y="36" width="34" height="22" fill="var(--scr)"/><circle cx="${55+i*58}" cy="90" r="6" fill="var(--m3)"/>`).join("")}${L2(140,20,"Ячейки КРУ 6 кВ")}`)},
+rest:{t:"Остальная сеть секции",d:"Кабели к другим потребителям: участковые подстанции, насосы, вентиляторы. Их ёмкость относительно земли много больше ёмкости линии конвейера.",w:["В задании",`Ёмкость фазы остальной сети ${fx(D.Crest,1)} мкФ — около 25 км кабеля.`],
+ s:()=>ill(`${grnd(156)}${[0,1,2,3,4].map(i=>`<path d="M30 ${40+i*22}H250" stroke="var(--m3)" stroke-width="5"/><path d="M${60+i*40} ${44+i*22}V150" stroke="var(--glass)" stroke-dasharray="3 3"/>`).join("")}${L2(140,26,"Ёмкость кабелей на землю")}`)},
+nt:{app:"ozz",t:"Нейтралеобразующий трансформатор",d:"Создаёт нейтраль сети 6 кВ для дугогасящего реактора: обмотка 6 кВ — звезда с выведенной нейтралью, вторая обмотка — треугольник, замкнутый сам на себя и никуда не подключённый. При замыкании на землю ток реактора входит в нейтраль и делится поровну на три фазы звезды — это токи нулевой последовательности, одинаковые по фазе. Без треугольника их поток в трёхстержневом сердечнике не замыкается по стали, сопротивление нейтрали велико, и реактор почти не получает тока. В замкнутом треугольнике наводится ток, который этот поток гасит: сопротивление нулевой последовательности становится малым. Тот же результат даёт одна обмотка «зигзаг» без треугольника.",w:["Обозначение на схеме","Два круга — трансформатор. От звезды выведена нейтраль к реактору; треугольник замкнут внутри трансформатора и наружу не выводится."],
+ s:()=>ill(`${grnd(156)}<rect x="60" y="40" width="160" height="116" rx="6" fill="var(--paint)" stroke="var(--m3)"/>${[0,1,2].map(i=>`<rect x="${78+i*46}" y="60" width="32" height="80" rx="4" fill="var(--cu)"/><rect x="${86+i*46}" y="16" width="16" height="26" rx="3" fill="var(--m1)" stroke="var(--m3)"/>`).join("")}<rect x="196" y="22" width="12" height="20" fill="var(--m1)" stroke="var(--m3)"/>${L2(202,14,"N")}`)},
+dgr:{app:"ozz",t:"Дугогасящий реактор (ДГР) с подмагничиванием",d:"Реактор, включённый между нейтралью и землёй (у Важова — дугогасящая катушка, катушка Петерсена). Индуктивный ток реактора компенсирует ёмкостный ток замыкания на землю; автоматика плавно меняет индуктивность током подмагничивания при включении и отключении линий.",w:["Что считаем (Б1–Б3)","Б1 — перенапряжения при перемежающейся дуге. Б2 — ток замыкания всей сети. Б3 — индуктивность реактора, расстройка и смещение нейтрали."],
+ s:()=>ill(`${grnd(156)}<rect x="80" y="30" width="120" height="110" rx="8" fill="var(--paint)" stroke="var(--m3)"/>${[0,1,2,3,4].map(i=>`<path d="M100 ${46+i*16}h80" stroke="var(--cu)" stroke-width="5"/>`).join("")}<rect x="210" y="60" width="50" height="40" fill="var(--scr)"/><text x="235" y="85" text-anchor="middle" style="font:11px var(--f-mono);fill:var(--go)">ν +5%</text>${L2(140,22,"Реактор и шкаф автоматики настройки")}`)},
+cab:{app:"cab",t:"Кабельная линия 6 кВ, 2 км",d:"",w:["Что считаем (А1–А3)","А1 — ёмкость, зарядный ток и поле в изоляции. А2 — напряжённость у жилы и толщина изоляции. А3 — скорость волны, время пробега, волновое сопротивление."],
+ s:()=>{const c=M.c,k=58/(c.r+c.d+3);const ring=(cx,cy)=>`<circle cx="${cx}" cy="${cy}" r="${(c.r+c.d+0.6)*k}" fill="var(--m2)"/><circle cx="${cx}" cy="${cy}" r="${(c.r+c.d)*k}" fill="${c.flex?"var(--res)":"#F2F0E6"}" stroke="var(--semi)" stroke-width="2"/><circle cx="${cx}" cy="${cy}" r="${(c.r-0.4)*k}" fill="var(--cu)" stroke="var(--semi)" stroke-width="2.5"/>`;
+  return ill(`<circle cx="140" cy="88" r="80" fill="${c.flex?"var(--res)":"var(--m3)"}"/><circle cx="140" cy="88" r="72" fill="var(--cab)"/>${ring(140,88-36)}${ring(140-31,88+18)}${ring(140+31,88+18)}${L2(140,166,c.n)}`)}},
+muf:{app:"prot",t:"Соединительная муфта и заземление",d:"Строительная длина кабеля меньше 2 км, поэтому в линии есть соединительные муфты. У муфт экраны и броню соединяют между собой и с общешахтной сетью заземления.",w:["Что считаем (В3)","Напряжение на экранах при замыкании на землю и схема их заземления."],
+ s:()=>ill(`${grnd(156)}<path d="M10 80H270" stroke="var(--m3)" stroke-width="16"/><rect x="90" y="56" width="100" height="48" rx="20" fill="var(--paint)" stroke="var(--m3)"/><path d="M140 104V150" stroke="var(--go)" stroke-width="3"/><path d="M128 150h24M132 155h16M136 160h8" stroke="var(--go)" stroke-width="2"/>${L2(140,44,"Муфта: экраны и броня — на землю")}`)},
+rp:{t:"РП 6 кВ приводной станции",d:"Распределительный пункт у головы конвейера: ввод кабельной линии, ячейки четырёх преобразователей частоты, ОПН на вводе.",w:["Учитываем","Падение напряжения в линии при полной нагрузке (этап А3) и ток линии для теплового расчёта (этап Г3)."],
+ s:()=>ill(`${grnd(156)}${[0,1,2].map(i=>`<rect x="${50+i*64}" y="30" width="56" height="126" fill="var(--paint)" stroke="var(--m3)"/><rect x="${58+i*64}" y="40" width="40" height="20" fill="var(--scr)"/>`).join("")}`)},
+pch:{app:"prot",t:"Преобразователи частоты 6 кВ",d:"Каждый двигатель питается от своего ПЧ: многообмоточный трансформатор и силовые ячейки 690 В с диодным выпрямителем и инвертором напряжения. Плавный пуск и выравнивание нагрузок двигателей.",w:["Что считаем (В2)","Выброс напряжения на диодах выпрямителя и ёмкость RC-снаббера."],
+ s:()=>ill(`${grnd(156)}<rect x="40" y="26" width="200" height="130" fill="var(--paint)" stroke="var(--m3)"/>${[0,1,2].map(r=>[0,1,2].map(i=>`<rect x="${56+i*60}" y="${40+r*36}" width="50" height="28" fill="var(--m1)" stroke="var(--m3)"/>`).join("")).join("")}${L2(140,20,"Силовые ячейки 690 В")}`)},
+ad:{t:"Асинхронные двигатели 4 × 630 кВт, 6 кВ",d:"Многодвигательный привод: по два двигателя на каждый из двух приводных барабанов. Короткозамкнутый ротор — регулирование скорости от ПЧ, фазный ротор не нужен.",w:["Учитываем",`Ток линии ${fx(M.Iline(),0)} А при работе всех двигателей.`],
+ s:()=>ill(`${grnd(156)}${motor(30,60,100,70)}${motor(150,60,100,70)}${L2(140,40,"2 из 4 двигателей")}`)},
+belt:{t:"Ленточный конвейер",d:"Магистральный конвейер в штреке: приводная станция у головы, лента на роликоопорах, натяжная и передвижная концевая станции. Остановка конвейера останавливает добычу.",w:["Учитываем","Длинную линию к приводной станции и гибкий кабель к передвижной концевой станции (этап Г2)."],
+ s:()=>ill(`${grnd(156)}<circle cx="50" cy="90" r="30" fill="var(--paint)" stroke="var(--m3)"/><circle cx="230" cy="90" r="30" fill="var(--paint)" stroke="var(--m3)"/><path d="M50 60H230M50 120H230" stroke="var(--semi)" stroke-width="6"/>${[0,1,2,3].map(i=>`<path d="M${80+i*40} 52c6-10 18-10 24 0z" fill="var(--m2)"/>`).join("")}`)},
+asu:{app:"prot",t:"Шкаф АСУ ТП и УЗИП",d:"Контроллер управляет пуском, скоростью ленты и защитами конвейера. Питание 230 В и линии связи проходят рядом с силовыми кабелями 6 кВ — на них наводятся импульсы при коммутациях и замыканиях.",w:["Что считаем (В1)","Эффективный уровень защиты УЗИП с учётом проводников подключения."],
+ s:()=>ill(`${grnd(156)}<rect x="70" y="20" width="140" height="136" fill="var(--paint)" stroke="var(--m3)"/><rect x="84" y="34" width="112" height="20" fill="var(--m1)"/>${[0,1,2,3].map(i=>`<rect x="${88+i*26}" y="70" width="20" height="40" fill="${i===0?"var(--hv)":"var(--m1)"}" stroke="var(--m3)"/>`).join("")}<path d="M98 110V140" stroke="var(--go)" stroke-width="3"/>${L2(98,152,"УЗИП","middle")}`)},
+kons:{app:"age",t:"Кабели на консолях в штреке",d:"В конвейерном штреке кабели подвешены на консолях пучком, воздух тёплый от двигателей и трения ленты. Влажность и капёж приносят воду к изоляции.",w:["Что считаем (Г1–Г3)","Г1 — водный и электрический триинг. Г2 — изгиб. Г3 — допустимый ток с поправками."],
+ s:()=>ill(`${grnd(156)}<path d="M40 20V156" stroke="var(--m3)" stroke-width="8"/>${[0,1,2].map(i=>`<path d="M40 ${50+i*36}H200" stroke="var(--m2)" stroke-width="4"/>${[0,1,2].map(j=>`<circle cx="${90+j*40}" cy="${42+i*36}" r="9" fill="var(--m3)"/>`).join("")}`).join("")}${L2(200,24,M.D.tA+" °C")}`)},
+tail:{t:"Передвижная концевая станция",d:"Хвостовая станция перемещается по мере подвигания забоя; к ней идёт гибкий кабель, который многократно изгибается.",w:["Учитываем","Радиус изгиба и вид кабеля (этап Г2)."],
+ s:()=>ill(`${grnd(156)}<rect x="60" y="80" width="160" height="60" fill="var(--paint)" stroke="var(--m3)"/><circle cx="90" cy="146" r="10" fill="var(--m3)"/><circle cx="190" cy="146" r="10" fill="var(--m3)"/><path d="M10 60C60 20 80 120 140 80" stroke="var(--res)" stroke-width="8" fill="none"/>`)},
+ru:{t:"Реле утечки",d:"Контролирует сопротивление изоляции сети относительно земли и отключает линию при опасной утечке. В игре стрелка ползёт с каждой вашей ошибкой.",w:["В игре","Шесть ошибок — реле отключает линию, конвейер останавливается. Три верных ответа подряд с первой попытки возвращают стрелку на деление."],
+ s:()=>ill(`${grnd(156)}<rect x="70" y="24" width="140" height="120" rx="8" fill="var(--paint)" stroke="var(--m3)"/><path d="M90 110A50 50 0 0 1 190 110" stroke="var(--m3)" stroke-width="2" fill="none"/><path d="M140 110L${140-46*Math.cos(Math.PI*(1-Math.min(S.s,MAXS)/MAXS))} ${110-46*Math.sin(Math.PI*(1-Math.min(S.s,MAXS)/MAXS))}" stroke="var(--bad)" stroke-width="3"/>`)},
+gnd:{t:"Общешахтная сеть заземления",d:"Все корпуса, броня и экраны кабелей соединены в одну сеть с главными заземлителями в водосборниках. Сопротивление сети от любой точки ограничено правилами безопасности.",w:["Учитываем","Выравнивание потенциалов вдоль линии (этап В3)."],
+ s:()=>ill(`${grnd(156)}<path d="M20 120H260" stroke="var(--go)" stroke-width="4"/>${[0,1,2,3].map(i=>`<path d="M${40+i*66} 120V150M${30+i*66} 150h20" stroke="var(--go)" stroke-width="3"/>`).join("")}`)},
+diag:{app:"diag",t:"Установка СНЧ и рефлектометр",d:"Передвижная лаборатория: источник 0,1 Гц с измерением tgδ, установка прожига, рефлектометр и акустический приёмник для поиска места повреждения.",w:["Что считаем (Д1–Д3)","Д1 — ток источника СНЧ и оценка tgδ. Д2 — расстояние до повреждения и методика поиска. Д3 — программа испытания и разряд линии."],
+ s:()=>ill(`${grnd(156)}<rect x="30" y="40" width="130" height="100" rx="6" fill="var(--paint)" stroke="var(--m3)"/><rect x="42" y="52" width="106" height="44" fill="var(--scr)"/><path d="M48 80h20l4-18 4 30 4-12h60" stroke="var(--go)" fill="none" stroke-width="1.4"/><rect x="180" y="60" width="70" height="80" rx="6" fill="var(--paint)" stroke="var(--m3)"/>${L2(215,54,"0,1 Гц")}`)}
+};
+DEV.cab.d="Кабель конвейерной линии: "+M.c.full+". Изоляция каждой жилы — в своём экране, поле радиальное.";
+function route(){
+  const el=document.getElementById("route");if(!el)return;
+  const dv={cab:"cab",ozz:"dgr",prot:"pch",age:"kons",diag:"diag"};
+  el.innerHTML=APPS.map(a=>{const st=appState(a.k),items=ST.filter(g=>g.app===a.k);return `<button type="button" class="chip ${st}" data-dev="${dv[a.k]}"><span class="cs">${st==="done"?"✓":st==="active"?"●":"○"}</span><span class="cn">${a.n}</span><span class="cc">${appCount(a.k)}</span><span class="ct">${items.map(g=>g.id+" "+g.t).join(" · ")}</span></button>`}).join("");
+}
+function mnemo(){
+  DEV.cab.d="Кабель конвейерной линии: "+M.c.full+". Изоляция каждой жилы — в своём экране, поле радиальное.";
+  const A=k=>appState(k),cls=k=>"ap "+A(k)+(lastLit===k?" lit":"");
+  const live=k=>A(k)==="done",run=S.launched?" flow":"";
+  const W=(on,d)=>`<path class="w${on?" live"+run:""}" d="${d}"/>`;
+  const cnt=(x,y,k,a)=>`<text class="cnt" x="${x}" y="${y}" text-anchor="${a||"middle"}">${appCount(k)}</text>`;
+  const L=(x,y,t,a,c)=>`<text class="${c||"lb"}" x="${x}" y="${y}" text-anchor="${a||"middle"}">${t}</text>`;
+  const C=k=>live(k)?"var(--go)":"var(--off)";
+  const G=(x,y,c)=>`<path d="M${x} ${y}v8M${x-10} ${y+8}h20M${x-6} ${y+13}h12M${x-2} ${y+18}h4" stroke="${c||"var(--muted)"}" stroke-width="1.8" fill="none"/>`;
+  const dev=(k,app,body)=>`<g class="${app?cls(app):"ap plain"}" data-dev="${k}" ${app?`data-app="${app}"`:""} tabindex="0" role="button" aria-label="${DEV[k].t}">${body}</g>`;
+  const y0=110,gy=360;let s="";
+  s+=`<path d="M20 ${gy}H880" stroke="${C("prot")}" stroke-width="2.4" stroke-dasharray="${live("prot")?"0":"6 4"}"/>`;
+  s+=dev("gnd",null,`<rect class="ring" x="720" y="${gy-14}" width="160" height="44" rx="6"/>${L(800,gy+24,"Сеть заземления")}`);
+  s+=dev("cpp",null,`<rect class="ring" x="8" y="40" width="72" height="190" rx="6"/><path d="M44 50V220" stroke="var(--hv)" stroke-width="5"/>${L(44,36,"ЦПП 6 кВ")}`)+G(44,226)+`<path d="M44 244V${gy}" stroke="var(--muted)" stroke-width="1.4"/>`;
+  s+=W(true,`M44 64H96`)+dev("rest",null,`<rect class="ring" x="92" y="20" width="120" height="70" rx="6"/>${[0,1,2].map(i=>`<path d="M100 ${36+i*14}H204" stroke="var(--hv)" stroke-width="2.4"/>`).join("")}${L(152,84,"Остальная сеть")}`);
+  s+=W(live("ozz"),`M44 200H90`)+`<path d="M62 194l8-8M68 194l8-8M74 194l8-8" stroke="${live("ozz")?"var(--hv)":"var(--off)"}" stroke-width="1.4"/>`;
+  s+=dev("nt","ozz",`<rect class="ring" x="84" y="184" width="60" height="98" rx="6"/><path d="M90 200H104" stroke="${C("ozz")}" stroke-width="2"/><circle class="sym" cx="118" cy="204" r="14"/><circle class="sym" cx="118" cy="226" r="14"/><path d="M118 198v6M118 204l-5 5M118 204l5 5" stroke="${C("ozz")}" stroke-width="1.4" fill="none"/><path d="M112 231l6-10 6 10z" stroke="${C("ozz")}" stroke-width="1.3" fill="none"/>${L(110,254,"нейтрале-","middle","lb s")}${L(110,266,"образующий","middle","lb s")}${L(110,278,"трансформатор","middle","lb s")}`)+`<path d="M132 204H176V236" stroke="${C("ozz")}" stroke-width="2" fill="none"/>`;
+  s+=dev("dgr","ozz",`<rect class="ring" x="150" y="230" width="62" height="92" rx="6"/><path d="M176 236V248A11 11 0 1 1 165 259H176V284" stroke="${C("ozz")}" stroke-width="2.2" fill="none"/><path d="M158 276L196 240M196 240l-8 1M196 240l-1 8" stroke="${C("ozz")}" stroke-width="1.4" fill="none"/>${G(176,284,C("ozz"))}${L(200,262,"ДГР","start","lb b")}${cnt(150,314,"ozz")}`);
+  s+=W(true,`M44 ${y0}H230`);
+  s+=dev("ru",null,`<rect x="200" y="${y0+16}" width="44" height="32" rx="4" fill="var(--panel)" stroke="${S.s>=MAXS-2?"var(--bad)":"var(--muted)"}" stroke-width="1.6"/><path d="M206 ${y0+42}A16 16 0 0 1 238 ${y0+42}" stroke="var(--muted)" fill="none"/><path d="M222 ${y0+42}L${222-14*Math.cos(Math.PI*(1-Math.min(S.s,MAXS)/MAXS))} ${y0+42-14*Math.sin(Math.PI*(1-Math.min(S.s,MAXS)/MAXS))}" stroke="var(--bad)" stroke-width="2"/>${L(222,y0+62,"Реле утечки")}<rect class="ring" x="196" y="${y0+12}" width="52" height="56" rx="5"/>`);
+  const cc=live("cab")?"var(--go)":"var(--hv)";
+  s+=dev("cab","cab",`<rect class="ring" x="250" y="${y0-34}" width="250" height="50" rx="6"/><path class="w live${run}" d="M250 ${y0}H500" style="stroke-width:6"/><path d="M250 ${y0}H500" stroke="${cc}" stroke-width="1.4" stroke-dasharray="${live("cab")?"0":"3 3"}"/>${L(375,y0-14,"Кабель 6 кВ, 2 км · "+(S.cab?M.c.n:"кабель не выбран"),"middle","lb b")}${cnt(494,y0-24,"cab","end")}`);
+  s+=W(true,`M230 ${y0}H250`);
+  s+=dev("muf","prot",`<rect class="ring" x="352" y="${y0+20}" width="46" height="${gy-y0-14}" rx="6"/><rect x="360" y="${y0-8}" width="30" height="16" rx="6" fill="var(--paint)" stroke="${C("prot")}" stroke-width="1.6"/><path d="M375 ${y0+8}V${gy}" stroke="${C("prot")}" stroke-width="1.6" stroke-dasharray="${live("prot")?"0":"4 3"}"/>${L(375,gy-12,"Муфта")}`);
+  s+=dev("kons","age",`<rect class="ring" x="410" y="${y0+24}" width="88" height="96" rx="6"/><path d="M422 ${y0+34}V${y0+110}" stroke="${C("age")}" stroke-width="4"/>${[0,1,2].map(i=>`<path d="M422 ${y0+48+i*22}H486" stroke="${C("age")}" stroke-width="2"/><circle cx="${446}" cy="${y0+42+i*22}" r="5" fill="${C("age")}"/><circle cx="${466}" cy="${y0+42+i*22}" r="5" fill="${C("age")}"/>`).join("")}${L(454,y0+134,"Консоли штрека")}${cnt(454,y0+148,"age")}`);
+  s+=W(true,`M500 ${y0}H530`);
+  s+=dev("rp",null,`<rect class="ring" x="524" y="${y0-50}" width="40" height="190" rx="6"/><path d="M544 ${y0-40}V${y0+130}" stroke="var(--hv)" stroke-width="5"/>${L(544,y0-56,"РП 6 кВ")}`)+G(544,y0+134)+`<path d="M544 ${y0+152}V${gy}" stroke="var(--muted)" stroke-width="1.4"/>`;
+  const py=[y0-30,y0+8,y0+46,y0+84];
+  py.forEach(y=>{s+=W(true,`M544 ${y}H580`)});
+  s+=dev("pch","prot",`<rect class="ring" x="576" y="${y0-44}" width="66" height="170" rx="6"/>${py.map(y=>`<rect class="sym" x="584" y="${y-14}" width="50" height="28" rx="3"/><path d="M590 ${y+8}L628 ${y-8}" stroke="${C("prot")}" stroke-width="1.4"/><text x="592" y="${y-2}" style="font:9px var(--f-mono);fill:var(--muted)">=</text><text x="620" y="${y+11}" style="font:9px var(--f-mono);fill:var(--muted)">~</text>`).join("")}${L(609,y0+140,"ПЧ ×4")}${cnt(609,y0+154,"prot")}`);
+  py.forEach(y=>{s+=W(true,`M642 ${y}H666`)});
+  const mc=S.launched?"var(--go)":"var(--muted)";
+  s+=dev("ad",null,`<rect class="ring" x="662" y="${y0-46}" width="52" height="172" rx="6"/>${py.map(y=>`<circle cx="688" cy="${y}" r="15" fill="var(--panel)" stroke="${mc}" stroke-width="2"/><g class="rot"><path d="M688 ${y-9}v18M679 ${y}h18" stroke="${mc}" stroke-width="1.4"/></g>`).join("")}${L(688,y0+140,"АД 4×630")}`);
+  s+=`<path d="M703 ${y0-30}H748M703 ${y0+8}H748M703 ${y0+46}H788M703 ${y0+84}H788" stroke="var(--muted)" stroke-width="2"/>`;
+  s+=dev("belt",null,`<rect class="ring" x="730" y="${y0-70}" width="160" height="180" rx="6"/><g class="rot"><circle cx="760" cy="${y0-10}" r="22" fill="var(--panel)" stroke="var(--muted)" stroke-width="2.4"/><path d="M760 ${y0-30}v40" stroke="var(--muted)"/></g><g class="rot"><circle cx="800" cy="${y0+64}" r="22" fill="var(--panel)" stroke="var(--muted)" stroke-width="2.4"/><path d="M800 ${y0+44}v40" stroke="var(--muted)"/></g><path d="M760 ${y0-32}H884M782 ${y0-10}L822 ${y0+64}M778 ${y0+86}H884" stroke="var(--semi)" stroke-width="4" fill="none"/>${[0,1,2].map(i=>`<path d="M${818+i*22} ${y0-36}c4-9 14-9 18 0z" fill="var(--m2)"/>`).join("")}${L(836,y0-54,"Ленточный конвейер")}`);
+  s+=dev("asu","prot",`<rect class="ring" x="600" y="6" width="120" height="44" rx="6"/><rect x="608" y="12" width="70" height="32" rx="3" fill="var(--panel)" stroke="${C("prot")}" stroke-width="1.6"/><rect x="684" y="16" width="14" height="24" fill="${live("prot")?"var(--go)":"var(--hv)"}"/>${L(643,32,"АСУ ТП","middle","lb s")}${L(691,58,"УЗИП","middle","lb s")}`);
+  s+=dev("tail","age",`<rect class="ring" x="800" y="${y0+108}" width="90" height="70" rx="6"/><rect x="812" y="${y0+132}" width="66" height="26" rx="3" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.6"/><path d="M780 ${y0+114}C780 ${y0+150} 800 ${y0+120} 812 ${y0+145}" stroke="${C("age")}" stroke-width="3" fill="none"/>${L(845,y0+174,"Концевая станция")}`);
+  s+=`<path class="wd${live("diag")?" live":""}" d="M300 ${y0+6}V264"/>`;
+  s+=dev("diag","diag",`<rect class="ring" x="220" y="262" width="120" height="76" rx="6"/><rect class="sym" x="228" y="270" width="104" height="44" rx="3"/><path d="M236 296h18l4-14 4 24 4-10h60" stroke="${C("diag")}" fill="none" stroke-width="1.4"/>${L(280,330,"СНЧ · рефлектометр")}${cnt(280,256,"diag")}`);
+  if(S.i>=ST.length&&!S.launched)s+=`<g id="launch" style="cursor:pointer"><rect x="430" y="262" width="140" height="52" rx="6" fill="var(--hv)"/><text x="500" y="294" text-anchor="middle" style="font-family:var(--f-disp);font-size:22px;fill:#1B1A10;font-weight:700">ПУСК</text></g>`;
+  const svg=document.getElementById("msvg");svg.innerHTML=s;
+  const Lb=document.getElementById("launch");if(Lb)Lb.addEventListener("click",launch);
+  document.getElementById("mnemo").classList.toggle("run",S.launched);
+  const st=document.getElementById("st");
+  if(!S.cab){st.textContent="Выберите кабель";st.className="status"}
+  else if(S.launched){st.textContent="Конвейер в работе";st.className="status ok"}
+  else if(S.i>=ST.length){st.textContent="Изоляция проверена · нажмите «Пуск»";st.className="status ok"}
+  else{st.textContent="Этап "+(S.i+1)+" из "+ST.length;st.className="status"}
+  route();
+}
+
+
+const qtip=document.createElement("div");qtip.id="qtip";qtip.setAttribute("role","tooltip");document.body.appendChild(qtip);
+let tipFor=null;
+function showTip(b){if(tipFor&&tipFor!==b)tipFor.removeAttribute("aria-describedby");tipFor=b;qtip.innerHTML=TIPS[+b.dataset.t]||"";b.setAttribute("aria-describedby","qtip");qtip.classList.add("on");
+  const r=b.getBoundingClientRect(),w=qtip.offsetWidth,h=qtip.offsetHeight;let x=Math.min(Math.max(8,r.left+r.width/2-w/2),innerWidth-w-8),y=r.bottom+8;if(y+h>innerHeight-8&&r.top-h-8>0)y=r.top-h-8;qtip.style.left=x+"px";qtip.style.top=y+"px"}
+function hideTip(){qtip.classList.remove("on");if(tipFor)tipFor.removeAttribute("aria-describedby");tipFor=null}
+document.addEventListener("mouseover",e=>{const b=e.target.closest&&e.target.closest(".qh");if(b)showTip(b)});
+document.addEventListener("mouseout",e=>{const b=e.target.closest&&e.target.closest(".qh");if(b&&!(e.relatedTarget&&b.contains(e.relatedTarget))&&document.activeElement!==b)hideTip()});
+document.addEventListener("focusin",e=>{const b=e.target.closest&&e.target.closest(".qh");if(b)showTip(b)});
+document.addEventListener("focusout",e=>{if(e.target.closest&&e.target.closest(".qh"))hideTip()});
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest(".qh");if(b){e.preventDefault();e.stopPropagation();b.focus({preventScroll:true});showTip(b)}else if(tipFor)hideTip()},true);
+document.addEventListener("keydown",e=>{if(e.key==="Escape")hideTip()});
+addEventListener("scroll",()=>{if(tipFor)hideTip()},true);
+const dcard=document.createElement("div");dcard.id="dcard";dcard.hidden=true;dcard.setAttribute("role","dialog");document.body.appendChild(dcard);
+let dFor=null;
+function showDev(el){const k=el.dataset.dev,d=DEV[k];if(!d)return;dFor=el;
+  const cur=d.app&&S.i<ST.length&&ST[S.i].app===d.app;
+  dcard.innerHTML=`<div class="dh"><b>${d.t}</b><button class="dx" type="button" aria-label="Закрыть">×</button></div>${d.s?`<div class="dimg">${d.s()}</div>`:""}<p>${d.d}</p><p class="dw"><b>${d.w[0]}.</b> ${d.w[1]}</p>${cur?`<button class="btn" type="button" id="dgo">К текущему этапу</button>`:""}`;
+  dcard.hidden=false;
+  const r=el.getBoundingClientRect(),w=dcard.offsetWidth,h=dcard.offsetHeight;
+  let x=Math.min(Math.max(8,r.left+r.width/2-w/2),innerWidth-w-8),y=r.bottom+8;
+  if(y+h>innerHeight-8){y=r.top-h-8;if(y<8)y=Math.max(8,innerHeight-h-8)}
+  dcard.style.left=x+"px";dcard.style.top=y+"px";
+  dcard.querySelector(".dx").onclick=ev=>{ev.stopPropagation();hideDev()};
+  const g=document.getElementById("dgo");if(g)g.onclick=ev=>{ev.stopPropagation();hideDev();document.getElementById("stand").scrollIntoView({behavior:"smooth",block:"start"})};
+}
+function hideDev(){dcard.hidden=true;dFor=null;dPin=false;dcard.classList.remove("peek")}
+let dPin=false;
+const msvgEl=document.getElementById("msvg");
+msvgEl.addEventListener("pointerover",e=>{if(e.pointerType!=="mouse"||dPin)return;const el=e.target.closest("[data-dev]");if(el&&el!==dFor){showDev(el);dcard.classList.add("peek")}});
+msvgEl.addEventListener("pointerout",e=>{if(e.pointerType!=="mouse"||dPin)return;const el=e.target.closest("[data-dev]");if(!el||(e.relatedTarget&&el.contains(e.relatedTarget)))return;if(e.relatedTarget&&dcard.contains(e.relatedTarget))return;hideDev()});
+dcard.addEventListener("pointerleave",e=>{if(e.pointerType!=="mouse"||dPin||!dFor)return;if(e.relatedTarget&&dFor.contains(e.relatedTarget))return;hideDev()});
+document.addEventListener("click",e=>{const el=e.target.closest&&e.target.closest("[data-dev]");if(el&&(document.getElementById("msvg").contains(el)||document.getElementById("route").contains(el))){e.stopPropagation();showDev(el);dPin=true;dcard.classList.remove("peek");return}if(!dcard.hidden&&!dcard.contains(e.target))hideDev()});
+document.addEventListener("keydown",e=>{const el=e.target.closest&&e.target.closest("[data-dev]");if(el&&(e.key==="Enter"||e.key===" ")){e.preventDefault();showDev(el)}if(e.key==="Escape"&&!dcard.hidden)hideDev()});
+addEventListener("scroll",()=>{if(!dcard.hidden)hideDev()},true);
+const fresh=()=>({i:0,step:"calc",done:{},tries:0,streak:0,s:0,score:0,hint:null,hintNow:false,tune:{},t0:null,el:0,res:[],over:false,started:false,launched:false,cab:null});
+let S=fresh(), lastLit=null, fb=null;
+function load(){try{const t=localStorage.getItem(KEY);if(t){const o=JSON.parse(t);if(o&&typeof o.i==="number")S=Object.assign(fresh(),o)}}catch(e){}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+
+function appState(k){const idx=ST.map((s,i)=>s.app===k?i:-1).filter(i=>i>=0);const lo=idx[0],hi=idx[idx.length-1];if(S.i>hi)return"done";if(S.i>=lo)return"active";return"off"}
+function appCount(k){const idx=ST.filter(s=>s.app===k);const n=idx.filter(s=>ST.indexOf(s)<S.i).length;return n+"/"+idx.length}
+
+function streamer(n){
+  const k=Math.min(n,MAXS);
+  const ang=j=>Math.PI*(1-j/MAXS),cx=66,cy=78,R=54;
+  let s=`<rect x="4" y="6" width="124" height="86" rx="8" fill="var(--panel)" stroke="var(--m3)" stroke-width="2"/><path d="M${cx-R} ${cy}A${R} ${R} 0 0 1 ${cx+R} ${cy}" stroke="var(--m2)" stroke-width="2" fill="none"/>`;
+  s+=`<path d="M${cx+R*Math.cos(ang(MAXS-2))} ${cy-R*Math.sin(ang(MAXS-2))}A${R} ${R} 0 0 1 ${cx+R} ${cy}" stroke="var(--bad)" stroke-width="6" fill="none"/>`;
+  for(let j=0;j<=MAXS;j++)s+=`<path d="M${cx+(R-8)*Math.cos(ang(j))} ${cy-(R-8)*Math.sin(ang(j))}L${cx+R*Math.cos(ang(j))} ${cy-R*Math.sin(ang(j))}" stroke="var(--muted)" stroke-width="1.4"/>`;
+  s+=`<path d="M${cx} ${cy}L${cx+(R-6)*Math.cos(ang(k))} ${cy-(R-6)*Math.sin(ang(k))}" stroke="var(--bad)" stroke-width="3" stroke-linecap="round"/><circle cx="${cx}" cy="${cy}" r="5" fill="var(--m3)"/><text x="${cx}" y="${cy-18}" text-anchor="middle" style="font:9px var(--f-mono);fill:var(--muted)">${k}/${MAXS}</text>`;
+  document.getElementById("gapsvg").innerHTML=s;
+  document.getElementById("gapm").innerHTML=Array.from({length:MAXS},(_,j)=>`<i class="${j<n?"on":""}"></i>`).join("");
+  document.getElementById("gaptxt").textContent=k>=MAXS?"ЛИНИЯ ОТКЛЮЧЕНА":"утечка "+k+" из "+MAXS;
+  document.getElementById("gapbox").classList.toggle("hot",n>=MAXS-2);
+}
+
+function board(){
+  document.getElementById("sc").textContent=S.score;
+  document.getElementById("pg").textContent=Math.min(S.i,ST.length)+"/"+ST.length;
+  document.getElementById("hc").textContent=S.hint?"0":"1";
+  const hc=document.getElementById("hcell");hc.classList.toggle("used",!!S.hint);
+  hc.querySelector("span").textContent=S.hint?"подсказка истрачена":"подсказка в запасе";
+  const t=Math.floor(S.el/1000);document.getElementById("tm").textContent=String(Math.floor(t/60)).padStart(2,"0")+":"+String(t%60).padStart(2,"0");
+  streamer(S.s);
+  document.getElementById("cb").textContent=S.cab?M.CAB[S.cab].n:"—";
+}
+
+function parseNum(s){s=String(s).trim().replace(/\s/g,"").replace(",",".");if(s==="")return NaN;return Number(s)}
+
+function useCab(){if(S.cab&&M.CAB[S.cab]){M.set(S.cab);TIPS.length=0;ST=mkST()}}
+const LOCK=(()=>{try{const q=new URLSearchParams(location.search).get("k")||(location.hash.match(/k=?(\d)/)||[])[1];return q&&M.CAB["k"+q]?"k"+q:null}catch(e){return null}})();
+function chooser(el){
+  const opts=Object.entries(M.CAB);
+  el.innerHTML=`<div class="shead"><h3>Выбор кабеля линии</h3><span class="smeta">исходные данные для всех 15 этапов</span></div><p class="task">Линия ЦПП — РП приводной станции длиной ${D.L} км. Выберите кабель (или тот, что назначил преподаватель). От выбора зависят ёмкость, поле, волновые параметры, нагрев и программа испытаний; после начала работы кабель не меняется.</p><div class="cards3">${opts.map(([k,c])=>`<button type="button" class="ccard" data-cab="${k}"><b>${c.n}</b><span>${c.full}</span><span class="mono small">r = ${fx(c.r,1)} мм · Δ = ${fx(c.d,1)} мм · ε = ${fx(c.eps,1)} · D = ${c.D} мм · I<sub>доп</sub> = ${c.Iz} А</span></button>`).join("")}</div>`;
+  el.querySelectorAll("[data-cab]").forEach(b=>b.addEventListener("click",()=>{S.cab=b.dataset.cab;useCab();save();all()}));
+}
+function stand(){
+  const el=document.getElementById("stand");
+  if(!S.cab){chooser(el);return}
+  if(S.i>=ST.length){el.innerHTML=finalHTML();bindFinal();return}
+  const g=ST[S.i],app=APPS.find(a=>a.k===g.app).n,key=g.id+(S.step==="calc"?"c":"t");
+  const hintHere=S.hint===key;
+  let h=`<div class="shead"><h3>${g.id} · ${g.t}</h3><span class="smeta">${app} · расчётная неделя ${g.wk} · этап ${S.i+1} из ${ST.length}</span></div>`;
+  h+=`<div class="steps"><span class="${S.step==="calc"?"on":"ok"}">1. Расчёт</span>→<span class="${S.step==="tune"?"on":""}">2. Наладка на стенде</span></div>`;
+  if(S.step==="calc"){
+    h+=`<p class="task">${g.calc.q}</p><div class="answer"><label class="small" for="inp">Ответ</label><input id="inp" inputmode="decimal" autocomplete="off"><span class="unit">${g.calc.u}</span><button class="btn" id="chk">Проверить</button></div>`;
+    if(hintHere)h+=`<div class="fb tip"><strong>Подсказка</strong>${g.calc.h}</div>`;
+  } else {
+    const st=S.tune[g.id]||(S.tune[g.id]=g.tune.init());
+    h+=`<p class="task">${g.tune.task}</p><div class="tune"><div class="ctrl" id="ctrl">${g.tune.ctrl(st)}<button class="btn hv" id="acc">Принять решение</button></div><div class="viz" id="viz">${g.tune.viz(st)}</div></div>`;
+    if(hintHere)h+=`<div class="fb tip"><strong>Подсказка</strong>${g.tune.h}</div>`;
+  }
+  if(fb)h+=`<div class="fb ${fb.ok?"ok":"no"}"><strong>${fb.title}</strong>${fb.text}</div>`;
+  h+=`<div class="row"><button class="btn ghost" id="hb"${S.hint?" disabled":""}>${S.hint?"Подсказка уже истрачена":"Подсказка (−50 очков, одна на игру)"}</button></div>`;
+  el.innerHTML=h;
+  const inp=document.getElementById("inp");
+  if(inp){inp.addEventListener("keydown",e=>{if(e.key==="Enter")checkCalc()});document.getElementById("chk").onclick=checkCalc}
+  if(S.step==="tune")bindTune(g);
+  document.getElementById("hb").onclick=()=>{if(S.hint)return;S.hint=key;touch();save();stand();board()};
+}
+
+function bindTune(g){
+  const st=S.tune[g.id],ctrl=document.getElementById("ctrl"),viz=document.getElementById("viz");
+  const redraw=()=>{viz.innerHTML=g.tune.viz(st);bindSel()};
+  const bindSel=()=>{document.querySelectorAll("[data-sel]").forEach(x=>x.addEventListener("change",()=>{st[x.dataset.sel]=x.value;touch();save();redraw()}))};
+  ctrl.querySelectorAll("[data-k]").forEach(b=>b.addEventListener("click",()=>{const v=b.dataset.v;st[b.dataset.k]=isNaN(+v)?v:+v;touch();save();ctrl.querySelectorAll(`[data-k="${b.dataset.k}"]`).forEach(x=>x.classList.toggle("on",x===b));redraw()}));
+  ctrl.querySelectorAll("[data-r]").forEach(r=>r.addEventListener("input",()=>{const k=r.dataset.r;st[k]=+r.value;touch();const o=document.getElementById("o_"+k);const tmp=document.createElement("div");tmp.innerHTML=g.tune.ctrl(st);const no=tmp.querySelector("#o_"+k);if(o&&no)o.textContent=no.textContent;save();redraw()}));
+  bindSel();
+  document.getElementById("acc").onclick=()=>judge(g.tune.ok(st),g,"t");
+}
+
+function touch(){if(!S.started){S.started=true;S.t0=Date.now()-S.el}}
+function checkCalc(){
+  const g=ST[S.i],inp=document.getElementById("inp"),v=parseNum(inp.value);
+  if(!isFinite(v)){inp.setCustomValidity("Введите число, например 2,45");inp.reportValidity();inp.setCustomValidity("");return}
+  judge(Math.abs(v-g.calc.a)<=Math.abs(g.calc.a)*.03,g,"c",v);
+}
+function judge(ok,g,kind,v){
+  touch();const key=g.id+kind;
+  if(ok){
+    let pts=S.tries===0?100:50;if(S.hint===key)pts=Math.max(0,pts-50);S.score+=pts;
+    S.res.push({id:g.id,k:kind,pts,err:S.tries,h:S.hint===key});
+    let dried=false;if(S.tries===0){S.streak++;if(S.streak>=3){S.streak=0;if(S.s>0){S.s--;dried=true}}}else S.streak=0;
+    S.tries=0;
+    const extra=dried?"Стрелка реле утечки вернулась на деление. ":"";
+    if(kind==="c"){S.step="tune";fb={ok:true,title:extra+"Расчёт верен: +"+pts+". Стенд включён",text:"Ответ: "+fx(g.calc.a,g.calc.a<1?3:g.calc.a<10?2:g.calc.a<100?1:0)+(g.calc.u?" "+g.calc.u:"")+". Теперь наладка."}}
+    else{const prevApp=g.app;S.i++;S.step="calc";fb={ok:true,title:extra+"Налажено: +"+pts,text:g.tune.ex};
+      if(S.i>=ST.length||ST[S.i].app!==prevApp)lastLit=prevApp}
+  } else {
+    S.tries++;S.streak=0;S.s++;
+    const gb=document.getElementById("gapbox");gb.classList.remove("shake");void gb.offsetWidth;gb.classList.add("shake");
+    fb={ok:false,title:"Неверно: утечка выросла до "+Math.min(S.s,MAXS)+" из "+MAXS,text:kind==="c"?"Проверьте единицы и формулу, попробуйте ещё раз.":"Решение не проходит по условию — посмотрите на красные показания стенда."};
+    if(S.s>=MAXS){S.over=true;save();board();boom();return}
+  }
+  save();board();mnemo();stand();
+  setTimeout(()=>{lastLit=null},1300);
+  if(ok&&kind==="t")document.getElementById("stand").scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+function boom(){
+  const f=document.createElement("div");f.className="flash";document.body.appendChild(f);setTimeout(()=>f.remove(),800);
+  const o=document.createElement("div");o.className="over";o.id="over";
+  o.innerHTML=`<div class="card" role="alertdialog" aria-labelledby="ot"><h2 id="ot">Реле утечки отключило линию</h2><p>Изоляция кабеля пробита на землю, конвейер остановлен, добыча встала. Пройдено этапов: ${S.i} из ${ST.length}, очков: ${S.score}.</p><p class="small">Наладку придётся начать сначала. Методичка и подсказки помогут не ошибаться.</p><div class="row"><button class="btn" id="again">Начать заново</button></div></div>`;
+  document.body.appendChild(o);document.getElementById("again").onclick=()=>{o.remove();const ck=S.cab;S=fresh();S.cab=ck;fb=null;save();all()};
+}
+function launch(){S.launched=true;save();mnemo();stand()}
+function resultText(){
+  let t="Кабельная сеть конвейера 6 кВ — итог\nКабель: "+(M.CAB[S.cab]||{}).n+"\nОчки: "+S.score+" из "+ST.length*200+"\nВремя: "+document.getElementById("tm").textContent+"\nУтечка: "+Math.min(S.s,MAXS)+" из "+MAXS+"\nПодсказка: "+(S.hint?"использована ("+S.hint.slice(0,2)+")":"не использована")+"\n";
+  ST.forEach(g=>{const r=S.res.filter(x=>x.id===g.id);t+=g.id+" "+g.t+": "+r.map(x=>(x.k==="c"?"расчёт ":"наладка ")+(x.err?"ошибок "+x.err:"с первой")).join(", ")+"\n"});return t;
+}
+function finalHTML(){
+  const grade=S.score>=2700?"отлично":S.score>=2250?"хорошо":S.score>=1700?"удовлетворительно":"нужно повторить";
+  let h=`<div class="shead"><h3>${S.launched?"Конвейер в работе":"Все "+ST.length+" этапов пройдены"}</h3><span class="smeta">итог · ${grade}</span></div>`;
+  if(!S.launched)h+=`<div class="row"><button class="btn hv" id="go">Пуск конвейера</button><span class="small">Кнопка «Пуск» есть и на мнемосхеме.</span></div>`;
+  if(fb)h+=`<div class="fb ok"><strong>${fb.title}</strong>${fb.text}</div>`;
+  h+=`<div class="board"><div class="cell"><b>${S.score}</b><span>очков из ${ST.length*200}</span></div><div class="cell"><b>${document.getElementById("tm").textContent}</b><span>время</span></div><div class="cell"><b>${Math.min(S.s,MAXS)}/${MAXS}</b><span>утечка</span></div></div>`;
+  h+=`<div class="tbl"><table class="res"><thead><tr><th>Этап</th><th>Тема</th><th>Расчёт</th><th>Наладка</th></tr></thead><tbody>`;
+  ST.forEach(g=>{const c=S.res.find(x=>x.id===g.id&&x.k==="c"),u=S.res.find(x=>x.id===g.id&&x.k==="t");const f=x=>x?(x.err?`<span style="color:var(--bad)">${x.pts} (ош. ${x.err}${x.h?", подск.":""})</span>`:`<span style="color:var(--go)">${x.pts}${x.h?" (подск.)":""}</span>`):"—";h+=`<tr><td class="mono">${g.id}</td><td>${g.t}</td><td class="mono">${f(c)}</td><td class="mono">${f(u)}</td></tr>`});
+  h+=`</tbody></table></div><div class="row"><button class="btn" id="cp">Скопировать итог для преподавателя</button><button class="btn ghost" id="rs1">Начать заново</button><span class="small" id="cpm"></span></div><pre class="small mono" id="rt" hidden></pre>`;
+  return h;
+}
+function bindFinal(){
+  const go=document.getElementById("go");if(go)go.onclick=launch;
+  document.getElementById("rs1").onclick=reset;
+  document.getElementById("cp").onclick=()=>{const t=resultText(),m=document.getElementById("cpm");
+    const fbk=()=>{const p=document.getElementById("rt");p.hidden=false;p.textContent=t;const r=document.createRange();r.selectNodeContents(p);const s=getSelection();s.removeAllRanges();s.addRange(r);m.textContent="Текст выделен — скопируйте его вручную."};
+    try{navigator.clipboard.writeText(t).then(()=>{m.textContent="Скопировано."},fbk)}catch(e){fbk()}};
+}
+function reset(){const el=document.getElementById("stand");el.innerHTML=`<div class="row"><span>Стереть прогресс и начать наладку заново?</span><button class="btn" id="y">Стереть</button><button class="btn ghost" id="n">Отмена</button></div>`;
+  document.getElementById("y").onclick=()=>{S=fresh();if(LOCK)S.cab=LOCK;useCab();fb=null;save();all()};document.getElementById("n").onclick=stand;el.scrollIntoView({behavior:"smooth",block:"nearest"})}
+function all(){board();mnemo();stand()}
+document.getElementById("rs0").onclick=reset;
+setInterval(()=>{if(S.started&&!S.over&&S.i<ST.length){S.el=Date.now()-S.t0;board()}},1000);
+function start(d){if(d&&typeof d.i==="number")S=Object.assign(fresh(),d);else load();if(LOCK&&S.cab!==LOCK){S=fresh();S.cab=LOCK}useCab();if(S.started)S.t0=Date.now()-S.el;all();if(S.over)boom()}
+window.claude?.hot?.snapshot?.(()=>S);
+window.claude?.hot?.ready?window.claude.hot.ready(start):start(window.claude?.hot?.data??{});
+</script>
+<a href="../" title="Все материалы" style="position:fixed;right:10px;bottom:10px;z-index:99999;background:rgba(31,95,175,.92);color:#fff;font:600 13px system-ui,sans-serif;padding:6px 11px;border-radius:999px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.25)">⌂ Все материалы</a><script>addEventListener("load",function(){var h=location.hash.slice(1),b=h&&document.querySelector("[data-tab="+h+"]");if(b)b.click()})</script></html>

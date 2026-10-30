@@ -1,0 +1,431 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Кабельная сеть конвейера 6 кВ. Подсказки</title><style>:root{--ink:#16202c;--muted:#5b6675;--line:#d9dde3;--acc:#1f5faf;--bg:#fff;--soft:#f3f5f8}
+@media (prefers-color-scheme:dark){:root{--ink:#e6eaf0;--muted:#9aa6b5;--line:#33404f;--acc:#7fb3f0;--bg:#121820;--soft:#1b2430}img{background:#fff}}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 "PT Serif",Georgia,"Times New Roman",serif}
+.bar{position:sticky;top:0;display:flex;justify-content:space-between;gap:12px;padding:10px 16px;background:var(--soft);border-bottom:1px solid var(--line);font:600 14px system-ui,-apple-system,"Segoe UI",sans-serif;z-index:5}
+.bar a{color:var(--acc);text-decoration:none}.bar .pdf{border:1px solid var(--acc);border-radius:999px;padding:2px 12px}
+main{max-width:820px;margin:0 auto;padding:16px 16px 64px}
+h1,h2,h3,h4{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.25;margin:1.6em 0 .5em}
+h1{font-size:1.5em}h2{font-size:1.25em}h3{font-size:1.08em}
+p{margin:.5em 0}img{max-width:100%;height:auto;display:block;margin:12px auto;border-radius:6px}
+figure{margin:16px 0}figcaption{text-align:center;color:var(--muted);font-size:.9em}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:.92em;display:block;overflow-x:auto}
+td,th{border:1px solid var(--line);padding:6px 8px;vertical-align:top}th{background:var(--soft);text-align:left}
+math{font-size:1.08em}math[display=block]{overflow-x:auto;overflow-y:hidden;margin:10px 0}
+blockquote{margin:12px 0;padding:8px 14px;border-left:4px solid var(--acc);background:var(--soft)}
+@media print{.bar{display:none}body{font-size:12pt}main{max-width:none;padding:0}table{display:table}img{background:none}}
+</style></head><body><nav class="bar"><a href="../">← Техника высоких напряжений</a><a class="pdf" href="kon-hints.pdf" download>Скачать PDF</a></nav><main><p>Техника высоких напряжений</p>
+<p><strong>Подсказки к сквозному заданию</strong></p>
+<p><strong>Кабельная сеть магистрального конвейера 6 кВ</strong></p>
+<p><em>15 этапов: от ёмкости кабеля до программы испытаний</em></p>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>Здесь нет готовых ответов. Подсказки подталкивают к решению: с чего
+начать, как проверить порядок величины, где обычно ошибаются и как
+действовать на стенде. Формулы — в методических указаниях (шпаргалка по
+этапам) и учебнике Важова и Лавриновича.</td>
+</tr>
+</tbody>
+</table>
+<h2>1. Как работать</h2>
+<ol type="1">
+<li><p>Сначала решите расчёт на бумаге, запишите число с единицами — и
+только потом вводите его в игру.</p></li>
+<li><p>Данные кабеля берите из своего подварианта (К1, К2 или К3) — у
+соседа ответы другие.</p></li>
+<li><p>Ответ не принят — проверьте единицы (мм и м, мкФ и Ф, мкс и с) и
+не перепутаны ли фазное и линейное напряжение, действующее значение и
+амплитуда.</p></li>
+<li><p>Многие этапы опираются на прошлые: размеры и ёмкость из А1,
+скорость волны из А3, ток сети из Б2.</p></li>
+<li><p>На стенде условие обычно требует крайнего значения — наименьшего
+или наибольшего подходящего.</p></li>
+<li><p>Платная подсказка в игре одна (−50 очков) — берегите её.</p></li>
+</ol>
+<h2>2. Подсказки по этапам</h2>
+<h3>Кабель 6 кВ</h3>
+<p><strong>А1 · Ёмкость и поле в кабеле</strong></p>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 76%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>С чего начать</td>
+<td>Сначала ёмкость на километр по размерам, потом на всю линию.</td>
+</tr>
+<tr class="even">
+<td>Проверьте себя</td>
+<td>Около 1 А на фазу.</td>
+</tr>
+<tr class="odd">
+<td>Ловушка</td>
+<td>ε<sub>0</sub> = 8,854·10⁻¹² Ф/м; результат переведите в мкФ/км.</td>
+</tr>
+<tr class="even">
+<td>На стенде</td>
+<td>Ближайший к r* радиус ряда.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>А2 · Напряжённость у жилы</strong></p>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 76%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>С чего начать</td>
+<td>Та же формула, что в А1, при r = r<sub>жилы</sub>.</td>
+</tr>
+<tr class="even">
+<td>Проверьте себя</td>
+<td>От 1 до 2 кВ/мм.</td>
+</tr>
+<tr class="odd">
+<td>Ловушка</td>
+<td>Фазное напряжение, а не линейное.</td>
+</tr>
+<tr class="even">
+<td>На стенде</td>
+<td>Наименьшая подходящая толщина ряда.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>А3 · Волна в длинной линии</strong></p>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 76%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>С чего начать</td>
+<td>Скорость в изоляции меньше скорости света в √ε раз.</td>
+</tr>
+<tr class="even">
+<td>Проверьте себя</td>
+<td>Около 10 мкс.</td>
+</tr>
+<tr class="odd">
+<td>Ловушка</td>
+<td>Длину линии — в метрах.</td>
+</tr>
+<tr class="even">
+<td>На стенде</td>
+<td>Ближайшее сопротивление ряда.</td>
+</tr>
+</tbody>
+</table>
+<h3>Замыкание на землю и ДГР</h3>
+<p><strong>Б1 · Перемежающаяся дуга</strong></p>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 76%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>С чего начать</td>
+<td>Сначала напряжение в момент зажигания.</td>
+</tr>
+<tr class="even">
+<td>Проверьте себя</td>
+<td>Около двух амплитуд фазного напряжения.</td>
+</tr>
+<tr class="odd">
+<td>Ловушка</td>
+<td>Ответ — в киловольтах амплитуды.</td>
+</tr>
+<tr class="even">
+<td>На стенде</td>
+<td>Сравните кривые восстановления напряжения.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Б2 · Ёмкостный ток сети</strong></p>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 76%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>С чего начать</td>
+<td>Сложите ёмкости.</td>
+</tr>
+<tr class="even">
+<td>Проверьте себя</td>
+<td>Несколько десятков ампер.</td>
+</tr>
+<tr class="odd">
+<td>Ловушка</td>
+<td>Множитель 3 — ток через ёмкости двух здоровых фаз при линейном
+напряжении.</td>
+</tr>
+<tr class="even">
+<td>На стенде</td>
+<td>Сравните с 30 А.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Б3 · Настройка ДГР</strong></p>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 76%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>С чего начать</td>
+<td>Резонанс: ωL = 1/(3ωC).</td>
+</tr>
+<tr class="even">
+<td>Проверьте себя</td>
+<td>Доли генри.</td>
+</tr>
+<tr class="odd">
+<td>Ловушка</td>
+<td>C<sub>Σ</sub> — в фарадах.</td>
+</tr>
+<tr class="even">
+<td>На стенде</td>
+<td>Из двух подходящих — перекомпенсация.</td>
+</tr>
+</tbody>
+</table>
+<h3>Защита ПЧ и АСУ ТП</h3>
+<p><strong>В1 · УЗИП шкафа АСУ ТП</strong></p>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 76%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>С чего начать</td>
+<td>Сложите U<sub>p</sub> и падение на проводниках.</td>
+</tr>
+<tr class="even">
+<td>Проверьте себя</td>
+<td>Больше 1 кВ.</td>
+</tr>
+<tr class="odd">
+<td>Ловушка</td>
+<td>мкГн·кА/мкс = кВ.</td>
+</tr>
+<tr class="even">
+<td>На стенде</td>
+<td>0,8U<sub>w</sub> = 1,2 кВ.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>В2 · Снаббер выпрямителя ПЧ</strong></p>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 76%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>С чего начать</td>
+<td>Энергия L·I²/2 переходит в ёмкость.</td>
+</tr>
+<tr class="even">
+<td>Проверьте себя</td>
+<td>Доли микрофарады.</td>
+</tr>
+<tr class="odd">
+<td>Ловушка</td>
+<td>Ближайший больший, а не ближайший.</td>
+</tr>
+<tr class="even">
+<td>На стенде</td>
+<td>Пик ≤ 1500 В.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>В3 · Заземление экранов и брони</strong></p>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 76%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>С чего начать</td>
+<td>Закон Ома для экрана.</td>
+</tr>
+<tr class="even">
+<td>Проверьте себя</td>
+<td>Десятки вольт.</td>
+</tr>
+<tr class="odd">
+<td>Ловушка</td>
+<td>Сопротивление — на всю длину.</td>
+</tr>
+<tr class="even">
+<td>На стенде</td>
+<td>Выравнивание потенциалов.</td>
+</tr>
+</tbody>
+</table>
+<h3>Старение кабеля</h3>
+<p><strong>Г1 · Водный и электрический триинг</strong></p>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 76%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>С чего начать</td>
+<td>Замените r на r + l.</td>
+</tr>
+<tr class="even">
+<td>Проверьте себя</td>
+<td>Больше E<sub>max</sub> из А2.</td>
+</tr>
+<tr class="odd">
+<td>Ловушка</td>
+<td>R остаётся прежним.</td>
+</tr>
+<tr class="even">
+<td>На стенде</td>
+<td>Последняя длина ряда ниже порога.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Г2 · Изгиб кабеля</strong></p>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 76%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>С чего начать</td>
+<td>Отношение радиуса кабеля к радиусу изгиба.</td>
+</tr>
+<tr class="even">
+<td>Проверьте себя</td>
+<td>Несколько процентов.</td>
+</tr>
+<tr class="odd">
+<td>Ловушка</td>
+<td>Диаметр в миллиметрах, радиус изгиба в метрах.</td>
+</tr>
+<tr class="even">
+<td>На стенде</td>
+<td>Ближайший больший радиус ряда.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Г3 · Нагрев в конвейерном штреке</strong></p>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 76%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>С чего начать</td>
+<td>Две поправки перемножаются.</td>
+</tr>
+<tr class="even">
+<td>Проверьте себя</td>
+<td>Меньше каталожного тока.</td>
+</tr>
+<tr class="odd">
+<td>Ловушка</td>
+<td>Температура жилы у резины 75 °C, у сшитого полиэтилена 90 °C.</td>
+</tr>
+<tr class="even">
+<td>На стенде</td>
+<td>Наименьшее число кабелей.</td>
+</tr>
+</tbody>
+</table>
+<h3>Диагностика и испытания</h3>
+<p><strong>Д1 · tgδ на сверхнизкой частоте</strong></p>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 76%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>С чего начать</td>
+<td>Тот же ток, что на 50 Гц, только частота 0,1 Гц.</td>
+</tr>
+<tr class="even">
+<td>Проверьте себя</td>
+<td>Единицы миллиампер.</td>
+</tr>
+<tr class="odd">
+<td>Ловушка</td>
+<td>3U<sub>0</sub> = 10,8 кВ.</td>
+</tr>
+<tr class="even">
+<td>На стенде</td>
+<td>Решает худший из двух показателей.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Д2 · Поиск места повреждения</strong></p>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 76%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>С чего начать</td>
+<td>Импульс проходит путь дважды.</td>
+</tr>
+<tr class="even">
+<td>Проверьте себя</td>
+<td>Меньше 2000 м.</td>
+</tr>
+<tr class="odd">
+<td>Ловушка</td>
+<td>Скорость — из вашего подварианта.</td>
+</tr>
+<tr class="even">
+<td>На стенде</td>
+<td>Сравните R<sub>п</sub> с Z<sub>в</sub>.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Д3 · Программа испытаний и безопасность</strong></p>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 76%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>С чего начать</td>
+<td>Энергия конденсатора.</td>
+</tr>
+<tr class="even">
+<td>Проверьте себя</td>
+<td>Около сотни джоулей.</td>
+</tr>
+<tr class="odd">
+<td>Ловушка</td>
+<td>Микрофарады в фарады.</td>
+</tr>
+<tr class="even">
+<td>На стенде</td>
+<td>Какая у вашего кабеля изоляция?</td>
+</tr>
+</tbody>
+</table>
+</main></body></html>

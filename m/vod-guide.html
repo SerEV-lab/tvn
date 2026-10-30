@@ -1,0 +1,653 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Изоляция привода главного водоотлива 10 кВ. Методические указания</title><style>:root{--ink:#16202c;--muted:#5b6675;--line:#d9dde3;--acc:#1f5faf;--bg:#fff;--soft:#f3f5f8}
+@media (prefers-color-scheme:dark){:root{--ink:#e6eaf0;--muted:#9aa6b5;--line:#33404f;--acc:#7fb3f0;--bg:#121820;--soft:#1b2430}img{background:#fff}}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 "PT Serif",Georgia,"Times New Roman",serif}
+.bar{position:sticky;top:0;display:flex;justify-content:space-between;gap:12px;padding:10px 16px;background:var(--soft);border-bottom:1px solid var(--line);font:600 14px system-ui,-apple-system,"Segoe UI",sans-serif;z-index:5}
+.bar a{color:var(--acc);text-decoration:none}.bar .pdf{border:1px solid var(--acc);border-radius:999px;padding:2px 12px}
+main{max-width:820px;margin:0 auto;padding:16px 16px 64px}
+h1,h2,h3,h4{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.25;margin:1.6em 0 .5em}
+h1{font-size:1.5em}h2{font-size:1.25em}h3{font-size:1.08em}
+p{margin:.5em 0}img{max-width:100%;height:auto;display:block;margin:12px auto;border-radius:6px}
+figure{margin:16px 0}figcaption{text-align:center;color:var(--muted);font-size:.9em}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:.92em;display:block;overflow-x:auto}
+td,th{border:1px solid var(--line);padding:6px 8px;vertical-align:top}th{background:var(--soft);text-align:left}
+math{font-size:1.08em}math[display=block]{overflow-x:auto;overflow-y:hidden;margin:10px 0}
+blockquote{margin:12px 0;padding:8px 14px;border-left:4px solid var(--acc);background:var(--soft)}
+@media print{.bar{display:none}body{font-size:12pt}main{max-width:none;padding:0}table{display:table}img{background:none}}
+</style></head><body><nav class="bar"><a href="../">← Техника высоких напряжений</a><a class="pdf" href="vod-guide.pdf" download>Скачать PDF</a></nav><main><p>Техника высоких напряжений</p>
+<p><strong>Методические указания для студентов</strong></p>
+<p><strong>Изоляция привода главного водоотлива 10 кВ</strong></p>
+<p><em>Деловая игра по сквозному заданию, вариант 3, недели
+1–15</em></p>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><p><strong>Цель занятия.</strong> Закрепить расчёты 15 недель
+задания на одном объекте — приводе насоса главного водоотлива шахты с
+синхронным двигателем 10 кВ — и научиться принимать по ним решения:
+выбирать толщины, номиналы, схемы защиты и режимы так, чтобы изоляция
+работала с запасом в сырой подземной камере.</p>
+<p><strong>Что понадобится:</strong> компьютер или телефон с браузером,
+калькулятор с натуральным логарифмом и степенями, эти указания. Ссылку
+на игру выдаёт преподаватель.</p>
+<p><strong>Продолжительность:</strong> 60–90 минут; прогресс сохраняется
+в браузере.</p></td>
+</tr>
+</tbody>
+</table>
+<h2>1. Объект: главный водоотлив</h2>
+<p>Подземная подстанция 10 кВ (ячейка КРУ с вакуумным выключателем
+ВВ-10) по бронированному кабелю питает синхронный двигатель СДН 4000 кВт
+центробежного насоса. На зажимах двигателя установлены ОПН и RC-цепочка,
+возбуждение подаёт тиристорный возбудитель. Насос откачивает воду из
+водосборника на поверхность. Камера сырая: 18 °C, влажность до 98 %,
+капёж с кровли; поэтому в схеме есть подогрев и узел диагностики.</p>
+<p><img
+src="vod-guide/media/78b2e7928da9db8edf6021088ffac139fc423e59.webp"
+title="Мнемосхема водоотлива после прохождения всех этапов: КРУ 10 кВ с ВВ-10 → кабель → ОПН и RC-цепочка → двигатель СДН с возбудителем → насос и водосборник; узлы «Влажность камеры» и «Диагностика»"
+style="width:6.30208in;height:4.38542in"
+alt="Мнемосхема водоотлива после прохождения всех этапов: КРУ 10 кВ с ВВ-10 → кабель → ОПН и RC-цепочка → двигатель СДН с возбудителем → насос и водосборник; узлы «Влажность камеры» и «Диагностика»" /></p>
+<p><strong>Рис. 1.</strong> Мнемосхема водоотлива после прохождения всех
+этапов: КРУ 10 кВ с ВВ-10 → кабель → ОПН и RC-цепочка → двигатель СДН с
+возбудителем → насос и водосборник; узлы «Влажность камеры» и
+«Диагностика»</p>
+<table>
+<colgroup>
+<col style="width: 32%" />
+<col style="width: 13%" />
+<col style="width: 54%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Узел</strong></th>
+<th><strong>Этапы</strong></th>
+<th><strong>Что выбирается на стенде</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Двигатель СДН 4000 кВт</td>
+<td>А1–А3</td>
+<td>толщина изоляции; радиус скругления кромки; поджатие клина</td>
+</tr>
+<tr class="even">
+<td>Выключатель ВВ-10</td>
+<td>Б1–Б3</td>
+<td>опасные коммутации; защитный конденсатор; резистор RC-цепочки</td>
+</tr>
+<tr class="odd">
+<td>ОПН и RC-цепочка</td>
+<td>В1–В3</td>
+<td>класс ОПН; допустимый ток ОПН; схема защиты</td>
+</tr>
+<tr class="even">
+<td>Влажность камеры</td>
+<td>Г1–Г3</td>
+<td>подогреватель; решение по сушке; мера против утечки</td>
+</tr>
+<tr class="odd">
+<td>Диагностика и испытания</td>
+<td>Д1–Д3</td>
+<td>схема моста; оценка трёх двигателей; порядок работ</td>
+</tr>
+</tbody>
+</table>
+<h2>2. Правила игры</h2>
+<ol type="1">
+<li><p>Наведите указатель на аппарат на схеме — всплывёт справка: что
+это за аппарат и что на нём считают. Нажатие закрепляет справку (на
+телефоне — касание). Значок «?» в тексте задания поясняет термин и
+бесплатен.</p></li>
+<li><p>Каждый из 15 этапов состоит из двух шагов:
+<strong>расчёт</strong> (ввести число) и <strong>решение</strong> на
+интерактивном стенде. Всего 30 проверок.</p></li>
+<li><p>Числовой ответ принимается с допуском ±3 %; дробную часть можно
+отделять запятой или точкой.</p></li>
+<li><p>«Жизни» — уровень воды в водосборнике (шкала 0–6): каждая ошибка
+поднимает воду на деление, шестая затапливает насосную камеру, и игра
+начинается заново. Три верных ответа подряд с первой попытки откачивают
+одно деление.</p></li>
+<li><p>Очки: верно с первой попытки — 100, после ошибки — 50; подсказка
+(одна на игру) снимает 50. Максимум — 3000.</p></li>
+<li><p>На стенде зелёные показания — условие выполнено, красные — нет.
+Часто нужно наименьшее или наибольшее подходящее значение — читайте
+задание до конца.</p></li>
+<li><p>После последнего этапа нажмите «Пуск», затем «Скопировать итог» и
+отправьте текст преподавателю.</p></li>
+</ol>
+<p><img
+src="vod-guide/media/cd51bf851b63ba2a087d74307fec9937b6d368ea.webp"
+title="Пример стенда: этап В2, ВАХ варистора. Слева — регулятор тока и кнопка «Принять решение», справа — характеристика и показания"
+style="width:6.30208in;height:4.07292in"
+alt="Пример стенда: этап В2, ВАХ варистора. Слева — регулятор тока и кнопка «Принять решение», справа — характеристика и показания" /></p>
+<p><strong>Рис. 2.</strong> Пример стенда: этап В2, ВАХ варистора. Слева
+— регулятор тока и кнопка «Принять решение», справа — характеристика и
+показания</p>
+<h2>3. Порядок работы на этапе</h2>
+<ol type="1">
+<li><p>Прочитайте «Дано» и пояснение, выпишите формулы.</p></li>
+<li><p>Выполните расчёт, следите за единицами и за тем, где нужна
+амплитуда, а где действующее значение, где фазное, а где линейное.
+Запишите ответ в бланк.</p></li>
+<li><p>Введите ответ в игре. Ошиблись — проверьте единицы и порядок
+действий.</p></li>
+<li><p>На стенде сначала оцените решение расчётом, затем подтвердите
+его. Запишите решение в бланк.</p></li>
+</ol>
+<h2>4. Этапы</h2>
+<h3>Двигатель СДН 4000 кВт</h3>
+<p>Синхронный насосный двигатель 10 кВ с термореактивной
+эпоксидно-слюдяной изоляцией статора класса F; пуск прямой от сети. Три
+этапа: корпусная изоляция, поле на кромках стержня, крепление стержней в
+пазу.</p>
+<h4>А1 · Корпусная изоляция статора (неделя 1)</h4>
+<p><strong>Дано.</strong> U<sub>ном</sub> = 10 кВ. Заводское испытание
+обмотки 2U<sub>ном</sub> + 1 = 21 кВ (действующее, 1 мин).
+Кратковременная прочность эпоксидно-слюдяной изоляции E<sub>кр</sub> =
+25 кВ/мм, запас k<sub>з</sub> = 3; допустимая длительная напряжённость
+E<sub>дл</sub> = 2,5 кВ/мм (амплитуды). Ряд толщин: 2,5; 3,0; 3,5; 4,0;
+4,5 мм.</p>
+<p><strong>Пояснение.</strong> Толщину корпусной изоляции проверяют по
+двум условиям: кратковременному — по испытательному напряжению с
+запасом, и длительному — по рабочему фазному напряжению на весь срок
+службы. Берётся большее значение. Межвитковую изоляцию проверяют
+отдельно, по напряжению на витке при крутых фронтах (этап Б3).</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>δ</mi><mn>1</mn></msub><mo>=</mo><mfrac><mrow><msub><mi>k</mi><mi>з</mi></msub><mo>⋅</mo><msqrt><mn>2</mn></msqrt><mo>⋅</mo><msub><mi>U</mi><mrow><mi>и</mi><mi>с</mi><mi>п</mi></mrow></msub></mrow><msub><mi>E</mi><mrow><mi>к</mi><mi>р</mi></mrow></msub></mfrac></mrow><annotation encoding="application/x-tex">\delta_{1} = \frac{k_{з} \cdot \sqrt{2} \cdot U_{исп}}{E_{кр}}</annotation></semantics></math>
+(1)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>δ</mi><mn>2</mn></msub><mo>=</mo><mfrac><mrow><msqrt><mn>2</mn></msqrt><mo>⋅</mo><msub><mi>U</mi><mi>ф</mi></msub></mrow><msub><mi>E</mi><mrow><mi>д</mi><mi>л</mi></mrow></msub></mfrac></mrow><annotation encoding="application/x-tex">\delta_{2} = \frac{\sqrt{2} \cdot U_{ф}}{E_{дл}}</annotation></semantics></math>
+(2)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mspace width="0.222em"></mspace><mo>≥</mo><mspace width="0.222em"></mspace><mi>m</mi><mi>a</mi><mi>x</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>δ</mi><mn>1</mn></msub><mo>;</mo><mspace width="0.222em"></mspace><msub><mi>δ</mi><mn>2</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\delta\  \geq \ max\left( \delta_{1};\ \delta_{2} \right)</annotation></semantics></math>
+(3)</p>
+<p><strong>Расчёт.</strong> Найти: толщина корпусной изоляции по
+испытательному напряжению, мм.</p>
+<p><strong>Решение на стенде.</strong> Выбрать из ряда наименьшую
+толщину, удовлетворяющую обоим условиям.</p>
+<p>Ответ: расчёт ____________ мм; решение ______________________</p>
+<h4>А2 · Кромки стержня и выход из паза (неделя 2)</h4>
+<p><strong>Дано.</strong> Амплитуда фазного напряжения 8,16 кВ; толщина
+изоляции 4 мм (А1). Кромку стержня моделируют цилиндром радиусом
+скругления r. Порог E<sub>max</sub> ≤ 4,0 кВ/мм. Ряд радиусов: 0,5; 1;
+1,5; 2; 3 мм.</p>
+<p><strong>Пояснение.</strong> У кромок прямоугольного стержня поле
+сгущается: малый радиус кривизны — как у жилы коаксиального кабеля
+(учебник Важова, ф. 1.51). На выходе стержня из паза у края пакета стали
+поле выравнивает полупроводящее и противокоронное покрытие.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mo>max</mo></msub><mo>=</mo><mfrac><mi>U</mi><mrow><mi>r</mi><mo>⋅</mo><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>r</mi><mo>+</mo><mi>δ</mi></mrow><mi>r</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac></mrow><annotation encoding="application/x-tex">E_{\max} = \frac{U}{r \cdot \ln\left( \frac{r + \delta}{r} \right)}</annotation></semantics></math>
+(4)</p>
+<p><strong>Расчёт.</strong> Найти: E<sub>max</sub> на кромке при r = 1
+мм, кВ/мм.</p>
+<p><strong>Решение на стенде.</strong> Выбрать наименьший радиус
+скругления, при котором E<sub>max</sub> ≤ 4 кВ/мм.</p>
+<p>Ответ: расчёт ____________ кВ/мм; решение ______________________</p>
+<h4>А3 · Пазовый клин и пусковые усилия (неделя 3)</h4>
+<p><strong>Дано.</strong> P = 4000 кВт, cos φ = 0,9, η = 0,97; пусковой
+ток 6I<sub>н</sub>; в пазу 8 проводников, a = 2 параллельные ветви,
+ширина паза b = 15 мм. Поджатие клина — не меньше 1,4F′. Ряд: 2; 3; 4;
+5; 6 кН/м.</p>
+<p><strong>Пояснение.</strong> Ток паза создаёт поперечное поле; сила на
+проводники направлена ко дну паза и пульсирует с частотой 100 Гц. Если
+клин ослаб, стержни вибрируют, полупроводящее покрытие истирается, и
+между изоляцией и сталью начинаются пазовые разряды — частичные разряды,
+быстро разрушающие изоляцию.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mi>н</mi></msub><mo>=</mo><mfrac><mi>P</mi><mrow><msqrt><mn>3</mn></msqrt><mo>⋅</mo><mi>U</mi><mo>⋅</mo><mi>c</mi><mi>o</mi><mi>s</mi><mspace width="0.222em"></mspace><mi>φ</mi><mo>⋅</mo><mi>η</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">I_{н} = \frac{P}{\sqrt{3} \cdot U \cdot cos\ \varphi \cdot \eta}</annotation></semantics></math>
+(5)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mspace width="0.222em"></mspace><mo>=</mo><msub><mi>w</mi><mi>п</mi></msub><mo>⋅</mo><msqrt><mn>2</mn></msqrt><mo>⋅</mo><mfrac><msub><mi>I</mi><mrow><mi>п</mi><mi>у</mi><mi>с</mi><mi>к</mi></mrow></msub><mi>a</mi></mfrac></mrow><annotation encoding="application/x-tex">i\  = w_{п} \cdot \sqrt{2} \cdot \frac{I_{пуск}}{a}</annotation></semantics></math>
+(6)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mi>′</mi><mspace width="0.222em"></mspace><mo>=</mo><mfrac><mrow><msub><mi>μ</mi><mn>0</mn></msub><msup><mi>i</mi><mn>2</mn></msup></mrow><mrow><mn>2</mn><mi>b</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">F\prime\  = \frac{\mu_{0}i^{2}}{2b}</annotation></semantics></math>
+(7)</p>
+<p><strong>Расчёт.</strong> Найти: усилие на стержни паза при пуске F′,
+кН/м.</p>
+<p><strong>Решение на стенде.</strong> Выбрать наименьшее поджатие клина
+не меньше 1,4F′.</p>
+<p>Ответ: расчёт ____________ кН/м; решение ______________________</p>
+<h3>Выключатель ВВ-10</h3>
+<p>Вакуумный выключатель ячейки КРУ подземной подстанции. Три этапа:
+физика среза тока, перенапряжение при срезе и защитный конденсатор,
+повторные зажигания и межвитковая изоляция.</p>
+<h4>Б1 · Физика среза тока (неделя 4)</h4>
+<p><strong>Дано.</strong> Ток среза i<sub>0</sub> = 4,5 А; ёмкость
+обмотки и кабеля C = 0,05 мкФ; √(L/C) = 1200 Ом.</p>
+<p><strong>Пояснение.</strong> При отключении малых индуктивных токов
+ток обрывается раньше перехода через нуль. Энергия L·i<sub>0</sub>²/2
+переходит в ёмкость (учебник Важова, разд. 4.8.2). Перенапряжение
+зависит и от напряжения на ёмкости U<sub>0</sub> в момент среза: при
+индуктивном токе (пуск, холостой ход) ток проходит через нуль вблизи
+амплитуды напряжения.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mspace width="0.222em"></mspace><mo>=</mo><msup><mi>Z</mi><mn>2</mn></msup><mo>⋅</mo><mi>C</mi></mrow><annotation encoding="application/x-tex">L\  = Z^{2} \cdot C</annotation></semantics></math>
+(8)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>W</mi><mspace width="0.222em"></mspace><mo>=</mo><mfrac><mrow><mi>L</mi><msup><msub><mi>i</mi><mn>0</mn></msub><mn>2</mn></msup></mrow><mn>2</mn></mfrac></mrow><annotation encoding="application/x-tex">W\  = \frac{L{i_{0}}^{2}}{2}</annotation></semantics></math>
+(9)</p>
+<p><strong>Расчёт.</strong> Найти: энергия, запасённая в индуктивности в
+момент среза, Дж.</p>
+<p><strong>Решение на стенде.</strong> Выбрать коммутации, опасные по
+перенапряжениям.</p>
+<p>Ответ: расчёт ____________ Дж; решение ______________________</p>
+<h4>Б2 · Перенапряжение при срезе (неделя 5)</h4>
+<p><strong>Дано.</strong> U<sub>0</sub> = √2·10/√3 = 8,16 кВ; Z = 1200
+Ом; i<sub>0</sub> = 4,5 А. Скорость восстановления прочности вакуумного
+промежутка — принять 20 В/мкс. Ряд конденсаторов: 0; 0,1; 0,25; 0,5
+мкФ.</p>
+<p><strong>Пояснение.</strong> Амплитуда перенапряжения — из баланса
+энергии (учебник Важова, ф. 4.83–4.84). Начальная скорость нарастания
+напряжения на ёмкости после среза равна i<sub>0</sub>/C (производная
+формулы 4.85): если она больше скорости восстановления прочности
+промежутка, возникает повторное зажигание.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mi>m</mi></msub><mo>=</mo><msqrt><mrow><msup><msub><mi>U</mi><mn>0</mn></msub><mn>2</mn></msup><mo>+</mo><mfrac><mi>L</mi><mi>C</mi></mfrac><msup><msub><mi>i</mi><mn>0</mn></msub><mn>2</mn></msup></mrow></msqrt></mrow><annotation encoding="application/x-tex">U_{m} = \sqrt{{U_{0}}^{2} + \frac{L}{C}{i_{0}}^{2}}</annotation></semantics></math>
+(10)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>d</mi><mi>u</mi></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac><mo>=</mo><mfrac><msub><mi>i</mi><mn>0</mn></msub><mi>C</mi></mfrac></mrow><annotation encoding="application/x-tex">\frac{du}{dt} = \frac{i_{0}}{C}</annotation></semantics></math>
+(11)</p>
+<p><strong>Расчёт.</strong> Найти: амплитуда перенапряжения на зажимах
+статора, кВ.</p>
+<p><strong>Решение на стенде.</strong> Выбрать наименьший защитный
+конденсатор, при котором du/dt ≤ 20 В/мкс.</p>
+<p>Ответ: расчёт ____________ кВ; решение ______________________</p>
+<h4>Б3 · Повторные зажигания и межвитковая изоляция (неделя 6)</h4>
+<p><strong>Дано.</strong> Скачок при повторном зажигании ΔU = 15 кВ,
+фронт t<sub>ф</sub> = 0,2 мкс; длина проводника первой катушки 10 м,
+скорость волны в обмотке 150 м/мкс; 8 витков в катушке; Z<sub>каб</sub>
+= 30 Ом. Ряд резисторов RC-цепочки: 0; 10; 30; 100; 1000 Ом.</p>
+<p><strong>Пояснение.</strong> При крутом фронте напряжение
+распределяется по обмотке неравномерно: пока волна проходит первую
+катушку, почти весь фронт лежит на ней. Отражение от зажимов удваивает
+волну; RC-цепочка с R = Z<sub>каб</sub> устраняет отражение (правило
+Петерсена, учебник Важова, разд. 4.3).</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mi>к</mi></msub><mo>=</mo><mi>Δ</mi><mi>U</mi><mo>⋅</mo><mfrac><mi>τ</mi><msub><mi>t</mi><mi>ф</mi></msub></mfrac><mo>,</mo><mspace width="0.222em"></mspace><mi>τ</mi><mspace width="0.222em"></mspace><mo>=</mo><mfrac><msub><mi>l</mi><mi>к</mi></msub><mi>v</mi></mfrac></mrow><annotation encoding="application/x-tex">U_{к} = \Delta U \cdot \frac{\tau}{t_{ф}},\ \tau\  = \frac{l_{к}}{v}</annotation></semantics></math>
+(12)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>β</mi><mspace width="0.222em"></mspace><mo>=</mo><mfrac><mrow><mi>R</mi><mo>−</mo><msub><mi>Z</mi><mrow><mi>к</mi><mi>а</mi><mi>б</mi></mrow></msub></mrow><mrow><mi>R</mi><mo>+</mo><msub><mi>Z</mi><mrow><mi>к</mi><mi>а</mi><mi>б</mi></mrow></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">\beta\  = \frac{R - Z_{каб}}{R + Z_{каб}}</annotation></semantics></math>
+(13)</p>
+<p><strong>Расчёт.</strong> Найти: напряжение на первой катушке при
+повторном зажигании, кВ.</p>
+<p><strong>Решение на стенде.</strong> Выбрать резистор RC-цепочки, при
+котором нет отражения.</p>
+<p>Ответ: расчёт ____________ кВ; решение ______________________</p>
+<h3>ОПН и RC-цепочка</h3>
+<p>Защита обмотки на зажимах двигателя. Три этапа: класс ОПН для сети с
+изолированной нейтралью, ВАХ варистора, координация с изоляцией
+обмотки.</p>
+<h4>В1 · Выбор ОПН-10 (неделя 7)</h4>
+<p><strong>Дано.</strong> Сеть 10 кВ с изолированной нейтралью;
+наибольшее рабочее линейное напряжение 12 кВ; защита от замыканий на
+землю отключает присоединение за 1 с; допустимое временное
+перенапряжение ОПН за 1 с K<sub>t</sub> = 1,25. Ряд U<sub>нр</sub>: 7,2;
+9,6; 10,5; 11,5; 12,7 кВ.</p>
+<p><strong>Пояснение.</strong> При замыкании фазы на землю в сети с
+изолированной нейтралью напряжение здоровых фаз относительно земли
+поднимается до линейного (учебник Важова, разд. 4.8.3). ОПН должен
+выдержать его без перегрева; чем короче замыкание, тем ниже допустимый
+класс и тем ниже остающееся напряжение.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mrow><mi>н</mi><mi>р</mi></mrow></msub><mo>≥</mo><mfrac><msub><mi>U</mi><mrow><mi>н</mi><mi>р</mi><mi>.</mi><mi>с</mi><mi>е</mi><mi>т</mi><mi>и</mi></mrow></msub><msub><mi>K</mi><mi>t</mi></msub></mfrac></mrow><annotation encoding="application/x-tex">U_{нр} \geq \frac{U_{нр.сети}}{K_{t}}</annotation></semantics></math>
+(14)</p>
+<p><strong>Расчёт.</strong> Найти: наименьшее длительно допустимое
+рабочее напряжение ОПН, кВ.</p>
+<p><strong>Решение на стенде.</strong> Выбрать класс ОПН.</p>
+<p>Ответ: расчёт ____________ кВ; решение ______________________</p>
+<h4>В2 · ВАХ варистора (неделя 8)</h4>
+<p><strong>Дано.</strong> ВАХ U = C·I<sup>α</sup>, α = 1/30 ≈ 0,033; для
+ОПН 9,6 кВ U<sub>1мА</sub> = 1,46·9,6 = 14,0 кВ; коммутационный ток 500
+А; U<sub>доп</sub>/1,25 = 20,8 кВ.</p>
+<p><strong>Пояснение.</strong> Оксидно-цинковый варистор имеет
+коэффициент нелинейности α = 0,02…0,1 (учебник Важова, разд. 4): при
+росте тока на шесть порядков напряжение растёт лишь в 1,5 раза. С
+RC-цепочкой часть энергии уходит в конденсатор, и ток ограничителя
+меньше.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mrow><mi>о</mi><mi>с</mi><mi>т</mi></mrow></msub><mo>=</mo><msub><mi>U</mi><mrow><mn>1</mn><mi>м</mi><mi>А</mi></mrow></msub><mo>⋅</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mi>I</mi><mrow><mn>1</mn><mspace width="0.222em"></mspace><mi>м</mi><mi>А</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mi>α</mi></msup></mrow><annotation encoding="application/x-tex">U_{ост} = U_{1мА} \cdot \left( \frac{I}{1\ мА} \right)^{\alpha}</annotation></semantics></math>
+(15)</p>
+<p><strong>Расчёт.</strong> Найти: остающееся напряжение при 500 А,
+кВ.</p>
+<p><strong>Решение на стенде.</strong> Найти наибольший ток ОПН, при
+котором U<sub>ост</sub> ≤ 20,8 кВ.</p>
+<p>Ответ: расчёт ____________ кВ; решение ______________________</p>
+<h4>В3 · Координация изоляции (неделя 9)</h4>
+<p><strong>Дано.</strong> U<sub>доп</sub> = √2·0,8(2U<sub>ном</sub> + 3)
+= 26,0 кВ (амплитуда испытательного напряжения при вводе, учебник
+Важова, табл. П3.9); требуемый k ≥ 1,25. Варианты защиты: ОПН 12,7 кВ;
+ОПН 9,6 кВ; только RC-цепочка; ОПН 9,6 кВ + RC-цепочка.</p>
+<p><strong>Пояснение.</strong> Уровень защиты должен быть ниже уровня
+изоляции с запасом (учебник Важова, разд. 4.2, ф. 4.4–4.5). Машинная
+изоляция имеет самый низкий уровень, поэтому для двигателей координация
+труднее всего.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mspace width="0.222em"></mspace><mo>=</mo><mfrac><msub><mi>U</mi><mrow><mi>д</mi><mi>о</mi><mi>п</mi></mrow></msub><msub><mi>U</mi><mrow><mi>о</mi><mi>с</mi><mi>т</mi></mrow></msub></mfrac><mo>≥</mo><mspace width="0.222em"></mspace><mn>1</mn><mo>,</mo><mn>25</mn></mrow><annotation encoding="application/x-tex">k\  = \frac{U_{доп}}{U_{ост}} \geq \ 1,25</annotation></semantics></math>
+(16)</p>
+<p><strong>Расчёт.</strong> Найти: коэффициент координации для одного
+ОПН 9,6 кВ при 500 А.</p>
+<p><strong>Решение на стенде.</strong> Выбрать схему защиты.</p>
+<p>Ответ: расчёт ____________; решение ______________________</p>
+<h3>Влажность камеры</h3>
+<p>Подземная насосная камера: 18 °C, влажность до 98 %, капёж. Три
+этапа: точка росы и подогрев, двухчастотный метод, ток утечки по
+увлажнённым изоляторам.</p>
+<h4>Г1 · Влажность подземной камеры (неделя 10)</h4>
+<p><strong>Дано.</strong> t = 18 °C, φ = 98 %; тепловое сопротивление
+двигателя без вентиляции 8 К/кВт; обмотка должна быть на 5 К теплее
+воздуха. Ряд подогревателей: 0,25; 0,5; 0,75; 1; 2 кВт.</p>
+<p><strong>Пояснение.</strong> Поверхность холоднее точки росы
+покрывается водой. В подземной камере точка росы лишь на доли градуса
+ниже температуры воздуха, поэтому конденсат выпадает почти при любой
+стоянке. Стояночный подогрев держит обмотку теплее воздуха.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mi>l</mi><mi>n</mi><mfrac><mi>φ</mi><mn>100</mn></mfrac><mo>+</mo><mfrac><mrow><mn>17</mn><mo>,</mo><mn>62</mn><mi>t</mi></mrow><mrow><mn>243</mn><mo>,</mo><mn>12</mn><mo>+</mo><mi>t</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">\gamma\  = \ ln\frac{\varphi}{100} + \frac{17,62t}{243,12 + t}</annotation></semantics></math>
+(17)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>t</mi><mi>р</mi></msub><mo>=</mo><mfrac><mrow><mn>243</mn><mo>,</mo><mn>12</mn><mi>γ</mi></mrow><mrow><mn>17</mn><mo>,</mo><mn>62</mn><mo>−</mo><mi>γ</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">t_{р} = \frac{243,12\gamma}{17,62 - \gamma}</annotation></semantics></math>
+(18)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mspace width="0.222em"></mspace><mo>=</mo><mfrac><mrow><mi>Δ</mi><mi>T</mi></mrow><msub><mi>R</mi><mrow><mi>t</mi><mi>h</mi></mrow></msub></mfrac></mrow><annotation encoding="application/x-tex">P\  = \frac{\Delta T}{R_{th}}</annotation></semantics></math>
+(19)</p>
+<p><strong>Расчёт.</strong> Найти: точка росы, °C.</p>
+<p><strong>Решение на стенде.</strong> Выбрать наименьший
+подогреватель.</p>
+<p>Ответ: расчёт ____________ °C; решение ______________________</p>
+<h4>Г2 · Двухчастотный метод (неделя 11)</h4>
+<p><strong>Дано.</strong> C<sub>2</sub> = 0,168 мкФ, C<sub>50</sub> =
+0,120 мкФ; R<sub>15</sub> = 40 МОм, R<sub>60</sub> = 45 МОм. Нормы:
+C<sub>2</sub>/C<sub>50</sub> ≤ 1,3 (учебник Важова, разд. 3.8.2);
+R<sub>60</sub> ≥ 10 МОм/кВ и K<sub>абс</sub> ≥ 1,3 (табл. П3.7).</p>
+<p><strong>Пояснение.</strong> Увлажнённый слой изоляции поляризуется
+медленно: при 2 Гц его ёмкость успевает проявиться, при 50 Гц — нет
+(двухслойная модель, учебник Важова, ф. 3.16). Метод создан для
+волокнистой изоляции; для термореактивной его подтверждают
+сопротивлением и коэффициентом абсорбции.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><msub><mi>C</mi><mn>2</mn></msub><msub><mi>C</mi><mn>50</mn></msub></mfrac><mo>&gt;</mo><mspace width="0.222em"></mspace><mn>1</mn><mo>,</mo><mn>3</mn><mspace width="0.222em"></mspace><mi>—</mi><mspace width="0.222em"></mspace><mi>у</mi><mi>в</mi><mi>л</mi><mi>а</mi><mi>ж</mi><mi>н</mi><mi>е</mi><mi>н</mi><mi>а</mi></mrow><annotation encoding="application/x-tex">\frac{C_{2}}{C_{50}} &gt; \ 1,3\ —\ увлажнена</annotation></semantics></math>
+(20)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mrow><mi>а</mi><mi>б</mi><mi>с</mi></mrow></msub><mo>=</mo><mfrac><msub><mi>R</mi><mn>60</mn></msub><msub><mi>R</mi><mn>15</mn></msub></mfrac></mrow><annotation encoding="application/x-tex">K_{абс} = \frac{R_{60}}{R_{15}}</annotation></semantics></math>
+(21)</p>
+<p><strong>Расчёт.</strong> Найти: отношение
+C<sub>2</sub>/C<sub>50</sub>.</p>
+<p><strong>Решение на стенде.</strong> Принять решение по двигателю.</p>
+<p>Ответ: расчёт ____________; решение ______________________</p>
+<h4>Г3 · Водяная плёнка на изоляторах (неделя 12)</h4>
+<p><strong>Дано.</strong> Опорный изолятор КРУ: длина пути утечки 180
+мм, средний диаметр 60 мм; поверхностное сопротивление водяной плёнки
+ρ<sub>s</sub> = 2 МОм; U<sub>ф</sub> = 10/√3 кВ.</p>
+<p><strong>Пояснение.</strong> Ток утечки по увлажнённой поверхности
+неравномерно нагревает плёнку; образуются подсушенные участки,
+перекрываемые частичными дугами, которые могут вырасти до полного
+перекрытия (учебник Важова, разд. 1.1.12).</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mi>s</mi></msub><mo>=</mo><mfrac><mrow><msub><mi>ρ</mi><mi>s</mi></msub><mi>L</mi></mrow><mrow><mi>π</mi><mi>D</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">R_{s} = \frac{\rho_{s}L}{\pi D}</annotation></semantics></math>
+(22)</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mspace width="0.222em"></mspace><mo>=</mo><mfrac><msub><mi>U</mi><mi>ф</mi></msub><msub><mi>R</mi><mi>s</mi></msub></mfrac></mrow><annotation encoding="application/x-tex">I\  = \frac{U_{ф}}{R_{s}}</annotation></semantics></math>
+(23)</p>
+<p><strong>Расчёт.</strong> Найти: ток утечки, мА.</p>
+<p><strong>Решение на стенде.</strong> Выбрать наименее затратную меру,
+при которой ток постоянно не больше 0,1 мА.</p>
+<p>Ответ: расчёт ____________ мА; решение ______________________</p>
+<h3>Диагностика и испытания</h3>
+<p>Мост переменного тока, мегаомметр, испытательная установка. Три
+этапа: tgδ по мосту, прирост tgδ, программа сушки и испытаний.</p>
+<h4>Д1 · Мост tgδ (неделя 13)</h4>
+<p><strong>Дано.</strong> Мост переменного тока уравновешен при
+0,5U<sub>ном</sub>: R<sub>4</sub> = 1000/π Ом, C<sub>4</sub> = 0,072
+мкФ; корпус двигателя заземлён наглухо.</p>
+<p><strong>Пояснение.</strong> В мосте Шеринга в равновесии tgδ =
+ωR<sub>4</sub>C<sub>4</sub>. В прямой схеме нижний вывод объекта
+подключают к плечу моста — объект должен быть изолирован от земли. Для
+объектов с заземлённым корпусом применяют перевёрнутую схему:
+регулируемые плечи под высоким потенциалом, оператор работает через
+изолирующие штанги или экран. Схемы мостов — в курсе электрических
+измерений; учебник Важова называет мосты МД-16, Р-525, Р-595 (разд.
+3.8.2).</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mi>g</mi><mi>δ</mi><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mi>ω</mi><msub><mi>R</mi><mn>4</mn></msub><msub><mi>C</mi><mn>4</mn></msub></mrow><annotation encoding="application/x-tex">tg\delta\  = \ \omega R_{4}C_{4}</annotation></semantics></math>
+(24)</p>
+<p><strong>Расчёт.</strong> Найти: tgδ при 0,5U<sub>ном</sub>, %.</p>
+<p><strong>Решение на стенде.</strong> Выбрать схему моста.</p>
+<p>Ответ: расчёт ____________ %; решение ______________________</p>
+<h4>Д2 · Прирост tgδ (неделя 14)</h4>
+<p><strong>Дано.</strong> tgδ при 0,5U<sub>ном</sub> и U<sub>ном</sub>:
+насос № 1 — 0,35 и 0,75 %; № 2 — 0,72 и 2,10 %; № 3 — 0,80 и 3,40 %.
+Ориентир задания: Δtgδ ≤ 1 % — норма; 1…2 % — контроль; &gt; 2 % —
+ремонт.</p>
+<p><strong>Пояснение.</strong> Рост tgδ с напряжением означает, что в
+изоляции зажигаются частичные разряды — в расслоениях и пустотах
+(ионизационная кривая).</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><mi>t</mi><mi>g</mi><mi>δ</mi><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mi>t</mi><mi>g</mi><mi>δ</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>U</mi><mrow><mi>н</mi><mi>о</mi><mi>м</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mspace width="0.222em"></mspace><mi>t</mi><mi>g</mi><mi>δ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>5</mn><msub><mi>U</mi><mrow><mi>н</mi><mi>о</mi><mi>м</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\Delta tg\delta\  = \ tg\delta\left( U_{ном} \right) - \ tg\delta\left( 0,5U_{ном} \right)</annotation></semantics></math>
+(25)</p>
+<p><strong>Расчёт.</strong> Найти: прирост Δtgδ насоса № 2, %.</p>
+<p><strong>Решение на стенде.</strong> Оценить три двигателя.</p>
+<p>Ответ: расчёт ____________ %; решение ______________________</p>
+<h4>Д3 · Программа сушки и испытаний (неделя 15)</h4>
+<p><strong>Дано.</strong> Учебник Важова, табл. П3.9: обмотка статора
+двигателей 1000 кВт и более свыше 6,6 кВ — 0,8(2U<sub>ном</sub> + 3) кВ
+при вводе в эксплуатацию, 16 кВ при капитальном ремонте (50 Гц, 1 мин).
+48 кВ — испытание межконтактного промежутка выключателя 10 кВ (табл.
+П3.1).</p>
+<p><strong>Пояснение.</strong> Сначала сушка, затем неразрушающие
+измерения (сопротивление, K<sub>абс</sub>, C<sub>2</sub>/C<sub>50</sub>,
+tgδ), затем разрушающее испытание повышенным напряжением и контрольное
+измерение сопротивления после него.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mrow><mi>и</mi><mi>с</mi><mi>п</mi><mi>.</mi><mi>П</mi></mrow></msub><mo>=</mo><mspace width="0.222em"></mspace><mn>0</mn><mo>,</mo><mn>8</mn><mrow><mo stretchy="true" form="prefix">(</mo><mn>2</mn><msub><mi>U</mi><mrow><mi>н</mi><mi>о</mi><mi>м</mi></mrow></msub><mo>+</mo><mn>3</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">U_{исп.П} = \ 0,8\left( 2U_{ном} + 3 \right)</annotation></semantics></math>
+(26)</p>
+<p><strong>Расчёт.</strong> Найти: испытательное напряжение обмотки при
+вводе в эксплуатацию, кВ.</p>
+<p><strong>Решение на стенде.</strong> Выбрать правильный порядок работ
+после капремонта.</p>
+<p>Ответ: расчёт ____________ кВ; решение ______________________</p>
+<h2>5. Справочные данные</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Величина</strong></th>
+<th><strong>Значение</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>√2; √3; π</td>
+<td>1,414; 1,732; 3,1416</td>
+</tr>
+<tr class="even">
+<td>μ<sub>0</sub></td>
+<td>4π·10⁻⁷ Гн/м</td>
+</tr>
+<tr class="odd">
+<td>Амплитуда фазного напряжения сети 10 кВ</td>
+<td>√2·10/√3 = 8,16 кВ</td>
+</tr>
+<tr class="even">
+<td>Степень с дробным показателем</td>
+<td>x<sup>α</sup> = e<sup>α·ln x</sup></td>
+</tr>
+<tr class="odd">
+<td>1 мкФ; 1 мА; 1 мкс</td>
+<td>10⁻⁶ Ф; 10⁻³ А; 10⁻⁶ с</td>
+</tr>
+<tr class="even">
+<td>ω при 50 Гц</td>
+<td>314,16 рад/с</td>
+</tr>
+</tbody>
+</table>
+<h2>6. Контрольные вопросы</h2>
+<ol type="1">
+<li><p>(А1) Почему толщину проверяют и по испытательному, и по рабочему
+напряжению?</p></li>
+<li><p>(А2) Почему кромки стержня скругляют и покрывают полупроводящим
+слоем?</p></li>
+<li><p>(А3) Как механика паза связана с электрической прочностью
+изоляции?</p></li>
+<li><p>(Б1) Почему отключение двигателя при пуске опаснее отключения под
+нагрузкой?</p></li>
+<li><p>(Б2) Почему однократный срез сам по себе не страшен, а
+конденсатор всё равно нужен?</p></li>
+<li><p>(Б3) Почему межвитковая изоляция страдает именно от крутых
+фронтов?</p></li>
+<li><p>(В1) Почему в шахтной сети можно взять ОПН с более низким
+U<sub>нр</sub>, чем в обычной сети с изолированной нейтралью?</p></li>
+<li><p>(В2) Почему остающееся напряжение мало зависит от тока?</p></li>
+<li><p>(В3) Зачем двигателю и ОПН, и RC-цепочка?</p></li>
+<li><p>(Г1) Почему в шахтной камере конденсат опаснее, чем на
+поверхности?</p></li>
+<li><p>(Г2) Почему один метод недостаточен для термореактивной
+изоляции?</p></li>
+<li><p>(Г3) Почему опасен даже небольшой ток утечки?</p></li>
+<li><p>(Д1) Почему при R<sub>4</sub> = 10⁴/π Ом мост удобен?</p></li>
+<li><p>(Д2) Что говорит рост tgδ с напряжением?</p></li>
+<li><p>(Д3) Почему испытание повышенным напряжением проводят
+последним?</p></li>
+</ol>
+<h2>7. Отчёт и оценка</h2>
+<p>В отчёт входят: заполненный бланк, текст итога из игры и письменные
+ответы на три контрольных вопроса по выбору преподавателя.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Очки (максимум 3000)</strong></th>
+<th><strong>Оценка</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2700 и больше</td>
+<td>«отлично»</td>
+</tr>
+<tr class="even">
+<td>2250–2699</td>
+<td>«хорошо»</td>
+</tr>
+<tr class="odd">
+<td>1700–2249</td>
+<td>«удовлетворительно»</td>
+</tr>
+<tr class="even">
+<td>меньше 1700 или затопление</td>
+<td>повторное прохождение</td>
+</tr>
+</tbody>
+</table>
+<h2>Приложение. Бланк отчёта</h2>
+<p>ФИО ______________________________ Группа ________ Дата ________</p>
+<table>
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 32%" />
+<col style="width: 18%" />
+<col style="width: 28%" />
+<col style="width: 11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Этап</strong></th>
+<th><strong>Что найти</strong></th>
+<th><strong>Расчёт</strong></th>
+<th><strong>Решение</strong></th>
+<th><strong>Ошибок</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>А1</td>
+<td>Толщина корпусной изоляции по испытательному напряжению, мм</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>А2</td>
+<td>Emax на кромке при r = 1 мм, кВ/мм</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>А3</td>
+<td>Усилие на стержни паза при пуске F′, кН/м</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Б1</td>
+<td>Энергия, запасённая в индуктивности в момент среза, Дж</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Б2</td>
+<td>Амплитуда перенапряжения на зажимах статора, кВ</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Б3</td>
+<td>Напряжение на первой катушке при повторном зажигании, кВ</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>В1</td>
+<td>Наименьшее длительно допустимое рабочее напряжение ОПН, кВ</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>В2</td>
+<td>Остающееся напряжение при 500 А, кВ</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>В3</td>
+<td>Коэффициент координации для одного ОПН 9,6 кВ при 500 А</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Г1</td>
+<td>Точка росы, °C</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Г2</td>
+<td>Отношение C2/C50</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Г3</td>
+<td>Ток утечки, мА</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Д1</td>
+<td>Tgδ при 0,5Uном, %</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Д2</td>
+<td>Прирост Δtgδ насоса № 2, %</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Д3</td>
+<td>Испытательное напряжение обмотки при вводе в эксплуатацию, кВ</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Итог игры: очки ______ уровень воды ______ время ______ оценка
+______</p>
+</main></body></html>

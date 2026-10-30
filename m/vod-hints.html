@@ -1,0 +1,433 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Изоляция привода водоотлива 10 кВ. Подсказки</title><style>:root{--ink:#16202c;--muted:#5b6675;--line:#d9dde3;--acc:#1f5faf;--bg:#fff;--soft:#f3f5f8}
+@media (prefers-color-scheme:dark){:root{--ink:#e6eaf0;--muted:#9aa6b5;--line:#33404f;--acc:#7fb3f0;--bg:#121820;--soft:#1b2430}img{background:#fff}}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 "PT Serif",Georgia,"Times New Roman",serif}
+.bar{position:sticky;top:0;display:flex;justify-content:space-between;gap:12px;padding:10px 16px;background:var(--soft);border-bottom:1px solid var(--line);font:600 14px system-ui,-apple-system,"Segoe UI",sans-serif;z-index:5}
+.bar a{color:var(--acc);text-decoration:none}.bar .pdf{border:1px solid var(--acc);border-radius:999px;padding:2px 12px}
+main{max-width:820px;margin:0 auto;padding:16px 16px 64px}
+h1,h2,h3,h4{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.25;margin:1.6em 0 .5em}
+h1{font-size:1.5em}h2{font-size:1.25em}h3{font-size:1.08em}
+p{margin:.5em 0}img{max-width:100%;height:auto;display:block;margin:12px auto;border-radius:6px}
+figure{margin:16px 0}figcaption{text-align:center;color:var(--muted);font-size:.9em}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:.92em;display:block;overflow-x:auto}
+td,th{border:1px solid var(--line);padding:6px 8px;vertical-align:top}th{background:var(--soft);text-align:left}
+math{font-size:1.08em}math[display=block]{overflow-x:auto;overflow-y:hidden;margin:10px 0}
+blockquote{margin:12px 0;padding:8px 14px;border-left:4px solid var(--acc);background:var(--soft)}
+@media print{.bar{display:none}body{font-size:12pt}main{max-width:none;padding:0}table{display:table}img{background:none}}
+</style></head><body><nav class="bar"><a href="../">← Техника высоких напряжений</a><a class="pdf" href="vod-hints.pdf" download>Скачать PDF</a></nav><main><p>Техника высоких напряжений</p>
+<p><strong>Подсказки к сквозному заданию</strong></p>
+<p><strong>Изоляция привода главного водоотлива 10 кВ</strong></p>
+<p><em>15 этапов: от паза статора до испытаний после капремонта</em></p>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>Здесь нет готовых формул и ответов. Подсказки подталкивают к
+решению: с чего начать, как проверить порядок величины, где обычно
+ошибаются и как действовать на стенде. Формулы — в методических
+указаниях, лекциях и учебнике Важова и Лавриновича.</td>
+</tr>
+</tbody>
+</table>
+<h2>1. Как работать</h2>
+<ol type="1">
+<li><p>Сначала решите расчёт на бумаге, запишите число с единицами — и
+только потом вводите его в игру.</p></li>
+<li><p>Ответ не принят — проверьте единицы (мм и м, мкФ и Ф, мА и А) и
+не перепутаны ли амплитуда и действующее, фазное и линейное
+значения.</p></li>
+<li><p>Многие этапы опираются на прошлые: толщина 4 мм из А1, класс ОПН
+9,6 кВ из В1, RC-цепочка из Б2–Б3.</p></li>
+<li><p>На стенде условие обычно требует крайнего значения — наименьшего
+или наибольшего подходящего. Зелёное показание ещё не значит, что выбор
+верный.</p></li>
+<li><p>Некоторые этапы проверяют, заметили ли вы физическую ловушку:
+подумайте, в каком режиме величина действительно наибольшая и к какому
+аппарату относится норма.</p></li>
+<li><p>Платная подсказка в игре одна (−50 очков) — берегите её для
+этапа, где формулу никак не вспомнить.</p></li>
+</ol>
+<h2>2. Подсказки по этапам</h2>
+<h3>Двигатель СДН 4000 кВт</h3>
+<p><strong>А1 · Корпусная изоляция статора</strong></p>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 76%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>С чего начать</td>
+<td>Переведите испытательное напряжение в амплитуду.</td>
+</tr>
+<tr class="even">
+<td>Проверьте себя</td>
+<td>Для 10 кВ — несколько миллиметров.</td>
+</tr>
+<tr class="odd">
+<td>Ловушка</td>
+<td>Два условия, а не одно.</td>
+</tr>
+<tr class="even">
+<td>На стенде</td>
+<td>Наименьшая толщина, проходящая оба условия.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>А2 · Кромки стержня и выход из паза</strong></p>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 76%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>С чего начать</td>
+<td>Модель коаксиального цилиндра с внутренним радиусом r.</td>
+</tr>
+<tr class="even">
+<td>Проверьте себя</td>
+<td>Больше средней 2 кВ/мм в 1,5–3 раза.</td>
+</tr>
+<tr class="odd">
+<td>Ловушка</td>
+<td>Под логарифмом отношение внешнего радиуса к внутреннему.</td>
+</tr>
+<tr class="even">
+<td>На стенде</td>
+<td>Наименьший радиус, при котором порог выполнен.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>А3 · Пазовый клин и пусковые усилия</strong></p>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 76%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>С чего начать</td>
+<td>Сначала номинальный ток, потом пусковой, потом ток паза.</td>
+</tr>
+<tr class="even">
+<td>Проверьте себя</td>
+<td>Килоньютоны на метр.</td>
+</tr>
+<tr class="odd">
+<td>Ловушка</td>
+<td>Миллиметры ширины паза в метры.</td>
+</tr>
+<tr class="even">
+<td>На стенде</td>
+<td>Наименьшее поджатие с запасом 1,4.</td>
+</tr>
+</tbody>
+</table>
+<h3>Выключатель ВВ-10</h3>
+<p><strong>Б1 · Физика среза тока</strong></p>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 76%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>С чего начать</td>
+<td>Индуктивность найдите из характеристического сопротивления.</td>
+</tr>
+<tr class="even">
+<td>Проверьте себя</td>
+<td>Доли джоуля.</td>
+</tr>
+<tr class="odd">
+<td>Ловушка</td>
+<td>Микрофарады в фарады.</td>
+</tr>
+<tr class="even">
+<td>На стенде</td>
+<td>Посмотрите U<sub>0</sub> в обоих режимах.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Б2 · Перенапряжение при срезе</strong></p>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 76%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>С чего начать</td>
+<td>Баланс энергии в контуре.</td>
+</tr>
+<tr class="even">
+<td>Проверьте себя</td>
+<td>Около 10 кВ.</td>
+</tr>
+<tr class="odd">
+<td>Ловушка</td>
+<td>Фазное, а не линейное напряжение.</td>
+</tr>
+<tr class="even">
+<td>На стенде</td>
+<td>Наименьшая ёмкость с du/dt ≤ 20 В/мкс.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Б3 · Повторные зажигания и межвитковая изоляция</strong></p>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 76%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>С чего начать</td>
+<td>Сравните время пробега катушки с фронтом.</td>
+</tr>
+<tr class="even">
+<td>Проверьте себя</td>
+<td>Несколько киловольт на катушку.</td>
+</tr>
+<tr class="odd">
+<td>Ловушка</td>
+<td>Если τ больше t<sub>ф</sub>, на катушку ложится весь скачок.</td>
+</tr>
+<tr class="even">
+<td>На стенде</td>
+<td>Согласование с кабелем.</td>
+</tr>
+</tbody>
+</table>
+<h3>ОПН и RC-цепочка</h3>
+<p><strong>В1 · Выбор ОПН-10</strong></p>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 76%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>С чего начать</td>
+<td>Какое напряжение на здоровой фазе при замыкании на землю?</td>
+</tr>
+<tr class="even">
+<td>Проверьте себя</td>
+<td>Около 10 кВ.</td>
+</tr>
+<tr class="odd">
+<td>Ловушка</td>
+<td>Линейное напряжение, а не фазное.</td>
+</tr>
+<tr class="even">
+<td>На стенде</td>
+<td>Наименьший класс, проходящий по K<sub>t</sub>.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>В2 · ВАХ варистора</strong></p>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 76%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>С чего начать</td>
+<td>Отношение токов возведите в степень α через логарифм.</td>
+</tr>
+<tr class="even">
+<td>Проверьте себя</td>
+<td>Примерно в 1,5 раза больше U<sub>1мА</sub>.</td>
+</tr>
+<tr class="odd">
+<td>Ловушка</td>
+<td>Ток в амперах делите на 0,001 А.</td>
+</tr>
+<tr class="even">
+<td>На стенде</td>
+<td>Наибольший ток, а не любой.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>В3 · Координация изоляции</strong></p>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 76%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>С чего начать</td>
+<td>Амплитуда испытательного напряжения при вводе.</td>
+</tr>
+<tr class="even">
+<td>Проверьте себя</td>
+<td>Около 1,2.</td>
+</tr>
+<tr class="odd">
+<td>Ловушка</td>
+<td>Испытательное 48 кВ — для выключателя, не для двигателя.</td>
+</tr>
+<tr class="even">
+<td>На стенде</td>
+<td>Только одна схема даёт k ≥ 1,25.</td>
+</tr>
+</tbody>
+</table>
+<h3>Влажность камеры</h3>
+<p><strong>Г1 · Влажность подземной камеры</strong></p>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 76%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>С чего начать</td>
+<td>Формула Магнуса.</td>
+</tr>
+<tr class="even">
+<td>Проверьте себя</td>
+<td>Чуть ниже 18 °C.</td>
+</tr>
+<tr class="odd">
+<td>Ловушка</td>
+<td>ln(0,98) отрицателен.</td>
+</tr>
+<tr class="even">
+<td>На стенде</td>
+<td>Наименьший подогреватель с запасом 5 К.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Г2 · Двухчастотный метод</strong></p>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 76%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>С чего начать</td>
+<td>Отношение двух ёмкостей.</td>
+</tr>
+<tr class="even">
+<td>Проверьте себя</td>
+<td>Больше единицы.</td>
+</tr>
+<tr class="odd">
+<td>Ловушка</td>
+<td>Норма сопротивления — на киловольт.</td>
+</tr>
+<tr class="even">
+<td>На стенде</td>
+<td>Смотрите на все три показателя.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Г3 · Водяная плёнка на изоляторах</strong></p>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 76%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>С чего начать</td>
+<td>Поверхность цилиндра: длина вдоль пути, ширина — периметр.</td>
+</tr>
+<tr class="even">
+<td>Проверьте себя</td>
+<td>Единицы миллиампер.</td>
+</tr>
+<tr class="odd">
+<td>Ловушка</td>
+<td>Миллиметры в метры.</td>
+</tr>
+<tr class="even">
+<td>На стенде</td>
+<td>Мера без ежедневного обслуживания и без лишних затрат.</td>
+</tr>
+</tbody>
+</table>
+<h3>Диагностика и испытания</h3>
+<p><strong>Д1 · Мост tgδ</strong></p>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 76%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>С чего начать</td>
+<td>ω = 2π·50.</td>
+</tr>
+<tr class="even">
+<td>Проверьте себя</td>
+<td>Доли процента.</td>
+</tr>
+<tr class="odd">
+<td>Ловушка</td>
+<td>Ответ в процентах.</td>
+</tr>
+<tr class="even">
+<td>На стенде</td>
+<td>Где земля у объекта?</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Д2 · Прирост tgδ</strong></p>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 76%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>С чего начать</td>
+<td>Разность двух чисел.</td>
+</tr>
+<tr class="even">
+<td>Проверьте себя</td>
+<td>Около процента.</td>
+</tr>
+<tr class="odd">
+<td>Ловушка</td>
+<td>Не путайте насосы.</td>
+</tr>
+<tr class="even">
+<td>На стенде</td>
+<td>Сравните каждый прирост с ориентиром.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Д3 · Программа сушки и испытаний</strong></p>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 76%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>С чего начать</td>
+<td>Формула из таблицы П3.9.</td>
+</tr>
+<tr class="even">
+<td>Проверьте себя</td>
+<td>Меньше 2U<sub>ном</sub> + 1 = 21 кВ.</td>
+</tr>
+<tr class="odd">
+<td>Ловушка</td>
+<td>48 кВ относится к выключателю.</td>
+</tr>
+<tr class="even">
+<td>На стенде</td>
+<td>Неразрушающие — до разрушающих.</td>
+</tr>
+</tbody>
+</table>
+</main></body></html>

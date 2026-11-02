@@ -1,0 +1,813 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Коронный разряд</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;700&family=IBM+Plex+Sans:wght@400;600&display=swap">
+<style>
+/* Лабораторный стол: светлые панели, тёмные экраны приборов; акцент — синий, импульсы — тёплый/холодный по полярности */
+:root{
+  --bg:#D8DFE2; --panel:#F3F6F6; --ink:#15212A; --muted:#51606C; --line:#BFCACF; --well:#E6ECEE;
+  --accent:#1F5FAF; --accent-ink:#FFFFFF; --soft:#E2ECF8; --hot:#C8372B; --ok:#1E8A4C; --warn:#A8670F;
+  --scr:#0D171E; --scr2:#16242D; --grid:#253844; --scrtxt:#9FB4C0; --pos:#FF8A3D; --neg:#4FB3FF; --spark:#FFD54A;
+  --cu:#B8743A; --ins:#C9D8B5; --ins2:#E3D7A6;
+  --f-disp:"IBM Plex Sans Condensed","Arial Narrow",Arial,sans-serif;
+  --f-body:"IBM Plex Sans",Arial,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  color-scheme:light;
+}
+[hidden]{display:none!important}
+html,body{background:var(--bg);color:var(--ink)}
+body{margin:0;font-family:var(--f-body);font-size:16px;line-height:1.5;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+.wrap{max-width:1380px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+h1,h2,h3{font-family:var(--f-disp);font-weight:700;line-height:1.1;margin:0;text-wrap:balance}
+h1{font-size:clamp(26px,3.2vw,36px)}
+h2{font-size:23px}
+h3{font-size:18px}
+p{margin:0}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+sub,sup{font-size:.72em}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 93%,transparent);backdrop-filter:blur(6px);padding-top:12px;padding-bottom:10px;border-bottom:1px solid var(--line);margin-left:calc(-1*max(16px,env(safe-area-inset-left,0px)));margin-right:calc(-1*max(16px,env(safe-area-inset-right,0px)));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.topin{max-width:1380px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap}
+.tabs{display:flex;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:4px;overflow-x:auto;max-width:100%}
+.tabs button{border:0;background:transparent;border-radius:7px;padding:8px 13px;font-weight:600;white-space:nowrap;color:var(--muted)}
+.tabs button.on{background:var(--accent);color:var(--accent-ink)}
+.tabs button span{font-family:var(--f-mono);font-weight:400;margin-right:6px;opacity:.8}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.q{display:inline-flex;align-items:center;justify-content:center;width:19px;height:19px;border-radius:50%;border:1.4px solid var(--accent);color:var(--accent);background:var(--panel);font:700 12px/1 var(--f-body);cursor:help;padding:0;margin:0 3px;vertical-align:middle;flex:none}
+.q:hover,.q.on{background:var(--accent);color:var(--accent-ink)}
+svg .sq{cursor:help}
+svg .sq circle{fill:var(--panel);stroke:var(--accent);stroke-width:1.4}
+svg .sq text{fill:var(--accent);font:700 11px var(--f-body)}
+svg .sq:hover circle,svg .sq.on circle{fill:var(--accent)}
+svg .sq:hover text,svg .sq.on text{fill:var(--accent-ink)}
+#tip{box-sizing:border-box;position:fixed;z-index:60;width:max-content;max-width:min(380px,calc(100vw - 16px));background:#15212A;color:#EEF3F6;font-size:14.5px;line-height:1.45;padding:10px 12px;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.3)}
+#tip b{color:#FFD27A}
+#tip .x{float:right;margin:-4px -4px 0 8px;border:0;background:none;color:#9FB4C0;font-size:18px;line-height:1;padding:0 4px}
+.concepts{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.cpt{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:4px}
+.cpt b{font-family:var(--f-disp);font-size:16.5px}
+.cpt b .q{float:right}
+.cpt p{font-size:13.5px;color:var(--muted)}
+.lab{display:grid;grid-template-columns:310px minmax(0,1fr);gap:16px;align-items:start}
+.lab.rev{grid-template-columns:minmax(0,1fr) 330px}
+.side{display:flex;flex-direction:column;gap:14px}
+.lbl{font-size:13px;font-weight:600;color:var(--muted);display:block;margin-bottom:5px}
+.seg{display:flex;flex-wrap:wrap;gap:4px}
+.seg button{border:1px solid var(--line);background:var(--well);border-radius:6px;padding:6px 10px;font-size:13.5px}
+.seg button.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.grid2 button{border:1px solid var(--line);background:var(--well);border-radius:8px;padding:7px 9px;text-align:left;font-size:13.5px;line-height:1.25}
+.grid2 button.on{border-color:var(--accent);background:var(--soft);box-shadow:inset 0 0 0 1px var(--accent);font-weight:600}
+.rng .tp{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.rng output{font-family:var(--f-mono);font-size:15px;font-weight:500}
+.rng input{width:100%;accent-color:var(--accent)}
+.btns{display:flex;flex-wrap:wrap;gap:6px}
+.btn{border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);border-radius:7px;padding:8px 14px;font-weight:600;font-size:14.5px}
+.btn.ghost{background:var(--panel);color:var(--accent)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.reads{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:6px}
+.rd{background:var(--well);border:1px solid var(--line);border-radius:7px;padding:6px 9px;display:flex;flex-direction:column;gap:1px;min-width:0}
+.rd span{font-size:12px;color:var(--muted);display:block;line-height:1.35}
+.rd b{font-family:var(--f-mono);font-weight:500;font-size:16px;font-variant-numeric:tabular-nums}
+.rd.hot b{color:var(--hot)} .rd.ok b{color:var(--ok)}
+.scr{background:var(--scr);border-radius:8px;border:1px solid #071016;position:relative;min-width:0}
+.scr canvas{display:block;width:100%}
+.scrh{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 10px 0;color:var(--scrtxt);font-family:var(--f-mono);font-size:12px;flex-wrap:wrap}
+.scrh b{color:#E8F1F5;font-weight:500}
+.scrh .seg button{background:#1E2E38;border-color:#33495A;color:#CFE0EA;padding:3px 9px;font-size:12px}
+.scrh .seg button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.lg{display:inline-flex;align-items:center;gap:5px;margin-right:10px}
+.lg i{display:inline-block;width:14px;height:3px;border-radius:2px}
+.two{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:12px}
+.fig{background:var(--well);border:1px solid var(--line);border-radius:8px;padding:6px;min-width:0}
+.fig svg{display:block;width:100%;height:auto}
+.fig svg text{font-family:var(--f-body);fill:#15212A}
+.fig .cap{font-size:12.5px;color:var(--muted);padding:2px 4px 0}
+.log{background:var(--well);border-left:4px solid var(--accent);border-radius:6px;padding:8px 12px;font-size:14.5px;min-height:44px}
+.list{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:5px;font-size:14.5px}
+.info h3{margin-bottom:2px}
+.info p{font-size:14.5px}
+.tabp{display:flex;flex-direction:column;gap:12px}
+.tag{display:inline-block;align-self:flex-start;font-family:var(--f-mono);font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:1px 6px}
+.warn{background:#FCEFD8;border:1px solid #E8C27A;color:#5C3B05;border-radius:7px;padding:8px 12px;font-size:14.5px}
+.good{background:#E1F3E7;border:1px solid #9BD1AE;color:#134A2A;border-radius:7px;padding:8px 12px;font-size:14.5px}
+.bad{background:#F9E2DF;border:1px solid #E3A49B;color:#6B1A11;border-radius:7px;padding:8px 12px;font-size:14.5px}
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;font-size:14px}
+.steps li{display:flex;gap:8px;align-items:flex-start}
+.steps li i{flex:none;width:18px;height:18px;border-radius:50%;border:1.5px solid var(--line);margin-top:2px;display:inline-flex;align-items:center;justify-content:center;font-style:normal;font-size:11px;color:#fff}
+.steps li.done i{background:var(--ok);border-color:var(--ok)}
+.steps li.done i::after{content:"✓"}
+.case{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:14px;align-items:start}
+.opts{display:flex;flex-direction:column;gap:6px}
+.opts button{text-align:left;border:1px solid var(--line);background:var(--well);border-radius:7px;padding:8px 10px;font-size:14.5px;line-height:1.35}
+.opts button.sel{border-color:var(--accent);background:var(--soft)}
+.opts button.right{border-color:var(--ok);background:#E1F3E7}
+.opts button.wrong{border-color:var(--hot);background:#F9E2DF}
+.opts button:disabled{cursor:default;color:var(--ink)}
+.dots{display:flex;gap:5px;flex-wrap:wrap}
+.dots i{width:12px;height:12px;border-radius:50%;background:var(--line)}
+.dots i.cur{background:var(--accent)} .dots i.ok{background:var(--ok)} .dots i.half{background:var(--warn)} .dots i.no{background:var(--hot)}
+.task{border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.task h3{display:flex;gap:10px;align-items:baseline}
+.task h3 .mono{color:var(--muted);font-size:14px}
+.task p{font-size:15.5px;max-width:80ch}
+.ans{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.ans input{width:140px;font:inherit;font-family:var(--f-mono);padding:7px 10px;border:1px solid var(--line);border-radius:7px;background:#fff;color:var(--ink)}
+.ans .u{color:var(--muted);font-family:var(--f-mono)}
+.tq{border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:12px 16px;display:flex;flex-direction:column;gap:8px}
+.tq .qq{font-weight:600}
+.tq label{display:flex;gap:8px;align-items:flex-start;padding:5px 8px;border-radius:6px;border:1px solid transparent;font-size:15px;cursor:pointer}
+.tq label:hover{background:var(--well)}
+.tq label.right{border-color:var(--ok);background:#E1F3E7}
+.tq label.wrong{border-color:var(--hot);background:#F9E2DF}
+.tq input{margin-top:5px;accent-color:var(--accent)}
+.tq .ex{font-size:14px;color:var(--muted)}
+.circ{overflow-x:auto}
+.circ svg{min-width:640px}
+.circ svg text{font-family:var(--f-body);font-size:12.5px;fill:var(--ink)}
+.circ .el{cursor:pointer}
+.circ .el:hover .hl,.circ .el:focus-visible .hl{stroke:var(--accent);stroke-dasharray:4 3;fill:var(--soft);fill-opacity:.5}
+.circ .hl{fill:transparent;stroke:transparent;stroke-width:1.5}
+.sw{display:flex;align-items:center;gap:8px;font-size:14px}
+.sw button{min-width:110px}
+@media (max-width:1050px){.concepts{grid-template-columns:repeat(3,minmax(0,1fr))}.two,.case{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:820px){.lab,.lab.rev{grid-template-columns:minmax(0,1fr)}.concepts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.cpt p{display:none}.cpt{padding:8px 10px}.cpt b{font-size:15px}}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.mech{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.mc{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:6px;cursor:pointer;text-align:left;font:inherit;color:inherit}
+.mc:hover,.mc:focus-visible{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.mc b{font-family:var(--f-disp);font-size:16.5px}
+.mc .grp{font-family:var(--f-mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.mc svg{width:100%;height:auto;background:#0D171E;border-radius:7px;display:block}
+.mc .cond{font-size:13.5px;line-height:1.4}
+.mc .cond i{font-style:normal;font-family:var(--f-mono);color:var(--accent);font-size:13px}
+.fml{font-family:"IBM Plex Sans",Georgia,serif;font-size:19px;background:var(--well);border-left:4px solid var(--accent);border-radius:6px;padding:8px 14px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px}
+.fml i{font-family:Georgia,"Times New Roman",serif;font-size:21px}
+.fml small{font-family:var(--f-body);font-size:13px;color:var(--muted)}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 3px;line-height:1.15}
+.frac>span:first-child{border-bottom:1.4px solid currentColor;padding:0 3px}
+.frac>span:last-child{padding:0 3px}
+#dlg{position:fixed;inset:0;z-index:70;background:rgba(13,23,30,.55);display:flex;align-items:center;justify-content:center;padding:16px}
+#dlg[hidden]{display:none!important}
+#dlg .box{background:var(--panel);border-radius:12px;max-width:760px;width:100%;max-height:calc(100vh - 32px);overflow:auto;padding:18px;display:flex;flex-direction:column;gap:12px;position:relative}
+#dlg .x{position:absolute;top:8px;right:10px;border:0;background:none;font-size:26px;line-height:1;color:var(--muted);padding:4px 8px}
+#dlg svg{width:100%;height:auto;background:#0D171E;border-radius:8px}
+.gen{display:flex;gap:4px;align-items:flex-end;height:150px}
+.chip{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--accent);color:var(--accent);background:var(--panel);border-radius:14px;padding:2px 10px;font-size:13px;cursor:help}
+.chip:hover,.chip.on{background:var(--accent);color:#fff}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+@keyframes mvR{0%{transform:translateX(0);opacity:1}45%{transform:translateX(var(--d,70px));opacity:1}50%,100%{transform:translateX(var(--d,70px));opacity:0}}
+@keyframes out1{0%,48%{transform:translate(0,0);opacity:0}52%{opacity:1}100%{transform:translate(var(--dx,70px),var(--dy,-24px));opacity:1}}
+@keyframes flash{0%,45%{opacity:0}50%{opacity:1}75%,100%{opacity:0}}
+@keyframes show2{0%,48%{opacity:0}52%,100%{opacity:1}}
+@keyframes hide2{0%,48%{opacity:1}52%,100%{opacity:0}}
+@keyframes jig{0%,100%{transform:translate(0,0)}25%{transform:translate(3px,-2px)}50%{transform:translate(-2px,3px)}75%{transform:translate(2px,2px)}}
+@keyframes glow{0%,100%{opacity:.35}50%{opacity:1}}
+.an{animation-duration:3.2s;animation-iteration-count:infinite;animation-timing-function:linear;transform-box:fill-box}
+.a-mv{animation-name:mvR}.a-out{animation-name:out1}.a-fl{animation-name:flash}.a-s2{animation-name:show2}.a-h2{animation-name:hide2}.a-jig{animation-name:jig;animation-duration:.5s}.a-gl{animation-name:glow;animation-duration:1.6s}
+@keyframes mv1{0%{transform:translateX(0);opacity:1}25%{transform:translateX(var(--d,70px));opacity:1}27%,100%{transform:translateX(var(--d,70px));opacity:0}}
+@keyframes mv2{0%,38%{transform:translateX(0);opacity:0}40%{opacity:1}63%{transform:translateX(var(--d,70px));opacity:1}65%,100%{transform:translateX(var(--d,70px));opacity:0}}
+@keyframes s25{0%,24%{opacity:0}27%,100%{opacity:1}}
+@keyframes s25h{0%,24%{opacity:0}27%,63%{opacity:1}66%,100%{opacity:0}}
+@keyframes s65{0%,63%{opacity:0}66%,100%{opacity:1}}
+@keyframes h65{0%,63%{opacity:1}66%,100%{opacity:0}}
+@keyframes out65{0%,63%{transform:translate(0,0);opacity:0}66%{opacity:1}100%{transform:translate(var(--dx,70px),var(--dy,-24px));opacity:1}}
+@keyframes fl65{0%,62%{opacity:0}66%{opacity:1}85%,100%{opacity:0}}
+@keyframes fl25{0%,22%{opacity:0}26%{opacity:1}40%,100%{opacity:0}}
+.a-mv1{animation-name:mv1}.a-mv2{animation-name:mv2}.a-s25{animation-name:s25}.a-s25h{animation-name:s25h}.a-s65{animation-name:s65}.a-h65{animation-name:h65}.a-o65{animation-name:out65}.a-f65{animation-name:fl65}.a-f25{animation-name:fl25}
+@media (prefers-reduced-motion:reduce){.an{animation:none}}
+@media (max-width:560px){.fml{font-size:17px}.fml i{font-size:19px}}
+.vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin:14px 0}
+.vt h4{margin:10px 0 4px;font-size:15.5px}.vt p{font-size:14px;line-height:1.5}.vt .vk{color:var(--muted);margin-top:6px;font-size:13.5px}
+.mlab{margin-top:14px;border-left:4px solid var(--accent,#B4531B)}.mlab h3{font-size:17px}.mlab input{max-width:100%}
+</style>
+<style>
+.cases{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.cs{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;cursor:pointer;text-align:left;font:inherit;color:inherit}
+.cs:hover,.cs.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--soft)}
+.cs b{font-size:15.5px}.cs .tag{align-self:flex-start}
+.cs.done{border-left:5px solid var(--ok)}
+.phase{display:flex;gap:6px;flex-wrap:wrap}.phase span{font:12.5px var(--mono,monospace);padding:3px 8px;border-radius:12px;background:var(--well);color:var(--muted)}.phase span.on{background:var(--accent);color:#fff}
+.stat{font-weight:600}.stat.ok{color:var(--ok)}.stat.hot{color:var(--hot)}.stat.w{color:var(--warn)}
+.pol2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:820px){.pol2{grid-template-columns:1fr}}
+.cmpw{overflow-x:auto}.cmp{width:100%;min-width:560px;border-collapse:collapse;font-size:14px}.cmp td,.cmp th{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}.cmp th{background:var(--well)}
+</style>
+<div class="wrap">
+<header class="top"><div class="topin">
+ <div><div class="eyebrow">Техника высоких напряжений · тема 5 · физика разряда</div><h1>Коронный разряд</h1></div>
+ <nav class="tabs" role="tablist" aria-label="Разделы">
+  <button role="tab" data-tab="t0"><span>0</span>Как выглядит</button>
+  <button role="tab" data-tab="t1" class="on"><span>1</span>Зажигание</button>
+  <button role="tab" data-tab="t2"><span>2</span>Полярность</button>
+  <button role="tab" data-tab="t3"><span>3</span>Переменное U</button>
+  <button role="tab" data-tab="t4"><span>4</span>Потери и погода</button>
+  <button role="tab" data-tab="t5"><span>5</span>Оборудование</button>
+  <button role="tab" data-tab="t6"><span>6</span>Случаи</button>
+  <button role="tab" data-tab="t7"><span>7</span>Задачи</button>
+  <button role="tab" data-tab="t8"><span>8</span>Тест</button>
+ </nav>
+</div></header>
+
+<section class="concepts" aria-label="Ключевые понятия">
+ <div class="cpt"><b>Корона <button class="q" data-tip="corona" aria-label="Справка">?</button></b><p>Самостоятельный разряд у тонкого электрода, без пробоя</p></div>
+ <div class="cpt"><b>Формула Пика <button class="q" data-tip="peek" aria-label="Справка">?</button></b><p>E<sub>к</sub> зависит от r<sub>0</sub>, гладкости и δ</p></div>
+ <div class="cpt"><b>Чехол и внешняя зона <button class="q" data-tip="sheath" aria-label="Справка">?</button></b><p>Ионизация у провода, дальше дрейф ионов</p></div>
+ <div class="cpt"><b>Объёмный заряд <button class="q" data-tip="unibi" aria-label="Справка">?</button></b><p>Держит поле у провода на E<sub>к</sub></p></div>
+ <div class="cpt"><b>Потери <button class="q" data-tip="vq" aria-label="Справка">?</button></b><p>Площадь Q(U) за период; погода решает всё</p></div>
+</section>
+
+<section id="t0" class="tabp" hidden></section>
+<section id="t1" class="tabp"></section>
+<section id="t2" class="tabp" hidden></section>
+<section id="t3" class="tabp" hidden></section>
+<section id="t4" class="tabp" hidden></section>
+<section id="t5" class="tabp" hidden></section>
+<section id="t6" class="tabp" hidden></section>
+<section id="t7" class="tabp" hidden></section>
+<section id="t8" class="tabp" hidden></section>
+</div>
+<div id="tip" role="tooltip" hidden></div>
+<div id="dlg" hidden role="dialog" aria-modal="true" aria-labelledby="dlgt"><div class="box"><button class="x" aria-label="Закрыть">×</button><div id="dlgc"></div></div></div>
+<script>
+const fx=(v,n=1)=>(+v).toFixed(n).replace(".",",").replace("-","−");
+const E0=8.854e-12;
+const delta=(pmm,tC)=>(pmm/760)*(293/(273+tC));
+const ekPeek=(r,m,d)=>30.3*m*d*(1+0.298/Math.sqrt(d*r));
+const ekZal=(r,m,d)=>24.5*m*d*(1+0.613/Math.pow(r*d,0.4));
+const ekAny=(r,m,d)=>r<=1?ekPeek(r,m,d):ekZal(r,m,d);
+const GEO={
+ coax:{n:"Коаксиал",lnF:(r,g)=>Math.log(g/r),E:(x,U,r,g)=>U/(x*Math.log(g/r)),span:(r,g)=>[r,g],gl:"R, см"},
+ wire:{n:"Провод над землёй",lnF:(r,g)=>Math.log(2*g/r),E:(x,U,r,g)=>U/Math.log(2*g/r)*(1/x+1/(2*g-x)),span:(r,g)=>[r,g],gl:"h, см"},
+ rod:{n:"Острие — плоскость",lnF:(r,g)=>Math.log(1+4*g/r),E:(x,U,r,g)=>U/(r*Math.log(1+4*g/r))*r/(r+2*x-x*x/g),span:(r,g)=>[0,g],gl:"S, см"}};
+const uK=(geo,r,g,m,d)=>ekAny(r,m,d)*r*GEO[geo].lnF(r,g);
+const eSurf=(geo,U,r,g)=>U/(r*GEO[geo].lnF(r,g));
+const eIon=d=>24.4*d;
+function sheath(geo,U,r,g,d){const Ei=eIon(d),[a,b]=GEO[geo].span(r,g);if(GEO[geo].E(a,U,r,g)<Ei)return 0;let lo=a,hi=b;if(GEO[geo].E(b,U,r,g)>=Ei)return b-a;for(let k=0;k<60;k++){const m=(lo+hi)/2;if(GEO[geo].E(m,U,r,g)>=Ei)lo=m;else hi=m}return lo-a}
+const MU={pos:1.5e-4,neg:2.0e-4};
+function coaxSC(Ukv,rcm,Rcm,Ek,mu){const r=rcm/100,R=Rcm/100,U=Ukv*1e3,E=Ek*1e5;const ef=(I,x)=>Math.sqrt((E*r/x)**2+I/(2*Math.PI*E0*mu)*(1-(r/x)**2));
+ const integ=I=>{const n=400;let s=0;const l0=Math.log(r),l1=Math.log(R);for(let k=0;k<n;k++){const x=Math.exp(l0+(l1-l0)*(k+0.5)/n);s+=ef(I,x)*x}return s*(l1-l0)/n};
+ const U0=integ(0);if(U<=U0)return {I:0,U0:U0/1e3,ef:x=>U/((x/100)*Math.log(R/r))/1e5};
+ let lo=0,hi=1e-6;while(integ(hi)<U)hi*=2;for(let k=0;k<70;k++){const m=(lo+hi)/2;if(integ(m)<U)lo=m;else hi=m}const I=(lo+hi)/2;return {I,U0:U0/1e3,ef:x=>ef(I,x/100)/1e5}}
+const iTown=(Ukv,Uk,rcm,Rcm,mu)=>Ukv<=Uk?0:8*Math.PI*E0*mu*(Ukv*1e3)*((Ukv-Uk)*1e3)/((Rcm/100)**2*Math.log(Rcm/rcm));
+function vq(Um,Uk,C,k){if(Um<=Uk)return {pts:[[-Um,-C*Um],[Um,C*Um]],W:0,U0:Uk};const U0=2*Uk-Um,Cc=k*C;
+ const qA=C*U0,qB=qA+Cc*(Um-U0),qC=qB-C*(Um+U0),qD=qC-Cc*(Um-U0);
+ const pts=[[U0,qA],[Um,qB],[-U0,qC],[-Um,qD],[U0,qA]];let A=0;for(let i=0;i<4;i++)A+=pts[i][0]*pts[i+1][1]-pts[i+1][0]*pts[i][1];return {pts,W:Math.abs(A)/2,U0}}
+const ukLine=(r,S,d,m1,m2)=>21.2*d*r*Math.log(S/r)*m1*m2;
+const pPeek=(Uf,Uk,r,S,d,f)=>Uf<=Uk?0:241/d*(f+25)*Math.sqrt(r/S)*(Uf-Uk)**2*1e-5;
+const pET=(Um,Uk)=>2.4e-6*Um*Um*Math.exp(8.7*(Um/Uk-0.53));
+const rEq=(n,r,Rp)=>n===1?r:Math.pow(n*r*Math.pow(Rp,n-1),1/n);
+const ukSplit=(n,r,Rp,S,Ek)=>n===1?Ek*r*Math.log(S/r):Ek*n*r*Math.log(S/rEq(n,r,Rp))/(1+(n-1)*r/Rp);
+const WEA=[{k:"good",n:"Хорошая погода",m2:1.0,h:7120},{k:"snow",n:"Сухой снег",m2:0.9,h:800},{k:"rain",n:"Дождь, мокрый снег, морось",m2:0.8,h:500},{k:"frost",n:"Изморозь, гололёд, иней",m2:0.7,h:340}];
+const LINES={
+ l35:{n:"35 кВ · АС-70",U:35,r:0.57,S:300,nS:1,Rp:0},
+ l110:{n:"110 кВ · АС-120",U:110,r:0.76,S:400,nS:1,Rp:0},
+ l220:{n:"220 кВ · АС-300",U:220,r:1.2,S:700,nS:1,Rp:0},
+ l330:{n:"330 кВ · 2×АС-300",U:330,r:1.2,S:900,nS:2,Rp:20},
+ l500:{n:"500 кВ · 3×АС-400",U:500,r:1.36,S:1200,nS:3,Rp:23.1}};
+if(typeof module!=="undefined"&&typeof window==="undefined")module.exports={fx,delta,ekPeek,ekZal,ekAny,GEO,uK,eSurf,eIon,sheath,MU,coaxSC,iTown,vq,ukLine,pPeek,pET,rEq,ukSplit,WEA,LINES};
+
+const TIPS={
+corona:"<b>Коронный разряд</b> — самостоятельный разряд у электрода малого радиуса кривизны, который не перекрывает промежуток. Условие — резко неоднородное поле, K<sub>н</sub> ≥ 3 (учебник Важова, разд. 1.1.11).",
+geo:"<b>Три промежутка.</b> Коаксиал: провод в трубе — точная формула поля E = U/(x·ln(R/r<sub>0</sub>)). Провод над землёй: метод зеркальных изображений, U<sub>к</sub> = E<sub>к</sub>r<sub>0</sub>ln(2h/r<sub>0</sub>). Острие — плоскость: поле у острия E = U/(r·ln(1 + 4S/r)) (ф. 1.27); E<sub>к</sub> для острия по формуле Пика — оценка.",
+r0:"<b>Радиус электрода r<sub>0</sub></b> — главный параметр короны: чем меньше радиус, тем сильнее поле у поверхности при том же напряжении и тем раньше зажигается корона.",
+m:"<b>Коэффициент гладкости m (m<sub>1</sub>)</b>: 1 — полированный круглый провод; 0,85…0,92 — витой провод (учебник Важова). Загрязнения, заусенцы, капли воды уменьшают m.",
+delta:"<b>Относительная плотность воздуха</b> δ = (p/760)·293/(273 + t). Плотный воздух (мороз, давление) — корона зажигается позже; разреженный (жара, высота) — раньше. Связь с законом Пашена — тема 4.",
+peek:"<b>Формула Пика</b> (1.31): E<sub>к</sub> = 30,3·m·δ·(1 + 0,298/√(δr<sub>0</sub>)), кВ/см, r<sub>0</sub> в сантиметрах, для r<sub>0</sub> < 1 см. При r<sub>0</sub> > 1 см — формула Залесского (1.32): E<sub>к</sub> = 24,5·m·δ·(1 + 0,613/(r<sub>0</sub>δ)<sup>0,4</sup>). Обе дают амплитуду для переменного напряжения и значение для постоянного.",
+uk:"<b>Напряжение зажигания короны U<sub>к</sub></b> — напряжение, при котором поле у поверхности достигает E<sub>к</sub>: U<sub>к</sub> = E<sub>к</sub>·r<sub>0</sub>·ln(…), аргумент логарифма зависит от геометрии.",
+kn:"<b>Коэффициент неоднородности</b> K<sub>н</sub> = E<sub>max</sub>/E<sub>ср</sub>. При K<sub>н</sub> < 3 поле слабо неоднородно: корона не возникает, разряд сразу переходит в пробой.",
+sheath:"<b>Чехол короны</b> — тонкая светящаяся зона у электрода, где идёт ударная ионизация. За ним — <b>внешняя зона</b>: ионизации нет, ионы одного знака дрейфуют к другому электроду и образуют объёмный заряд.",
+unibi:"<b>Униполярная корона</b> — коронируют электроды одной полярности, во внешней зоне заряды одного знака (рис. 1.10). <b>Биполярная</b> — электроды разной полярности, ионы разных знаков идут навстречу (рис. 1.11).",
+bipen:"<b>Наглядная модель.</b> Какая доля ионов проходит линию нулевого потенциала, не рекомбинировав. Проникшие ионы нейтрализуют объёмный заряд чужой зоны — чехлу приходится выдавать больше заряда, ток растёт. В расчёте ток униполярной короны умножается на (1 + доля).",
+ck:"<b>Модель вольт-кулоновой характеристики.</b> Пока корона горит, объёмный заряд выходит в пространство, и провод «ведёт себя» как провод большего радиуса — заряд растёт быстрее напряжения. Отношение этого наклона к геометрической ёмкости C — параметр модели (1,5…2 для оценки).",
+u0:"<b>U<sub>0</sub></b> — напряжение повторного зажигания на переменном напряжении. Объёмный заряд прошлого полупериода усиливает поле у провода при смене полярности, поэтому U<sub>0</sub> < U<sub>к</sub>. В модели с постоянным E<sub>к</sub> у провода U<sub>0</sub> = 2U<sub>к</sub> − U<sub>макс</sub>.",
+vq:"<b>Вольт-кулоновая характеристика</b> Q(U) — заряд в короне в зависимости от напряжения за период. Её площадь — энергия потерь за период: W = ∮U dQ (ф. 1.34), мощность P = f·∮U dQ (ф. 1.35). Без короны Q = CU — прямая, площадь нулевая.",
+split:"<b>Расщепление фазы</b> на n проводов на расстоянии a образует провод с эквивалентным радиусом r<sub>э</sub> = (n·r<sub>0</sub>·R<sub>р</sub><sup>n−1</sup>)<sup>1/n</sup>, где R<sub>р</sub> — радиус расщепления. Поле у поверхности падает, U<sub>к</sub> растёт (рис. 1.13 учебника).",
+pollution:"<b>Загрязнение поверхности.</b> Пыль, сажа, частицы руды и золы, капли масла и насекомые на проводе создают местные выступы: поле на них выше, и корона загорается раньше. В формуле Пика это учитывают тем же коэффициентом m, что и шероховатость. Учебник даёт m = 0,8…0,9 для витого провода; добавочный множитель для загрязнения здесь <b>принят ориентировочно</b> (0,92 — запылённый, 0,85 — сильно загрязнённый в промзоне): на практике его определяют измерением. Дождь смывает часть отложений, но промышленная пыль в тумане даёт проводящую плёнку и капли — потери растут сильнее, чем у чистой линии.",polar:"<b>Эффект полярности.</b> В промежутке острие — плоскость пробой при положительном острие происходит при напряжении в 2…2,5 раза меньшем, чем при отрицательном: положительный объёмный заряд «удлиняет» острие, отрицательный — экранирует (учебник Важова, разд. 1.1.7)."};
+const CASES=[
+{id:"c1",tag:"ВЛ 220 кВ",t:"Линия гудит только в туман",x:"Жители посёлка у ВЛ 220 кВ жалуются: в ясную погоду линию не слышно, а в туман, морось и при изморози она трещит и гудит, на телевизорах помехи. Провод — АС-300, расстояние между фазами около 7 м, рабочее напряжение не менялось.",q:"Почему корона появляется только в плохую погоду?",o:["Капли и иней на проводе уменьшают коэффициент погоды m<sub>2</sub>: U<sub>к</sub> падает ниже рабочего фазного напряжения","В туман повышается напряжение в сети","Влага увеличивает радиус провода, и поле растёт","Туман снижает плотность воздуха δ в несколько раз","В туман увеличивается ёмкость линии и ёмкостный ток"],a:0,e:"По ф. 1.37 U<sub>к</sub> = 21,2δr<sub>0</sub>ln(S/r<sub>0</sub>)m<sub>1</sub>m<sub>2</sub>. Для АС-300 на 220 кВ в хорошую погоду U<sub>к</sub> ≈ 146 кВ > U<sub>ф</sub> = 127 кВ — короны нет; при m<sub>2</sub> = 0,8 U<sub>к</sub> ≈ 117 кВ < 127 кВ — корона горит. Атмосферные осадки резко снижают начальное напряжение короны (учебник Важова).",src:"учебник Важова, разд. 1.1.11, ф. 1.37; вкладка 4"},
+{id:"c2",tag:"Двигатель 6 кВ",t:"Белый налёт в лобовых частях",x:"При ремонте двигателя 6 кВ насоса, который два года работал от преобразователя частоты, на выходе стержней из паза нашли белый порошок, лак обесцвечен и потрескался. Сопротивление изоляции в норме.",q:"Что здесь произошло?",o:["Корона на выходе из паза: повреждено противокоронное покрытие, а импульсы ПЧ добавили выбросы. Озон и оксиды азота разрушают лак","Перегрев обмотки током перегрузки","Влага из камеры конденсировалась на лобовых частях","Пыль из воздуха системы охлаждения","Химическая реакция лака с медью"],a:0,e:"На выходе стержня из паза поле сгущается у края пакета стали. Корона даёт озон и оксиды азота, с влагой — азотную кислоту; отсюда белый налёт и разрушенный лак. Меры: восстановить полупроводящее покрытие, поставить фильтр dU/dt (вариант 1 сквозного задания).",src:"учебник Важова, разд. 3.7; вкладка 5, точка 8"},
+{id:"c3",tag:"ВЛ 220 кВ",t:"Кольцо на полимерном изоляторе",x:"На новой ВЛ 220 кВ полимерные подвесные изоляторы смонтировали без защитных колец у провода. Через два года при осмотре оболочки у металлического оконцевателя побелели, появились мелкие кратеры, гидрофобность потеряна.",q:"Какая причина наиболее вероятна?",o:["Корона у оконцевателя: без кольца поле там выше E<sub>к</sub>, разряды разрушают кремнийорганическую оболочку","Ультрафиолет солнца","Механическая перегрузка от гололёда","Слишком большая длина пути утечки","Заводской брак резины"],a:0,e:"Кольцо увеличивает эффективный радиус арматуры и снижает поле у оконцевателя. Без него корона горит постоянно, особенно по каплям воды, — эрозия, потеря гидрофобности, затем поверхностные разряды и трекинг (тема 12).",src:"вкладка 5, точки 3 и 4"},
+{id:"c4",tag:"Испытания",t:"Ложные частичные разряды",x:"При приёмке кабеля 10 кВ измерение частичных разрядов показало 300 пКл. Сигнал не исчез, когда кабель отключили и подали напряжение только на соединительный провод. После установки экранных тороидов на вывод трансформатора и замены провода трубой фон упал до 5 пКл.",q:"Что давало сигнал?",o:["Корона на выводе испытательного трансформатора и тонком соединительном проводе","Частичные разряды в кабеле","Помехи от сети освещения","Неисправный измерительный импеданс","Пробой воздуха между фазами кабеля"],a:0,e:"Тонкий провод под высоким напряжением — электрод малого радиуса: E у поверхности выше E<sub>к</sub>. Корона даёт импульсы, неотличимые для прибора от частичных разрядов. Экранные тороиды и трубы большого диаметра поднимают U<sub>к</sub> выше испытательного напряжения (темы 10–11).",src:"вкладка 5, точка 10; темы 10–11"},
+{id:"c5",tag:"Потери",t:"Кто «съедает» энергию за год",x:"Для ВЛ 220 кВ посчитали мощность потерь на корону: хорошая погода 0,05 кВт/км, сухой снег 0,4, дождь 1,2, изморозь 3,0 кВт/км. Продолжительность групп — по табл. 1.3 учебника: 7120, 800, 500 и 340 часов.",q:"Какая группа погоды даёт наибольшую часть годовых потерь?",o:["Изморозь: 3,9 % времени, но около 44 % годовой энергии потерь","Хорошая погода — она занимает 81 % времени","Сухой снег","Дождь","Все группы дают примерно поровну"],a:0,e:"Энергия по группам: 356 + 320 + 600 + 1020 = 2296 кВт·ч/км; на изморозь — 1020, или 44 %. Поэтому годовые потери считают по группам погоды (ф. 1.41), а не по средней погоде. В Заполярье изморози и гололёда больше, чем в средней полосе, — доля будет ещё выше.",src:"учебник Важова, табл. 1.3, ф. 1.41; задача 8"},
+{id:"c6",tag:"Обогатительная фабрика",t:"Полярность электрофильтра",x:"На электрофильтре сушильного отделения обогатительной фабрики после ремонта источника питания полярность коронирующих электродов случайно сменили на положительную. Пробои между электродами участились, пришлось снизить напряжение, степень очистки газа упала.",q:"Почему электрофильтры работают на отрицательной полярности?",o:["Отрицательная корона устойчивее и даёт больший ток до искрового пробоя; можно держать выше напряжение","Отрицательные ионы тяжелее и лучше прилипают к пыли","Положительная корона не светится","Отрицательная полярность безопаснее для персонала","Так проще выпрямить ток"],a:0,e:"При положительном коронирующем электроде стримеры развиваются легче, пробой наступает при меньшем напряжении (эффект полярности). При отрицательном электроде объёмный заряд экранирует острие, корона устойчива в широком диапазоне напряжений, ток и зарядка пыли больше.",src:"учебник Важова, разд. 1.1.7, 1.1.14; вкладка 5, точка 9"}];
+const TASKS=[
+{id:"k1",t:"Начальная напряжённость провода",x:"Гладкий провод радиусом 0,5 см (m = 1), нормальные условия (δ = 1). Найдите начальную напряжённость короны по формуле Пика, кВ/см.",h:["E<sub>к</sub> = 30,3·m·δ·(1 + 0,298/√(δr<sub>0</sub>)), r<sub>0</sub> в сантиметрах.","√0,5 = 0,707."],a:43.07,tol:0.03,s:"E<sub>к</sub> = 30,3·(1 + 0,298/0,707) = 30,3·1,421 = <b>43,1 кВ/см</b> (амплитуда). Больше 30 кВ/см: у тонкого провода нужно сильное поле, чтобы ионизационная зона успела развиться."},
+{id:"k2",t:"Летний витой провод",x:"Тот же провод r<sub>0</sub> = 0,5 см, но витой и шероховатый (m = 0,85), летом: 750 мм рт. ст., +28 °C. Найдите E<sub>к</sub>, кВ/см.",h:["δ = (750/760)·293/(273 + 28).","Подставьте δ и в множитель, и под корень."],a:35.38,tol:0.03,s:"δ = 0,987·0,973 = 0,961; E<sub>к</sub> = 30,3·0,85·0,961·(1 + 0,298/√0,480) = 24,74·1,430 = <b>35,4 кВ/см</b> — на 18 % ниже, чем у гладкого провода зимой при δ = 1."},
+{id:"k3",t:"Коаксиальная модель",x:"Провод радиусом 1 мм в заземлённой трубе радиусом 10 см, δ = 1, m = 1. Найдите напряжение зажигания короны U<sub>к</sub> (амплитуда), кВ.",h:["Сначала E<sub>к</sub> по Пику при r<sub>0</sub> = 0,1 см.","U<sub>к</sub> = E<sub>к</sub>·r<sub>0</sub>·ln(R/r<sub>0</sub>)."],a:27.10,tol:0.03,s:"E<sub>к</sub> = 30,3·(1 + 0,298/0,316) = 58,9 кВ/см; U<sub>к</sub> = 58,9·0,1·ln 100 = 58,9·0,1·4,605 = <b>27,1 кВ</b>."},
+{id:"k4",t:"Провод над землёй",x:"Гладкий провод радиусом 1 см на высоте 10 м над землёй, δ = 1. Найдите U<sub>к</sub> (амплитуда), кВ.",h:["Метод зеркальных изображений: U<sub>к</sub> = E<sub>к</sub>·r<sub>0</sub>·ln(2h/r<sub>0</sub>).","h = 1000 см."],a:298.9,tol:0.03,s:"E<sub>к</sub> = 30,3·(1 + 0,298) = 39,3 кВ/см; U<sub>к</sub> = 39,3·1·ln 2000 = 39,3·7,60 = <b>299 кВ</b> амплитуды, около 211 кВ действующего фазного — провод диаметром 2 см годится для 220 кВ, но не для 330 кВ."},
+{id:"k5",t:"Толстый провод",x:"Провод радиусом 2 см, m = 1, δ = 1. По какой формуле считать E<sub>к</sub>? Найдите её, кВ/см.",h:["При r<sub>0</sub> > 1 см — формула Залесского (1.32).","2<sup>0,4</sup> = 1,320."],a:35.88,tol:0.03,s:"E<sub>к</sub> = 24,5·(1 + 0,613/1,320) = 24,5·1,464 = <b>35,9 кВ/см</b>. Формула Пика дала бы 30,3·(1 + 0,298/1,414) = 36,7 кВ/см — близко, но для толстых проводов точнее Залесский."},
+{id:"k6",t:"ВЛ 110 кВ в хорошую погоду",x:"ВЛ 110 кВ, провод АС-120 (r<sub>0</sub> = 0,76 см), расстояние между фазами 4 м, m<sub>1</sub> = 0,9, хорошая погода (m<sub>2</sub> = 1), δ = 1. Найдите U<sub>к</sub> по ф. 1.37, кВ. Есть ли корона при U<sub>ф</sub> = 63,5 кВ?",h:["U<sub>к</sub> = 21,2·δ·r<sub>0</sub>·ln(S/r<sub>0</sub>)·m<sub>1</sub>·m<sub>2</sub>.","S = 400 см."],a:90.86,tol:0.03,s:"U<sub>к</sub> = 21,2·0,76·ln(526)·0,9 = 21,2·0,76·6,266·0,9 = <b>90,9 кВ</b> > 63,5 кВ — короны нет с большим запасом. На 110 кВ сечение выбирают по нагреву, а не по короне."},
+{id:"k7",t:"ВЛ 220 кВ в дождь",x:"ВЛ 220 кВ: АС-300 (r<sub>0</sub> = 1,2 см), S = 7 м, m<sub>1</sub> = 0,9, дождь m<sub>2</sub> = 0,8, δ = 1, f = 50 Гц, U<sub>ф</sub> = 127 кВ. Найдите потери на корону по Пику, кВт на км и фазу.",h:["U<sub>к</sub> по ф. 1.37 — около 117 кВ.","P = (241/δ)(f + 25)√(r<sub>0</sub>/S)(U<sub>ф</sub> − U<sub>к</sub>)²·10⁻⁵. В учебнике коэффициент напечатан как 24,1 — у Пика 241."],a:0.801,tol:0.03,s:"U<sub>к</sub> = 21,2·1,2·ln 583·0,9·0,8 = 116,7 кВ; P = 241·75·√(1,2/700)·(127 − 116,7)²·10⁻⁵ = 241·75·0,0414·107·10⁻⁵ = <b>0,80 кВт/(км·фаза)</b>, на линию — 2,4 кВт/км."},
+{id:"k8",t:"Годовые потери",x:"Мощность потерь на корону ВЛ: хорошая погода 0,05 кВт/км, сухой снег 0,4, дождь 1,2, изморозь 3,0 кВт/км. Продолжительность групп — 7120, 800, 500 и 340 ч (табл. 1.3). Найдите энергию потерь за год, кВт·ч на км.",h:["Ф. 1.41: сумма P<sub>i</sub>·t<sub>i</sub>.","Посмотрите, какая группа даёт больше всего."],a:2296,tol:0.02,s:"0,05·7120 + 0,4·800 + 1,2·500 + 3,0·340 = 356 + 320 + 600 + 1020 = <b>2296 кВт·ч/км</b>. Изморозь — 3,9 % времени, но 44 % потерь."},
+{id:"k9",t:"Площадь вольт-кулоновой характеристики",x:"Площадь вольт-кулоновой характеристики провода за период — 0,24 Дж на метр длины, частота 50 Гц. Найдите мощность потерь на корону, кВт на км.",h:["P = f·∮U dQ (ф. 1.35).","Перейдите от метра к километру."],a:12,tol:0.02,s:"P = 50·0,24 = 12 Вт/м = <b>12 кВт/км</b>. Площадь параллелограмма Q(U) — энергия, ушедшая за период на ионизацию и дрейф ионов."},
+{id:"k10",t:"Повторное зажигание",x:"Провод с U<sub>к</sub> = 300 кВ работает при амплитуде 380 кВ. По модели с постоянной напряжённостью у провода найдите напряжение повторного зажигания U<sub>0</sub>, кВ.",h:["Объёмный заряд прошлого полупериода создаёт у провода добавку U<sub>макс</sub> − U<sub>к</sub>.","U<sub>0</sub> = 2U<sub>к</sub> − U<sub>макс</sub>."],a:220,tol:0.02,s:"U<sub>0</sub> = 2·300 − 380 = <b>220 кВ</b> — заметно меньше U<sub>к</sub>, как и пишет учебник: со второго полупериода корона зажигается раньше и горит дольше."},
+{id:"k11",t:"Ток униполярной короны",x:"Коаксиал из задачи 3 (r<sub>0</sub> = 0,1 см, R = 10 см, U<sub>к</sub> = 27,1 кВ) под постоянным отрицательным напряжением 40 кВ, подвижность ионов μ = 2·10⁻⁴ м²/(В·с). Найдите ток короны по формуле Таунсенда I = 8πε<sub>0</sub>μU(U − U<sub>к</sub>)/(R²ln(R/r<sub>0</sub>)), мА на метр.",h:["Все величины — в СИ: R = 0,1 м, напряжения в вольтах.","8πε<sub>0</sub> = 2,225·10⁻¹⁰ Ф/м."],a:0.4986,tol:0.03,s:"I = 2,225·10⁻¹⁰·2·10⁻⁴·40 000·12 900/(0,01·4,605) = <b>0,50 мА/м</b>. Точный расчёт с объёмным зарядом (вкладка 2) даёт 0,62 мА/м — формула Таунсенда точна вблизи U<sub>к</sub>."},
+{id:"k12",t:"Потери на ВЛ 500 кВ",x:"Фаза ВЛ 500 кВ расщеплена на 3 провода. Амплитуда фазного напряжения U<sub>m</sub> = 408 кВ, напряжение возникновения короны (амплитуда) U<sub>к</sub> = 480 кВ. Найдите потери по формуле Егоровой и Тиходеева, кВт/км.",h:["P = 2,4·10⁻⁶·U<sub>m</sub>²·exp[8,7(U<sub>m</sub>/U<sub>к</sub> − 0,53)] (ф. 1.40).","U<sub>m</sub>/U<sub>к</sub> = 0,85."],a:6.47,tol:0.03,s:"2,4·10⁻⁶·408² = 0,400; показатель 8,7·(0,85 − 0,53) = 2,784; e<sup>2,784</sup> = 16,2; P = 0,400·16,2 = <b>6,5 кВт/км</b>. Даже без короны «в видимом смысле» (U<sub>m</sub> < U<sub>к</sub>) линия СВН теряет энергию — формула эмпирическая и учитывает местную корону на неоднородностях."}];
+
+const TV=[[
+{q:"Что такое коронный разряд?",o:["Самостоятельный разряд у электрода малого радиуса, не перекрывающий весь промежуток","Несамостоятельный ток в однородном поле","Искровой пробой длинного воздушного промежутка","Дуговой разряд при большом токе","Разряд по поверхности твёрдого диэлектрика"],a:0,e:"Корона — самостоятельный разряд, локализованный у электрода с малым радиусом кривизны; может не завершиться пробоем (учебник Важова, разд. 1.1.11)."},
+{q:"Обязательное условие возникновения короны:",o:["Резко неоднородное поле, K<sub>н</sub> ≥ 3","Однородное поле и высокое давление","Переменное напряжение частотой выше 50 Гц","Отрицательная полярность электрода","Влажность воздуха выше 80 %"],a:0,e:"При слабой неоднородности разряд сразу переходит в пробой; корона возможна только при K<sub>н</sub> ≥ 3."},
+{q:"Где в коронном разряде идёт ударная ионизация?",o:["Только в тонком чехле короны у электрода","Во всём промежутке до противоположного электрода","Только у заземлённого электрода","Во внешней зоне","В середине промежутка"],a:0,e:"Ионизация — в чехле, где E выше критической; во внешней зоне ионы только дрейфуют."},
+{q:"Как в униполярной короне распределён заряд во внешней зоне?",o:["Вся внешняя зона заполнена зарядами того же знака, что и коронирующий провод","Заряды обоих знаков в равном количестве","Заряда нет","Заряды противоположного знака","Заряд сосредоточен на заземлённом электроде"],a:0,e:"Рис. 1.10 учебника: из чехла выходят ионы знака провода и заполняют внешнюю зону."},
+{q:"Почему ток и потери в биполярной короне больше, чем в униполярной?",o:["Ионы, проникшие в чужую зону, нейтрализуют её объёмный заряд, и чехол должен выдать дополнительный заряд","Биполярная корона горит на большем напряжении","У биполярной короны толще провода","В биполярной короне нет рекомбинации","Биполярная корона бывает только на переменном напряжении"],a:0,e:"На линии нулевого потенциала рекомбинирует лишь часть ионов; проникшие уменьшают объёмный заряд, ионизация растёт."},
+{q:"От чего по формуле Пика зависит E<sub>к</sub>?",o:["От радиуса провода, гладкости m и относительной плотности воздуха δ","Только от напряжения","От длины провода","От частоты и тока нагрузки","От расстояния между фазами"],a:0,e:"E<sub>к</sub> = 30,3mδ(1 + 0,298/√(δr<sub>0</sub>)) — радиус, гладкость, плотность."},
+{q:"Когда вместо формулы Пика применяют формулу Залесского?",o:["При радиусе провода больше 1 см","При отрицательной полярности","При частоте выше 50 Гц","При δ < 1","Для расщеплённых проводов"],a:0,e:"Формула Пика — для r<sub>0</sub> < 1 см, Залесского (1.32) — для r<sub>0</sub> > 1 см."},
+{q:"Как меняется напряжённость у поверхности провода после зажигания короны при дальнейшем росте U?",o:["Остаётся близкой к E<sub>к</sub>: объёмный заряд ослабляет поле у провода","Растёт пропорционально U","Падает до нуля","Растёт в квадрате","Меняет знак"],a:0,e:"Учебник: несмотря на рост U до U<sub>макс</sub>, напряжённость на проводе остаётся равной E<sub>к</sub> из-за объёмного заряда."},
+{q:"Почему на переменном напряжении повторное зажигание происходит при U<sub>0</sub> < U<sub>к</sub>?",o:["Объёмный заряд прошлого полупериода усиливает поле у провода при смене полярности","Провод нагревается","Растёт плотность воздуха","Уменьшается ёмкость линии","Срабатывает фотоэффект на земле"],a:0,e:"Положительный объёмный заряд, оставшийся после гашения, при отрицательной полуволне увеличивает напряжённость у провода — корона зажигается раньше."},
+{q:"Что означает площадь вольт-кулоновой характеристики Q(U)?",o:["Энергию потерь на корону за период","Ёмкость провода","Ток короны","Напряжение зажигания","Заряд провода в момент максимума"],a:0,e:"W = ∮U dQ (ф. 1.34); мощность P = f∮U dQ (ф. 1.35)."},
+{q:"Как потери по формуле Пика зависят от напряжения выше U<sub>к</sub>?",o:["Пропорционально (U<sub>ф</sub> − U<sub>к</sub>)²","Линейно от U<sub>ф</sub>","Не зависят","Обратно пропорционально U<sub>ф</sub>","Экспоненциально от δ"],a:0,e:"P = (241/δ)(f + 25)√(r<sub>0</sub>/S)(U<sub>ф</sub> − U<sub>к</sub>)²·10⁻⁵."},
+{q:"При какой группе погоды потери на корону в единицу времени наибольшие?",o:["Изморозь, включая гололёд и иней","Хорошая погода","Сухой снег","Сильный ветер без осадков","Мороз в ясную погоду"],a:0,e:"Учебник Важова: наибольшие потери в единицу времени — при изморози."},
+{q:"Зачем фазы ВЛ 330 кВ и выше расщепляют на несколько проводов?",o:["Чтобы увеличить эффективный радиус и снизить напряжённость у поверхности — меньше короны","Чтобы уменьшить ёмкость линии","Чтобы облегчить провода","Для защиты от молнии","Чтобы уменьшить пролёт"],a:0,e:"Расщепление (рис. 1.13) снижает E у поверхности, U<sub>к</sub> растёт, потери падают."},
+{q:"Как защищают от короны лобовые части статора двигателя 6–10 кВ?",o:["Противокоронным полупроводящим покрытием на выходе стержня из паза","Увеличением тока возбуждения","Смазкой подшипников","Заземлением вала","Повышением скорости вращения"],a:0,e:"Полупроводящее покрытие выравнивает поле у края пакета стали; без него корона даёт озон и разрушает лак."},
+{q:"Почему электрофильтры работают с отрицательными коронирующими электродами?",o:["Отрицательная корона устойчивее и даёт больший ток до искрового пробоя","Отрицательная корона не светится","Отрицательные ионы тяжелее","Так меньше ёмкостный ток","Положительная корона не заряжает пыль"],a:0,e:"При положительном электроде стримеры и пробой наступают раньше (эффект полярности)."}],
+[
+{q:"Почему корона называется «короной»?",o:["У электрода видно светящийся ореол","Разряд имеет форму зубцов","Её открыл учёный по фамилии Корона","Она возникает только на верхушках опор","Она окружает изолятор кольцом"],a:0,e:"Корона горит в виде светящегося ореола у электрода малого радиуса."},
+{q:"Какой промежуток даёт корону раньше пробоя?",o:["Тонкий провод над землёй","Два больших шара на малом расстоянии","Плоский конденсатор","Коаксиал с почти равными радиусами","Шар над плоскостью на расстоянии меньше радиуса"],a:0,e:"У тонкого провода поле резко неоднородно (K<sub>н</sub> ≫ 3)."},
+{q:"Что происходит во внешней зоне короны?",o:["Ионы одного знака дрейфуют к противоположному электроду, ионизации нет","Идёт интенсивная ударная ионизация","Горит дуга","Электроны рекомбинируют на проводе","Возникает лидер"],a:0,e:"Внешняя зона — область дрейфа и объёмного заряда."},
+{q:"Биполярная корона возникает, когда:",o:["Коронируют электроды разной полярности, например провода «плюс» и «минус» линии постоянного тока","Коронирует один провод при переменном напряжении","Электрод — острие","Провод заземлён","Давление выше атмосферного"],a:0,e:"Рис. 1.11: ионы разных знаков движутся навстречу."},
+{q:"Что происходит на линии нулевого потенциала в биполярной короне?",o:["Частичная рекомбинация ионов, часть проникает в чужую зону","Полная рекомбинация всех ионов","Ионизация воздуха","Зажигается дуга","Ничего, ионы туда не доходят"],a:0,e:"Рекомбинирует лишь часть ионов — поэтому ток биполярной короны больше."},
+{q:"Как изменится E<sub>к</sub> при уменьшении радиуса провода?",o:["Увеличится","Уменьшится","Не изменится","Станет равной нулю","Сначала уменьшится, потом вырастет"],a:0,e:"Член 0,298/√(δr<sub>0</sub>) растёт при малом r<sub>0</sub>: тонкому проводу нужна большая напряжённость."},
+{q:"Как изменится напряжение зажигания короны на высокогорной подстанции?",o:["Уменьшится: плотность воздуха δ меньше","Увеличится","Не изменится","Удвоится","Зависит только от тока нагрузки"],a:0,e:"E<sub>к</sub> пропорциональна δ (с поправкой); разреженный воздух — корона раньше."},
+{q:"Что такое коэффициент гладкости m?",o:["Поправка на форму и состояние поверхности: 1 — гладкий, 0,85…0,92 — витой провод","Отношение пролёта к стреле провеса","Коэффициент погоды","Коэффициент неоднородности поля","Число проводов в фазе"],a:0,e:"m учитывает шероховатость: на витом проводе местное поле выше среднего."},
+{q:"Как растёт ток короны на постоянном напряжении выше U<sub>к</sub>?",o:["Примерно пропорционально U(U − U<sub>к</sub>)","Линейно от нуля","Скачком до тока КЗ","Экспоненциально","Не растёт"],a:0,e:"Квадратичная ВАХ коронного разряда (формула Таунсенда для коаксиала)."},
+{q:"Как ток короны искажает ток линии на переменном напряжении?",o:["На синусоиду ёмкостного тока накладываются пики тока короны во время её горения","Ток становится постоянным","Ток сдвигается по фазе на 180°","Ток пропадает","Частота тока удваивается"],a:0,e:"Рис. 1.12, б: пики тока короны длятся от зажигания до максимума напряжения."},
+{q:"Почему потери на корону на переменном напряжении больше, чем на постоянном?",o:["Каждые полпериода объёмный заряд перезаряжается: корона зажигается в обеих полярностях, и заряд гоняется туда и обратно","Переменное напряжение выше постоянного","На переменном напряжении нет объёмного заряда","Из-за скин-эффекта","Из-за индуктивности линии"],a:0,e:"Учебник: на переменном напряжении коронирование интенсивнее, потери существенно больше."},
+{q:"Почему годовые потери на корону считают по группам погоды?",o:["Потери в плохую погоду в десятки раз больше, а её длительность мала — среднее по погоде дало бы ошибку","Так требует формула Пика","Погода влияет только на ток нагрузки","Чтобы учесть температуру провода","Из-за ветра"],a:0,e:"Ф. 1.41: сумма потерь по группам с учётом их продолжительности (табл. 1.3)."},
+{q:"Чем опасна корона в закрытой ячейке КРУ 6–10 кВ?",o:["Озон и оксиды азота с влагой дают азотную кислоту: разрушаются изоляторы, коррозия, затем поверхностные разряды","Ничем — напряжение мало","Только радиопомехами","Нагревом шин","Снижением тока нагрузки"],a:0,e:"Корона в закрытом объёме — химическое разрушение изоляции и переход к трекингу."},
+{q:"Зачем на выводах испытательного трансформатора ставят экранные тороиды?",o:["Чтобы поднять U<sub>к</sub> выше испытательного напряжения и убрать ложные сигналы ЧР","Для охлаждения","Для крепления проводов","Чтобы снизить ёмкость","Для защиты от молнии"],a:0,e:"Тороид — электрод большого радиуса: корона не зажигается."},
+{q:"Как найти корону на линии при обходе?",o:["УФ-камерой: она видит ультрафиолетовое свечение короны днём","Мегаомметром","Амперметром в начале линии","Измерением сопротивления заземления","Термометром"],a:0,e:"Корона излучает в ультрафиолете; УФ-дефектоскоп выделяет его на дневном фоне."}],
+[
+{q:"Чем корона отличается от искрового разряда?",o:["Корона локализована у электрода и не перекрывает промежуток; искра перекрывает","Корона бывает только в вакууме","Искра горит постоянно, корона — импульсами","Корона возникает только в однородном поле","Разницы нет"],a:0,e:"В резко неоднородном поле U<sub>пр</sub> > U<sub>к</sub>: сначала корона, потом при росте U — пробой."},
+{q:"Чему равна критическая напряжённость начала ионизации в воздухе при δ = 1 (оценка)?",o:["Около 24…30 кВ/см","Около 3 кВ/см","Около 300 кВ/см","Около 0,3 кВ/см","Около 3000 кВ/см"],a:0,e:"Порядка 24–30 кВ/см; формула Пика при больших r<sub>0</sub> стремится к 30,3, Залесского — к 24,5 кВ/см."},
+{q:"Что называют чехлом короны?",o:["Тонкую светящуюся зону у провода, где идёт ионизация","Изоляционную оболочку провода","Слой льда на проводе","Экранное кольцо","Область у заземлённого электрода"],a:0,e:"Чехол — зона ионизации; его толщина много меньше расстояния до другого электрода."},
+{q:"Ионы какого знака заполняют внешнюю зону отрицательной униполярной короны?",o:["Отрицательные: электроны за чехлом прилипают к молекулам кислорода","Положительные","Нейтральные молекулы","Свободные электроны","Ионы обоих знаков поровну"],a:0,e:"В воздухе электроны быстро прилипают к O<sub>2</sub>, образуя отрицательные ионы."},
+{q:"Какой знак ионов во внешней зоне положительной короны?",o:["Положительный","Отрицательный","Оба знака","Ионов нет","Знак меняется каждые полпериода"],a:0,e:"Из чехла выходят ионы знака коронирующего электрода."},
+{q:"Как δ входит в формулу Пика?",o:["Множителем перед скобкой и под корнем в поправке 0,298/√(δr<sub>0</sub>)","Только множителем","Только под корнем","В показателе экспоненты","Не входит"],a:0,e:"E<sub>к</sub> = 30,3mδ(1 + 0,298/√(δr<sub>0</sub>))."},
+{q:"Напряжение зажигания короны провода над землёй:",o:["U<sub>к</sub> = E<sub>к</sub>·r<sub>0</sub>·ln(2h/r<sub>0</sub>)","U<sub>к</sub> = E<sub>к</sub>·h","U<sub>к</sub> = E<sub>к</sub>/r<sub>0</sub>","U<sub>к</sub> = E<sub>к</sub>·r<sub>0</sub>²","U<sub>к</sub> = E<sub>к</sub>·ln h"],a:0,e:"Поле у провода над землёй E = U/(r<sub>0</sub>ln(2h/r<sub>0</sub>)) — метод зеркальных изображений."},
+{q:"Что делает объёмный заряд с полем у внешнего электрода?",o:["Увеличивает его: часть напряжения уходит на дрейф ионов","Уменьшает до нуля","Не влияет","Меняет знак","Делает поле однородным во всём промежутке"],a:0,e:"Поле у провода снижается до E<sub>к</sub>, у внешнего электрода растёт; интеграл E по пути равен U."},
+{q:"На рис. 1.12 корона гаснет в момент t<sub>2</sub>. Почему?",o:["Напряжение начинает снижаться, и поле у провода падает ниже E<sub>к</sub>","Кончился газ","Провод остыл","Ток стал равен нулю","Объёмный заряд ушёл на землю"],a:0,e:"После U<sub>макс</sub> напряжение снижается, синхронно снижается напряжённость — корона гаснет."},
+{q:"Как ведёт себя вольт-кулоновая характеристика без короны?",o:["Прямая Q = CU, площадь нулевая, потерь нет","Параллелограмм максимальной площади","Окружность","Горизонтальная линия","Петля гистерезиса"],a:0,e:"Без короны заряд пропорционален напряжению через геометрическую ёмкость."},
+{q:"Как в формуле Пика учтена частота?",o:["Множителем (f + 25)","Множителем f²","Не учтена","Через δ","Делением на f"],a:0,e:"P = (241/δ)(f + 25)√(r<sub>0</sub>/S)(U<sub>ф</sub> − U<sub>к</sub>)²·10⁻⁵."},
+{q:"Что учитывает коэффициент m<sub>2</sub> в формуле U<sub>к</sub> (1.37)?",o:["Погоду: осадки снижают напряжение возникновения короны","Гладкость провода","Число проводов в фазе","Температуру провода","Высоту опоры"],a:0,e:"m<sub>1</sub> — гладкость, m<sub>2</sub> — погода."},
+{q:"Какой формулой учебник предлагает считать потери для расщеплённых проводов?",o:["Формулой Майра (1.38) или Егоровой и Тиходеева (1.40)","Только формулой Пика","Законом Ома","Формулой Залесского","Законом Пашена"],a:0,e:"Для СВН с расщеплёнными фазами — формула Майра и формула Егоровой — Тиходеева."},
+{q:"Что произойдёт, если на полимерный изолятор ВЛ 220 кВ не поставить защитное кольцо?",o:["Корона у оконцевателя разрушит оболочку: эрозия, потеря гидрофобности, трекинг","Ничего","Изолятор перегреется током нагрузки","Снизятся потери на корону","Вырастет механическая прочность"],a:0,e:"Кольцо снижает поле у арматуры; без него постоянная корона."},
+{q:"Почему при питании от ПЧ корона в лобовых частях двигателя вероятнее?",o:["На фронтах импульсов напряжение на обмотке выше рабочего","ПЧ снижает частоту","ПЧ увеличивает ток возбуждения","ПЧ охлаждает обмотку","ПЧ уменьшает напряжение"],a:0,e:"Отражения волны в кабеле дают выбросы до 2U<sub>d</sub> (вариант 1, тема 15)."}],
+[
+{q:"В каком диапазоне давлений возможен коронный разряд?",o:["Широком: от атмосферного до сотен атмосфер и выше","Только в вакууме","Только при атмосферном давлении","Только ниже 1 мм рт. ст.","Только в элегазе"],a:0,e:"Учебник: корона возникает в широком диапазоне давлений."},
+{q:"Какой коэффициент неоднородности поля нужен для короны?",o:["K<sub>н</sub> ≥ 3","K<sub>н</sub> = 1","K<sub>н</sub> < 1","K<sub>н</sub> ≈ 1,5","Любой"],a:0,e:"Корона — признак резко неоднородного поля."},
+{q:"Что поддерживает разряд в положительной короне у острия?",o:["Фотоионизация в объёме газа","Фотоэффект с катода","Термоэмиссия","Радиоактивность","Ток нагрузки"],a:0,e:"Разд. 1.1.7: при положительном острие вторичные лавины поддерживаются фотоионизацией в объёме."},
+{q:"Что поддерживает отрицательную корону у острия?",o:["Вторичные процессы на катоде — фотоэффект с острия","Только фотоионизация в объёме","Термоэмиссия анода","Ток внешней цепи","Рекомбинация"],a:0,e:"При отрицательном острие — фотоэффект с катода (острия)."},
+{q:"Что такое импульсы Тричела?",o:["Регулярные импульсы тока отрицательной короны на острие; их частота растёт с напряжением","Импульсы грозовых перенапряжений","Импульсы ПЧ","Импульсы тока дуги","Помехи измерительной схемы"],a:0,e:"Отрицательная корона у острия горит импульсами: облако отрицательных ионов периодически гасит её."},
+{q:"Эффект полярности в промежутке острие — плоскость:",o:["При положительном острие пробой при напряжении в 2…2,5 раза меньшем, чем при отрицательном","При отрицательном острие пробой легче","Полярность не влияет","При положительном острие корона не зажигается","При отрицательном острие нет объёмного заряда"],a:0,e:"Учебник Важова, разд. 1.1.7 — влияние поля объёмного заряда."},
+{q:"Почему у тонкого провода E<sub>к</sub> больше, чем у толстого?",o:["Поле быстро спадает от поверхности: зона, где поле достаточно для ионизации, слишком тонка, и нужна большая напряжённость","Тонкий провод холоднее","У тонкого провода больше ток","Толстый провод всегда шероховатый","Так задано нормами"],a:0,e:"Лавине нужен путь; у тонкого провода он короткий — нужна большая E у поверхности."},
+{q:"При r<sub>0</sub> = 0,5 см, m = 1, δ = 1 начальная напряжённость короны примерно равна:",o:["43 кВ/см","30 кВ/см","24 кВ/см","60 кВ/см","10 кВ/см"],a:0,e:"30,3·(1 + 0,298/0,707) = 43,1 кВ/см."},
+{q:"Какую напряжённость показывает формула Пика на переменном напряжении?",o:["Амплитуду","Действующее значение","Среднее значение","Мгновенное в нуле напряжения","Среднеквадратичное за год"],a:0,e:"Учебник: формулы дают значение для постоянного напряжения и для амплитуды переменного."},
+{q:"Почему пики тока короны длятся от зажигания до максимума напряжения?",o:["Пока U растёт, объёмный заряд выносится из чехла; после максимума поле у провода падает и корона гаснет","Пока провод нагревается","Пока нет ветра","Пока не сработает защита","До перехода тока через ноль"],a:0,e:"Рис. 1.12, б: длительность пиков равна длительности горения короны."},
+{q:"Как экспериментально определяют потери на корону?",o:["Осциллографируют вольт-кулоновую характеристику и считают её площадь","Измеряют температуру провода","Измеряют сопротивление изоляции","По шуму в радиоприёмнике","По току КЗ"],a:0,e:"Учебник Важова: потери за период ∮U dQ — площадь вольт-кулоновой характеристики."},
+{q:"Во сколько примерно раз мощность потерь в изморозь больше, чем в хорошую погоду, у ВЛ 220 кВ?",o:["В десятки раз","Одинаково","В 1,1 раза","В 2 раза меньше","Потерь в изморозь нет"],a:0,e:"При изморози U<sub>к</sub> падает ниже рабочего, потери растут как (U<sub>ф</sub> − U<sub>к</sub>)²."},
+{q:"Как расщепление фазы на 3 провода влияет на U<sub>к</sub>?",o:["Повышает: эквивалентный радиус больше, поле у поверхности меньше","Понижает","Не влияет","Делает U<sub>к</sub> равным нулю","Повышает только при постоянном напряжении"],a:0,e:"Вкладка 4: для 500 кВ один провод — U<sub>к</sub> ниже рабочего, три — выше."},
+{q:"Какая мера снижает корону на концевой муфте кабеля?",o:["Регулятор поля у края экрана: конус или трубка с высокой ε","Увеличение тока нагрузки","Удаление экрана","Покраска муфты","Увеличение сечения жилы"],a:0,e:"У обреза экрана поле сгущается, как у острия; регулятор выравнивает его."},
+{q:"Где корона полезна?",o:["В электрофильтрах для очистки газов от пыли","На линиях электропередачи","В лобовых частях двигателей","В ячейках КРУ","На изоляторах"],a:0,e:"Электрофильтры заряжают частицы пыли ионами короны."}],
+[
+{q:"Почему потери на корону важны для линий электропередачи?",o:["Они могут быть сравнимы с джоулевыми потерями в проводах","Они меньше 0,01 % передаваемой мощности","Они бывают только при КЗ","Они снижают напряжение в конце линии до нуля","Они нагревают опоры"],a:0,e:"Учебник: потери на корону часто сравнимы с джоулевыми потерями в проводах."},
+{q:"Как меняется толщина чехла короны при росте напряжения?",o:["Увеличивается","Уменьшается","Не меняется","Обращается в ноль","Сначала растёт, потом исчезает"],a:0,e:"Зона, где поле выше критического, расширяется (вкладка 1)."},
+{q:"Как отличается подвижность отрицательных ионов воздуха от положительных?",o:["Немного больше — ток отрицательной короны при том же U немного больше","Много меньше","Одинакова","Отрицательных ионов в воздухе нет","В тысячу раз больше"],a:0,e:"Порядка 2·10⁻⁴ и 1,5·10⁻⁴ м²/(В·с)."},
+{q:"На какой линии возникает биполярная корона?",o:["На линии постоянного тока «плюс — минус»","На однопроводной линии постоянного тока с возвратом через землю","Только на кабельной линии","Только на ВЛ 6 кВ","На шинах КРУ"],a:0,e:"Провода разной полярности — ионы идут навстречу."},
+{q:"Что увеличивает напряжение зажигания короны провода?",o:["Увеличение радиуса провода","Повышение температуры воздуха","Подъём на высоту","Дождь","Заусенцы на поверхности"],a:0,e:"U<sub>к</sub> = E<sub>к</sub>r<sub>0</sub>ln(…) растёт с радиусом; остальное снижает U<sub>к</sub>."},
+{q:"Морозный антициклон в Апатитах (δ ≈ 1,2) по сравнению с нормальными условиями:",o:["Повышает U<sub>к</sub> — корона зажигается позже","Снижает U<sub>к</sub>","Не влияет","Делает корону невозможной при любом напряжении","Меняет полярность короны"],a:0,e:"E<sub>к</sub> растёт с δ, но изморозь в тот же мороз уменьшает m<sub>2</sub>."},
+{q:"Почему напряжённость на проводе после зажигания остаётся близкой к E<sub>к</sub>?",o:["Объёмный заряд одного знака с проводом ослабляет поле у его поверхности","Провод плавится","Ток короны ограничен источником","Растёт радиус провода","Воздух становится проводником"],a:0,e:"Это самоограничение короны — объёмный заряд «гасит» избыток поля."},
+{q:"Какая формула для потерь на корону эмпирическая и учитывает частоту, радиус и расстояние между проводами?",o:["Формула Пика (1.36)","Формула Залесского","Закон Пашена","Формула Таунсенда","Закон Кулона"],a:0,e:"P = (241/δ)(f + 25)√(r<sub>0</sub>/S)(U<sub>ф</sub> − U<sub>к</sub>)²·10⁻⁵ кВт/(км·фаза)."},
+{q:"Чему равна мощность потерь, если площадь вольт-кулоновой характеристики 0,2 Дж/м, f = 50 Гц?",o:["10 кВт/км","1 кВт/км","100 кВт/км","0,2 кВт/км","50 кВт/км"],a:0,e:"P = 50·0,2 = 10 Вт/м = 10 кВт/км."},
+{q:"Что происходит с объёмным зарядом между t<sub>4</sub> и t<sub>5</sub> на рис. 1.12?",o:["Отрицательные ионы от провода компенсируют положительный объёмный заряд прошлого полупериода","Объёмный заряд растёт","Заряд уходит на опору","Ничего","Заряд превращается в дугу"],a:0,e:"Учебник: релаксация зарядов до полной компенсации положительного внешнего объёмного заряда."},
+{q:"На какое расстояние уходит объёмный заряд от провода за полупериод (по учебнику)?",o:["40…100 см","1…2 мм","10…20 м","Он остаётся на поверхности","Доходит до земли"],a:0,e:"Учебник Важова: расстояние зависит от напряжения и составляет 40…100 см."},
+{q:"Почему в Заполярье доля потерь на корону от изморози и гололёда может быть выше, чем в средней полосе?",o:["Таких погодных условий больше по продолжительности","Ниже рабочее напряжение","Провода толще","Плотность воздуха меньше","Частота сети выше"],a:0,e:"Годовые потери — сумма по группам погоды с их продолжительностью (ф. 1.41)."},
+{q:"Что видит УФ-камера на проводе с порванной проволокой?",o:["Одну яркую точку свечения на конце проволоки","Равномерное свечение всего провода","Нагрев провода","Ничего","Свечение только ночью"],a:0,e:"Конец проволоки — острие, поле у него выше E<sub>к</sub>."},
+{q:"Почему корона мешает измерению частичных разрядов?",o:["Её импульсы для прибора неотличимы от ЧР в объекте","Она снижает испытательное напряжение","Она размагничивает трансформатор","Она увеличивает ёмкость объекта","Она нагревает кабель"],a:0,e:"Поэтому выводы и соединения испытательной схемы делают большого радиуса."},
+{q:"Какой порядок процессов при росте напряжения на промежутке провод — плоскость?",o:["Корона в лавинной форме → стримерная корона → пробой","Пробой → корона","Дуга → корона → искра","Стример → лавина → корона","Корона не возникает, сразу пробой"],a:0,e:"Разд. 1.1.7: в резко неоднородном поле U<sub>пр</sub> > U<sub>к</sub>."}]];
+
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const SUP={"0":"⁰","1":"¹","2":"²","3":"³","4":"⁴","5":"⁵","6":"⁶","7":"⁷","8":"⁸","9":"⁹","-":"⁻"};
+const fN=(n,d=2)=>{if(!isFinite(n))return "∞";const a=Math.abs(n);if(a<1e4)return a>=100?Math.round(n).toLocaleString("ru-RU").replace(/ /g," "):fx(n,a<10?d:1);const e=Math.floor(Math.log10(a)),m=n/Math.pow(10,e);return fx(m,d)+"·10"+String(e).split("").map(c=>SUP[c]).join("")};
+const qb=k=>`<button class="q" data-tip="${k}" aria-label="Справка">?</button>`;
+const tip=$("#tip");let tipFor=null,tipPin=false;
+function showTip(el,pin){const k=el.dataset.tip;const t=TIPS[k]||el.dataset.tipt;if(!t)return;tipFor=el;tipPin=!!pin;$$(".q.on,.chip.on").forEach(x=>x.classList.remove("on"));el.classList.add("on");
+ tip.innerHTML=(pin?'<button class="x" aria-label="Закрыть">×</button>':"")+t;tip.hidden=false;
+ const r=el.getBoundingClientRect(),w=tip.offsetWidth,h=tip.offsetHeight;let x=Math.min(Math.max(8,r.left+r.width/2-w/2),innerWidth-w-8),y=r.bottom+8;if(y+h>innerHeight-8)y=Math.max(8,r.top-h-8);tip.style.left=x+"px";tip.style.top=y+"px";
+ const xb=tip.querySelector(".x");if(xb)xb.onclick=e=>{e.stopPropagation();hideTip()}}
+function hideTip(){tip.hidden=true;if(tipFor)tipFor.classList.remove("on");tipFor=null;tipPin=false}
+document.addEventListener("mouseover",e=>{if(tipPin)return;const el=e.target.closest&&e.target.closest("[data-tip],[data-tipt]");if(el)showTip(el,false)});
+document.addEventListener("mouseout",e=>{if(tipPin)return;const el=e.target.closest&&e.target.closest("[data-tip],[data-tipt]");if(el&&!(e.relatedTarget&&el.contains(e.relatedTarget)))hideTip()});
+document.addEventListener("click",e=>{const el=e.target.closest&&e.target.closest("[data-tip],[data-tipt]");if(el){e.preventDefault();if(tipFor===el&&tipPin)hideTip();else showTip(el,true)}else if(!tip.contains(e.target))hideTip()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){hideTip();closeDlg()}});
+addEventListener("scroll",()=>{if(!tip.hidden)hideTip()},true);
+const dlg=$("#dlg");function openDlg(h){$("#dlgc").innerHTML=h;dlg.hidden=false;dlg.querySelector(".x").focus()}
+function closeDlg(){if(!dlg.hidden){dlg.hidden=true;const f=dlg._from;if(f)f.focus()}}
+dlg.querySelector(".x").onclick=closeDlg;dlg.addEventListener("click",e=>{if(e.target===dlg)closeDlg()});
+let curTab="t1";
+$$(".tabs button").forEach(b=>b.onclick=()=>{curTab=b.dataset.tab;$$(".tabs button").forEach(x=>x.classList.toggle("on",x===b));$$(".tabp").forEach(s=>s.hidden=s.id!==curTab);hideTip();onTab(curTab)});
+function canvasBox(el,h,draw){const cv=document.createElement("canvas");el.appendChild(cv);const o={cv,ctx:cv.getContext("2d"),w:0,h};
+ const fit=()=>{const w=Math.max(200,el.clientWidth);const dpr=Math.min(2,devicePixelRatio||1);o.w=w;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);cv.style.height=h+"px";o.ctx.setTransform(dpr,0,0,dpr,0,0);draw&&draw()};
+ o.fit=fit;new ResizeObserver(()=>{if(Math.abs(el.clientWidth-o.w)>1)fit()}).observe(el);return o}
+const rng=(id,lab,tk,min,max,step,val,unit)=>`<div class="rng"><div class="tp"><span class="lbl">${lab} ${tk?qb(tk):""}</span><output id="${id}o"></output></div><input type="range" id="${id}" min="${min}" max="${max}" step="${step}" value="${val}" aria-label="${lab.replace(/<[^>]+>/g,"")}">${unit?"":""}</div>`;
+const seg=(id,opts,val)=>`<div class="seg" id="${id}">${opts.map(([v,t])=>`<button data-v="${v}" class="${String(v)===String(val)?"on":""}">${t}</button>`).join("")}</div>`;
+function bindSeg(id,cb){$$("#"+id+" button").forEach(b=>b.onclick=()=>{$$("#"+id+" button").forEach(x=>x.classList.toggle("on",x===b));cb(b.dataset.v)})}
+const rd=(id,lab,tk)=>`<div class="rd" id="${id}w"><span>${lab} ${tk?qb(tk):""}</span><b id="${id}"></b></div>`;
+
+const ML={};
+function mlab(id,cfg){ML[id]={cfg,tries:0};
+ return `<div class="card mlab" id="${id}"><div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:baseline"><h3>${cfg.t}</h3><span class="tag">мини-опыт · запишите в тетрадь</span></div>
+ <ol class="list">${cfg.steps.map(s=>`<li>${s}</li>`).join("")}</ol>
+ <div class="cmpw"><table class="cmp"><tr><th>Что записать</th><th style="width:150px">Ваше значение</th><th style="width:90px">Ед.</th><th style="width:150px">Проверка</th></tr>${cfg.rows.map((r,i)=>`<tr><td>${r.l}</td><td><input type="text" inputmode="decimal" data-i="${i}" aria-label="${r.l.replace(/<[^>]+>/g,"")}" style="width:130px;font:inherit;font-family:var(--f-mono);padding:4px 6px;border:1px solid var(--line);border-radius:6px"></td><td>${r.u}</td><td class="st" data-i="${i}">—</td></tr>`).join("")}</table></div>
+ <div class="btns"><button class="btn" data-a="chk">Проверить</button><button class="btn ghost" data-a="ans" disabled>Показать ответы</button></div>
+ <div class="log"><b>Обсудите в группе.</b><ol class="list" style="margin-top:4px">${cfg.q.map(s=>`<li>${s}</li>`).join("")}</ol></div></div>`}
+function bindMlab(id){const S=ML[id],box=$("#"+id),rows=S.cfg.rows;
+ const chk=()=>{S.tries++;let all=true;rows.forEach((r,i)=>{const inp=box.querySelector(`input[data-i="${i}"]`),st=box.querySelector(`td.st[data-i="${i}"]`);const v=parseFloat(inp.value.replace(/\s/g,"").replace(",","."));const a=r.a();
+  if(!isFinite(v)){st.innerHTML=`<span style="color:var(--muted)">нет</span>`;all=false;return}const ok=Math.abs(v-a)<=Math.abs(a)*(r.tol??0.03)+1e-9;if(!ok)all=false;st.innerHTML=ok?`<b style="color:var(--ok)">верно</b>`:`<b style="color:var(--hot)">проверьте</b>`});
+  if(all||S.tries>=2)box.querySelector('[data-a="ans"]').disabled=false};
+ box.querySelector('[data-a="chk"]').onclick=chk;
+ box.querySelector('[data-a="ans"]').onclick=()=>rows.forEach((r,i)=>{box.querySelector(`td.st[data-i="${i}"]`).innerHTML=`<span class="mono">${fx(r.a(),r.d)}</span>`})}
+
+const V0=[
+ {id:"why",t:"Почему «корона»",x:"Посмотрите на провод с торца или на шарик под напряжением: вокруг проводника светится тонкий фиолетовый венец, а на остриях — лучики-зубцы. Латинское <i>corona</i> — венец, корона; так же называют светящуюся оболочку Солнца при затмении. Название дано по виду: свечение охватывает электрод кольцом, как венец голову.",k:"Светится только чехол — зона ионизации толщиной миллиметры у поверхности. Дальше свечения нет: там лишь дрейф ионов."},
+ {id:"wp",t:"Провод, положительная корона",x:"Ровный голубовато-фиолетовый чехол вдоль всего провода. Свечение однородно: лавины идут к проводу со всех сторон, и ионизация распределяется по поверхности равномерно.",k:"Ночью видно глазом, днём — только в УФ-камеру. Слышно ровное шипение."},
+ {id:"wn",t:"Провод, отрицательная корона",x:"Свечение собирается в отдельные яркие точки — «чётки» вдоль провода. Точки сидят на неровностях и пылинках и могут перемещаться. Между ними провод тёмный.",k:"На острие отрицательная корона идёт импульсами Тричела — частые короткие вспышки, отсюда треск и радиопомехи."},
+ {id:"wa",t:"Провод на переменном напряжении",x:"Глаз усредняет два полупериода: ровный фон положительной короны и пятна отрицательной. На линиях видна неравномерная фиолетовая «бахрома», ярче в местах загрязнения и повреждения проволок.",k:"Корона гаснет и зажигается дважды за период — гудение на 100 Гц."},
+ {id:"pp",t:"Острие, положительная полярность",x:"При небольшом превышении — светящаяся шапочка на кончике. Выше — кистевая (стримерная) корона: веер тонких светящихся нитей-стримеров, которые гаснут, не долетая до второго электрода.",k:"Это и есть «зубцы короны». Дальнейший рост напряжения — стример перекрывает промежуток, искра."},
+ {id:"pn",t:"Острие, отрицательная полярность",x:"Маленькая яркая точка-звёздочка на кончике с коротким тлеющим ореолом. Она мерцает с частотой до сотен килогерц — импульсы Тричела.",k:"Стримеров почти нет: отрицательный объёмный заряд экранирует острие — пробой при более высоком U, чем у положительного."},
+ {id:"drop",t:"Капля дождя на проводе",x:"Поле вытягивает каплю в конус, на его вершине — яркая точка короны. Под дождём таких точек сотни на каждом пролёте: U<sub>к</sub> падает, потери растут в разы.",k:"Капли срываются и разбрызгиваются — характерное потрескивание линии в морось и туман."},
+ {id:"fit",t:"Арматура без экранного кольца",x:"Свечение на гайках, концах болтов и кромках зажимов у гирлянды изоляторов. С экранным (защитным) кольцом поле выравнивается, и точки гаснут.",k:"На УФ-съёмке такие точки — первые признаки дефекта: потерянное кольцо, задир, разрушенный изолятор."},
+ {id:"spl",t:"Расщеплённая фаза",x:"Три–четыре провода в фазе дают больший эквивалентный радиус и меньшее поле у поверхности. В хорошую погоду свечения почти нет; светятся дистанционные распорки и их болты.",k:"Поэтому ВЛ 330–750 кВ строят с расщеплёнными фазами."},
+ {id:"dust",t:"Провод в промзоне",x:"Сажа, рудная и угольная пыль, зола оседают на проводе бугорками. Каждая частица — местный выступ с усиленным полем: корона загорается раньше и распадается на множество точек, как у отрицательной полярности.",k:"Дождь смывает часть пыли, но в тумане она образует проводящую плёнку — потери и помехи растут сильнее, чем у чистой линии."}];
+let C0={},a0t=0;
+function t0(){$("#t0").innerHTML=`<div class="card"><h3>Как выглядит коронный разряд</h3><p style="margin-top:6px">Корона светится в основном в ультрафиолете: молекулы азота, возбуждённые электронами, излучают в диапазоне примерно 300–400 нм. Глаз видит только фиолетовый «хвост» этого излучения, поэтому корону наблюдают ночью или через УФ-камеру. Ниже — схематичные изображения: серый — проводник, фиолетовый — свечение.</p></div>
+ <div class="vgrid">${V0.map(v=>`<div class="card vt"><div class="scr"><div id="c0${v.id}"></div></div><h4>${v.t}</h4><p>${v.x}</p><p class="vk">${v.k}</p></div>`).join("")}</div>
+ <div class="log"><b>Признаки короны без камеры.</b> Шипение или треск у оборудования, гудение линии в туман и дождь, запах озона, помехи радиоприёму на средних волнах, белёсый налёт (окислы азота дают азотную кислоту, которая разъедает изоляцию и металл) на арматуре.</div>`;
+ V0.forEach(v=>{C0[v.id]=canvasBox($("#c0"+v.id),170,()=>draw0(v.id));C0[v.id].fit()});anim0()}
+function gl(ctx,x,y,r,a){const g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,`rgba(235,220,255,${a})`);g.addColorStop(0.35,`rgba(170,130,255,${a*0.7})`);g.addColorStop(1,"rgba(110,70,255,0)");ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,2*Math.PI);ctx.fill()}
+function fl(i){return 0.75+0.25*Math.sin(a0t*0.11+i*1.7)*Math.sin(a0t*0.037+i)}
+function wire(ctx,w,y,t){ctx.fillStyle="#8C9AA4";ctx.fillRect(0,y-t,w,2*t);ctx.fillStyle="#B9C4CB";ctx.fillRect(0,y-t,w,t*0.6)}
+function band(ctx,w,y,t,s,a){const g=ctx.createLinearGradient(0,y-t-s,0,y+t+s);g.addColorStop(0,"rgba(110,70,255,0)");g.addColorStop(0.5-t/(2*(t+s)),`rgba(190,160,255,${a})`);g.addColorStop(0.5,`rgba(235,220,255,${a})`);g.addColorStop(0.5+t/(2*(t+s)),`rgba(190,160,255,${a})`);g.addColorStop(1,"rgba(110,70,255,0)");ctx.fillStyle=g;ctx.fillRect(0,y-t-s,w,2*(t+s))}
+function rn(i){const x=Math.sin(i*12.9898)*43758.5453;return x-Math.floor(x)}
+function draw0(id){const B=C0[id];if(!B)return;const {ctx,w,h}=B;ctx.clearRect(0,0,w,h);ctx.fillStyle="#0B1119";ctx.fillRect(0,0,w,h);const cx=w/2,cy=h/2;
+ if(id==="why"){const R=26;for(let k=0;k<24;k++){const a=k/24*2*Math.PI,l=R+16+10*fl(k)+(k%2?0:8);ctx.strokeStyle=`rgba(200,170,255,${0.35*fl(k)})`;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(cx+Math.cos(a)*R,cy+Math.sin(a)*R);ctx.lineTo(cx+Math.cos(a)*l,cy+Math.sin(a)*l);ctx.stroke()}
+  const g=ctx.createRadialGradient(cx,cy,R*0.9,cx,cy,R+22);g.addColorStop(0,"rgba(240,225,255,.95)");g.addColorStop(0.3,"rgba(170,130,255,.6)");g.addColorStop(1,"rgba(110,70,255,0)");ctx.fillStyle=g;ctx.beginPath();ctx.arc(cx,cy,R+22,0,2*Math.PI);ctx.fill();
+  ctx.fillStyle="#8C9AA4";ctx.beginPath();ctx.arc(cx,cy,R,0,2*Math.PI);ctx.fill();ctx.fillStyle="#B9C4CB";ctx.beginPath();ctx.arc(cx-6,cy-6,R*0.45,0,2*Math.PI);ctx.fill();
+  ctx.fillStyle=CG;ctx.font="11px IBM Plex Sans";ctx.textAlign="left";ctx.fillText("провод в сечении",8,h-10);ctx.textAlign="right";ctx.fillText("венец свечения",w-8,h-10)}
+ else if(id==="wp"){band(ctx,w,cy,6,12,0.75*fl(1));wire(ctx,w,cy,6)}
+ else if(id==="wn"){wire(ctx,w,cy,6);for(let i=0;i<14;i++){const x=(rn(i)*0.9+0.05)*w;gl(ctx,x,cy+(rn(i+7)<0.5?-6:6),9+5*fl(i),0.95*fl(i+3))}}
+ else if(id==="wa"){band(ctx,w,cy,6,9,0.45*fl(2));wire(ctx,w,cy,6);for(let i=0;i<9;i++){const x=(rn(i+30)*0.9+0.05)*w;gl(ctx,x,cy+(rn(i+40)<0.5?-6:6),8+4*fl(i),0.8*fl(i+5))}}
+ else if(id==="pp"||id==="pn"){const tx=cx+10;ctx.fillStyle="#8C9AA4";ctx.beginPath();ctx.moveTo(10,cy-22);ctx.lineTo(tx,cy);ctx.lineTo(10,cy+22);ctx.fill();ctx.fillStyle="#3A4A55";ctx.fillRect(w-16,10,8,h-20);
+  if(id==="pp"){for(let k=0;k<11;k++){const a=(k-5)/5*0.9,L=40+50*rn(k+(a0t>>3))*fl(k);ctx.strokeStyle=`rgba(200,175,255,${0.55*fl(k)})`;ctx.lineWidth=1.3;ctx.beginPath();ctx.moveTo(tx,cy);let x=tx,y=cy;for(let s=1;s<=6;s++){x=tx+Math.cos(a)*L*s/6;y=cy+Math.sin(a)*L*s/6+(rn(k*7+s+(a0t>>3))-0.5)*6;ctx.lineTo(x,y)}ctx.stroke()}gl(ctx,tx,cy,18,0.95)}
+  else{const on=(a0t%6)<3;gl(ctx,tx+1,cy,on?13:8,on?1:0.6);gl(ctx,tx+1,cy,4,1)}
+  ctx.fillStyle=CG;ctx.font="11px IBM Plex Sans";ctx.textAlign="left";ctx.fillText(id==="pp"?"острие +":"острие −",8,h-10)}
+ else if(id==="drop"){wire(ctx,w,cy-20,6);[0.2,0.5,0.8].forEach((f,i)=>{const x=w*f,s=1+0.15*Math.sin(a0t*0.09+i);ctx.fillStyle="rgba(150,200,240,.9)";ctx.beginPath();ctx.moveTo(x-7,cy-14);ctx.quadraticCurveTo(x-6,cy+4*s,x,cy+14*s);ctx.quadraticCurveTo(x+6,cy+4*s,x+7,cy-14);ctx.fill();gl(ctx,x,cy+14*s,12*fl(i),0.95)})}
+ else if(id==="fit"){ctx.fillStyle="#6E7F8C";for(let i=0;i<6;i++){ctx.beginPath();ctx.ellipse(cx,18+i*16,30,6,0,0,2*Math.PI);ctx.fill()}ctx.fillStyle="#8C9AA4";ctx.fillRect(cx-12,112,24,20);ctx.fillRect(10,132,w-20,8);
+  [[cx-12,114],[cx+12,114],[cx-12,130],[cx+12,130],[30,136],[w-30,136]].forEach(([x,y],i)=>{ctx.fillStyle="#B9C4CB";ctx.fillRect(x-3,y-3,6,6);gl(ctx,x,y,10+4*fl(i),0.95*fl(i+2))});
+  ctx.fillStyle=CG;ctx.font="11px IBM Plex Sans";ctx.textAlign="left";ctx.fillText("гирлянда",8,16)}
+ else if(id==="spl"){const R=26;[[0,-1],[0.866,0.5],[-0.866,0.5]].forEach(([a,b],i)=>{const x=cx+a*R,y=cy+b*R;gl(ctx,x,y,12,0.12*fl(i));ctx.fillStyle="#8C9AA4";ctx.beginPath();ctx.arc(x,y,7,0,2*Math.PI);ctx.fill()});ctx.strokeStyle="#6E7F8C";ctx.lineWidth=4;ctx.beginPath();[[0,-1],[0.866,0.5],[-0.866,0.5],[0,-1]].forEach(([a,b],i)=>{const x=cx+a*R,y=cy+b*R;i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.stroke();ctx.lineWidth=1;
+  [[0.433,-0.25],[-0.433,-0.25],[0,0.5]].forEach(([a,b],i)=>gl(ctx,cx+a*R,cy+b*R,8,0.8*fl(i+4)));ctx.fillStyle=CG;ctx.font="11px IBM Plex Sans";ctx.textAlign="left";ctx.fillText("3 провода и распорка, сечение",8,h-10)}
+ else if(id==="dust"){band(ctx,w,cy,6,6,0.2*fl(6));wire(ctx,w,cy,6);for(let i=0;i<34;i++){const x=rn(i+60)*w,up=rn(i+90)<0.5;ctx.fillStyle="#3C3530";ctx.beginPath();ctx.arc(x,cy+(up?-6:6),2+2*rn(i+120),0,2*Math.PI);ctx.fill();if(i%2===0)gl(ctx,x,cy+(up?-9:9),6+4*fl(i),0.85*fl(i+1))}ctx.fillStyle=CG;ctx.font="11px IBM Plex Sans";ctx.textAlign="left";ctx.fillText("частицы пыли — точки свечения",8,h-10)}}
+function anim0(){a0t++;if(curTab==="t0"&&a0t%2===0)V0.forEach(v=>draw0(v.id));requestAnimationFrame(anim0)}
+
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const CY="#FFD54A",CG="#9FB4C0",CT="#CFE0EA",CL="#253844",CO="#FF8A3D",CB="#4FB3FF",CV="#C39BFF",CR="#FF5A4E",CK="#7EE0A8";
+const fL=cm=>cm>=100?fx(cm/100,cm>=1000?1:2)+" м":cm>=1?fx(cm,cm>=10?0:2)+" см":fx(cm*10,cm>=0.1?1:2)+" мм";
+const fK=v=>v>=100?fx(v,0):v>=10?fx(v,1):fx(v,2);
+function linAx(ctx,L,T,W,H,x0,x1,y0,y1,xl,yl,xs,ys,xf,yf){const X=v=>L+(v-x0)/(x1-x0)*W,Y=v=>T+H-(v-y0)/(y1-y0)*H;ctx.font="11px IBM Plex Mono, monospace";ctx.strokeStyle=CL;ctx.lineWidth=1;ctx.fillStyle=CG;
+ for(let v=Math.ceil(x0/xs)*xs;v<=x1+1e-9;v+=xs){const x=X(v);ctx.beginPath();ctx.moveTo(x+.5,T);ctx.lineTo(x+.5,T+H);ctx.stroke();ctx.textAlign="center";ctx.fillText(xf?xf(v):fx(v,0),x,T+H+15)}
+ for(let v=Math.ceil(y0/ys)*ys;v<=y1+1e-9;v+=ys){const y=Y(v);ctx.beginPath();ctx.moveTo(L,y+.5);ctx.lineTo(L+W,y+.5);ctx.stroke();ctx.textAlign="right";ctx.fillText(yf?yf(v):fx(v,0),L-6,y+4)}
+ ctx.textAlign="center";ctx.fillText(xl,L+W/2,T+H+30);ctx.save();ctx.translate(13,T+H/2);ctx.rotate(-Math.PI/2);ctx.fillText(yl,0,0);ctx.restore();return {X,Y}}
+function logXAx(ctx,L,T,W,H,x0,x1,y0,y1,xl,yl,ys,xf){const X=v=>L+(Math.log10(v)-Math.log10(x0))/(Math.log10(x1)-Math.log10(x0))*W,Y=v=>T+H-(v-y0)/(y1-y0)*H;ctx.font="11px IBM Plex Mono, monospace";ctx.strokeStyle=CL;ctx.lineWidth=1;ctx.fillStyle=CG;
+ for(let e=Math.ceil(Math.log10(x0));e<=Math.floor(Math.log10(x1));e++){const x=X(Math.pow(10,e));ctx.beginPath();ctx.moveTo(x+.5,T);ctx.lineTo(x+.5,T+H);ctx.stroke();ctx.textAlign="center";ctx.fillText(xf(Math.pow(10,e)),x,T+H+15)}
+ for(let v=Math.ceil(y0/ys)*ys;v<=y1+1e-9;v+=ys){const y=Y(v);ctx.beginPath();ctx.moveTo(L,y+.5);ctx.lineTo(L+W,y+.5);ctx.stroke();ctx.textAlign="right";ctx.fillText(fx(v,0),L-6,y+4)}
+ ctx.textAlign="center";ctx.fillText(xl,L+W/2,T+H+30);ctx.save();ctx.translate(13,T+H/2);ctx.rotate(-Math.PI/2);ctx.fillText(yl,0,0);ctx.restore();return {X,Y}}
+const WX={n:{n:"Норм. условия",p:760,t:20},fr:{n:"Апатиты, мороз −30 °C",p:775,t:-30},su:{n:"Лето, +28 °C",p:750,t:28},hi:{n:"Высота 2000 м",p:596,t:10},mi:{n:"Шахта, −1000 м",p:855,t:25}};
+const MM=[[1,"1 — гладкий"],[0.9,"0,9 — витой"],[0.85,"0,85 — витой, шероховатый"]];
+const POL=[[1,"чистый"],[0.92,"запылённый"],[0.85,"промзона: сажа, рудная пыль"]];
+const T1={geo:"wire",k:0.8,lr:0,lg:Math.log10(1000),m:1,pol:1,wx:"n",anim:0};
+let C1=null,C1b=null,A1=null;
+const lgS=(id,lab,tk,lo,hi,v)=>rng(id,lab,tk,lo,hi,0.005,v);
+function geoDef(g){return {wire:{lr:0,lg:Math.log10(1000)},coax:{lr:-1,lg:1},rod:{lr:Math.log10(0.05),lg:Math.log10(20)}}[g]}
+const ML1={t:"Мини-опыт 1. Когда загорается корона",steps:["Электроды «Провод над землёй», r<sub>0</sub> = 1 см, h = 10 м, гладкий чистый провод, нормальные условия. Нажмите «Плавно поднять» и заметьте, при каком U появляется фиолетовый чехол. Запишите U<sub>к</sub>.","Не меняя остального, выберите «0,9 — витой» и загрязнение «промзона». Запишите U<sub>к</sub>.","Верните гладкий чистый провод и выберите погоду «Апатиты, мороз −30 °C». Запишите U<sub>к</sub>.","Найдите отношения к первому опыту."],
+ rows:[{l:"U<sub>к</sub>: гладкий, чистый, норм. условия",a:()=>uK("wire",1,1000,1,1),u:"кВ",d:0},{l:"U<sub>к</sub>: витой, промзона",a:()=>uK("wire",1,1000,0.9*0.85,1),u:"кВ",d:0},{l:"Отношение U<sub>к</sub>(витой, промзона)/U<sub>к</sub>(гладкий)",a:()=>0.9*0.85,u:"—",d:3},{l:"U<sub>к</sub>: мороз в Апатитах",a:()=>uK("wire",1,1000,1,delta(775,-30)),u:"кВ",d:0},{l:"Отношение U<sub>к</sub>(мороз)/U<sub>к</sub>(норм.)",a:()=>uK("wire",1,1000,1,delta(775,-30))/uK("wire",1,1000,1,1),u:"—",d:3}],
+ q:["Почему отношение для витого провода в промзоне в точности равно произведению коэффициентов, а для мороза оно меньше δ = 1,23? Посмотрите, где δ стоит в формуле Пика.","Что опаснее для линии у обогатительной фабрики: мороз или пыль на проводе? Что будет при изморози в той же промзоне?"]};
+function t1(){$("#t1").innerHTML=`<div class="lab"><div class="side card">
+ <div><span class="lbl">Электроды ${qb("geo")}</span>${seg("g1",Object.keys(GEO).map(k=>[k,GEO[k].n]),T1.geo)}</div>
+ ${rng("u1","Напряжение U / U<sub>к</sub>","",0.5,2.5,0.01,T1.k)}
+ <div class="btns"><button class="btn" id="an1">Плавно поднять</button><button class="btn ghost" id="uk1">U = U<sub>к</sub></button></div>
+ ${lgS("r1","Радиус электрода r<sub>0</sub>","r0",-2,0.6,T1.lr)}
+ ${lgS("g1r",'<span id="g1l">Расстояние</span>',"",0,3.5,T1.lg)}
+ <div><span class="lbl">Форма провода: гладкость m ${qb("m")}</span>${seg("m1",MM,T1.m)}</div>
+ <div><span class="lbl">Загрязнение поверхности ${qb("pollution")}</span>${seg("p1",POL,T1.pol)}</div>
+ <div><span class="lbl">Погода: плотность воздуха δ ${qb("delta")}</span>${seg("w1",Object.keys(WX).map(k=>[k,WX[k].n]),T1.wx)}</div>
+ <div class="reads">${rd("dl1","δ","delta")}${rd("mm1","m итог = m·k<sub>загр</sub>","pollution")}${rd("ek1","E<sub>к</sub>","peek")}${rd("ukk1","U<sub>к</sub>","uk")}${rd("es1","E у поверхности","")}${rd("kn1","K<sub>н</sub>","kn")}${rd("sh1","Чехол короны","sheath")}</div>
+ <div class="log" id="st1"></div></div>
+ <div class="card">
+ <div class="scr"><div class="scrh"><span><b>Напряжённость поля</b> от поверхности электрода, ось расстояний логарифмическая</span><span id="h1"></span></div><div id="c1"></div></div>
+ <div class="log" id="how1"><b>Как читать график.</b> Голубая линия — напряжённость E на расстоянии от поверхности электрода. Красный пунктир у левого края — начальная напряжённость короны E<sub>к</sub> по формуле Пика (или Залесского при r<sub>0</sub> > 1 см): когда поле у поверхности до неё дотягивается, зажигается корона. Жёлтый пунктир — 24,4δ кВ/см: оценка уровня, выше которого ионизация преобладает над прилипанием электронов к кислороду. Жёлтая заливка — <b>чехол короны</b>, единственная зона ионизации; дальше, во <b>внешней зоне</b>, только дрейф ионов. Для коаксиала при U > U<sub>к</sub> оранжевая линия — поле с учётом объёмного заряда: у провода оно «прилипает» к E<sub>к</sub>.</div>
+ <div class="two"><div class="scr"><div class="scrh"><span><b>Электрод</b> · чехол и внешняя зона</span></div><div id="c1b"></div></div>
+ <div class="log" id="lad1"></div></div>
+ </div></div>${mlab("ml1",ML1)}`;
+ bindSeg("g1",v=>{T1.geo=v;Object.assign(T1,geoDef(v));["r1","g1r"].forEach((id,k)=>$("#"+id).value=[T1.lr,T1.lg][k]);upd1()});
+ bindSeg("m1",v=>{T1.m=+v;upd1()});bindSeg("p1",v=>{T1.pol=+v;upd1()});bindSeg("w1",v=>{T1.wx=v;upd1()});
+ $("#u1").oninput=e=>{stopA1();T1.k=+e.target.value;upd1()};$("#r1").oninput=e=>{T1.lr=+e.target.value;upd1()};$("#g1r").oninput=e=>{T1.lg=+e.target.value;upd1()};
+ $("#uk1").onclick=()=>{stopA1();T1.k=1;$("#u1").value=1;upd1()};
+ $("#an1").onclick=()=>{if(A1){stopA1();return}T1.k=0.5;$("#an1").textContent="Стоп";A1=setInterval(()=>{T1.k=Math.min(2,T1.k+0.01);$("#u1").value=T1.k;upd1();if(T1.k>=2)stopA1()},60)};
+ bindMlab("ml1");
+ C1=canvasBox($("#c1"),330,draw1);C1b=canvasBox($("#c1b"),250,draw1b);C1.fit();C1b.fit();upd1();anim1()}
+function stopA1(){if(A1){clearInterval(A1);A1=null;const b=$("#an1");if(b)b.textContent="Плавно поднять"}}
+function st1(){const r=Math.pow(10,T1.lr),g0=Math.pow(10,T1.lg),g=Math.max(g0,r*1.5),W=WX[T1.wx],d=delta(W.p,W.t),mt=T1.m*T1.pol;
+ const Ek=ekAny(r,mt,d),Uk=uK(T1.geo,r,g,mt,d),U=T1.k*Uk,Es=eSurf(T1.geo,U,r,g),Eav=U/g,on=T1.k>=1-1e-9,sh=on?sheath(T1.geo,U,r,g,d):0;
+ const sc=T1.geo==="coax"&&T1.k>1?coaxSC(U,r,g,Ek,MU.pos):null;return {r,g,U,d,mt,Ek,Uk,Es,Eav,sh,sc,on}}
+function upd1(){const p=st1();
+ $("#u1o").textContent=fx(T1.k,2)+" · "+fK(p.U)+" кВ";$("#r1o").textContent=fL(p.r);$("#g1ro").textContent=fL(p.g);$("#g1l").textContent=T1.geo==="coax"?"Радиус внешнего цилиндра R":T1.geo==="wire"?"Высота над землёй h":"Расстояние до плоскости S";
+ $("#dl1").textContent=fx(p.d,3);$("#mm1").textContent=fx(p.mt,3);$("#ek1").textContent=fx(p.Ek,1)+" кВ/см";$("#es1").textContent=fx(Math.min(p.Es,9999),1)+" кВ/см";$("#ukk1").textContent=fK(p.Uk)+" кВ";
+ $("#kn1").textContent=fx(p.Es/p.Eav,p.Es/p.Eav>=10?0:1);$("#sh1").textContent=p.on?fL(p.sh):"нет";
+ $("#es1w").className="rd "+(p.on?"hot":"ok");
+ const kn=p.Es/p.Eav,f=p.r<=1?"Пика (1.31)":"Залесского (1.32)";
+ $("#st1").innerHTML=p.on?`<b>Корона горит.</b> U = ${fx(T1.k,2)}U<sub>к</sub>. Поле у поверхности по расчёту без объёмного заряда — ${fx(p.Es,1)} кВ/см, не меньше E<sub>к</sub> = ${fx(p.Ek,1)} кВ/см (формула ${f}). Чехол — ${fL(p.sh)}.`:`<b>Короны нет.</b> U = ${fx(T1.k,2)}U<sub>к</sub>. До зажигания не хватает ${fx(p.Ek-p.Es,1)} кВ/см у поверхности. ${kn<3?"Поле почти однородно (K<sub>н</sub> < 3): короны не будет — при росте U сразу пробой.":""}`;
+ const kr=T1.k,lv=!p.on?0:kr<1.4?1:kr<2.2?2:3;
+ $("#lad1").innerHTML=`<b>Что дальше с напряжением.</b><ol class="steps" style="margin-top:6px">${[["U < U<sub>к</sub>: ток практически нулевой, только редкие лавины"],["U ≥ U<sub>к</sub>: лавинная корона, ток растёт примерно как U(U − U<sub>к</sub>) — вкладка 3"],["Дальше в резко неоднородном поле — стримерная корона: стримеры стартуют, но гаснут, не дойдя до противоположного электрода"],["Ещё выше — стример перекрывает промежуток, искра, при мощном источнике — дуга. U<sub>пр</sub> > U<sub>к</sub> всегда"]].map((t,i)=>`<li class="${i<=lv?"done":""}"><i></i><span>${t}</span></li>`).join("")}</ol><p style="margin-top:6px;font-size:13px;color:var(--muted)">Границы стримерной короны и пробоя зависят от формы промежутка и полярности (тема 3) — здесь показаны условно, по U/U<sub>к</sub>. ${kn<3?"При K<sub>н</sub> < 3 корона вообще не возникает.":""}</p>`;
+ $("#h1").textContent=GEO[T1.geo].n+" · δ = "+fx(p.d,2);C1.fit();C1b.fit()}
+function draw1(){if(!C1)return;const p=st1(),{ctx,w,h}=C1;ctx.clearRect(0,0,w,h);const L=56,T=16,W=w-L-16,H=h-T-46;
+ const s0=Math.max(1e-3,p.r*1e-3),s1=Math.max(s0*10,(T1.geo==="rod"?p.g:p.g-p.r)),yMax=Math.max(p.Ek*1.6,Math.min(p.Es*1.15,p.Ek*4),40);
+ const yS=yMax>200?50:yMax>80?20:10;
+ const A=logXAx(ctx,L,T,W,H,s0,s1,0,yMax,"расстояние от поверхности электрода","E, кВ/см",yS,fL);
+ const Ex=s=>{const x=T1.geo==="rod"?s:p.r+s;return GEO[T1.geo].E(x,p.U,p.r,p.g)};
+ const Ei=eIon(p.d);
+ if(p.on&&p.sh>0){const xs=Math.min(A.X(Math.max(s0,p.sh)),L+W);ctx.fillStyle="rgba(255,213,74,.18)";ctx.fillRect(L,T,xs-L,H);ctx.fillStyle=CY;ctx.font="12px IBM Plex Sans";ctx.textAlign="left";if(xs-L>60)ctx.fillText("чехол",L+6,T+14);ctx.fillStyle=CG;ctx.fillText("внешняя зона →",Math.min(xs+6,L+W-100),T+14)}
+ ctx.setLineDash([5,4]);ctx.strokeStyle=CY;ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(L,A.Y(Ei));ctx.lineTo(L+W,A.Y(Ei));ctx.stroke();
+ ctx.strokeStyle=CR;ctx.beginPath();ctx.moveTo(L,A.Y(p.Ek));ctx.lineTo(L+W*0.25,A.Y(p.Ek));ctx.stroke();ctx.setLineDash([]);
+ ctx.fillStyle=CR;ctx.font="12px IBM Plex Sans";ctx.textAlign="left";ctx.fillText("Eк = "+fx(p.Ek,1),L+4,A.Y(p.Ek)-5);ctx.fillStyle=CY;ctx.textAlign="right";ctx.fillText("24,4δ = "+fx(Ei,1)+" кВ/см",L+W-4,A.Y(Ei)-5);
+ ctx.save();ctx.beginPath();ctx.rect(L,T,W,H);ctx.clip();ctx.strokeStyle=CB;ctx.lineWidth=2.2;ctx.beginPath();for(let k=0;k<=300;k++){const s=s0*Math.pow(s1/s0,k/300),y=A.Y(Math.min(Ex(s),yMax*1.2));k?ctx.lineTo(A.X(s),y):ctx.moveTo(A.X(s),y)}ctx.stroke();
+ if(p.sc){ctx.strokeStyle=CO;ctx.lineWidth=2.2;ctx.beginPath();for(let k=0;k<=300;k++){const s=s0*Math.pow(s1/s0,k/300),y=A.Y(Math.min(p.sc.ef(p.r+s),yMax*1.2));k?ctx.lineTo(A.X(s),y):ctx.moveTo(A.X(s),y)}ctx.stroke()}
+ ctx.restore();ctx.font="12px IBM Plex Sans";ctx.textAlign="left";ctx.fillStyle=CB;ctx.fillText("без объёмного заряда",L+W*0.55,T+30);if(p.sc){ctx.fillStyle=CO;ctx.fillText("с объёмным зарядом",L+W*0.55,T+46)}}
+let a1t=0;
+function draw1b(){if(!C1b)return;const p=st1(),{ctx,w,h}=C1b;ctx.clearRect(0,0,w,h);const cx=w*0.3,cy=h/2;
+ const rp=T1.geo==="rod"?10:Math.max(6,Math.min(30,10+6*Math.log10(p.r*10+1)));
+ const shp=p.on?Math.min(70,rp*(0.6+2.4*Math.min(1,p.sh/(p.r+0.05)))):0;
+ if(T1.geo==="rod"){ctx.fillStyle="#8C9AA4";ctx.beginPath();ctx.moveTo(10,cy-26);ctx.lineTo(cx-8,cy-4);ctx.arc(cx-8,cy,4,-Math.PI/2,Math.PI/2);ctx.lineTo(10,cy+26);ctx.fill();ctx.fillStyle="#3A4A55";ctx.fillRect(w-26,20,10,h-40)}
+ else{if(T1.geo==="coax"){ctx.strokeStyle="#3A4A55";ctx.lineWidth=6;ctx.beginPath();ctx.arc(cx,cy,Math.min(h/2-10,cx-10),0,2*Math.PI);ctx.stroke()}else{ctx.fillStyle="#3A4A55";ctx.fillRect(0,h-14,w,8);ctx.fillStyle=CG;ctx.font="11px IBM Plex Sans";ctx.fillText("земля",w-50,h-18)}}
+ if(p.on){const g=ctx.createRadialGradient(T1.geo==="rod"?cx-4:cx,cy,rp*0.6,T1.geo==="rod"?cx-4:cx,cy,rp+shp);g.addColorStop(0,"rgba(190,160,255,.95)");g.addColorStop(0.5,"rgba(140,110,255,.45)");g.addColorStop(1,"rgba(120,90,255,0)");ctx.fillStyle=g;ctx.beginPath();ctx.arc(T1.geo==="rod"?cx-4:cx,cy,rp+shp,0,2*Math.PI);ctx.fill();
+  const n=Math.round(Math.min(60,12+30*(p.U/p.Uk-1)));for(let i=0;i<n;i++){const ang=(i*2.39996)%(2*Math.PI),ph=((a1t*0.012+i*0.137)%1),rr=rp+shp+ph*(Math.min(w,h)*0.55);const x=(T1.geo==="rod"?cx-4:cx)+rr*Math.cos(ang),y=cy+rr*Math.sin(ang);if(T1.geo==="rod"&&x<cx-4)continue;ctx.fillStyle=CO;ctx.beginPath();ctx.arc(x,y,2,0,2*Math.PI);ctx.fill()}}
+ if(T1.geo!=="rod"){ctx.fillStyle="#C9884A";ctx.beginPath();ctx.arc(cx,cy,rp,0,2*Math.PI);ctx.fill();ctx.fillStyle="#fff";ctx.font="bold 13px IBM Plex Sans";ctx.textAlign="center";ctx.fillText("+",cx,cy+5)}
+ ctx.textAlign="left";ctx.font="12px IBM Plex Sans";ctx.fillStyle=CT;ctx.fillText(p.on?"фиолетовое свечение — чехол короны":"короны нет — свечения нет",10,16);if(p.on){ctx.fillStyle=CO;ctx.fillText("● положительные ионы уходят во внешнюю зону",10,32)}}
+function anim1(){a1t++;if(curTab==="t1"&&C1b&&st1().on)draw1b();requestAnimationFrame(anim1)}
+
+const T2={mode:"pos",u:40,lr:-1,b:0.6};const R2=10;
+const ML2={t:"Мини-опыт 2. Полярность и ток короны",steps:["Коаксиал R = 10 см, радиус провода r<sub>0</sub> = 1,0 мм. Запишите U<sub>к</sub>.","Режим «Униполярная, провод +», U = 40 кВ: запишите ток I<sub>+</sub>. Переключите на «провод −» и запишите I<sub>−</sub>.","Верните «провод +», поднимите U до 53 кВ — превышение U − U<sub>к</sub> стало примерно вдвое больше. Запишите ток.","Найдите отношения и сравните второе с оценкой Таунсенда U(U − U<sub>к</sub>)."],
+ rows:[{l:"U<sub>к</sub>",a:()=>uK("coax",0.1,10,1,1),u:"кВ",d:1},{l:"I<sub>+</sub> при 40 кВ",a:()=>coaxSC(40,0.1,10,ekPeek(0.1,1,1),MU.pos).I*1e3,u:"мА/м",d:3},{l:"I<sub>−</sub> при 40 кВ",a:()=>coaxSC(40,0.1,10,ekPeek(0.1,1,1),MU.neg).I*1e3,u:"мА/м",d:3},{l:"Отношение I<sub>−</sub>/I<sub>+</sub>",a:()=>MU.neg/MU.pos,u:"—",d:2},{l:"I<sub>+</sub> при 53 кВ",a:()=>coaxSC(53,0.1,10,ekPeek(0.1,1,1),MU.pos).I*1e3,u:"мА/м",d:3},{l:"Отношение I(53)/I(40)",a:()=>coaxSC(53,0.1,10,ekPeek(0.1,1,1),MU.pos).I/coaxSC(40,0.1,10,ekPeek(0.1,1,1),MU.pos).I,u:"—",d:2},{l:"То же по Таунсенду: 53(53 − U<sub>к</sub>)/(40(40 − U<sub>к</sub>))",a:()=>{const u=uK("coax",0.1,10,1,1);return 53*(53-u)/(40*(40-u))},u:"—",d:2}],
+ q:["Отношение I<sub>−</sub>/I<sub>+</sub> оказалось равно отношению подвижностей. Почему ток короны во внешней зоне задают ионы, а не электроны?","Почему при вдвое большем превышении ток вырос больше чем вдвое? Какой множитель в формуле Таунсенда за это отвечает?","Где на практике выгодна отрицательная корона, а где мешает? Вспомните электрофильтры и вкладку «Оборудование»."]};
+let C2a=null,C2b=null,C2c=null,P2=[],a2t=0;
+function t2(){$("#t2").innerHTML=`<div class="lab"><div class="side card">
+ <div><span class="lbl">Вид короны ${qb("unibi")}</span>${seg("m2",[["pos","Униполярная, провод +"],["neg","Униполярная, провод −"],["bi","Биполярная: два провода ±"]],T2.mode)}</div>
+ ${rng("u2","Напряжение U","",5,160,0.1,T2.u)}
+ ${rng("r2","Радиус провода r<sub>0</sub>","r0",-1.5,-0.3,0.005,T2.lr)}
+ <div id="b2w">${rng("b2","Доля ионов, проникающих в чужую зону","bipen",0,1,0.05,T2.b)}</div>
+ <div class="reads">${rd("uk2","U<sub>к</sub>","uk")}${rd("i2","Ток короны I","")}${rd("p2","Мощность потерь P = UI","")}${rd("e2","E у провода","")}</div>
+ <div class="log" id="lg2"></div></div>
+ <div class="card">
+ <div class="scr"><div class="scrh"><span><b>Ионы во внешней зоне</b> · коаксиал, R = ${R2} см</span><span id="h2"></span></div><div id="c2a"></div></div>
+ <div class="two"><div class="scr"><div class="scrh"><span><b>Вольт-амперная характеристика</b> I(U)</span></div><div id="c2b"></div></div>
+ <div class="scr"><div class="scrh"><span><b>Поле E(r)</b>: объёмный заряд держит E у провода ≈ E<sub>к</sub></span></div><div id="c2c"></div></div></div>
+ <div class="log"><b>Как читать.</b> Слева — ВАХ: до U<sub>к</sub> тока нет; дальше ток растёт примерно как U(U − U<sub>к</sub>) — формула Таунсенда (пунктир) и точный расчёт с объёмным зарядом (сплошная). Справа — поле: голубое без объёмного заряда, оранжевое — с ним. Объёмный заряд ионов снижает поле у провода до E<sub>к</sub> и поднимает его у внешнего электрода: «лишнее» напряжение уходит не на ионизацию, а на дрейф ионов.</div>
+ </div></div>${mlab("ml2",ML2)}`;
+ bindSeg("m2",v=>{T2.mode=v;P2=[];upd2()});
+ $("#u2").oninput=e=>{T2.u=+e.target.value;upd2()};$("#r2").oninput=e=>{T2.lr=+e.target.value;upd2()};$("#b2").oninput=e=>{T2.b=+e.target.value;upd2()};
+ C2a=canvasBox($("#c2a"),280,draw2a);C2b=canvasBox($("#c2b"),250,draw2b);C2c=canvasBox($("#c2c"),250,draw2c);upd2();bindMlab("ml2");anim2()}
+function st2(){const r=Math.pow(10,T2.lr),U=T2.u,Ek=ekPeek(r,1,1),Uk=uK("coax",r,R2,1,1),mu=T2.mode==="neg"?MU.neg:MU.pos;
+ const sc=coaxSC(U,r,R2,Ek,mu),k=T2.mode==="bi"?1+T2.b:1;return {r,U,Ek,Uk,mu,sc,I:sc.I*k,k,on:U>Uk}}
+function upd2(){const p=st2();$("#u2o").textContent=fK(p.U)+" кВ";$("#r2o").textContent=fL(p.r);$("#b2o").textContent=fx(T2.b*100,0)+" %";$("#b2w").hidden=T2.mode!=="bi";
+ $("#uk2").textContent=fK(p.Uk)+" кВ";$("#i2").textContent=p.on?fx(p.I*1e3,p.I*1e3<1?3:2)+" мА/м":"0";$("#p2").textContent=p.on?fx(p.U*1e3*p.I,p.U*p.I*1e3<10?2:1)+" Вт/м":"0";
+ $("#e2").textContent=fx(p.on?p.Ek:p.sc.ef(p.r),1)+" кВ/см";
+ const M={pos:"<b>Положительная униполярная корона.</b> Электроны летят к проводу и ионизируют в чехле; положительные ионы выносятся во внешнюю зону и медленно дрейфуют к внешнему электроду. Вся внешняя зона заполнена зарядом одного знака (рис. 1.10). Свечение — ровная оболочка.",
+  neg:"<b>Отрицательная униполярная корона.</b> Электроны уходят от провода, в чехле ионизируют, за чехлом прилипают к кислороду — во внешней зоне дрейфуют отрицательные ионы. Их подвижность больше, поэтому ток при том же U чуть больше. На острие отрицательная корона идёт импульсами Тричела, а на проводе светится отдельными точками-«бусинками».",
+  bi:"<b>Биполярная корона</b> (рис. 1.11): провода разной полярности, ионы разных знаков идут навстречу. На линии нулевого потенциала рекомбинирует лишь часть; проникшие ионы нейтрализуют объёмный заряд чужой зоны, ионизация в чехле должна возрасти — ток и потери больше, чем у униполярной. Так коронируют линии постоянного тока «плюс — минус»."}[T2.mode];
+ $("#lg2").innerHTML=M+(p.on?` Сейчас U/U<sub>к</sub> = ${fx(p.U/p.Uk,2)}${T2.mode==="bi"?`, ток в ${fx(p.k,2)} раза больше униполярного.`:"."}`:` Сейчас U < U<sub>к</sub> — короны нет.`);
+ $("#h2").textContent=p.on?"корона горит":"короны нет";C2a.fit();C2b.fit();C2c.fit()}
+function draw2a(){if(!C2a)return;const p=st2(),{ctx,w,h}=C2a;ctx.clearRect(0,0,w,h);const cy=h/2;
+ if(T2.mode!=="bi"){const cx=w/2,Rr=Math.min(h/2-12,w/2-12),rp=6+18*(p.r/0.5);ctx.strokeStyle="#3A4A55";ctx.lineWidth=6;ctx.beginPath();ctx.arc(cx,cy,Rr,0,2*Math.PI);ctx.stroke();
+  const sg=T2.mode==="pos"?1:-1;if(p.on){const g=ctx.createRadialGradient(cx,cy,rp,cx,cy,rp+14+10*(p.U/p.Uk-1));g.addColorStop(0,"rgba(180,150,255,.9)");g.addColorStop(1,"rgba(180,150,255,0)");ctx.fillStyle=g;ctx.beginPath();ctx.arc(cx,cy,rp+30,0,2*Math.PI);ctx.fill()}
+  P2.forEach(q=>{const rr=rp+q.s*(Rr-rp);ctx.fillStyle=sg>0?CO:CB;ctx.beginPath();ctx.arc(cx+rr*Math.cos(q.a),cy+rr*Math.sin(q.a),2.2,0,2*Math.PI);ctx.fill()});
+  ctx.fillStyle="#C9884A";ctx.beginPath();ctx.arc(cx,cy,rp,0,2*Math.PI);ctx.fill();ctx.fillStyle="#fff";ctx.font="bold 15px IBM Plex Sans";ctx.textAlign="center";ctx.fillText(sg>0?"+":"−",cx,cy+5);
+  ctx.textAlign="left";ctx.font="12px IBM Plex Sans";ctx.fillStyle=CT;ctx.fillText(sg>0?"● положительные ионы":"● отрицательные ионы",10,18)}
+ else{const x1=w*0.2,x2=w*0.8,rp=12;ctx.setLineDash([6,5]);ctx.strokeStyle=CG;ctx.beginPath();ctx.moveTo(w/2,8);ctx.lineTo(w/2,h-8);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle=CG;ctx.font="11px IBM Plex Sans";ctx.textAlign="center";ctx.fillText("нулевой потенциал",w/2,h-6);
+  if(p.on)[[x1,"rgba(255,160,90,"],[x2,"rgba(110,180,255,"]].forEach(([x,c])=>{const g=ctx.createRadialGradient(x,cy,rp,x,cy,rp+22);g.addColorStop(0,c+".9)");g.addColorStop(1,c+"0)");ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,cy,rp+22,0,2*Math.PI);ctx.fill()});
+  P2.forEach(q=>{ctx.fillStyle=q.sg>0?CO:CB;ctx.globalAlpha=q.f?0.35:1;ctx.beginPath();ctx.arc(q.x,q.y,2.2,0,2*Math.PI);ctx.fill();ctx.globalAlpha=1;if(q.flash){ctx.fillStyle=CY;ctx.beginPath();ctx.arc(q.x,q.y,5,0,2*Math.PI);ctx.fill()}});
+  [[x1,"+","#C9884A"],[x2,"−","#5A8FC9"]].forEach(([x,s,c])=>{ctx.fillStyle=c;ctx.beginPath();ctx.arc(x,cy,rp,0,2*Math.PI);ctx.fill();ctx.fillStyle="#fff";ctx.font="bold 15px IBM Plex Sans";ctx.textAlign="center";ctx.fillText(s,x,cy+5)});
+  ctx.textAlign="left";ctx.font="12px IBM Plex Sans";ctx.fillStyle=CT;ctx.fillText("● + ионы   ● − ионы   ✸ рекомбинация",10,18)}}
+function anim2(){a2t++;if(curTab==="t2"&&C2a){const p=st2(),{w,h}=C2a;if(p.on){const rate=Math.min(6,0.6+2*(p.U/p.Uk-1)*(T2.mode==="bi"?1.4:1));
+  if(T2.mode!=="bi"){for(let i=0;i<rate;i++)if(Math.random()<rate/6)P2.push({a:Math.random()*2*Math.PI,s:0});const v=T2.mode==="neg"?0.009:0.007;P2.forEach(q=>q.s+=v*(1-0.5*q.s));P2=P2.filter(q=>q.s<1).slice(-500)}
+  else{const x1=w*0.2,x2=w*0.8,cy=h/2;for(let i=0;i<rate;i++){if(Math.random()<rate/6){const a=Math.random()*2*Math.PI;P2.push({sg:1,x:x1+14*Math.cos(a),y:cy+14*Math.sin(a),vx:1.4+Math.random(),vy:(Math.random()-.5)*1.2});P2.push({sg:-1,x:x2-14*Math.cos(a),y:cy+14*Math.sin(a),vx:-(1.6+Math.random()),vy:(Math.random()-.5)*1.2})}}
+   P2.forEach(q=>{q.flash=false;q.x+=q.vx;q.y+=q.vy;if(!q.c&&Math.abs(q.x-w/2)<3){q.c=1;if(Math.random()>T2.b){q.dead=1;q.flash=true}else q.f=1}});P2=P2.filter(q=>!q.dead&&q.x>0&&q.x<w&&q.y>0&&q.y<h).slice(-700)}}
+  else P2=[];draw2a()}requestAnimationFrame(anim2)}
+function draw2b(){if(!C2b)return;const p=st2(),{ctx,w,h}=C2b;ctx.clearRect(0,0,w,h);const L=52,T=14,W=w-L-12,H=h-T-44;const Umax=Math.pow(10,2.2),Imax=Math.max(0.05,coaxSC(Umax,p.r,R2,p.Ek,p.mu).I*1e3*(T2.mode==="bi"?2:1)*1.05);
+ const A=linAx(ctx,L,T,W,H,0,Umax,0,Imax,"U, кВ","I, мА/м",Umax>120?40:20,Imax>20?5:Imax>8?2:Imax>4?1:Imax>1?0.5:0.1,v=>fx(v,0),v=>fx(v,Imax>4?0:1));
+ ctx.save();ctx.beginPath();ctx.rect(L,T,W,H);ctx.clip();
+ ctx.strokeStyle=CO;ctx.lineWidth=2.2;ctx.beginPath();for(let k=0;k<=120;k++){const U=Umax*k/120,I=coaxSC(U,p.r,R2,p.Ek,p.mu).I*1e3*p.k;k?ctx.lineTo(A.X(U),A.Y(I)):ctx.moveTo(A.X(U),A.Y(I))}ctx.stroke();
+ ctx.setLineDash([5,4]);ctx.strokeStyle=CY;ctx.lineWidth=1.4;ctx.beginPath();for(let k=0;k<=120;k++){const U=Umax*k/120,I=iTown(U,p.Uk,p.r,R2,p.mu)*1e3*p.k;k?ctx.lineTo(A.X(U),A.Y(I)):ctx.moveTo(A.X(U),A.Y(I))}ctx.stroke();
+ ctx.strokeStyle=CR;ctx.beginPath();ctx.moveTo(A.X(p.Uk),T);ctx.lineTo(A.X(p.Uk),T+H);ctx.stroke();ctx.setLineDash([]);ctx.restore();
+ ctx.fillStyle=CR;ctx.font="12px IBM Plex Sans";ctx.textAlign="left";ctx.fillText("Uк",A.X(p.Uk)+4,T+12);
+ ctx.fillStyle=CK;ctx.beginPath();ctx.arc(A.X(p.U),A.Y(p.I*1e3),6,0,2*Math.PI);ctx.fill();
+ ctx.fillStyle=CO;ctx.fillText("точный расчёт",L+8,T+28);ctx.fillStyle=CY;ctx.fillText("Таунсенд: I ∝ U(U − Uк)",L+8,T+44)}
+function draw2c(){if(!C2c)return;const p=st2(),{ctx,w,h}=C2c;ctx.clearRect(0,0,w,h);const L=52,T=14,W=w-L-12,H=h-T-44;const lap=x=>p.U/(x*Math.log(R2/p.r));const ym=Math.max(p.Ek*1.3,Math.min(lap(p.r),p.Ek*2.5));
+ const A=logXAx(ctx,L,T,W,H,p.r,R2,0,ym,"r, расстояние от оси","E, кВ/см",ym>100?20:10,fL);
+ ctx.save();ctx.beginPath();ctx.rect(L,T,W,H);ctx.clip();ctx.strokeStyle=CB;ctx.lineWidth=2;ctx.beginPath();for(let k=0;k<=200;k++){const x=p.r*Math.pow(R2/p.r,k/200);k?ctx.lineTo(A.X(x),A.Y(lap(x))):ctx.moveTo(A.X(x),A.Y(lap(x)))}ctx.stroke();
+ if(p.on){ctx.strokeStyle=CO;ctx.lineWidth=2.2;ctx.beginPath();for(let k=0;k<=200;k++){const x=p.r*Math.pow(R2/p.r,k/200);k?ctx.lineTo(A.X(x),A.Y(p.sc.ef(x))):ctx.moveTo(A.X(x),A.Y(p.sc.ef(x)))}ctx.stroke()}
+ ctx.setLineDash([5,4]);ctx.strokeStyle=CR;ctx.beginPath();ctx.moveTo(L,A.Y(p.Ek));ctx.lineTo(L+W,A.Y(p.Ek));ctx.stroke();ctx.setLineDash([]);ctx.restore();
+ ctx.fillStyle=CR;ctx.font="12px IBM Plex Sans";ctx.textAlign="right";ctx.fillText("Eк = "+fx(p.Ek,1),L+W-4,A.Y(p.Ek)-5)}
+
+const T3={ratio:1.3,k:1.5,ph:0,play:true};const G3={r:1,h:1000,f:50};
+const P3x=(ra,k)=>{const C=2*Math.PI*E0/Math.log(2*G3.h/G3.r),Uk=uK("wire",G3.r,G3.h,1,1)*1e3,v=vq(ra*Uk,Uk,C,k);return {P:G3.f*v.W,U0:v.U0/1e3}};
+const ML3={t:"Мини-опыт 3. Площадь вольт-кулоновой характеристики",steps:["Оставьте «рост ёмкости» 1,5. Поставьте U<sub>макс</sub>/U<sub>к</sub> = 1,2 и запишите U<sub>0</sub> и потери P.","Повторите для 1,5 и 1,8.","Найдите, во сколько раз выросли потери при переходе от 1,2 к 1,8. Сравните с отношением превышений (1,8 − 1)/(1,2 − 1) и их квадратов (1,8 − 1)²/(1,2 − 1)² — так считала бы формула Пика.","Поставьте 1,5 и измените «рост ёмкости» на 2,5. Запишите P."],
+ rows:[{l:"U<sub>0</sub> при 1,2",a:()=>P3x(1.2,1.5).U0,u:"кВ",d:0},{l:"P при 1,2",a:()=>P3x(1.2,1.5).P,u:"кВт/км",d:1},{l:"P при 1,5",a:()=>P3x(1.5,1.5).P,u:"кВт/км",d:1},{l:"P при 1,8",a:()=>P3x(1.8,1.5).P,u:"кВт/км",d:1},{l:"Отношение P(1,8)/P(1,2)",a:()=>P3x(1.8,1.5).P/P3x(1.2,1.5).P,u:"—",d:2},{l:"(1,8 − 1)²/(1,2 − 1)²",a:()=>16,u:"—",d:0},{l:"P при 1,5 и росте ёмкости 2,5",a:()=>P3x(1.5,2.5).P,u:"кВт/км",d:1}],
+ q:["Почему U<sub>0</sub> меньше U<sub>к</sub> и уменьшается с ростом амплитуды? Что остаётся в пространстве после предыдущего полупериода?","В модели параллелограмма потери растут пропорционально превышению U<sub>макс</sub> − U<sub>к</sub>, а по формуле Пика — как его квадрат. Какое допущение модели (постоянный «рост ёмкости») это объясняет? Что сильнее влияет на площадь — амплитуда или рост ёмкости?","Как по осциллограмме тока линии (б) понять, что корона горит, не глядя на напряжение?"]};
+let C3a=null,C3b=null,C3c=null,C3d=null;
+function p3(){const C=2*Math.PI*E0/Math.log(2*G3.h/G3.r),Uk=uK("wire",G3.r,G3.h,1,1)*1e3,Um=T3.ratio*Uk,v=vq(Um,Uk,C,T3.k);return {C,Uk,Um,U0:v.U0,v,W:v.W,P:G3.f*v.W*1000/1000}}
+function qAt(ph,p){const U=p.Um*Math.sin(ph),dU=p.Um*Math.cos(ph);if(p.Um<=p.Uk)return {U,dU,on:false,q:p.C*U,sign:0};
+ const a0=Math.asin(p.U0/p.Um),m=((ph%(2*Math.PI))+2*Math.PI)%(2*Math.PI);
+ let on=false,sign=0;if(m>=a0&&m<=Math.PI/2){on=true;sign=1}else if(m>=Math.PI+a0&&m<=1.5*Math.PI){on=true;sign=-1}
+ const pts=p.v.pts;let q;
+ if(m>=a0&&m<=Math.PI/2)q=pts[0][1]+p.C*T3.k*(U-p.U0);
+ else if(m>Math.PI/2&&m<Math.PI+a0)q=pts[1][1]+p.C*(U-p.Um);
+ else if(m>=Math.PI+a0&&m<=1.5*Math.PI)q=pts[2][1]+p.C*T3.k*(U+p.U0);
+ else q=pts[3][1]+p.C*(U+p.Um);
+ return {U,dU,on,q,sign,m}}
+function t3(){$("#t3").innerHTML=`<div class="lab"><div class="side card">
+ <p style="font-size:14.5px">Провод r<sub>0</sub> = 1 см на высоте 10 м, 50 Гц, U<sub>к</sub> по Пику (амплитуда). Повторяет рис. 1.12 учебника Важова.</p>
+ ${rng("rt3","Амплитуда U<sub>макс</sub>/U<sub>к</sub>","",0.8,2.5,0.01,T3.ratio)}
+ ${rng("ck3","Во сколько раз «растёт» ёмкость при горении","ck",1.2,3,0.05,T3.k)}
+ <div class="btns"><button class="btn ghost" id="pl3">Пауза</button><button class="btn ghost" id="st3b">Шаг ¼ мс</button></div>
+ <div class="reads">${rd("uk3","U<sub>к</sub>","uk")}${rd("u03","U<sub>0</sub> = 2U<sub>к</sub> − U<sub>макс</sub>","u0")}${rd("w3","Энергия за период","vq")}${rd("pp3","Потери P = f∮U dQ","")}</div>
+ <div class="log" id="lg3"></div></div>
+ <div class="card">
+ <div class="two"><div class="scr"><div class="scrh"><span><b>а) напряжение</b> U(t)</span></div><div id="c3a"></div></div>
+ <div class="scr"><div class="scrh"><span><b>в) провод и объёмный заряд</b></span></div><div id="c3d"></div></div></div>
+ <div class="two"><div class="scr"><div class="scrh"><span><b>б) токи</b>: ёмкостный i<sub>C</sub> и с короной</span></div><div id="c3b"></div></div>
+ <div class="scr"><div class="scrh"><span><b>Вольт-кулоновая характеристика</b> Q(U) ${qb("vq")}</span></div><div id="c3c"></div></div></div>
+ <div class="log"><b>Как читать.</b> Корона горит на участках, залитых фиолетовым: от зажигания до максимума напряжения (t<sub>1</sub>–t<sub>2</sub>). Пока она горит, поле у провода держится на E<sub>к</sub>, а избыток заряда уходит в пространство — на графике токов это «горб» тока короны поверх синусоиды ёмкостного тока. После максимума объёмный заряд остаётся у провода и помогает обратной полярности: следующая корона зажигается уже при U<sub>0</sub>, меньшем U<sub>к</sub>. Q(U) обходит параллелограмм; его площадь — энергия потерь за период (ф. 1.34).</div>
+ </div></div>${mlab("ml3",ML3)}`;
+ $("#rt3").oninput=e=>{T3.ratio=+e.target.value;upd3()};$("#ck3").oninput=e=>{T3.k=+e.target.value;upd3()};
+ $("#pl3").onclick=()=>{T3.play=!T3.play;$("#pl3").textContent=T3.play?"Пауза":"Пуск"};$("#st3b").onclick=()=>{T3.play=false;$("#pl3").textContent="Пуск";T3.ph+=2*Math.PI*50*0.00025;draw3()};
+ C3a=canvasBox($("#c3a"),230,draw3);C3b=canvasBox($("#c3b"),230,draw3);C3c=canvasBox($("#c3c"),230,draw3);C3d=canvasBox($("#c3d"),230,draw3);upd3();bindMlab("ml3");anim3()}
+function upd3(){const p=p3();$("#rt3o").textContent=fx(T3.ratio,2);$("#ck3o").textContent=fx(T3.k,2);
+ $("#uk3").textContent=fx(p.Uk/1e3,0)+" кВ";$("#u03").textContent=p.Um>p.Uk?fx(p.U0/1e3,0)+" кВ":"—";$("#w3").textContent=fx(p.W,p.W<1?3:2)+" Дж/м";$("#pp3").textContent=fx(p.P,p.P<1?3:1)+" кВт/км";
+ $("#lg3").innerHTML=p.Um<=p.Uk?"<b>Короны нет:</b> амплитуда ниже U<sub>к</sub>. Q(U) — прямая линия, площадь нулевая, потерь нет.":`<b>Корона горит</b> в каждом полупериоде. Первое зажигание — при U<sub>к</sub> = ${fx(p.Uk/1e3,0)} кВ, дальше — при U<sub>0</sub> = ${fx(p.U0/1e3,0)} кВ: объёмный заряд прошлого полупериода помогает. Потери растут быстрее, чем (U<sub>макс</sub> − U<sub>к</sub>): площадь параллелограмма растёт и по ширине, и по высоте. <span style="color:var(--muted)">Модель упрощённая — потери показывает по порядку величины; расчёт для линий — вкладка 4.</span>`;draw3()}
+function draw3(){if(!C3a)return;const p=p3(),cur=qAt(T3.ph,p),N=400,per=2*Math.PI,ph0=T3.ph-per*1.5;const span=2*per;
+ const tX=(c,L,W,ph)=>L+(ph-ph0)/span*W;
+ {const {ctx,w,h}=C3a;ctx.clearRect(0,0,w,h);const L=48,T=10,W=w-L-10,H=h-T-30,ym=p.Um*1.15,Y=v=>T+H/2-v/ym*H/2;
+  ctx.fillStyle="rgba(150,120,255,.18)";for(let k=0;k<N;k++){const ph=ph0+span*k/N,s=qAt(ph,p);if(s.on)ctx.fillRect(tX(0,L,W,ph),T,W/N+1,H)}
+  ctx.strokeStyle=CL;ctx.beginPath();ctx.moveTo(L,Y(0));ctx.lineTo(L+W,Y(0));ctx.stroke();
+  ctx.setLineDash([5,4]);ctx.strokeStyle=CR;[p.Uk,-p.Uk].forEach(v=>{ctx.beginPath();ctx.moveTo(L,Y(v));ctx.lineTo(L+W,Y(v));ctx.stroke()});if(p.Um>p.Uk){ctx.strokeStyle=CK;[p.U0,-p.U0].forEach(v=>{ctx.beginPath();ctx.moveTo(L,Y(v));ctx.lineTo(L+W,Y(v));ctx.stroke()})}ctx.setLineDash([]);
+  ctx.strokeStyle=CB;ctx.lineWidth=2.2;ctx.beginPath();for(let k=0;k<=N;k++){const ph=ph0+span*k/N,x=tX(0,L,W,ph),y=Y(p.Um*Math.sin(ph));k?ctx.lineTo(x,y):ctx.moveTo(x,y)}ctx.stroke();ctx.lineWidth=1;
+  ctx.fillStyle=CR;ctx.font="11px IBM Plex Mono";ctx.textAlign="right";ctx.fillText("Uк",L-4,Y(p.Uk)+4);if(p.Um>p.Uk){ctx.fillStyle=CK;ctx.fillText("U0",L-4,Y(p.U0)+4)}
+  const xc=tX(0,L,W,T3.ph);ctx.strokeStyle=CT;ctx.beginPath();ctx.moveTo(xc,T);ctx.lineTo(xc,T+H);ctx.stroke();ctx.fillStyle=CY;ctx.beginPath();ctx.arc(xc,Y(cur.U),5,0,2*Math.PI);ctx.fill();
+  ctx.fillStyle=CG;ctx.textAlign="center";ctx.fillText("время, два периода",L+W/2,h-8)}
+ {const {ctx,w,h}=C3b;ctx.clearRect(0,0,w,h);const L=48,T=10,W=w-L-10,H=h-T-30,iC=ph=>p.C*p.Um*Math.cos(ph),it=ph=>{const s=qAt(ph,p);return s.on?p.C*T3.k*s.dU:p.C*s.dU};const ym=p.C*p.Um*Math.max(1,T3.k)*1.1,Y=v=>T+H/2-v/ym*H/2;
+  ctx.fillStyle="rgba(150,120,255,.18)";for(let k=0;k<N;k++){const ph=ph0+span*k/N;if(qAt(ph,p).on)ctx.fillRect(tX(0,L,W,ph),T,W/N+1,H)}
+  ctx.strokeStyle=CL;ctx.beginPath();ctx.moveTo(L,Y(0));ctx.lineTo(L+W,Y(0));ctx.stroke();
+  ctx.strokeStyle=CG;ctx.setLineDash([4,3]);ctx.beginPath();for(let k=0;k<=N;k++){const ph=ph0+span*k/N;k?ctx.lineTo(tX(0,L,W,ph),Y(iC(ph))):ctx.moveTo(tX(0,L,W,ph),Y(iC(ph)))}ctx.stroke();ctx.setLineDash([]);
+  ctx.strokeStyle=CO;ctx.lineWidth=2.2;ctx.beginPath();for(let k=0;k<=N;k++){const ph=ph0+span*k/N;k?ctx.lineTo(tX(0,L,W,ph),Y(it(ph))):ctx.moveTo(tX(0,L,W,ph),Y(it(ph)))}ctx.stroke();ctx.lineWidth=1;
+  const xc=tX(0,L,W,T3.ph);ctx.strokeStyle=CT;ctx.beginPath();ctx.moveTo(xc,T);ctx.lineTo(xc,T+H);ctx.stroke();
+  ctx.font="11px IBM Plex Sans";ctx.textAlign="left";ctx.fillStyle=CG;ctx.fillText("- - iC = C dU/dt",L+4,T+12);ctx.fillStyle=CO;ctx.fillText("— полный ток: iC + iк",L+4,T+26);ctx.fillStyle=CG;ctx.textAlign="center";ctx.fillText("время",L+W/2,h-8)}
+ {const {ctx,w,h}=C3c;ctx.clearRect(0,0,w,h);const L=52,T=10,W=w-L-12,H=h-T-34,um=p.Um*1.1,qm=Math.max(...p.v.pts.map(x=>Math.abs(x[1])),p.C*p.Um)*1.1,X=u=>L+W/2+u/um*W/2,Y=q=>T+H/2-q/qm*H/2;
+  ctx.strokeStyle=CL;ctx.beginPath();ctx.moveTo(L,Y(0));ctx.lineTo(L+W,Y(0));ctx.moveTo(X(0),T);ctx.lineTo(X(0),T+H);ctx.stroke();
+  ctx.setLineDash([4,3]);ctx.strokeStyle=CG;ctx.beginPath();ctx.moveTo(X(-um),Y(-p.C*um));ctx.lineTo(X(um),Y(p.C*um));ctx.stroke();ctx.setLineDash([]);
+  if(p.W>0){ctx.fillStyle="rgba(255,138,61,.22)";ctx.beginPath();p.v.pts.forEach((pt,i)=>i?ctx.lineTo(X(pt[0]),Y(pt[1])):ctx.moveTo(X(pt[0]),Y(pt[1])));ctx.fill();ctx.strokeStyle=CO;ctx.lineWidth=2.2;ctx.stroke();ctx.lineWidth=1}
+  ctx.fillStyle=CY;ctx.beginPath();ctx.arc(X(cur.U),Y(cur.q),6,0,2*Math.PI);ctx.fill();
+  ctx.fillStyle=CG;ctx.font="11px IBM Plex Sans";ctx.textAlign="center";ctx.fillText("U",L+W-6,Y(0)-6);ctx.fillText("Q",X(0)+10,T+10);ctx.textAlign="left";ctx.fillText("пунктир — без короны: Q = CU",L+4,h-6);if(p.W>0){ctx.fillStyle=CO;ctx.fillText("площадь = ∮U dQ",L+4,T+12)}}
+ {const {ctx,w,h}=C3d;ctx.clearRect(0,0,w,h);const cx=w/2,cy=h/2,rp=12;const qs=cur.q-p.C*cur.U,qmx=Math.max(1e-30,(T3.k-1)*p.C*(p.Um-p.U0)),f=Math.max(-1,Math.min(1,qs/qmx));
+  const m=cur.m??0,since=(m- (qs>0?Math.asin(Math.min(1,p.U0/p.Um)):Math.PI+Math.asin(Math.min(1,p.U0/p.Um)))+2*Math.PI)%(2*Math.PI);const rad=rp+24+Math.min(80,since*28);
+  if(Math.abs(f)>0.02){ctx.strokeStyle=f>0?"rgba(255,138,61,"+(0.25+0.6*Math.abs(f))+")":"rgba(79,179,255,"+(0.25+0.6*Math.abs(f))+")";ctx.lineWidth=10+12*Math.abs(f);ctx.beginPath();ctx.arc(cx,cy,Math.min(rad,Math.min(w,h)/2-12),0,2*Math.PI);ctx.stroke();ctx.lineWidth=1}
+  if(cur.on){const g=ctx.createRadialGradient(cx,cy,rp,cx,cy,rp+18);g.addColorStop(0,"rgba(190,160,255,.95)");g.addColorStop(1,"rgba(190,160,255,0)");ctx.fillStyle=g;ctx.beginPath();ctx.arc(cx,cy,rp+18,0,2*Math.PI);ctx.fill()}
+  ctx.fillStyle="#C9884A";ctx.beginPath();ctx.arc(cx,cy,rp,0,2*Math.PI);ctx.fill();ctx.fillStyle="#fff";ctx.font="bold 14px IBM Plex Sans";ctx.textAlign="center";ctx.fillText(cur.U>0?"+":"−",cx,cy+5);
+  ctx.font="12px IBM Plex Sans";ctx.textAlign="left";ctx.fillStyle=CT;ctx.fillText(cur.on?(cur.sign>0?"горит положительная корона":"горит отрицательная корона"):"корона погасла",8,16);
+  ctx.fillStyle=Math.abs(f)>0.02?(f>0?CO:CB):CG;ctx.fillText(Math.abs(f)>0.02?(f>0?"кольцо: положительный объёмный заряд":"кольцо: отрицательный объёмный заряд"):"объёмного заряда почти нет",8,h-8)}}
+let a3last=0;function anim3(t){if(T3.play&&curTab==="t3"&&C3a){if(t-a3last>30){T3.ph+=2*Math.PI*0.004;a3last=t;draw3()}}requestAnimationFrame(anim3)}
+
+const T4={ln:"l220",m1:0.9,wx:"n",ku:1.05,hrs:WEA.map(x=>x.h),reg:"mid",n:null,pol:1};
+function c4x(o){const sv={...T4,hrs:[...T4.hrs]};Object.assign(T4,{ln:"l220",n:null,m1:0.9,pol:1,wx:"n",ku:1.05,hrs:WEA.map(x=>x.h)},o);const c=calc4();Object.assign(T4,sv);return c}
+const ML4={t:"Мини-опыт 4. Сколько энергии съедает корона за год",steps:["ВЛ 220 кВ, один провод в фазе, рабочее напряжение 1,05U<sub>ном</sub>, m<sub>1</sub> = 0,9, чистый провод, нормальные условия, часы погоды по табл. 1.3. Запишите годовые потери и долю изморози.","Север: впишите в таблицу 700 ч изморози и 6760 ч хорошей погоды (остальное не меняйте). Запишите годовые потери.","Верните часы 340 и 7120 и выберите загрязнение «промзона». Запишите годовые потери.","Найдите отношения к первому опыту."],
+ rows:[{l:"Годовые потери, исходный режим",a:()=>c4x({}).tot,u:"МВт·ч/км",d:2},{l:"Доля изморози в потерях",a:()=>{const c=c4x({});return c.rows[3].E/c.tot*100},u:"%",d:0},{l:"Годовые потери, север: 700 ч изморози",a:()=>c4x({hrs:[6760,800,500,700]}).tot,u:"МВт·ч/км",d:2},{l:"Отношение север / исходный",a:()=>c4x({hrs:[6760,800,500,700]}).tot/c4x({}).tot,u:"—",d:2},{l:"Годовые потери, промзона",a:()=>c4x({pol:0.85}).tot,u:"МВт·ч/км",d:2},{l:"Отношение промзона / исходный",a:()=>c4x({pol:0.85}).tot/c4x({}).tot,u:"—",d:2}],
+ q:["Изморозь бывает меньше 4 % времени. Почему её доля в потерях так велика? Посмотрите на столбец U<sub>ф</sub>/U<sub>к</sub>.","Что выгоднее для линии у горно-обогатительного комбината: провод большего сечения или расщеплённая фаза? Проверьте оба варианта во вкладке.","Как бы вы оценили коэффициент загрязнения для реальной линии? Какие измерения нужны?"]};
+let C4a=null,C4b=null;
+function calc4(){const Ln=LINES[T4.ln],W=WX[T4.wx],d=delta(W.p,W.t),n=T4.n??Ln.nS,Rp=n===1?0:(Ln.Rp||20),Uf=Ln.U*T4.ku/Math.sqrt(3),Um=Uf*Math.SQRT2;
+ const rows=WEA.map((g,i)=>{let Uk,P,form;if(n===1){Uk=ukLine(Ln.r,Ln.S,d,T4.m1*T4.pol,g.m2);P=3*pPeek(Uf,Uk,Ln.r,Ln.S,d,50);form="Пика (1.36)"}else{const Ek=ekPeek(Ln.r,T4.m1*T4.pol*g.m2,d);Uk=ukSplit(n,Ln.r,Rp,Ln.S,Ek)/Math.SQRT2;P=pET(Um,Uk*Math.SQRT2);form="Егоровой — Тиходеева (1.40)"}
+  return {g,Uk,P,form,h:T4.hrs[i],E:P*T4.hrs[i]/1000}});const tot=rows.reduce((a,r)=>a+r.E,0),hs=rows.reduce((a,r)=>a+r.h,0);return {Ln,d,n,Rp,Uf,Um,rows,tot,hs}}
+function t4(){$("#t4").innerHTML=`<div class="lab"><div class="side card">
+ <div><span class="lbl">Линия</span>${seg("l4",Object.keys(LINES).map(k=>[k,LINES[k].n]),T4.ln)}</div>
+ <div><span class="lbl">Проводов в фазе ${qb("split")}</span>${seg("n4",[[1,"1"],[2,"2"],[3,"3"],[4,"4"]],LINES[T4.ln].nS)}</div>
+ ${rng("ku4","Рабочее напряжение, доля U<sub>ном</sub>","",1,1.15,0.01,T4.ku)}
+ <div><span class="lbl">Гладкость провода m<sub>1</sub> ${qb("m")}</span>${seg("m4",[[1,"1,0"],[0.9,"0,9"],[0.85,"0,85"]],T4.m1)}</div>
+ <div><span class="lbl">Загрязнение провода ${qb("pollution")}</span>${seg("p4",POL,T4.pol)}</div>
+ <div><span class="lbl">Плотность воздуха ${qb("delta")}</span>${seg("w4",Object.keys(WX).map(k=>[k,WX[k].n]),T4.wx)}</div>
+ <div class="log" id="lg4"></div></div>
+ <div class="card">
+ <div class="scr"><div class="scrh"><span><b>Потери на корону по группам погоды</b> · мощность и энергия за год</span><span id="h4"></span></div><div id="c4a"></div></div>
+ <div class="cmpw"><table class="cmp" id="tb4"></table></div>
+ <div class="two"><div class="scr"><div class="scrh"><span><b>Потери от напряжения</b>: порог U<sub>к</sub> и рост выше него</span></div><div id="c4b"></div></div>
+ <div class="log" id="how4"><b>Формулы учебника Важова.</b> Напряжение возникновения короны U<sub>к</sub> = 21,2·δ·r<sub>0</sub>·ln(S/r<sub>0</sub>)·m<sub>1</sub>·m<sub>2</sub> (ф. 1.37, кВ действ.). Потери по Пику P = (241/δ)(f + 25)√(r<sub>0</sub>/S)(U<sub>ф</sub> − U<sub>к</sub>)²·10⁻⁵ кВт/(км·фаза) (ф. 1.36) — в учебнике напечатано 24,1, у Пика коэффициент 241. Для расщеплённых фаз — формула Егоровой и Тиходеева (ф. 1.40). Годовые потери — сумма по группам погоды с их продолжительностью (ф. 1.41, табл. 1.3). Коэффициенты погоды m<sub>2</sub> учебник не приводит; в интерактиве приняты 1,0 / 0,9 / 0,8 / 0,7.</div></div>
+ </div></div>${mlab("ml4",ML4)}`;
+ bindSeg("l4",v=>{T4.ln=v;T4.n=null;$$("#n4 button").forEach(b=>b.classList.toggle("on",+b.dataset.v===LINES[v].nS));upd4()});
+ bindSeg("n4",v=>{T4.n=+v;upd4()});bindSeg("m4",v=>{T4.m1=+v;upd4()});bindSeg("p4",v=>{T4.pol=+v;upd4()});bindSeg("w4",v=>{T4.wx=v;upd4()});$("#ku4").oninput=e=>{T4.ku=+e.target.value;upd4()};
+ C4a=canvasBox($("#c4a"),260,draw4a);C4b=canvasBox($("#c4b"),240,draw4b);upd4();bindMlab("ml4")}
+function upd4(){const c=calc4();$("#ku4o").textContent=fx(T4.ku,2)+" · "+fx(c.Ln.U*T4.ku,0)+" кВ";
+ $("#tb4").innerHTML=`<tr><th>Погода</th><th>m<sub>2</sub></th><th>U<sub>к</sub>, кВ</th><th>U<sub>ф</sub>/U<sub>к</sub></th><th>P, кВт/км</th><th>Часов в году</th><th>Энергия, МВт·ч/км</th></tr>`+c.rows.map((r,i)=>`<tr><td>${r.g.n}</td><td>${fx(r.g.m2,1)}</td><td>${fx(r.Uk,0)}</td><td style="color:${c.Uf>r.Uk?"var(--hot)":"var(--ok)"}">${fx(c.Uf/r.Uk,2)}</td><td>${fx(r.P,r.P<1?3:2)}</td><td><input type="number" min="0" max="8760" step="10" value="${r.h}" data-i="${i}" style="width:80px;font:inherit;font-family:var(--f-mono)" aria-label="Часов: ${r.g.n}"></td><td>${fx(r.E,r.E<1?3:2)}</td></tr>`).join("")+`<tr><th colspan="5">Итого за год (${fx(c.hs,0)} ч${Math.abs(c.hs-8760)>1?", в году 8760":""})</th><th></th><th>${fx(c.tot,2)}</th></tr>`;
+ $$("#tb4 input").forEach(x=>x.onchange=()=>{T4.hrs[+x.dataset.i]=Math.max(0,+x.value||0);upd4()});
+ const fr=c.rows[3],sh=c.tot>0?fr.E/c.tot*100:0,hsh=fr.h/c.hs*100;
+ $("#lg4").innerHTML=`<b>${c.Ln.n}</b>, ${c.n===1?"один провод в фазе":c.n+" провода в фазе, радиус расщепления "+fx(c.Rp,1)+" см"}. U<sub>ф</sub> = ${fx(c.Uf,1)} кВ, δ = ${fx(c.d,2)}. Формула: ${c.rows[0].form}. ${c.tot>0?`Изморозь занимает ${fx(hsh,1)} % времени, а даёт ${fx(sh,0)} % годовых потерь.`:"Короны нет ни в какую погоду."} ${c.rows[0].P>0?"Корона горит даже в хорошую погоду — провод слишком тонкий для этого напряжения.":""}`;
+ $("#h4").textContent="δ = "+fx(c.d,2);C4a.fit();C4b.fit()}
+function draw4a(){if(!C4a)return;const c=calc4(),{ctx,w,h}=C4a;ctx.clearRect(0,0,w,h);const L=16,T=20,W=w-32,H=h-60,cw=W/4;const pm=Math.max(...c.rows.map(r=>r.P),1e-3),em=Math.max(...c.rows.map(r=>r.E),1e-3);
+ c.rows.forEach((r,i)=>{const x=L+i*cw+cw*0.18,bw=cw*0.28;const hp=r.P/pm*H*0.9,he=r.E/em*H*0.9;ctx.fillStyle=CB;ctx.fillRect(x,T+H-hp,bw,hp);ctx.fillStyle=CO;ctx.fillRect(x+bw+4,T+H-he,bw,he);
+  ctx.fillStyle=CT;ctx.font="11px IBM Plex Mono";ctx.textAlign="center";ctx.fillText(fx(r.P,r.P<1?2:1),x+bw/2,T+H-hp-4);ctx.fillText(fx(r.E,r.E<1?2:1),x+bw*1.5+4,T+H-he-4);
+  ctx.fillStyle=CG;ctx.font="12px IBM Plex Sans";ctx.fillText(r.g.n.split(",")[0],x+bw+2,T+H+16);ctx.fillText(fx(r.h/c.hs*100,1)+" % времени",x+bw+2,T+H+32)});
+ ctx.textAlign="left";ctx.font="12px IBM Plex Sans";ctx.fillStyle=CB;ctx.fillText("■ мощность, кВт/км",L,12);ctx.fillStyle=CO;ctx.fillText("■ энергия за год, МВт·ч/км",L+150,12)}
+function draw4b(){if(!C4b)return;const c=calc4(),{ctx,w,h}=C4b;ctx.clearRect(0,0,w,h);const L=52,T=14,W=w-L-12,H=h-T-44;const r0=c.rows[0],rf=c.rows[3];const x0=0.6,x1=1.6;
+ const P=(ratio,row)=>{const Uf=ratio*row.Uk;if(c.n===1){return 3*pPeek(Uf,row.Uk,c.Ln.r,c.Ln.S,c.d,50)}return pET(Uf*Math.SQRT2,row.Uk*Math.SQRT2)};const ym=Math.max(P(x1,r0),1);
+ const A=linAx(ctx,L,T,W,H,x0,x1,0,ym,"Uф/Uк хорошей погоды","P, кВт/км",0.2,ym>50?20:ym>10?5:1,v=>fx(v,1),v=>fx(v,0));
+ ctx.save();ctx.beginPath();ctx.rect(L,T,W,H);ctx.clip();[[r0,CB],[rf,CV]].forEach(([row,col])=>{ctx.strokeStyle=col;ctx.lineWidth=2.2;ctx.beginPath();for(let k=0;k<=120;k++){const x=x0+(x1-x0)*k/120,v=P(x*r0.Uk/row.Uk,row);k?ctx.lineTo(A.X(x),A.Y(v)):ctx.moveTo(A.X(x),A.Y(v))}ctx.stroke()});ctx.restore();
+ const xc=c.Uf/r0.Uk;if(xc>=x0&&xc<=x1){ctx.strokeStyle=CK;ctx.setLineDash([4,3]);ctx.beginPath();ctx.moveTo(A.X(xc),T);ctx.lineTo(A.X(xc),T+H);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle=CK;ctx.font="11px IBM Plex Sans";ctx.fillText("ваша линия",A.X(xc)+4,T+12)}
+ ctx.font="12px IBM Plex Sans";ctx.textAlign="left";ctx.fillStyle=CB;ctx.fillText("хорошая погода",L+6,T+28);ctx.fillStyle=CV;ctx.fillText("изморозь",L+6,T+44)}
+
+const HS=[
+{id:"wire",x:70,y:182,t:"Одиночный провод ЛЭП",w:"Провод малого радиуса при высоком напряжении: E у поверхности выше E<sub>к</sub>, особенно в дождь и изморозь (m<sub>2</sub> < 1).",c:"Потери энергии (вкладка 4), радиопомехи, акустический шум (треск и гул), озон и оксиды азота.",m:"Увеличить радиус провода или расщепить фазу; на 330 кВ и выше одиночный провод не применяют.",uv:"Ровное свечение по всей длине в сырую погоду, яркие точки на заусенцах и каплях."},
+{id:"split",x:335,y:42,t:"Расщеплённая фаза 330–500 кВ",w:"2–4 провода на распорках работают как провод большого эквивалентного радиуса — поле у поверхности падает.",c:"Без расщепления корона горела бы даже в хорошую погоду и потери были бы недопустимы.",m:"Число проводов и радиус расщепления выбирают так, чтобы E<sub>max</sub> была ниже E<sub>к</sub> в хорошую погоду.",uv:"В хорошую погоду почти темно; светятся распорки и зажимы, если на них острые кромки."},
+{id:"ring",x:262,y:122,t:"Гирлянда с экранным кольцом",w:"Поддерживающий зажим и последние изоляторы у провода — место наибольшей напряжённости по гирлянде.",c:"Корона на зажиме и пестике изолятора: радиопомехи, коррозия арматуры, эрозия.",m:"Защитная арматура — экранные кольца и овалы: они увеличивают эффективный радиус и выравнивают распределение напряжения по гирлянде.",uv:"С кольцом — тёмная гирлянда; без кольца — светящийся зажим и нижние тарелки."},
+{id:"poly",x:432,y:120,t:"Полимерный изолятор без кольца",w:"У оконцевателя полимерного изолятора поле сгущается; капли воды на гидрофобной оболочке становятся «остриями».",c:"Корона разрушает кремнийорганическую оболочку: эрозия, потеря гидрофобности, затем трекинг и перекрытие (тема 12).",m:"Коронирующие кольца на изоляторах 110 кВ и выше по указанию изготовителя, правильная ориентация кольца.",uv:"Точки свечения у металлического оконцевателя и по каплям на оболочке."},
+{id:"strand",x:540,y:70,t:"Порванная проволока провода",w:"Торчащий конец проволоки — острие с радиусом доли миллиметра: E<sub>к</sub> по Пику велико, но поле у острия ещё больше.",c:"Местная корона, радиопомехи; признак механического повреждения провода.",m:"Ремонтный бандаж или муфта; осмотр с УФ-камерой при обходе.",uv:"Одна яркая точка на проводе — классическая находка дефектоскописта."},
+{id:"kru",x:700,y:226,t:"Шины и болты в ячейке КРУ 6–10 кВ",w:"Острые кромки шин, головки болтов, близко расположенные изоляторы. Напряжение невелико, но радиус кромки — доли миллиметра.",c:"Озон и оксиды азота в закрытой ячейке, с влагой — азотная кислота: разрушение изоляторов, коррозия, переход в поверхностные разряды и трекинг.",m:"Скругление кромок, экраны и колпачки на болтах, изоляционные покрытия шин, контроль влажности (подогрев).",uv:"Свечение на рёбрах шин и болтах, усиливается при высокой влажности."},
+{id:"cab",x:560,y:372,t:"Концевая муфта кабеля",w:"В месте обрыва экрана кабеля поле резко сгущается у края экрана — как у острия.",c:"Корона и частичные разряды у края экрана, разрушение изоляции и пробой муфты.",m:"Регулятор поля: конус или трубка с нелинейной (высокой ε) характеристикой, аккуратный срез полупроводящего слоя.",uv:"Кольцо свечения у края экрана — муфта смонтирована неверно."},
+{id:"mot",x:832,y:252,t:"Лобовые части двигателя 6–10 кВ",w:"На выходе стержня из паза поле у края пакета стали сгущается; при питании от ПЧ к рабочему напряжению добавляются выбросы на фронтах импульсов.",c:"Корона в лобовых частях: озон разрушает лак, белый налёт, затем пазовые и поверхностные разряды, пробой.",m:"Противокоронное полупроводящее покрытие на выходе из паза, градиентное покрытие, фильтры dU/dt на выходе ПЧ (вариант 1).",uv:"Свечение на выходе стержней из паза и между лобовыми частями разных фаз."},
+{id:"esp",x:936,y:96,t:"Электрофильтр — полезная корона",w:"Тонкие коронирующие электроды под отрицательным напряжением 50–80 кВ: корона заряжает частицы пыли, и поле осаждает их на пластинах.",c:"Корона здесь нужна: на ней основана очистка газов на ТЭЦ, обогатительных фабриках и в металлургии.",m:"Отрицательная корона — устойчивее и даёт больший ток до пробоя, поэтому электрофильтры работают на отрицательной полярности.",uv:"Равномерное свечение коронирующих электродов — признак нормальной работы."},
+{id:"lab",x:912,y:250,t:"Испытательная установка",w:"Выводы испытательного трансформатора и соединительные провода — электроды малого радиуса под сотнями киловольт.",c:"Корона на проводах и выводах даёт ложные частичные разряды и помехи — измерение ЧР становится невозможным.",m:"Экранные тороиды на выводах, соединения трубами большого диаметра, гладкие поверхности.",uv:"Свечение на выводах и концах проводов; после установки тороидов — темно."}];
+const T5={uv:false,fix:false,sel:"wire",seen:{}};
+function t5(){$("#t5").innerHTML=`<div class="card"><h2>Корона на линиях и оборудовании</h2><p>Нажмите на номер — откроется карточка: почему здесь корона, чем она грозит и что с ней делают. Включите «УФ-камеру» — так корону ищут при обходах. Переключатель «После мер» показывает, что даёт правильное решение.</p><div class="btns" style="margin-top:8px"><button class="btn ghost" id="uv5">УФ-камера: выкл</button><button class="btn ghost" id="fx5">После мер: выкл</button></div><div class="dots" id="dt5">${HS.map(x=>`<i data-k="${x.id}"></i>`).join("")}</div></div>
+ <div style="display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:12px" class="g5"><div class="circ" id="sc5"></div><div class="card" id="cd5"></div></div><style>@media (max-width:900px){.g5{grid-template-columns:minmax(0,1fr)!important}}</style>`;
+ $("#uv5").onclick=()=>{T5.uv=!T5.uv;$("#uv5").textContent="УФ-камера: "+(T5.uv?"вкл":"выкл");scene5()};$("#fx5").onclick=()=>{T5.fix=!T5.fix;$("#fx5").textContent="После мер: "+(T5.fix?"вкл":"выкл");scene5()};scene5();card5("wire")}
+function glow(x,y,r,id){return `<circle cx="${x}" cy="${y}" r="${r*1.9}" fill="url(#gl)" opacity=".95"/>`}
+function scene5(){const uv=T5.uv,fix=T5.fix,bg=uv?"#06090C":"#EEF3F4",ln=uv?"#3A4A55":"#5E6B73",st=uv?"#26343D":"#8C9AA4";
+ let s=`<svg viewBox="0 0 960 420" role="img" aria-label="Линия, подстанция и оборудование"><defs><radialGradient id="gl"><stop offset="0" stop-color="#E6DBFF"/><stop offset=".35" stop-color="#A88BFF" stop-opacity=".85"/><stop offset="1" stop-color="#7A5CFF" stop-opacity="0"/></radialGradient></defs><rect width="960" height="420" fill="${bg}"/>`;
+ s+=`<path d="M60 400L110 40L160 400M85 230H135M95 150H125" stroke="${st}" stroke-width="5" fill="none"/><path d="M40 60H190" stroke="${st}" stroke-width="6"/>`;
+ s+=`<path d="M228 62V140" stroke="${st}" stroke-width="3"/>${[0,1,2,3,4].map(i=>`<ellipse cx="228" cy="${72+i*14}" rx="13" ry="4" fill="${uv?"#2A3842":"#C9D3D8"}" stroke="${ln}"/>`).join("")}`;
+ s+=fix?`<ellipse cx="228" cy="148" rx="22" ry="7" fill="none" stroke="${ln}" stroke-width="4"/>`:"";
+ s+=`<path d="M0 150C200 175 300 170 960 150" stroke="${ln}" stroke-width="${fix?5:3}" fill="none"/>`;
+ s+=`<path d="M260 70C320 76 360 76 420 70M260 80C320 86 360 86 420 80" stroke="${ln}" stroke-width="3" fill="none"/><path d="M300 72V84M370 74V86" stroke="${ln}" stroke-width="2"/>`;
+ s+=`<rect x="388" y="110" width="14" height="36" fill="${uv?"#2A3842":"#9FB2A3"}"/>${[0,1,2,3].map(i=>`<ellipse cx="395" cy="${114+i*9}" rx="10" ry="3" fill="${uv?"#2A3842":"#9FB2A3"}"/>`).join("")}${fix?`<ellipse cx="395" cy="150" rx="18" ry="6" fill="none" stroke="${ln}" stroke-width="3"/>`:""}`;
+ s+=`<path d="M440 96C480 100 520 102 560 104" stroke="${ln}" stroke-width="3" fill="none"/>${fix?`<rect x="490" y="96" width="22" height="12" rx="3" fill="${ln}"/>`:`<path d="M500 102l8 -12" stroke="${ln}" stroke-width="1.5"/>`}`;
+ s+=`<rect x="560" y="210" width="110" height="150" fill="${uv?"#0F1820":"#D3DBDE"}" stroke="${ln}"/>${[0,1,2].map(i=>`<rect x="${578+i*30}" y="225" width="${fix?16:12}" height="70" rx="${fix?7:0}" fill="${uv?"#4A3A2A":"#C9884A"}"/>`).join("")}<text x="615" y="378" text-anchor="middle" style="font-size:12px;fill:${uv?"#9FB4C0":"#15212A"}">КРУ 6–10 кВ</text>`;
+ s+=`<path d="M470 400V330" stroke="${ln}" stroke-width="10"/><path d="M470 330L520 330" stroke="${ln}" stroke-width="6"/>${fix?`<path d="M500 322L540 330L500 338Z" fill="${ln}"/>`:""}<text x="500" y="410" text-anchor="middle" style="font-size:12px;fill:${uv?"#9FB4C0":"#15212A"}">кабель</text>`;
+ s+=`<rect x="700" y="250" width="110" height="100" rx="14" fill="${uv?"#18242C":"#A9B5A6"}" stroke="${ln}"/>${[0,1,2,3,4].map(i=>`<path d="M${712+i*20} 258V342" stroke="${ln}" opacity=".5"/>`).join("")}<text x="755" y="370" text-anchor="middle" style="font-size:12px;fill:${uv?"#9FB4C0":"#15212A"}">двигатель 10 кВ</text>`;
+ s+=`<rect x="820" y="60" width="90" height="130" fill="${uv?"#0F1820":"#D3DBDE"}" stroke="${ln}"/>${[0,1,2].map(i=>`<path d="M${845+i*20} 68V182" stroke="${ln}" stroke-width="1.4"/>`).join("")}<text x="865" y="206" text-anchor="middle" style="font-size:12px;fill:${uv?"#9FB4C0":"#15212A"}">электрофильтр</text>`;
+ s+=`<rect x="835" y="300" width="50" height="70" fill="${uv?"#18242C":"#B8C4CE"}" stroke="${ln}"/><path d="M860 300V268" stroke="${ln}" stroke-width="4"/>${fix?`<ellipse cx="860" cy="264" rx="20" ry="8" fill="none" stroke="${ln}" stroke-width="5"/>`:""}<text x="860" y="388" text-anchor="middle" style="font-size:12px;fill:${uv?"#9FB4C0":"#15212A"}">испыт. установка</text>`;
+ if(uv){const G={wire:[[60,152,10],[120,158,12],[330,160,10],[620,156,12]],split:fix?[]:[[300,72,9],[370,74,9]],ring:fix?[]:[[228,140,16]],poly:fix?[]:[[395,146,14],[392,128,8]],strand:fix?[]:[[508,90,14]],kru:fix?[]:[[584,230,10],[614,240,10],[644,226,10]],cab:fix?[]:[[520,330,14]],mot:fix?[]:[[712,260,10],[752,258,10],[792,262,10]],esp:[[845,90,9],[865,120,9],[885,150,9],[845,160,9]],lab:fix?[]:[[860,268,18]]};
+  if(fix)G.wire=[[120,158,6]];Object.values(G).flat().forEach(([x,y,r])=>s+=glow(x,y,r))}
+ HS.forEach((h,i)=>{s+=`<g class="el" tabindex="0" role="button" data-h="${h.id}" aria-label="${h.t}"><circle class="hl" cx="${h.x}" cy="${h.y}" r="22"/><circle cx="${h.x}" cy="${h.y}" r="16" fill="${T5.sel===h.id?"#1F5FAF":"#fff"}" stroke="#1F5FAF" stroke-width="2"/><text x="${h.x}" y="${h.y+5}" text-anchor="middle" style="font:700 15px IBM Plex Sans;fill:${T5.sel===h.id?"#fff":"#1F5FAF"}">${i+1}</text></g>`});
+ s+="</svg>";$("#sc5").innerHTML=s;$$("#sc5 .el").forEach(g=>{g.onclick=()=>card5(g.dataset.h);g.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();card5(g.dataset.h)}}})}
+function card5(id){T5.sel=id;T5.seen[id]=1;const h=HS.find(x=>x.id===id),i=HS.indexOf(h);
+ $("#cd5").innerHTML=`<span class="tag">${i+1} из ${HS.length}</span><h3 style="margin-top:4px">${h.t}</h3><p><b>Почему здесь корона.</b> ${h.w}</p><p><b>Чем грозит.</b> ${h.c}</p><p><b>Что делают.</b> ${h.m}</p><div class="log"><b>УФ-камера.</b> ${h.uv}</div>`;
+ $$("#dt5 i").forEach(x=>{if(T5.seen[x.dataset.k])x.className="ok"});scene5()}
+
+const done6={};
+function t6(){$("#t6").innerHTML=`<div class="card"><h2>Реальные случаи</h2><p>Шесть историй с линий, подстанций и фабрик. Выберите случай, прочитайте и ответьте на вопрос: где здесь корона и что с ней делать.</p><div class="dots" id="dt6">${CASES.map(c=>`<i data-k="${c.id}"></i>`).join("")}</div></div>
+ <div class="cases">${CASES.map((c,i)=>`<button class="cs" data-i="${i}"><span class="tag">${c.tag}</span><b>${i+1}. ${c.t}</b></button>`).join("")}</div><div id="cs6"></div>`;
+ $$("#t6 .cs").forEach(b=>b.onclick=()=>{$$("#t6 .cs").forEach(x=>x.classList.toggle("on",x===b));show6(+b.dataset.i)});show6(0);$("#t6 .cs").classList.add("on")}
+function show6(i){const c=CASES[i];$("#cs6").innerHTML=`<div class="card"><span class="tag">${c.tag}</span><h2 style="margin:4px 0 0">${c.t}</h2><p>${c.x}</p><div class="lbl">${c.q}</div><div class="opts" id="o6">${shuf(c.o,i+40).map(([t,j])=>`<button data-j="${j}">${t}</button>`).join("")}</div><div id="f6"></div></div>`;
+ $$("#o6 button").forEach(b=>b.onclick=()=>{const j=+b.dataset.j;$$("#o6 button").forEach(x=>{x.disabled=true;const k=+x.dataset.j;if(k===c.a)x.classList.add("right");else if(k===j)x.classList.add("wrong")});
+  $("#f6").innerHTML=`<div class="${j===c.a?"good":"bad"}"><b>${j===c.a?"Верно.":"Не совсем."}</b> ${c.e}</div><p style="margin:8px 0 0;font-size:13px;color:var(--muted)">Источник: ${c.src}</p>`;
+  if(j===c.a){done6[c.id]=1;$(`#dt6 i[data-k="${c.id}"]`).className="ok";$$("#t6 .cs")[i].classList.add("done")}})}
+function t7(){$("#t7").innerHTML=`<div class="card"><h2>Задачи с объектов</h2><p>Решите задачу и введите ответ. Знаки «?» рядом с условием — подсказки: наведите мышь или нажмите. Допуск ответа — 2–3 %.</p><div class="dots" id="dt7">${TASKS.map(t=>`<i data-k="${t.id}"></i>`).join("")}</div></div>`+TASKS.map((t,i)=>`<div class="task" id="${t.id}"><h3><span class="mono">${i+1}</span>${t.t}</h3><p>${t.x}</p><div class="chips">${t.h.map((x,j)=>`<span class="chip" tabindex="0" data-tipt="${x.replace(/"/g,"&quot;")}">подсказка ${j+1}</span>`).join("")}</div><div class="ans"><input type="text" inputmode="decimal" aria-label="Ответ"><button class="btn">Проверить</button><button class="btn ghost">Решение</button></div><div class="fb"></div></div>`).join("");
+ TASKS.forEach(t=>{const box=$("#"+t.id),inp=box.querySelector("input"),[b1,b2]=box.querySelectorAll(".ans button"),fb=box.querySelector(".fb");
+  const chk=()=>{const v=parseFloat(inp.value.replace(/\s/g,"").replace(",","."));if(!isFinite(v)){fb.innerHTML=`<div class="warn">Введите число.</div>`;return}const ok=Math.abs(v-t.a)<=Math.abs(t.a)*t.tol;fb.innerHTML=ok?`<div class="good"><b>Верно.</b> ${t.s}</div>`:`<div class="bad"><b>Пока не так.</b> Проверьте единицы и порядок величины, загляните в подсказки.</div>`;if(ok){$(`#dt7 i[data-k="${t.id}"]`).className="ok"}};
+  b1.onclick=chk;inp.onkeydown=e=>{if(e.key==="Enter")chk()};b2.onclick=()=>{fb.innerHTML=`<div class="warn"><b>Решение.</b> ${t.s}</div>`}})}
+function shuf(a,seed){let s=(Math.imul(seed+11,2654435761)>>>0)^0x9E3779B9;const r=()=>{s^=s<<13;s>>>=0;s^=s>>>17;s^=s<<5;s>>>=0;return s/4294967296};for(let k=0;k<7;k++)r();const o=a.map((x,i)=>[x,i]);for(let i=o.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[o[i],o[j]]=[o[j],o[i]]}return o}
+const LET="АБВГД";
+const T8={v:0,i:0,ans:[],done:false};
+const SEED8=(v,i)=>i+100*v;
+function grade8(s){return s>=14?[5,"отлично"]:s>=11?[4,"хорошо"]:s>=8?[3,"удовлетворительно"]:[2,"неудовлетворительно"]}
+const vsel8=()=>`<div class="seg" id="v8">${TV.map((x,k)=>`<button data-v="${k}" class="${k===T8.v?"on":""}">Вариант ${k+1}</button>`).join("")}</div>`;
+function bindV8(){$$("#v8 button").forEach(b=>b.onclick=()=>{const v=+b.dataset.v;if(v===T8.v&&!T8.done&&!T8.ans.length)return;Object.assign(T8,{v,i:0,ans:[],done:false});t8()})}
+function t8(){const TEST=TV[T8.v],q=TEST[T8.i],n=TEST.length;
+ if(T8.done){const s=TEST.reduce((a,q,k)=>a+(T8.ans[k]===q.a),0),[g,gt]=grade8(s);
+  $("#t8").innerHTML=`<div class="card" style="align-items:center;text-align:center"><span class="tag">Тест завершён · вариант ${T8.v+1}</span><div style="font-size:80px;font-weight:700;line-height:1;color:${g>=4?"var(--ok)":g===3?"var(--warn)":"var(--hot)"}">${g}</div><h2 style="margin:0">Оценка: ${gt}</h2><p style="margin:0">Верных ответов: <b>${s} из ${n}</b>. Шкала: 14–15 — «5», 11–13 — «4», 8–10 — «3», меньше 8 — «2».</p><div class="btns" style="justify-content:center"><button class="btn" id="rv8">Показать разбор ответов</button><button class="btn ghost" id="rs8">Пройти заново</button></div></div><div id="rev8"></div>`;
+  $("#rs8").onclick=()=>{Object.assign(T8,{i:0,ans:[],done:false});t8()};
+  $("#rv8").onclick=()=>{$("#rev8").innerHTML=TEST.map((q,k)=>{const ok=T8.ans[k]===q.a;return `<div class="tq"><div class="qq">${k+1}. ${q.q}</div><div class="${ok?"good":"bad"}"><b>${ok?"Верно":"Неверно"}.</b> ${ok?"":"Ваш ответ: "+(T8.ans[k]==null?"нет ответа":q.o[T8.ans[k]])+". "}Правильно: ${q.o[q.a]}. ${q.e}</div></div>`}).join("");$("#rv8").disabled=true};return}
+ $("#t8").innerHTML=`<div class="card"><h2>Тест: 5 вариантов по 15 вопросов</h2><p style="margin:0">Выберите вариант, который назвал преподаватель, и отвечайте по порядку. Правильные ответы и оценка появятся только в конце. Смена варианта начинает тест заново.</p>${vsel8()}<div class="dots">${TEST.map((x,k)=>`<i class="${T8.ans[k]!=null?"ok":""}" style="${k===T8.i?"outline:2px solid var(--accent)":""}"></i>`).join("")}</div></div>
+ <div class="tq"><div class="qq">Вариант ${T8.v+1} · вопрос ${T8.i+1} из ${n}. ${q.q}</div>${shuf(q.o,SEED8(T8.v,T8.i)).map(([t,j],k)=>`<label><input type="radio" name="r8" value="${j}" ${T8.ans[T8.i]===j?"checked":""}><span><b>${LET[k]})</b> ${t}</span></label>`).join("")}
+ <div class="btns"><button class="btn ghost" id="pv8" ${T8.i?"":"disabled"}>← Назад</button><button class="btn" id="nx8">${T8.i<n-1?"Дальше →":"Завершить тест"}</button></div><div id="w8"></div></div>`;
+ bindV8();
+ $$("#t8 input").forEach(x=>x.onchange=()=>{T8.ans[T8.i]=+x.value});
+ $("#pv8").onclick=()=>{T8.i--;t8()};
+ $("#nx8").onclick=()=>{if(T8.ans[T8.i]==null){$("#w8").innerHTML=`<div class="warn">Выберите вариант ответа.</div>`;return}if(T8.i<n-1){T8.i++;t8()}else{const miss=TEST.findIndex((x,k)=>T8.ans[k]==null);if(miss>=0){T8.i=miss;t8();$("#w8").innerHTML=`<div class="warn">Остался вопрос без ответа.</div>`;return}T8.done=true;t8()}};}
+const built={},FIT={t0:()=>Object.values(C0).forEach(b=>b.fit()),t1:()=>upd1(),t2:()=>upd2(),t3:()=>upd3(),t4:()=>upd4(),t5:()=>scene5()};
+function onTab(t){if(!built[t]){built[t]=1;({t0,t1,t2,t3,t4,t5,t6,t7,t8})[t]()}else if(FIT[t])FIT[t]()}
+const h0=(location.hash.match(/t\d/)||[])[0];if(h0&&$(`.tabs button[data-tab="${h0}"]`))$(`.tabs button[data-tab="${h0}"]`).click();else onTab("t1");
+
+</script>
+<a href="../" title="Все материалы" style="position:fixed;right:10px;bottom:10px;z-index:99999;background:rgba(31,95,175,.92);color:#fff;font:600 13px system-ui,sans-serif;padding:6px 11px;border-radius:999px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.25)">⌂ Все материалы</a><script>addEventListener("load",function(){var h=location.hash.slice(1),b=h&&document.querySelector("[data-tab="+h+"]");if(b)b.click()})</script></html>

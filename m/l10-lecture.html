@@ -1,4 +1,4 @@
-<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Лекция 10. Частичные разряды: физика и измерение</title><style>:root{--ink:#16202c;--muted:#5b6675;--line:#d9dde3;--acc:#1f5faf;--bg:#fff;--soft:#f3f5f8}
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Тема 10. Частичные разряды: физика и измерение</title><style>:root{--ink:#16202c;--muted:#5b6675;--line:#d9dde3;--acc:#1f5faf;--bg:#fff;--soft:#f3f5f8}
 @media (prefers-color-scheme:dark){:root{--ink:#e6eaf0;--muted:#9aa6b5;--line:#33404f;--acc:#7fb3f0;--bg:#121820;--soft:#1b2430}img{background:#fff}}
 *{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 "PT Serif",Georgia,"Times New Roman",serif}
@@ -15,7 +15,7 @@ math{font-size:1.08em}math[display=block]{overflow-x:auto;overflow-y:hidden;marg
 blockquote{margin:12px 0;padding:8px 14px;border-left:4px solid var(--acc);background:var(--soft)}
 @media print{.bar{display:none}body{font-size:12pt}main{max-width:none;padding:0}table{display:table}img{background:none}}
 </style></head><body><nav class="bar"><a href="../">← Техника высоких напряжений</a><a class="pdf" href="l10-lecture.pdf" download>Скачать PDF</a></nav><main><p>Техника высоких напряжений</p>
-<p><strong>Лекция 10</strong></p>
+<p><strong>Тема 10</strong></p>
 <p><strong>Частичные разряды: физика и измерение</strong></p>
 <p><em>Почему разряд внутри изоляции не пробивает её сразу, что видит
 прибор и как правильно измерять</em></p>
@@ -25,7 +25,7 @@ blockquote{margin:12px 0;padding:8px 14px;border-left:4px solid var(--acc);backg
 </colgroup>
 <tbody>
 <tr class="odd">
-<td><p><strong>Цель лекции.</strong> Объяснить физику частичных разрядов
+<td><p><strong>Цель темы.</strong> Объяснить физику частичных разрядов
 (ЧР) в газовых включениях твёрдой изоляции, связать её с законом Пашена
 и схемой замещения a–b–c, ввести измеряемые характеристики ЧР и научить
 измерять их по ГОСТ Р 55191-2012 (МЭК 60270): схема, калибровка,
@@ -38,7 +38,7 @@ U<sub>в</sub> и U<sub>п</sub>. 6) Характеристики ЧР. 7) Ра�
 изоляции разрядами. 8) Измерение по ГОСТ Р 55191. 9) Другие методы. 10)
 Локализация. 11) Нормы.</p>
 <p><strong>Связанные материалы.</strong> Интерактив «ЧР и PRPD» (вкладки
-1 «Пора в изоляции» и 3 «Измерение»), лекция 11 «PRPD-диаграммы и
+1 «Пора в изоляции» и 3 «Измерение»), тема 11 «PRPD-диаграммы и
 диагностика изоляции», практическое занятие, чек-лист. Опора: учебник
 Важова В. Ф., Лавриновича В. А. «Техника высоких напряжений» (ТПУ,
 2014), п. 1.1.6 и 1.2.2.4; ГОСТ Р 55191-2012.</p></td>
@@ -140,7 +140,7 @@ U = 6,5 кВ в трёх материалах</p>
 пору, занимающую 10 % толщины.</p>
 <h2>3. Пробой газа в поре — закон Пашена</h2>
 <p>Газ в поре пробивается по тем же законам, что и воздушный промежуток
-(лекция 4). Пробивное напряжение однородного поля зависит от
+(тема 4). Пробивное напряжение однородного поля зависит от
 произведения давления p на расстояние d (учебник, формула 1.25):</p>
 <p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mrow><mi>п</mi><mi>р</mi></mrow></msub><mo>=</mo><mfrac><mrow><mi>B</mi><mo>⋅</mo><mi>p</mi><mo>⋅</mo><mi>d</mi></mrow><mrow><mi>l</mi><mi>n</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>A</mi><mo>⋅</mo><mi>p</mi><mo>⋅</mo><mi>d</mi><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.222em"></mspace><mo>−</mo><mspace width="0.222em"></mspace><mi>l</mi><mi>n</mi><mspace width="0.222em"></mspace><mi>l</mi><mi>n</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mspace width="0.222em"></mspace><mo>+</mo><mspace width="0.222em"></mspace><mn>1</mn><mi>/</mi><mi>γ</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac></mrow><annotation encoding="application/x-tex">U_{пр} = \frac{B \cdot p \cdot d}{ln(A \cdot p \cdot d)\  - \ ln\ ln(1\  + \ 1/\gamma)}</annotation></semantics></math>
 (4)</p>
@@ -311,7 +311,7 @@ alt="Интерактив, вкладка 1: осциллограф и нако�
 <p><strong>Рис. 8.</strong> Интерактив, вкладка 1: осциллограф и
 накопленная PRPD при U ≈ 1,46U<sub>в</sub></p>
 <p>Из рисунка видны три главные закономерности, на которых построена вся
-диагностика по PRPD (лекция 11):</p>
+диагностика по PRPD (тема 11):</p>
 <ol type="1">
 <li><p>Разряды идут на <strong>подъёмах</strong> полуволн по модулю: в
 положительной — примерно 0–90°, в отрицательной — 180–270°.</p></li>
@@ -481,7 +481,7 @@ U<sub>п</sub> &lt; U<sub>в</sub>, иногда в 1,2–1,5 раза. Прак
 </tr>
 </tbody>
 </table>
-<p>Связь с лекцией 9: ЧР — главная причина того, что ресурс изоляции
+<p>Связь с темой 9: ЧР — главная причина того, что ресурс изоляции
 падает с напряжённостью по закону «кривой жизни» t = A·E<sup>−n</sup>
 (учебник, формула 1.78).</p>
 <h2>8. Измерение ЧР по ГОСТ Р 55191 (МЭК 60270)</h2>
@@ -763,7 +763,7 @@ alt="Рефлектограмма ЧР в кабеле (интерактив, в
 <thead>
 <tr class="header">
 <th><strong>Задание</strong></th>
-<th><strong>Что применяется из лекции</strong></th>
+<th><strong>Что применяется из темы</strong></th>
 </tr>
 </thead>
 <tbody>

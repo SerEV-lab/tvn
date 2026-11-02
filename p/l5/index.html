@@ -1,0 +1,504 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Тема 5. Коронный разряд — презентация</title><link rel="stylesheet" href="../fonts/fonts.css"><style>*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#0e131a;overflow:hidden}
+#stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+#deck{width:1920px;height:1080px;position:relative;flex:none;transform-origin:center center}
+#deck>section{position:absolute;inset:0;width:1920px;height:1080px;overflow:hidden}
+body:not(.print) #deck>section:not(.on){display:none!important}
+section ul,section ol{padding-left:1.2em}section li{margin:.25em 0}
+section table{border-collapse:collapse;width:100%}
+section th,section td{text-align:left;vertical-align:top;padding:.45em .6em;border-bottom:1px solid rgba(128,128,128,.35)}
+section th{font-weight:600;border-bottom:2px solid currentColor}
+section img{display:block}
+#ui{position:fixed;left:0;right:0;bottom:0;display:flex;gap:6px;align-items:center;justify-content:center;padding:8px;font:600 14px system-ui,sans-serif;z-index:9;opacity:.9}
+#ui a,#ui button{background:rgba(20,29,43,.85);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:7px 14px;font:inherit;text-decoration:none;cursor:pointer}
+#ui span{background:rgba(20,29,43,.85);color:#fff;border-radius:999px;padding:7px 12px;min-width:76px;text-align:center}
+body.print{overflow:visible;background:#fff}body.print #stage{position:static;display:block}
+body.print #deck{transform:none!important;height:auto}
+body.print #deck>section{position:relative!important;page-break-after:always;break-after:page}
+body.print #ui{display:none}
+@page{size:1920px 1080px;margin:0}</style></head><body><div id="stage"><div id="deck"><section id="cover" data-transition="fade" style="background:#121B2B;color:#F4F2EC;font-family:'Public Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:space-between">
+<img src="img/12e0136062.webp" alt="" style="position:absolute;left:860px;top:110px;width:1000px;height:440px;object-fit:contain;opacity:0.35">
+<p style="font-size:28px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#F0A26B">Техника высоких напряжений · тема 5</p>
+<div style="display:flex;flex-direction:column;gap:32px;width:1300px">
+<h1 style="font-family:'Rubik', Arial, sans-serif;font-size:104px;font-weight:700;line-height:1.05">Коронный разряд</h1>
+<p style="font-size:36px;line-height:1.35;color:#C3CEDC">Почему тонкий провод светится и гудит, куда уходит энергия и как корону держат под контролем — от ЛЭП до лобовых частей двигателя</p>
+</div>
+<p style="font-size:24px;color:#93A3B8">13.03.02 · интерактив «Коронный разряд» · по учебнику Важова и Лавриновича, разд. 1.1.7 и 1.1.11</p>
+
+</section>
+<section id="goals" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">Цели темы</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">После пары вы сможете</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;flex:1">
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:32px"><p style="font-size:48px;font-weight:700;color:#1F5FAF">1</p><p style="font-size:28px;line-height:1.4">Объяснить, когда и где зажигается корона, и посчитать E<sub>к</sub> и U<sub>к</sub></p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:32px"><p style="font-size:48px;font-weight:700;color:#1F5FAF">2</p><p style="font-size:28px;line-height:1.4">Отличить униполярную корону от биполярной, положительную от отрицательной</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:32px"><p style="font-size:48px;font-weight:700;color:#1F5FAF">3</p><p style="font-size:28px;line-height:1.4">Объяснить роль объёмного заряда и вид ВАХ короны</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:32px"><p style="font-size:48px;font-weight:700;color:#1F5FAF">4</p><p style="font-size:28px;line-height:1.4">Прочитать рис. 1.12 и вольт-кулоновую характеристику</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:32px"><p style="font-size:48px;font-weight:700;color:#1F5FAF">5</p><p style="font-size:28px;line-height:1.4">Посчитать потери на корону и учесть погоду за год</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:32px"><p style="font-size:48px;font-weight:700;color:#1F5FAF">6</p><p style="font-size:28px;line-height:1.4">Найти корону на оборудовании и выбрать меру защиты</p></div>
+</div>
+
+</section>
+<section id="riddle" data-transition="fade" style="background:#B4531B;color:#FFF8F0;font-family:'Public Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:48px">
+<p style="font-size:28px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#FFD9BD">Вопрос на всю пару</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:72px;font-weight:600;line-height:1.15;width:1600px">Линия 220 кВ молчит в ясный день и гудит в туман. А электрофильтр фабрики, наоборот, работает на короне круглые сутки — и только на минусе. Почему?</h2>
+<p style="font-size:32px;line-height:1.4;color:#FFE7D6;width:1500px">К концу пары ответ будет в трёх словах: погода, полярность, объёмный заряд.</p>
+
+</section>
+<section id="recap" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">Связь с темами 1–4</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Корона собирает всё, что было раньше</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:24px;flex:1">
+<div style="display:flex;flex-direction:column;gap:14px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:32px"><p style="font-size:26px;font-weight:600;color:#1F5FAF">Тема 1</p><p style="font-size:28px;line-height:1.4">Неоднородное поле: у тонкого провода E<sub>max</sub> во много раз выше средней</p></div>
+<div style="display:flex;flex-direction:column;gap:14px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:32px"><p style="font-size:26px;font-weight:600;color:#1F5FAF">Тема 2</p><p style="font-size:28px;line-height:1.4">Лавина и условие самостоятельности — но только у провода</p></div>
+<div style="display:flex;flex-direction:column;gap:14px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:32px"><p style="font-size:26px;font-weight:600;color:#1F5FAF">Тема 3</p><p style="font-size:28px;line-height:1.4">Стример стартует, но гаснет, не дойдя до земли, — стримерная корона</p></div>
+<div style="display:flex;flex-direction:column;gap:14px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:32px"><p style="font-size:26px;font-weight:600;color:#1F5FAF">Тема 4</p><p style="font-size:28px;line-height:1.4">Плотность воздуха δ: мороз — корона позже, жара и высота — раньше</p></div>
+</div>
+
+</section>
+<section id="what" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">1 · Что такое корона</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Самостоятельный разряд, который может не закончиться пробоем</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;flex:1">
+<div style="display:flex;flex-direction:column;gap:16px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:36px">
+<h3 style="font-family:'Rubik', Arial, sans-serif;font-size:36px;font-weight:600;color:#1F5FAF">Условие</h3>
+<p style="font-size:30px;line-height:1.45">Резко неоднородное поле: K<sub>н</sub> = E<sub>max</sub>/E<sub>ср</sub> ≥ 3. Электрод малого радиуса кривизны — провод, острие, кромка шины.</p>
+<p style="font-size:30px;line-height:1.45">При K<sub>н</sub> &lt; 3 короны нет: разряд сразу переходит в пробой.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:16px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:36px">
+<h3 style="font-family:'Rubik', Arial, sans-serif;font-size:36px;font-weight:600;color:#1F5FAF">Признаки</h3>
+<p style="font-size:30px;line-height:1.45">Светящийся ореол у электрода, треск и гул, радиопомехи, запах озона.</p>
+<p style="font-size:30px;line-height:1.45">Горит в широком диапазоне давлений — от атмосферного до сотен атмосфер.</p>
+</div>
+</div>
+
+</section>
+<section id="look" data-transition="fade" style="background:#121B2B;color:#F4F2EC;font-family:'Public Sans', Arial, sans-serif;padding:80px 112px 96px;display:flex;flex-direction:column;gap:26px">
+<div style="display:flex;flex-direction:column;gap:10px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#F0A26B">1 · Как выглядит · вкладка 0</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:56px;font-weight:600;line-height:1.1">Corona — венец: свечение охватывает электрод кольцом</h2>
+</div>
+<div style="display:grid;grid-template-columns:1.25fr 1fr 1fr;grid-template-rows:1fr 1fr;gap:18px;flex:1;min-height:0">
+<figure style="grid-row:span 2;display:flex;flex-direction:column;gap:10px;min-height:0"><img src="img/e5b2e6f959.webp" alt="Провод в сечении с венцом свечения" style="width:100%;flex:1;min-height:0;object-fit:contain;background:#0B1119;border-radius:12px"><figcaption style="font-size:24px;color:#C3CEDC">Провод в сечении: тонкий фиолетовый венец, на неровностях — лучики</figcaption></figure>
+<figure style="display:flex;flex-direction:column;gap:8px;min-height:0"><img src="img/fb0a4da15b.webp" alt="Положительная корона на проводе" style="width:100%;flex:1;min-height:0;object-fit:cover;border-radius:12px"><figcaption style="font-size:22px;color:#C3CEDC">Провод +: ровный чехол</figcaption></figure>
+<figure style="display:flex;flex-direction:column;gap:8px;min-height:0"><img src="img/015d346106.webp" alt="Отрицательная корона на проводе" style="width:100%;flex:1;min-height:0;object-fit:cover;border-radius:12px"><figcaption style="font-size:22px;color:#C3CEDC">Провод −: «чётки» точек</figcaption></figure>
+<figure style="display:flex;flex-direction:column;gap:8px;min-height:0"><img src="img/186e08978d.webp" alt="Положительное острие со стримерами" style="width:100%;flex:1;min-height:0;object-fit:cover;border-radius:12px"><figcaption style="font-size:22px;color:#C3CEDC">Острие +: кисть стримеров</figcaption></figure>
+<figure style="display:flex;flex-direction:column;gap:8px;min-height:0"><img src="img/ad31f915ab.webp" alt="Корона на каплях дождя" style="width:100%;flex:1;min-height:0;object-fit:cover;border-radius:12px"><figcaption style="font-size:22px;color:#C3CEDC">Капли дождя: точка на конусе</figcaption></figure>
+</div>
+<p style="font-size:26px;color:#93A3B8">Светится только чехол. Излучение в основном ультрафиолетовое (азот, ~300–400 нм): глазом — ночью, днём — УФ-камерой.</p>
+
+</section>
+<section id="where" data-transition="fade" style="background:#E6ECF2;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">1 · Чехол и внешняя зона · вкладка 1</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Ионизация — только в тонком чехле у провода</h2>
+</div>
+<div style="display:flex;gap:32px;flex:1">
+<img src="img/0574f74ef4.webp" alt="Напряжённость поля у провода в коаксиале: чехол короны залит жёлтым, поле без объёмного заряда и с ним" style="width:1100px;height:620px;object-fit:contain;background:#0D171E;border-radius:16px">
+<div style="display:flex;flex-direction:column;gap:20px;flex:1">
+<p style="font-size:28px;line-height:1.45"><b>Чехол</b> — где E выше ≈ 24δ кВ/см: ударная ионизация, свечение.</p>
+<p style="font-size:28px;line-height:1.45"><b>Внешняя зона</b> — ионизации нет; ионы знака провода дрейфуют к другому электроду и образуют объёмный заряд.</p>
+<p style="font-size:28px;line-height:1.45;color:#B4531B">Оранжевая линия — поле с объёмным зарядом: у провода оно держится на E<sub>к</sub>.</p>
+</div>
+</div>
+
+</section>
+<section id="peek" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">1 · Начальная напряжённость короны</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Формулы Пика и Залесского</h2>
+</div>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:38px;background:#FFFDF8;border-left:6px solid #1F5FAF;padding:22px 30px">E<sub>к</sub> = 30,3·m·δ·(1 + 0,298/√(δr<sub>0</sub>)), кВ/см  · r<sub>0</sub> &lt; 1 см  (1.31)</p>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:38px;background:#FFFDF8;border-left:6px solid #B4531B;padding:22px 30px">E<sub>к</sub> = 24,5·m·δ·(1 + 0,613/(r<sub>0</sub>δ)<sup>0,4</sup>)  · r<sub>0</sub> &gt; 1 см  (1.32)</p>
+<table style="font-size:28px;color:#141D2B">
+<tr><th style="width:18%">Символ</th><th style="width:82%">Смысл</th></tr>
+<tr><td>r<sub>0</sub></td><td>радиус провода, см — чем тоньше, тем больше E<sub>к</sub> и тем меньше U<sub>к</sub></td></tr>
+<tr><td>m</td><td>гладкость: 1 — полированный, 0,85…0,92 — витой провод</td></tr>
+<tr><td>δ</td><td>относительная плотность воздуха (тема 4)</td></tr>
+</table>
+
+</section>
+<section id="peekex" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">1 · Пример · задачи 1, 2, 5</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Тонкий провод требует большего поля</h2>
+</div>
+<table style="font-size:30px;color:#141D2B">
+<tr><th style="width:42%">Провод и условия</th><th style="width:22%">Формула</th><th style="width:36%">E<sub>к</sub>, кВ/см</th></tr>
+<tr><td>r<sub>0</sub> = 0,5 см, гладкий, δ = 1</td><td>Пик</td><td><b>43,1</b></td></tr>
+<tr><td>r<sub>0</sub> = 0,5 см, витой m = 0,85, лето +28 °C (δ = 0,96)</td><td>Пик</td><td><b>35,4</b> — на 18 % ниже</td></tr>
+<tr><td>r<sub>0</sub> = 0,1 см, гладкий, δ = 1</td><td>Пик</td><td><b>58,9</b></td></tr>
+<tr><td>r<sub>0</sub> = 2 см, гладкий, δ = 1</td><td>Залесский</td><td><b>35,9</b></td></tr>
+</table>
+<p style="font-size:28px;line-height:1.45;color:#4A5568">Расчёт первой строки: 30,3·(1 + 0,298/√0,5) = 30,3·1,421 = 43,1 кВ/см.</p>
+
+</section>
+<section id="geom" data-transition="fade" style="background:#E6ECF2;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:30px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">1 · Напряжение зажигания U<sub>к</sub></p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">U<sub>к</sub> = E<sub>к</sub>·r<sub>0</sub>·ln(…): логарифм зависит от промежутка</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;flex:1">
+<div style="display:flex;flex-direction:column;gap:14px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:30px"><h3 style="font-family:'Rubik', Arial, sans-serif;font-size:34px;font-weight:600;color:#1F5FAF">Коаксиал</h3><p style="font-family:'IBM Plex Mono', monospace;font-size:28px">U<sub>к</sub> = E<sub>к</sub>r<sub>0</sub>ln(R/r<sub>0</sub>)</p><p style="font-size:26px;line-height:1.4">r<sub>0</sub> = 1 мм, R = 10 см: <b>27,1 кВ</b></p></div>
+<div style="display:flex;flex-direction:column;gap:14px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:30px"><h3 style="font-family:'Rubik', Arial, sans-serif;font-size:34px;font-weight:600;color:#1F5FAF">Провод над землёй</h3><p style="font-family:'IBM Plex Mono', monospace;font-size:28px">U<sub>к</sub> = E<sub>к</sub>r<sub>0</sub>ln(2h/r<sub>0</sub>)</p><p style="font-size:26px;line-height:1.4">r<sub>0</sub> = 1 см, h = 10 м: <b>299 кВ</b> амплитуды</p></div>
+<div style="display:flex;flex-direction:column;gap:14px;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:16px;padding:30px"><h3 style="font-family:'Rubik', Arial, sans-serif;font-size:34px;font-weight:600;color:#1F5FAF">Три фазы ЛЭП</h3><p style="font-family:'IBM Plex Mono', monospace;font-size:28px">U<sub>к</sub> = 21,2δr<sub>0</sub>ln(S/r<sub>0</sub>)m<sub>1</sub>m<sub>2</sub></p><p style="font-size:26px;line-height:1.4">ф. 1.37, кВ действующего; m<sub>2</sub> — погода</p></div>
+</div>
+<p style="font-size:28px;line-height:1.45;color:#4A5568">Острие — плоскость: поле у острия E = U/(r·ln(1 + 4S/r)) (ф. 1.27).</p>
+
+</section>
+<section id="delta" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">1 · Погода и поверхность</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Плотность воздуха и состояние провода сдвигают U<sub>к</sub></h2>
+</div>
+<table style="font-size:28px;color:#141D2B">
+<tr><th style="width:46%">Условия</th><th style="width:18%">δ</th><th style="width:36%">U<sub>к</sub> провода r<sub>0</sub> = 1 см, h = 10 м</th></tr>
+<tr><td>Нормальные: 760 мм рт. ст., +20 °C</td><td>1,00</td><td>299 кВ</td></tr>
+<tr><td>Апатиты, мороз −30 °C, 775 мм рт. ст.</td><td>1,23</td><td>выше: ≈ 360 кВ</td></tr>
+<tr><td>Высота 2000 м, +10 °C</td><td>0,81</td><td>ниже: ≈ 250 кВ</td></tr>
+<tr><td>Дождь, иней, изморозь</td><td>—</td><td>m<sub>2</sub> &lt; 1: заметно ниже</td></tr>
+</table>
+<p style="font-size:28px;line-height:1.45;color:#4A5568">Учебник Важова: атмосферные осадки резко снижают начальное напряжение короны.</p>
+
+</section>
+<section id="dirt" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:30px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">1 · Загрязнение провода · вкладки 1 и 4</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Пыль промзоны работает как шероховатость: m<sub>итог</sub> = m·k<sub>загр</sub></h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:36px;flex:1;min-height:0">
+<div style="display:flex;flex-direction:column;gap:14px;min-height:0"><img src="img/45d5e9b0b1.webp" alt="Провод с частицами пыли и точками короны" style="width:100%;flex:1;min-height:0;object-fit:cover;border-radius:12px"><p style="font-size:26px;line-height:1.4;color:#4A5568">Сажа, зола, рудная пыль — бугорки с усиленным полем: корона загорается раньше и распадается на точки</p></div>
+<table style="font-size:28px;color:#141D2B;align-self:start">
+<tr><th style="width:58%">Провод r<sub>0</sub> = 1 см, h = 10 м</th><th>m<sub>итог</sub></th><th>U<sub>к</sub></th></tr>
+<tr><td>Гладкий, чистый</td><td>1,00</td><td>299 кВ</td></tr>
+<tr><td>Витой</td><td>0,90</td><td>269 кВ</td></tr>
+<tr><td>Витой, промзона</td><td>0,765</td><td>229 кВ</td></tr>
+<tr><td>ВЛ 220 кВ за год: чистая → промзона</td><td colspan="2">10,7 → 52 МВт·ч/км</td></tr>
+</table>
+</div>
+<p style="font-size:26px;line-height:1.4;color:#B4531B">k<sub>загр</sub> = 0,92 (запылённый) и 0,85 (промзона) — ориентировочное допущение; реальное значение дают измерения.</p>
+
+</section>
+<section id="ladder" data-transition="fade" style="background:#121B2B;color:#F4F2EC;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#F0A26B">1 · Что дальше с напряжением</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">От первой лавины до пробоя: U<sub>пр</sub> &gt; U<sub>к</sub> всегда</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:20px;flex:1">
+<div style="display:flex;flex-direction:column;gap:12px;background:#1C2A40;border-radius:16px;padding:30px"><p style="font-size:26px;font-weight:600;color:#93A3B8">U &lt; U<sub>к</sub></p><p style="font-size:28px;line-height:1.4">Отдельные лавины, ток практически нулевой</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#1C2A40;border-radius:16px;padding:30px"><p style="font-size:26px;font-weight:600;color:#C3A6FF">U ≥ U<sub>к</sub></p><p style="font-size:28px;line-height:1.4">Лавинная корона: чехол светится, ток растёт ≈ U(U − U<sub>к</sub>)</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#1C2A40;border-radius:16px;padding:30px"><p style="font-size:26px;font-weight:600;color:#F0A26B">Выше</p><p style="font-size:28px;line-height:1.4">Стримерная корона: стримеры стартуют и гаснут, не дойдя до другого электрода</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#1C2A40;border-radius:16px;padding:30px"><p style="font-size:26px;font-weight:600;color:#FF8A7A">Ещё выше</p><p style="font-size:28px;line-height:1.4">Стример перекрывает промежуток: искра, при мощном источнике — дуга</p></div>
+</div>
+<p style="font-size:28px;line-height:1.45;color:#C3CEDC">Учебник Важова, разд. 1.1.7. После зажигания поле у провода само себя ограничивает — объёмный заряд держит его на E<sub>к</sub>.</p>
+
+</section>
+<section id="uni" data-transition="fade" style="background:#E6ECF2;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">2 · Постоянное напряжение · вкладка 2</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Униполярная корона: внешняя зона одного знака</h2>
+</div>
+<div style="display:flex;gap:32px;flex:1">
+<img src="img/e1f8240d2e.webp" alt="Положительная униполярная корона в коаксиале: ионы уходят от провода" style="width:860px;height:600px;object-fit:contain;background:#0D171E;border-radius:16px">
+<div style="display:flex;flex-direction:column;gap:20px;flex:1">
+<p style="font-size:28px;line-height:1.45">Коронирующие электроды одной полярности (рис. 1.10).</p>
+<p style="font-size:28px;line-height:1.45">В чехле рождаются заряды обоих знаков. Знак провода выходит наружу, противоположный уходит в провод.</p>
+<p style="font-size:28px;line-height:1.45">Вся внешняя зона заполнена ионами знака провода — это <b>объёмный заряд</b>.</p>
+</div>
+</div>
+
+</section>
+<section id="neg" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">2 · Полярность</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Положительная и отрицательная корона горят по-разному</h2>
+</div>
+<table style="font-size:28px;color:#141D2B">
+<tr><th style="width:26%"></th><th style="width:37%">Провод +</th><th style="width:37%">Провод −</th></tr>
+<tr><td>Что поддерживает</td><td>фотоионизация в объёме газа</td><td>фотоэффект с катода (острия)</td></tr>
+<tr><td>Внешняя зона</td><td>положительные ионы</td><td>электроны прилипают к O<sub>2</sub> — отрицательные ионы</td></tr>
+<tr><td>Вид</td><td>ровная светящаяся оболочка</td><td>отдельные точки; на острие — импульсы Тричела</td></tr>
+<tr><td>Острие — плоскость</td><td>пробой в 2…2,5 раза раньше</td><td>устойчивая корона до высокого U</td></tr>
+</table>
+
+</section>
+<section id="bipolar" data-transition="fade" style="background:#E6ECF2;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">2 · Биполярная корона · вкладка 2</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Ионы идут навстречу — ток и потери больше</h2>
+</div>
+<div style="display:flex;gap:32px;flex:1">
+<img src="img/285415b8f3.webp" alt="Биполярная корона между проводами разной полярности, линия нулевого потенциала посередине" style="width:860px;height:600px;object-fit:contain;background:#0D171E;border-radius:16px">
+<div style="display:flex;flex-direction:column;gap:20px;flex:1">
+<p style="font-size:28px;line-height:1.45">Провода разной полярности — например, «плюс» и «минус» линии постоянного тока (рис. 1.11).</p>
+<p style="font-size:28px;line-height:1.45">На линии нулевого потенциала рекомбинирует лишь часть ионов. Проникшие нейтрализуют объёмный заряд чужой зоны.</p>
+<p style="font-size:28px;line-height:1.45">Чтобы держать поле на E<sub>к</sub>, чехол выдаёт дополнительный заряд — ток растёт.</p>
+</div>
+</div>
+
+</section>
+<section id="space" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">2 · Объёмный заряд</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Объёмный заряд держит поле у провода на E<sub>к</sub></h2>
+</div>
+<div style="display:flex;gap:32px;flex:1">
+<img src="img/1ed2fdbeeb.webp" alt="Поле в коаксиале: без объёмного заряда и с ним, у провода поле равно E_к" style="width:860px;height:600px;object-fit:contain;background:#0D171E;border-radius:16px">
+<div style="display:flex;flex-direction:column;gap:20px;flex:1">
+<p style="font-size:28px;line-height:1.45"><span style="color:#2F7DD1"><b>Голубая</b></span> — поле без объёмного заряда: у провода больше E<sub>к</sub>.</p>
+<p style="font-size:28px;line-height:1.45"><span style="color:#B4531B"><b>Оранжевая</b></span> — с объёмным зарядом: у провода ровно E<sub>к</sub>, у трубы выше.</p>
+<p style="font-size:28px;line-height:1.45">«Лишнее» напряжение уходит не на ионизацию, а на дрейф ионов — корона сама себя ограничивает.</p>
+</div>
+</div>
+
+</section>
+<section id="vah" data-transition="fade" style="background:#E6ECF2;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">2 · Что с током · задача 11</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">ВАХ короны: ток растёт почти квадратично</h2>
+</div>
+<div style="display:flex;gap:32px;flex:1">
+<img src="img/30e574f194.webp" alt="ВАХ короны в коаксиале: точный расчёт и формула Таунсенда" style="width:860px;height:560px;object-fit:contain;background:#0D171E;border-radius:16px">
+<div style="display:flex;flex-direction:column;gap:20px;flex:1">
+<p style="font-family:'IBM Plex Mono', monospace;font-size:28px;background:#FFFDF8;border-left:6px solid #1F5FAF;padding:16px 22px">I = 8πε<sub>0</sub>μU(U − U<sub>к</sub>) / (R²ln(R/r<sub>0</sub>))</p>
+<p style="font-size:28px;line-height:1.45">Формула Таунсенда для коаксиала, ток на метр длины. μ — подвижность ионов.</p>
+<p style="font-size:28px;line-height:1.45">r<sub>0</sub> = 1 мм, R = 10 см, U = 40 кВ, μ = 2·10⁻⁴: I ≈ 0,5 мА/м.</p>
+</div>
+</div>
+
+</section>
+<section id="polar" data-transition="fade" style="background:#B4531B;color:#FFF8F0;font-family:'Public Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:40px">
+<p style="font-size:28px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#FFD9BD">Полезная корона</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:68px;font-weight:600;line-height:1.15;width:1600px">Электрофильтр: отрицательная корона заряжает пыль, поле осаждает её на пластинах</h2>
+<p style="font-size:32px;line-height:1.45;color:#FFE7D6;width:1550px">Отрицательная корона устойчивее и даёт больший ток до искрового пробоя — поэтому фильтры ТЭЦ, обогатительных фабрик и металлургии работают на минусе (случай 6).</p>
+
+</section>
+<section id="ac" data-transition="fade" style="background:#E6ECF2;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">3 · Переменное напряжение · вкладка 3, рис. 1.12</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Корона горит от зажигания до максимума — в каждом полупериоде</h2>
+</div>
+<div style="display:flex;gap:32px;flex:1">
+<img src="img/b4adf630ef.webp" alt="Напряжение на проводе за два периода: интервалы горения короны залиты фиолетовым, уровни U_к и U_0" style="width:1000px;height:560px;object-fit:contain;background:#0D171E;border-radius:16px">
+<div style="display:flex;flex-direction:column;gap:20px;flex:1">
+<p style="font-size:28px;line-height:1.45">Первое зажигание — при U<sub>к</sub>.</p>
+<p style="font-size:28px;line-height:1.45">После максимума корона гаснет, но объёмный заряд остаётся.</p>
+<p style="font-size:28px;line-height:1.45">Следующие зажигания — уже при U<sub>0</sub> &lt; U<sub>к</sub>: объёмный заряд помогает обратной полярности.</p>
+</div>
+</div>
+
+</section>
+<section id="acsteps" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">3 · Рис. 1.12 по шагам</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Что происходит с объёмным зарядом за период</h2>
+</div>
+<table style="font-size:27px;color:#141D2B">
+<tr><th style="width:14%">Момент</th><th style="width:86%">Что происходит</th></tr>
+<tr><td>t<sub>1</sub></td><td>U = U<sub>к</sub>: зажигается положительная корона, образуется чехол</td></tr>
+<tr><td>t<sub>1</sub>–t<sub>2</sub></td><td>U растёт до U<sub>макс</sub>, но E на проводе = E<sub>к</sub>: избыток уходит в положительный объёмный заряд</td></tr>
+<tr><td>t<sub>2</sub></td><td>U начинает падать — корона гаснет; заряд уходит от провода на 40…100 см</td></tr>
+<tr><td>t<sub>4</sub></td><td>при U<sub>0</sub> ≪ U<sub>к</sub> зажигается отрицательная корона</td></tr>
+<tr><td>t<sub>4</sub>–t<sub>5</sub></td><td>отрицательные ионы компенсируют положительный объёмный заряд</td></tr>
+<tr><td>t<sub>5</sub>–t<sub>6</sub></td><td>копится отрицательный объёмный заряд; в t<sub>6</sub> корона гаснет — цикл повторяется</td></tr>
+</table>
+
+</section>
+<section id="currents" data-transition="fade" style="background:#E6ECF2;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">3 · Токи · рис. 1.12, б</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Ток короны накладывается на ёмкостный ток и искажает синусоиду</h2>
+</div>
+<div style="display:flex;gap:32px;flex:1">
+<img src="img/10cb4e8927.webp" alt="Ёмкостный ток провода и полный ток с пиками тока короны" style="width:1000px;height:540px;object-fit:contain;background:#0D171E;border-radius:16px">
+<div style="display:flex;flex-direction:column;gap:20px;flex:1">
+<p style="font-family:'IBM Plex Mono', monospace;font-size:30px;background:#FFFDF8;border-left:6px solid #1F5FAF;padding:16px 22px">i<sub>C</sub> = C·dU/dt  (1.33)</p>
+<p style="font-size:28px;line-height:1.45">Пики тока короны длятся, пока корона горит: t<sub>1</sub>–t<sub>2</sub>, t<sub>4</sub>–t<sub>5</sub>…</p>
+<p style="font-size:28px;line-height:1.45">На переменном напряжении корона интенсивнее, потери больше, чем на постоянном.</p>
+</div>
+</div>
+
+</section>
+<section id="vq" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">3 · Вольт-кулоновая характеристика · задача 9</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Площадь Q(U) — энергия потерь за период</h2>
+</div>
+<div style="display:flex;gap:32px;flex:1">
+<img src="img/16b41ef294.webp" alt="Вольт-кулоновая характеристика: параллелограмм, пунктир Q = CU без короны" style="width:860px;height:560px;object-fit:contain;background:#0D171E;border-radius:16px">
+<div style="display:flex;flex-direction:column;gap:18px;flex:1">
+<p style="font-family:'IBM Plex Mono', monospace;font-size:30px;background:#FFFDF8;border-left:6px solid #1F5FAF;padding:16px 22px">W = ∮U dQ  (1.34)</p>
+<p style="font-family:'IBM Plex Mono', monospace;font-size:30px;background:#FFFDF8;border-left:6px solid #B4531B;padding:16px 22px">P = f·∮U dQ  (1.35)</p>
+<p style="font-size:28px;line-height:1.45">Без короны — прямая Q = CU, площадь ноль. Так потери измеряют: осциллографируют Q(U).</p>
+<p style="font-size:28px;line-height:1.45">0,24 Дж/м за период при 50 Гц → 12 кВт/км.</p>
+</div>
+</div>
+
+</section>
+<section id="peekloss" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:30px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">4 · Потери на корону · вкладка 4</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Формула Пика: потери растут как квадрат превышения</h2>
+</div>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:36px;background:#FFFDF8;border-left:6px solid #1F5FAF;padding:22px 30px">P = (241/δ)(f + 25)√(r<sub>0</sub>/S)(U<sub>ф</sub> − U<sub>к</sub>)²·10⁻⁵, кВт/(км·фаза)</p>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:36px;background:#FFFDF8;border-left:6px solid #B4531B;padding:22px 30px">U<sub>к</sub> = 21,2·δ·r<sub>0</sub>·ln(S/r<sub>0</sub>)·m<sub>1</sub>·m<sub>2</sub>, кВ</p>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+<p style="font-size:28px;line-height:1.45">U<sub>ф</sub>, U<sub>к</sub> — действующие, кВ; r<sub>0</sub>, S — см; m<sub>1</sub> — гладкость, m<sub>2</sub> — погода.</p>
+<p style="font-size:28px;line-height:1.45;color:#B4531B">В учебнике (ф. 1.36) напечатано 24,1 — у Пика коэффициент 241.</p>
+</div>
+
+</section>
+<section id="rainex" data-transition="fade" style="background:#E6ECF2;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:30px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">4 · Пример · задача 7 и случай 1</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">ВЛ 220 кВ: в ясный день тихо, в дождь — корона</h2>
+</div>
+<table style="font-size:30px;color:#141D2B">
+<tr><th style="width:40%">АС-300, r<sub>0</sub> = 1,2 см, S = 7 м, m<sub>1</sub> = 0,9</th><th style="width:30%">Хорошая погода</th><th style="width:30%">Дождь, m<sub>2</sub> = 0,8</th></tr>
+<tr><td>U<sub>к</sub> = 21,2·1,2·ln 583·0,9·m<sub>2</sub></td><td>145,8 кВ</td><td>116,7 кВ</td></tr>
+<tr><td>U<sub>ф</sub> = 127 кВ</td><td>ниже U<sub>к</sub> — короны нет</td><td>выше U<sub>к</sub> — корона</td></tr>
+<tr><td>P по Пику, кВт/(км·фаза)</td><td>0</td><td><b>0,80</b> (на линию 2,4 кВт/км)</td></tr>
+</table>
+<p style="font-size:28px;line-height:1.45;color:#4A5568">P = 241·75·√(1,2/700)·(127 − 116,7)²·10⁻⁵ = 241·75·0,0414·107·10⁻⁵ = 0,80.</p>
+
+</section>
+<section id="weather" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">4 · Погода за год · ф. 1.41, табл. 1.3 · задача 8</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Изморозь — 3,9 % времени и почти половина потерь</h2>
+</div>
+<div style="display:flex;gap:32px;flex:1">
+<table style="font-size:27px;color:#141D2B;width:900px">
+<tr><th style="width:34%">Погода</th><th style="width:18%">Часов</th><th style="width:22%">P, кВт/км</th><th style="width:26%">кВт·ч/км</th></tr>
+<tr><td>Хорошая</td><td>7120</td><td>0,05</td><td>356</td></tr>
+<tr><td>Сухой снег</td><td>800</td><td>0,4</td><td>320</td></tr>
+<tr><td>Дождь</td><td>500</td><td>1,2</td><td>600</td></tr>
+<tr><td>Изморозь</td><td>340</td><td>3,0</td><td><b>1020</b></td></tr>
+<tr><td><b>Итого</b></td><td>8760</td><td></td><td><b>2296</b></td></tr>
+</table>
+<div style="display:flex;flex-direction:column;gap:20px;flex:1">
+<p style="font-family:'IBM Plex Mono', monospace;font-size:30px;background:#FFFDF8;border-left:6px solid #1F5FAF;padding:16px 22px">ΣP<sub>к</sub> = Σ P<sub>кi</sub>·ψ<sub>i</sub></p>
+<p style="font-size:28px;line-height:1.45">Наибольшие потери в единицу времени — при изморози (учебник Важова).</p>
+<p style="font-size:28px;line-height:1.45">Продолжительность групп — для средней полосы; в Заполярье изморози и гололёда больше.</p>
+</div>
+</div>
+
+</section>
+<section id="split" data-transition="fade" style="background:#E6ECF2;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:26px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">4 · Расщепление фазы · рис. 1.13 · задача 12</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">ВЛ 500 кВ: один провод — сотни кВт/км, три — единицы в ясную погоду</h2>
+</div>
+<div style="display:flex;gap:24px">
+<div style="display:flex;flex-direction:column;gap:10px;flex:1"><p style="font-size:26px;font-weight:600">Один провод АС-400</p><img src="img/ea0b743d8b.webp" alt="Таблица потерь ВЛ 500 кВ с одним проводом в фазе" style="width:812px;height:330px;object-fit:contain;background:#FFFFFF;border-radius:12px"></div>
+<div style="display:flex;flex-direction:column;gap:10px;flex:1"><p style="font-size:26px;font-weight:600">Три провода, радиус расщепления 23 см</p><img src="img/6689dd9468.webp" alt="Таблица потерь ВЛ 500 кВ с тремя проводами в фазе" style="width:812px;height:330px;object-fit:contain;background:#FFFFFF;border-radius:12px"></div>
+</div>
+<p style="font-family:'IBM Plex Mono', monospace;font-size:28px;background:#FFFDF8;border-left:6px solid #1F5FAF;padding:14px 22px">P = 2,4·10⁻⁶·U<sub>m</sub>²·exp[8,7(U<sub>m</sub>/U<sub>к</sub> − 0,53)], кВт/км  (1.40)</p>
+
+</section>
+<section id="equip" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">5 · Корона на оборудовании · вкладка 5</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Везде одно правило: увеличить радиус, выровнять поле</h2>
+</div>
+<table style="font-size:26px;color:#141D2B">
+<tr><th style="width:30%">Где</th><th style="width:36%">Чем грозит</th><th style="width:34%">Мера</th></tr>
+<tr><td>Провод ЛЭП</td><td>потери, шум, радиопомехи, озон</td><td>больше сечение, расщепление</td></tr>
+<tr><td>Гирлянда, полимерный изолятор</td><td>эрозия оболочки, затем трекинг</td><td>экранные и защитные кольца</td></tr>
+<tr><td>Шины и болты КРУ 6–10 кВ</td><td>озон + влага → азотная кислота</td><td>скругление, колпачки, покрытия, подогрев</td></tr>
+<tr><td>Концевая муфта кабеля</td><td>ЧР и пробой у края экрана</td><td>регулятор поля: конус, трубка</td></tr>
+<tr><td>Лобовые части двигателя</td><td>белый налёт, разрушение лака</td><td>противокоронное покрытие, фильтр dU/dt</td></tr>
+<tr><td>Испытательная установка</td><td>ложные сигналы ЧР</td><td>тороиды, трубы большого диаметра</td></tr>
+</table>
+
+</section>
+<section id="uv" data-transition="fade" style="background:#121B2B;color:#F4F2EC;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:26px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#F0A26B">5 · Как ищут корону</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">УФ-камера: до мер и после</h2>
+</div>
+<div style="display:flex;gap:24px">
+<div style="display:flex;flex-direction:column;gap:10px;flex:1"><p style="font-size:26px;color:#C3CEDC">До мер</p><img src="img/12e0136062.webp" alt="Снимок УФ-камеры: свечение короны на проводе, арматуре, шинах, муфте, лобовых частях" style="width:812px;height:420px;object-fit:contain;background:#06090C;border-radius:12px"></div>
+<div style="display:flex;flex-direction:column;gap:10px;flex:1"><p style="font-size:26px;color:#C3CEDC">После мер</p><img src="img/1b12c61250.webp" alt="После установки колец, тороидов и скругления: светится только электрофильтр" style="width:812px;height:420px;object-fit:contain;background:#06090C;border-radius:12px"></div>
+</div>
+<p style="font-size:28px;line-height:1.45;color:#C3CEDC">Корона излучает в ультрафиолете — УФ-дефектоскоп выделяет её на дневном фоне. После мер светится только электрофильтр: там корона нужна.</p>
+
+</section>
+<section id="minilab" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:88px 120px 104px;display:flex;flex-direction:column;gap:26px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">Практика · мини-опыты под вкладками 1–4</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:58px;font-weight:600;line-height:1.1">Поднимите напряжение, запишите, сравните, обсудите</h2>
+</div>
+<div style="display:grid;grid-template-columns:1.1fr 1fr;gap:32px;flex:1;min-height:0">
+<img src="img/0ef391f2e3.webp" alt="Мини-опыт 1 в интерактиве" style="width:100%;height:100%;min-height:0;object-fit:cover;object-position:top;border-radius:12px;border:1px solid #D8D4C8">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:26px;line-height:1.35;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:14px 20px"><b>1. Зажигание.</b> U<sub>к</sub>: чистый, витой в промзоне, мороз. Отношения 0,765 и 1,20</p>
+<p style="font-size:26px;line-height:1.35;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:14px 20px"><b>2. Полярность.</b> I<sub>−</sub>/I<sub>+</sub> = 1,33 = μ<sub>−</sub>/μ<sub>+</sub>; рост тока при двойном превышении</p>
+<p style="font-size:26px;line-height:1.35;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:14px 20px"><b>3. Q(U).</b> Потери при 1,2 / 1,5 / 1,8U<sub>к</sub> и роль «роста ёмкости»</p>
+<p style="font-size:26px;line-height:1.35;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:14px 20px"><b>4. Год.</b> ВЛ 220 кВ: север (700 ч изморози) — ×1,74, промзона — ×4,9</p>
+</div>
+</div>
+
+</section>
+<section id="practice" data-transition="fade" style="background:#F4F2EC;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">Практика · вкладки 6–8 и пособие студента</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Двенадцать задач, шесть случаев, тест</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px 24px;flex:1">
+<p style="font-size:26px;line-height:1.35;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:14px 20px"><b>1.</b> E<sub>к</sub> гладкого провода</p>
+<p style="font-size:26px;line-height:1.35;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:14px 20px"><b>2.</b> Летний витой провод</p>
+<p style="font-size:26px;line-height:1.35;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:14px 20px"><b>3.</b> Коаксиальная модель</p>
+<p style="font-size:26px;line-height:1.35;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:14px 20px"><b>4.</b> Провод над землёй</p>
+<p style="font-size:26px;line-height:1.35;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:14px 20px"><b>5.</b> Толстый провод: Залесский</p>
+<p style="font-size:26px;line-height:1.35;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:14px 20px"><b>6.</b> ВЛ 110 кВ в хорошую погоду</p>
+<p style="font-size:26px;line-height:1.35;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:14px 20px"><b>7.</b> ВЛ 220 кВ в дождь</p>
+<p style="font-size:26px;line-height:1.35;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:14px 20px"><b>8.</b> Годовые потери</p>
+<p style="font-size:26px;line-height:1.35;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:14px 20px"><b>9.</b> Площадь Q(U)</p>
+<p style="font-size:26px;line-height:1.35;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:14px 20px"><b>10.</b> Повторное зажигание U<sub>0</sub></p>
+<p style="font-size:26px;line-height:1.35;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:14px 20px"><b>11.</b> Ток униполярной короны</p>
+<p style="font-size:26px;line-height:1.35;background:#FFFDF8;border:1px solid #D8D4C8;border-radius:12px;padding:14px 20px"><b>12.</b> Потери на ВЛ 500 кВ</p>
+</div>
+
+</section>
+<section id="check" data-transition="fade" style="background:#E6ECF2;color:#141D2B;font-family:'Public Sans', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B4531B">Проверьте себя</p>
+<h2 style="font-family:'Rubik', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">Пять вопросов перед тестом</h2>
+</div>
+<ol style="font-size:30px;line-height:1.5;padding-left:48px">
+<li>Почему у тонкого провода E<sub>к</sub> больше, а U<sub>к</sub> меньше, чем у толстого?</li>
+<li>Что не даёт полю у провода расти после зажигания короны?</li>
+<li>Почему ток и потери биполярной короны больше униполярной?</li>
+<li>Почему на переменном напряжении повторное зажигание идёт при U<sub>0</sub> &lt; U<sub>к</sub>?</li>
+<li>Почему годовые потери считают по группам погоды, а не по средней?</li>
+</ol>
+
+</section>
+<section id="final" data-transition="fade" style="background:#121B2B;color:#F4F2EC;font-family:'Public Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:space-between">
+<p style="font-size:28px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#F0A26B">Итог темы 5</p>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:28px">
+<div style="display:flex;flex-direction:column;gap:14px"><h3 style="font-family:'Rubik', Arial, sans-serif;font-size:44px;font-weight:600;color:#F0A26B">Погода</h3><p style="font-size:30px;line-height:1.45;color:#C3CEDC">Осадки снижают U<sub>к</sub> через m<sub>2</sub>: линия гудит в туман, а изморозь даёт почти половину годовых потерь</p></div>
+<div style="display:flex;flex-direction:column;gap:14px"><h3 style="font-family:'Rubik', Arial, sans-serif;font-size:44px;font-weight:600;color:#F0A26B">Полярность</h3><p style="font-size:30px;line-height:1.45;color:#C3CEDC">Отрицательная корона устойчивее — на ней работают электрофильтры</p></div>
+<div style="display:flex;flex-direction:column;gap:14px"><h3 style="font-family:'Rubik', Arial, sans-serif;font-size:44px;font-weight:600;color:#F0A26B">Объёмный заряд</h3><p style="font-size:30px;line-height:1.45;color:#C3CEDC">Держит E на проводе у E<sub>к</sub>, задаёт ВАХ, U<sub>0</sub> &lt; U<sub>к</sub> и вольт-кулоновую характеристику</p></div>
+</div>
+<p style="font-size:28px;color:#93A3B8">Дальше — тема 6: пробой жидких диэлектриков. Домашняя работа: задачи 7–12, тест во вкладке 8.</p>
+
+</section>
+</div></div><div id="ui"><a href="../../">⌂</a><button id="pv" aria-label="Назад">←</button><span id="cnt"></span><button id="nx" aria-label="Вперёд">→</button><button id="fsb" aria-label="Во весь экран">⛶</button><a href="l5.pdf" download>PDF</a></div><script>var D=document.getElementById('deck'),S=[].slice.call(D.children),i=0,n=S.length,C=document.getElementById('cnt');
+function fit(){var k=Math.min(innerWidth/1920,(innerHeight-(innerWidth<700?0:0))/1080);D.style.transform='scale('+k+')'}
+function go(j){i=Math.max(0,Math.min(n-1,j));S.forEach(function(s,k){s.classList.toggle('on',k===i)});C.textContent=(i+1)+' / '+n;try{history.replaceState(null,'','#'+(i+1))}catch(e){}}
+if(location.search.indexOf('print')>=0){document.body.classList.add('print')}else{
+addEventListener('resize',fit);fit();go((parseInt(location.hash.slice(1))||1)-1);
+addEventListener('keydown',function(e){if(['ArrowRight','PageDown',' ','Enter'].indexOf(e.key)>=0){go(i+1);e.preventDefault()}else if(['ArrowLeft','PageUp','Backspace'].indexOf(e.key)>=0){go(i-1);e.preventDefault()}else if(e.key==='Home')go(0);else if(e.key==='End')go(n-1);else if(e.key==='f')fs()});
+var x0=null;addEventListener('touchstart',function(e){x0=e.touches[0].clientX},{passive:true});addEventListener('touchend',function(e){if(x0===null)return;var dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>40)go(i+(dx<0?1:-1));x0=null});
+document.getElementById('stage').addEventListener('click',function(e){if(e.target.closest('a'))return;go(i+(e.clientX>innerWidth/3?1:-1))});
+document.getElementById('pv').onclick=function(){go(i-1)};document.getElementById('nx').onclick=function(){go(i+1)};
+document.getElementById('fsb').onclick=fs}
+function fs(){var d=document.documentElement;if(!document.fullscreenElement){d.requestFullscreen&&d.requestFullscreen()}else{document.exitFullscreen()}}</script></body></html>

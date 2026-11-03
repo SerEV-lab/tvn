@@ -1,0 +1,1007 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Пробой жидких диэлектриков</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;700&family=IBM+Plex+Sans:wght@400;600&display=swap">
+<style>
+/* Лабораторный стол: светлые панели, тёмные экраны приборов; акцент — синий, импульсы — тёплый/холодный по полярности */
+:root{
+  --bg:#D8DFE2; --panel:#F3F6F6; --ink:#15212A; --muted:#51606C; --line:#BFCACF; --well:#E6ECEE;
+  --accent:#1F5FAF; --accent-ink:#FFFFFF; --soft:#E2ECF8; --hot:#C8372B; --ok:#1E8A4C; --warn:#A8670F;
+  --scr:#0D171E; --scr2:#16242D; --grid:#253844; --scrtxt:#9FB4C0; --pos:#FF8A3D; --neg:#4FB3FF; --spark:#FFD54A;
+  --cu:#B8743A; --ins:#C9D8B5; --ins2:#E3D7A6;
+  --f-disp:"IBM Plex Sans Condensed","Arial Narrow",Arial,sans-serif;
+  --f-body:"IBM Plex Sans",Arial,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  color-scheme:light;
+}
+[hidden]{display:none!important}
+html,body{background:var(--bg);color:var(--ink)}
+body{margin:0;font-family:var(--f-body);font-size:16px;line-height:1.5;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+.wrap{max-width:1380px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+h1,h2,h3{font-family:var(--f-disp);font-weight:700;line-height:1.1;margin:0;text-wrap:balance}
+h1{font-size:clamp(26px,3.2vw,36px)}
+h2{font-size:23px}
+h3{font-size:18px}
+p{margin:0}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+sub,sup{font-size:.72em}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 93%,transparent);backdrop-filter:blur(6px);padding-top:12px;padding-bottom:10px;border-bottom:1px solid var(--line);margin-left:calc(-1*max(16px,env(safe-area-inset-left,0px)));margin-right:calc(-1*max(16px,env(safe-area-inset-right,0px)));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.topin{max-width:1380px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap}
+.tabs{display:flex;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:4px;overflow-x:auto;max-width:100%}
+.tabs button{border:0;background:transparent;border-radius:7px;padding:8px 13px;font-weight:600;white-space:nowrap;color:var(--muted)}
+.tabs button.on{background:var(--accent);color:var(--accent-ink)}
+.tabs button span{font-family:var(--f-mono);font-weight:400;margin-right:6px;opacity:.8}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.q{display:inline-flex;align-items:center;justify-content:center;width:19px;height:19px;border-radius:50%;border:1.4px solid var(--accent);color:var(--accent);background:var(--panel);font:700 12px/1 var(--f-body);cursor:help;padding:0;margin:0 3px;vertical-align:middle;flex:none}
+.q:hover,.q.on{background:var(--accent);color:var(--accent-ink)}
+svg .sq{cursor:help}
+svg .sq circle{fill:var(--panel);stroke:var(--accent);stroke-width:1.4}
+svg .sq text{fill:var(--accent);font:700 11px var(--f-body)}
+svg .sq:hover circle,svg .sq.on circle{fill:var(--accent)}
+svg .sq:hover text,svg .sq.on text{fill:var(--accent-ink)}
+#tip{box-sizing:border-box;position:fixed;z-index:60;width:max-content;max-width:min(380px,calc(100vw - 16px));background:#15212A;color:#EEF3F6;font-size:14.5px;line-height:1.45;padding:10px 12px;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.3)}
+#tip b{color:#FFD27A}
+.st5{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.st5 div{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 4px;border-radius:8px;background:var(--well);color:var(--muted);font-size:13px;text-align:center;line-height:1.2}
+.st5 div i{font-style:normal;width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:var(--panel);border:1.5px solid var(--line);font-weight:700;font-size:13px}
+.st5 div.on{background:var(--accent);color:#fff}.st5 div.on i{background:#fff;color:var(--accent);border-color:#fff}
+.st5 div.dn{background:#E2F3E8;color:var(--ok)}.st5 div.dn i{background:var(--ok);color:#fff;border-color:var(--ok)}
+.ban5{display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:var(--soft);border-left:5px solid var(--accent);border-radius:8px;padding:12px 16px}
+.ban5 .bh{font-family:var(--f-disp);font-size:21px;font-weight:700;line-height:1.2;margin-bottom:4px}
+.ban5 p{font-size:14.5px;margin:0;max-width:820px}.ban5 .bm{margin-top:6px}
+.ban5 .bb{display:flex;gap:8px;flex-wrap:wrap}.ban5 .bb .btn{font-size:16px;padding:10px 18px}
+@media (max-width:700px){.st5{grid-template-columns:repeat(4,minmax(0,1fr))}}
+
+#tip.wide{width:min(360px,calc(100vw - 16px))}
+#tip .tfig svg{display:block;width:100%;height:auto;margin:2px 0 8px;border-radius:6px;background:#0D171E}
+#tip .x{float:right;margin:-4px -4px 0 8px;border:0;background:none;color:#9FB4C0;font-size:18px;line-height:1;padding:0 4px}
+.concepts{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.cpt{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:4px}
+.cpt b{font-family:var(--f-disp);font-size:16.5px}
+.cpt b .q{float:right}
+.cpt p{font-size:13.5px;color:var(--muted)}
+.lab{display:grid;grid-template-columns:310px minmax(0,1fr);gap:16px;align-items:start}
+.lab.rev{grid-template-columns:minmax(0,1fr) 330px}
+.side{display:flex;flex-direction:column;gap:14px}
+.lbl{font-size:13px;font-weight:600;color:var(--muted);display:block;margin-bottom:5px}
+.seg{display:flex;flex-wrap:wrap;gap:4px}
+.seg button{border:1px solid var(--line);background:var(--well);border-radius:6px;padding:6px 10px;font-size:13.5px}
+.seg button.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.grid2 button{border:1px solid var(--line);background:var(--well);border-radius:8px;padding:7px 9px;text-align:left;font-size:13.5px;line-height:1.25}
+.grid2 button.on{border-color:var(--accent);background:var(--soft);box-shadow:inset 0 0 0 1px var(--accent);font-weight:600}
+.rng .tp{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.rng output{font-family:var(--f-mono);font-size:15px;font-weight:500}
+.rng input{width:100%;accent-color:var(--accent)}
+.btns{display:flex;flex-wrap:wrap;gap:6px}
+.btn{border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);border-radius:7px;padding:8px 14px;font-weight:600;font-size:14.5px}
+.btn.ghost{background:var(--panel);color:var(--accent)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.reads{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:6px}
+.rd{background:var(--well);border:1px solid var(--line);border-radius:7px;padding:6px 9px;display:flex;flex-direction:column;gap:1px;min-width:0}
+.rd span{font-size:12px;color:var(--muted);display:block;line-height:1.35}
+.rd b{font-family:var(--f-mono);font-weight:500;font-size:16px;font-variant-numeric:tabular-nums}
+.rd.hot b{color:var(--hot)} .rd.ok b{color:var(--ok)}
+.scr{background:var(--scr);border-radius:8px;border:1px solid #071016;position:relative;min-width:0}
+.scr canvas{display:block;width:100%}
+.scrh{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 10px 0;color:var(--scrtxt);font-family:var(--f-mono);font-size:12px;flex-wrap:wrap}
+.scrh b{color:#E8F1F5;font-weight:500}
+.scrh .seg button{background:#1E2E38;border-color:#33495A;color:#CFE0EA;padding:3px 9px;font-size:12px}
+.scrh .seg button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.lg{display:inline-flex;align-items:center;gap:5px;margin-right:10px}
+.lg i{display:inline-block;width:14px;height:3px;border-radius:2px}
+.two{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:12px}
+.fig{background:var(--well);border:1px solid var(--line);border-radius:8px;padding:6px;min-width:0}
+.fig svg{display:block;width:100%;height:auto}
+.fig svg text{font-family:var(--f-body);fill:#15212A}
+.fig .cap{font-size:12.5px;color:var(--muted);padding:2px 4px 0}
+.log{background:var(--well);border-left:4px solid var(--accent);border-radius:6px;padding:8px 12px;font-size:14.5px;min-height:44px}
+.list{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:5px;font-size:14.5px}
+.info h3{margin-bottom:2px}
+.info p{font-size:14.5px}
+.tabp{display:flex;flex-direction:column;gap:12px}
+.tag{display:inline-block;align-self:flex-start;font-family:var(--f-mono);font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:1px 6px}
+.warn{background:#FCEFD8;border:1px solid #E8C27A;color:#5C3B05;border-radius:7px;padding:8px 12px;font-size:14.5px}
+.good{background:#E1F3E7;border:1px solid #9BD1AE;color:#134A2A;border-radius:7px;padding:8px 12px;font-size:14.5px}
+.bad{background:#F9E2DF;border:1px solid #E3A49B;color:#6B1A11;border-radius:7px;padding:8px 12px;font-size:14.5px}
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;font-size:14px}
+.steps li{display:flex;gap:8px;align-items:flex-start}
+.steps li i{flex:none;width:18px;height:18px;border-radius:50%;border:1.5px solid var(--line);margin-top:2px;display:inline-flex;align-items:center;justify-content:center;font-style:normal;font-size:11px;color:#fff}
+.steps li.done i{background:var(--ok);border-color:var(--ok)}
+.steps li.done i::after{content:"✓"}
+.case{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:14px;align-items:start}
+.opts{display:flex;flex-direction:column;gap:6px}
+.opts button{text-align:left;border:1px solid var(--line);background:var(--well);border-radius:7px;padding:8px 10px;font-size:14.5px;line-height:1.35}
+.opts button.sel{border-color:var(--accent);background:var(--soft)}
+.opts button.right{border-color:var(--ok);background:#E1F3E7}
+.opts button.wrong{border-color:var(--hot);background:#F9E2DF}
+.opts button:disabled{cursor:default;color:var(--ink)}
+.dots{display:flex;gap:5px;flex-wrap:wrap}
+.dots i{width:12px;height:12px;border-radius:50%;background:var(--line)}
+.dots i.cur{background:var(--accent)} .dots i.ok{background:var(--ok)} .dots i.half{background:var(--warn)} .dots i.no{background:var(--hot)}
+.task{border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.task h3{display:flex;gap:10px;align-items:baseline}
+.task h3 .mono{color:var(--muted);font-size:14px}
+.task p{font-size:15.5px;max-width:80ch}
+.ans{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.ans input{width:140px;font:inherit;font-family:var(--f-mono);padding:7px 10px;border:1px solid var(--line);border-radius:7px;background:#fff;color:var(--ink)}
+.ans .u{color:var(--muted);font-family:var(--f-mono)}
+.tq{border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:12px 16px;display:flex;flex-direction:column;gap:8px}
+.tq .qq{font-weight:600}
+.tq label{display:flex;gap:8px;align-items:flex-start;padding:5px 8px;border-radius:6px;border:1px solid transparent;font-size:15px;cursor:pointer}
+.tq label:hover{background:var(--well)}
+.tq label.right{border-color:var(--ok);background:#E1F3E7}
+.tq label.wrong{border-color:var(--hot);background:#F9E2DF}
+.tq input{margin-top:5px;accent-color:var(--accent)}
+.tq .ex{font-size:14px;color:var(--muted)}
+.circ{overflow-x:auto}
+.circ svg{min-width:640px}
+.circ svg text{font-family:var(--f-body);font-size:12.5px;fill:var(--ink)}
+.circ .el{cursor:pointer}
+.circ .el:hover .hl,.circ .el:focus-visible .hl{stroke:var(--accent);stroke-dasharray:4 3;fill:var(--soft);fill-opacity:.5}
+.circ .hl{fill:transparent;stroke:transparent;stroke-width:1.5}
+.sw{display:flex;align-items:center;gap:8px;font-size:14px}
+.sw button{min-width:110px}
+@media (max-width:1050px){.concepts{grid-template-columns:repeat(3,minmax(0,1fr))}.two,.case{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:820px){.lab,.lab.rev{grid-template-columns:minmax(0,1fr)}.concepts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.cpt p{display:none}.cpt{padding:8px 10px}.cpt b{font-size:15px}}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.mech{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.mc{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:6px;cursor:pointer;text-align:left;font:inherit;color:inherit}
+.mc:hover,.mc:focus-visible{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.mc b{font-family:var(--f-disp);font-size:16.5px}
+.mc .grp{font-family:var(--f-mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.mc svg{width:100%;height:auto;background:#0D171E;border-radius:7px;display:block}
+.mc .cond{font-size:13.5px;line-height:1.4}
+.mc .cond i{font-style:normal;font-family:var(--f-mono);color:var(--accent);font-size:13px}
+.fml{font-family:"IBM Plex Sans",Georgia,serif;font-size:19px;background:var(--well);border-left:4px solid var(--accent);border-radius:6px;padding:8px 14px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px}
+.fml i{font-family:Georgia,"Times New Roman",serif;font-size:21px}
+.fml small{font-family:var(--f-body);font-size:13px;color:var(--muted)}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 3px;line-height:1.15}
+.frac>span:first-child{border-bottom:1.4px solid currentColor;padding:0 3px}
+.frac>span:last-child{padding:0 3px}
+#dlg{position:fixed;inset:0;z-index:70;background:rgba(13,23,30,.55);display:flex;align-items:center;justify-content:center;padding:16px}
+#dlg[hidden]{display:none!important}
+#dlg .box{background:var(--panel);border-radius:12px;max-width:760px;width:100%;max-height:calc(100vh - 32px);overflow:auto;padding:18px;display:flex;flex-direction:column;gap:12px;position:relative}
+#dlg .x{position:absolute;top:8px;right:10px;border:0;background:none;font-size:26px;line-height:1;color:var(--muted);padding:4px 8px}
+#dlg svg{width:100%;height:auto;background:#0D171E;border-radius:8px}
+.gen{display:flex;gap:4px;align-items:flex-end;height:150px}
+.chip{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--accent);color:var(--accent);background:var(--panel);border-radius:14px;padding:2px 10px;font-size:13px;cursor:help}
+.chip:hover,.chip.on{background:var(--accent);color:#fff}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+@keyframes mvR{0%{transform:translateX(0);opacity:1}45%{transform:translateX(var(--d,70px));opacity:1}50%,100%{transform:translateX(var(--d,70px));opacity:0}}
+@keyframes out1{0%,48%{transform:translate(0,0);opacity:0}52%{opacity:1}100%{transform:translate(var(--dx,70px),var(--dy,-24px));opacity:1}}
+@keyframes flash{0%,45%{opacity:0}50%{opacity:1}75%,100%{opacity:0}}
+@keyframes show2{0%,48%{opacity:0}52%,100%{opacity:1}}
+@keyframes hide2{0%,48%{opacity:1}52%,100%{opacity:0}}
+@keyframes jig{0%,100%{transform:translate(0,0)}25%{transform:translate(3px,-2px)}50%{transform:translate(-2px,3px)}75%{transform:translate(2px,2px)}}
+@keyframes glow{0%,100%{opacity:.35}50%{opacity:1}}
+.an{animation-duration:3.2s;animation-iteration-count:infinite;animation-timing-function:linear;transform-box:fill-box}
+.a-mv{animation-name:mvR}.a-out{animation-name:out1}.a-fl{animation-name:flash}.a-s2{animation-name:show2}.a-h2{animation-name:hide2}.a-jig{animation-name:jig;animation-duration:.5s}.a-gl{animation-name:glow;animation-duration:1.6s}
+@keyframes mv1{0%{transform:translateX(0);opacity:1}25%{transform:translateX(var(--d,70px));opacity:1}27%,100%{transform:translateX(var(--d,70px));opacity:0}}
+@keyframes mv2{0%,38%{transform:translateX(0);opacity:0}40%{opacity:1}63%{transform:translateX(var(--d,70px));opacity:1}65%,100%{transform:translateX(var(--d,70px));opacity:0}}
+@keyframes s25{0%,24%{opacity:0}27%,100%{opacity:1}}
+@keyframes s25h{0%,24%{opacity:0}27%,63%{opacity:1}66%,100%{opacity:0}}
+@keyframes s65{0%,63%{opacity:0}66%,100%{opacity:1}}
+@keyframes h65{0%,63%{opacity:1}66%,100%{opacity:0}}
+@keyframes out65{0%,63%{transform:translate(0,0);opacity:0}66%{opacity:1}100%{transform:translate(var(--dx,70px),var(--dy,-24px));opacity:1}}
+@keyframes fl65{0%,62%{opacity:0}66%{opacity:1}85%,100%{opacity:0}}
+@keyframes fl25{0%,22%{opacity:0}26%{opacity:1}40%,100%{opacity:0}}
+.a-mv1{animation-name:mv1}.a-mv2{animation-name:mv2}.a-s25{animation-name:s25}.a-s25h{animation-name:s25h}.a-s65{animation-name:s65}.a-h65{animation-name:h65}.a-o65{animation-name:out65}.a-f65{animation-name:fl65}.a-f25{animation-name:fl25}
+@media (prefers-reduced-motion:reduce){.an{animation:none}}
+@media (max-width:560px){.fml{font-size:17px}.fml i{font-size:19px}}
+.vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin:14px 0}
+.vt h4{margin:10px 0 4px;font-size:15.5px}.vt p{font-size:14px;line-height:1.5}.vt .vk{color:var(--muted);margin-top:6px;font-size:13.5px}
+.mlab{margin-top:14px;border-left:4px solid var(--accent,#B4531B)}.mlab h3{font-size:17px}.mlab input{max-width:100%}
+</style>
+<style>
+.cases{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.cs{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;cursor:pointer;text-align:left;font:inherit;color:inherit}
+.cs:hover,.cs.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--soft)}
+.cs b{font-size:15.5px}.cs .tag{align-self:flex-start}
+.cs.done{border-left:5px solid var(--ok)}
+.phase{display:flex;gap:6px;flex-wrap:wrap}.phase span{font:12.5px var(--mono,monospace);padding:3px 8px;border-radius:12px;background:var(--well);color:var(--muted)}.phase span.on{background:var(--accent);color:#fff}
+.stat{font-weight:600}.stat.ok{color:var(--ok)}.stat.hot{color:var(--hot)}.stat.w{color:var(--warn)}
+.pol2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:820px){.pol2{grid-template-columns:1fr}}
+.cmpw{overflow-x:auto}.cmp{width:100%;min-width:560px;border-collapse:collapse;font-size:14px}.cmp td,.cmp th{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}.cmp th{background:var(--well)}
+</style>
+<div class="wrap">
+<header class="top"><div class="topin">
+ <div><div class="eyebrow">Техника высоких напряжений · тема 6 · физика разряда</div><h1>Пробой жидких диэлектриков</h1></div>
+ <nav class="tabs" role="tablist" aria-label="Разделы">
+  <button role="tab" data-tab="t0"><span>0</span>Как выглядит</button>
+  <button role="tab" data-tab="t1" class="on"><span>1</span>Мостик</button>
+  <button role="tab" data-tab="t2"><span>2</span>Пузырёк</button>
+  <button role="tab" data-tab="t3"><span>3</span>Температура</button>
+  <button role="tab" data-tab="t4"><span>4</span>Время и объём</button>
+  <button role="tab" data-tab="t5"><span>5</span>Испытание</button>
+  <button role="tab" data-tab="t6"><span>6</span>Барьеры</button>
+  <button role="tab" data-tab="t7"><span>7</span>Случаи</button>
+  <button role="tab" data-tab="t8"><span>8</span>Задачи</button>
+  <button role="tab" data-tab="t9"><span>9</span>Тест</button>
+ </nav>
+</div></header>
+
+<section class="concepts" aria-label="Ключевые понятия">
+ <div class="cpt"><b>Техническая жидкость <button class="q" data-tip="tech" aria-label="Справка">?</button></b><p>Вода, газ, волокна — прочность в разы ниже предельной</p></div>
+ <div class="cpt"><b>Мостик <button class="q" data-tip="bridge" aria-label="Справка">?</button></b><p>Капли и волокна выстраиваются вдоль поля</p></div>
+ <div class="cpt"><b>Пузырёк <button class="q" data-tip="bubble" aria-label="Справка">?</button></b><p>Поле в 1,22 раза больше, газ слабее — начало пробоя</p></div>
+ <div class="cpt"><b>Время <button class="q" data-tip="tau" aria-label="Справка">?</button></b><p>Примеси работают только при длительном напряжении</p></div>
+ <div class="cpt"><b>ГОСТ 6581-75 <button class="q" data-tip="gost" aria-label="Справка">?</button></b><p>2,5 мм, 2 кВ/с, шесть пробоев, среднее</p></div>
+</section>
+<section id="t0" class="tabp" hidden></section>
+<section id="t1" class="tabp"></section>
+<section id="t2" class="tabp" hidden></section>
+<section id="t3" class="tabp" hidden></section>
+<section id="t4" class="tabp" hidden></section>
+<section id="t5" class="tabp" hidden></section>
+<section id="t6" class="tabp" hidden></section>
+<section id="t7" class="tabp" hidden></section>
+<section id="t8" class="tabp" hidden></section>
+<section id="t9" class="tabp" hidden></section>
+</div>
+<div id="tip" role="tooltip" hidden></div>
+<div id="dlg" hidden role="dialog" aria-modal="true" aria-labelledby="dlgt"><div class="box"><button class="x" aria-label="Закрыть">×</button><div id="dlgc"></div></div></div>
+<script>
+const fx=(v,n=1)=>(+v).toFixed(n).replace(".",",").replace("-","−");
+const ER_OIL=2.2,KB=3*ER_OIL/(2*ER_OIL+1),GAP=2.5;
+const paschenP=(dmm,p)=>{const pd=p*dmm/10;return 0.365*pd/(Math.log(15*pd)-Math.log(Math.log(101)))};
+const eBub=(dmm,p)=>paschenP(dmm,p)/(KB*dmm);
+const wsat=t=>Math.pow(10,7.489-1725.6/(273.15+t));
+const W_SL=200,U_MIN=15;
+const FIB=[[0,"нет"],[0.5,"мало"],[1,"много"]];
+const sig=x=>1/(1+Math.exp(-x));
+function oilU(W,F,t){const tl=Math.max(t,0),Ws=wsat(tl),diss=Math.min(W,Ws),liq=Math.min(W,W_SL),em=Math.max(0,liq-diss),sl=Math.max(0,W-W_SL),fz=sig(-(t+0.5)/0.4);
+ const RS=diss/Ws,k=1.2+2.5*F,U0=75-25*F;let U=U_MIN+(U0-U_MIN)*Math.exp(-k*Math.pow(RS,1.5));
+ const emE=em*(1-0.8*fz);U=U/(1+(0.03+0.04*F)*emE);
+ if(t<0)U*=1+0.004*(-t);U*=1-0.55*sig((t-92)/5);
+ return {U:Math.max(6,U),Ws:wsat(t),RS,diss,em:em*(1-fz),ice:em*fz,sl}}
+const uGas=(p,deg)=>deg?36+4*(1-Math.exp(-p/150)):28+10*(1-Math.exp(-p/300));
+const VS={I:300,form:200,t2:1e-3};
+const uTime=(tau,cl)=>{const Uinf=VS.I*(0.85*cl+0.45*(1-cl));return Uinf+(VS.I-Uinf)/(1+Math.pow(tau/VS.t2,1.2))+VS.form*Math.sqrt(1e-6/tau)};
+const ROCK={oil:{n:"Трансформаторное масло",A:40,B:75,k:0.6,c:"#FFD54A"},quartz:{n:"Кварц",A:90,B:60,k:0.25,c:"#C39BFF"},sand:{n:"Песчаник",A:70,B:45,k:0.25,c:"#FF8A3D"},water:{n:"Техническая вода",A:10,B:30.9,k:1,c:"#4FB3FF"}};
+const uRock=(m,t)=>{const r=ROCK[m];return r.A+r.B*Math.pow(1e-6/t,r.k)};
+function cross(a,b){let lo=1e-8,hi=1e-4;const f=t=>uRock(a,t)-uRock(b,t);if(f(lo)*f(hi)>0)return null;for(let i=0;i<80;i++){const m=Math.sqrt(lo*hi);if(f(lo)*f(m)<=0)hi=m;else lo=m}return Math.sqrt(lo*hi)}
+const SN=0.75;
+const GAPV=[{k:"in",n:"Импульс, острие −",A:58,c:"#7EE0A8"},{k:"ip",n:"Импульс, острие +",A:50,c:"#4FB3FF"},{k:"ac",n:"Переменное 50 Гц",A:36,c:"#FFD54A"},{k:"dn",n:"Постоянное, острие −",A:27,c:"#FF8A3D"},{k:"dp",n:"Постоянное, острие +",A:22,c:"#FF5A4E"}];
+const uGap=(A,S)=>A*Math.pow(S,SN);
+const volK=(v,m)=>Math.pow(v,-1/m);
+const barR=(x,imp)=>{const p=1.5,g=Math.pow(x/0.25,p)*Math.exp(p*(1-x/0.25));return 1+(imp?0.35:1)*g};
+const ER_B=4.4,EA1=50;
+const eAllow=dcm=>EA1*Math.pow(dcm,-0.25);
+function mbi(S,n,tb){const So=S-n*tb,d=So/(n+1),E=eAllow(d/10),Ueq=(So+n*tb*ER_OIL/ER_B)/10;return {d,So,E,U:E*Ueq,Eb:E*ER_OIL/ER_B}}
+const NORM=[{k:"15",n:"до 15 кВ",fr:30,af:25,ex:20},{k:"35",n:"св. 15 до 35 кВ",fr:35,af:30,ex:25},{k:"220",n:"от 60 до 220 кВ",fr:45,af:40,ex:null},{k:"500",n:"от 330 до 500 кВ",fr:55,af:50,ex:null}];
+const POUR={tkp:{n:"ТКп (ГОСТ 982-80)",p:-45},agk:{n:"АГК, арктическое",p:-60}};
+function stats(a){const n=a.length,m=a.reduce((s,x)=>s+x,0)/n,s=n>1?Math.sqrt(a.reduce((q,x)=>q+(x-m)**2,0)/(n-1)):0;return {n,m,s,V:m?s/m*100:0}}
+if(typeof module!=="undefined"&&typeof window==="undefined")module.exports={fx,KB,paschenP,eBub,wsat,oilU,uGas,uTime,uRock,cross,ROCK,GAPV,uGap,volK,barR,eAllow,mbi,NORM,POUR,stats,FIB};
+
+const TIPS={
+liq:"<b>Жидкие диэлектрики</b> — трансформаторное и конденсаторное масла (минеральные), растительные масла, синтетические жидкости, кремнийорганические жидкости. Неполярные (минеральное масло): ρ ≈ 10<sup>18</sup> Ом·см, ε = 1,8…2,5, tgδ ≈ 0,001 (учебник Важова, разд. 1.2.1).",
+tech:"<b>Технически чистая жидкость</b> — та, с которой имеют дело на практике: в ней не менее 10<sup>−2</sup>…10<sup>−3</sup> % (по массе) воды, газов, волокон целлюлозы, частиц углерода и продуктов старения. Хорошо очищенная и обезгаженная жидкость выдерживает до 1000 кВ/см, техническая — в разы меньше.",
+scat:"<b>Разброс.</b> У жидкостей пробивные напряжения разбросаны гораздо сильнее, чем у газов: отклонение отдельного пробоя от среднего — до 50…70 %, среднее квадратическое отклонение — 10…15 %. Поэтому по ГОСТ 6581-75 делают шесть пробоев и считают среднее.",
+bridge:"<b>Мостик</b>. Капли воды (ε ≈ 80) и волокна целлюлозы (ε ≈ 6,4) поляризуются, втягиваются в область наибольшей напряжённости и вытягиваются вдоль силовых линий. Цепочка из них проводит ток, нагревает масло до кипения, в разрывах цепочки поле резко усиливается — начинается ионизация и пробой.",
+water3:"<b>Три состояния воды в масле</b>: молекулярно растворённая; эмульсия — капельки 2…10 мкм; отстой на дне бака. Сильнее всего прочность снижает эмульгированная вода. При влагосодержании больше примерно 0,02 % вода коагулирует и выпадает в отстой — сам отстой прочность не снижает, но говорит о сильном увлажнении.",
+ws:"<b>Растворимость воды</b> в минеральном масле сильно растёт с температурой: по учебнику ≈ 40·10<sup>−6</sup> при 20 °C и ≈ 400·10<sup>−6</sup> при 80 °C. В тренажёре между этими точками — аппроксимация lg W<sub>s</sub> = 7,489 − 1726/T (T в кельвинах, W<sub>s</sub> в г/т). 1 г/т = 1 ppm = 0,0001 %.",
+rs:"<b>Относительное насыщение</b> RS = W<sub>раств</sub>/W<sub>s</sub>(T). Для пробоя важна не абсолютная влажность, а насколько масло близко к насыщению: те же 20 г/т при 20 °C — половина насыщения, при 70 °C — меньше десятой части.",
+fib:"<b>Волокна</b> бумаги, картона, пряжи попадают в масло из твёрдой изоляции. Они гигроскопичны: впитывают воду и облегчают образование мостиков — при одной и той же влажности масло с волокнами пробивается при меньшем напряжении.",
+umodel:"<b>Модель тренажёра.</b> U<sub>пр</sub> в стандартной ячейке (2,5 мм, 50 Гц) задана учебной зависимостью от относительного насыщения, количества эмульсии и волокон. Она передаёт ход рис. 1.25 и 1.28 учебника Важова и порядок величин из практики, но не заменяет протокол испытаний конкретного масла.",
+bubble:"<b>Газовый пузырёк</b> — слабое место масла. ε газа ≈ 1 меньше ε масла 2,2, поэтому поле в сферическом пузырьке больше поля в масле в 3ε/(2ε + 1) = 1,22 раза, а прочность газа в десятки раз ниже. В пузырьке начинаются ЧР, газ выделяется, пузырёк растёт — это начало пробоя. Связь с темой 4 (закон Пашена) и темой 10 (ЧР).",
+kb:"<b>Коэффициент 1,22.</b> Для сферического включения с ε = 1 в среде с ε<sub>r</sub>: E<sub>в</sub> = 3ε<sub>r</sub>/(2ε<sub>r</sub> + 1)·E. Для масла ε<sub>r</sub> = 2,2: 6,6/5,4 = 1,22.",
+paschen:"<b>Пробой газа в пузырьке</b> — по закону Пашена (тема 4): U<sub>пр</sub> зависит от произведения p·d. Пузырёк 0,5 мм при 760 мм рт. ст.: U ≈ 2,9 кВ, напряжённость зажигания в масле ≈ 4,7 кВ/мм. Оговорка: плавающий пузырёк разряжается реже, чем по Пашену.",
+press:"<b>Давление.</b> На переменном напряжении U<sub>пр</sub> масла растёт с давлением: газ в пузырьках сжимается, его прочность растёт по Пашену. При пониженном давлении из недегазированного масла выделяется растворённый газ — прочность резко падает (рис. 1.26). На импульсах давление почти не влияет.",
+degas:"<b>Дегазация и вакуумная заливка.</b> Масло сушат и дегазируют на установках с вакуумом и подогревом, а заливают в бак под вакуумом — тогда в изоляции не остаётся воздушных пузырьков. Растворённый газ — ещё и источник пузырьков при нагреве.",
+temp:"<b>Температура</b> (рис. 1.28). Чистое сухое масло почти не реагирует на температуру до области кипения. Влажное масло: при охлаждении растворённая вода переходит в эмульсию — прочность падает до минимума около 0 °C; ниже 0 °C капли замерзают, у льда ε близка к ε масла — прочность снова растёт; выше ≈ 80 °C испарение и кипение снижают прочность.",
+ice:"<b>Лёд.</b> У льда диэлектрическая проницаемость близка к проницаемости масла, поэтому замёрзшие капли почти не искажают поле и не образуют мостиков.",
+pour:"<b>Температура застывания.</b> ТКп (ГОСТ 982-80) — не выше −45 °C; арктическое масло АГК (ТУ 38.1011271-89) — не выше −60 °C, рекомендовано для трансформаторов арктического исполнения. ПУЭ, табл. 1.8.38, прим. 1: проверка температуры застывания не обязательна только для умеренного климата — для Кольского полуострова она нужна.",
+lab20:"<b>Проба зимой.</b> По ГОСТ 6581-75 пробу испытывают при 15…35 °C. Холодную пробу выдерживают в закрытом сосуде до комнатной температуры: если открыть холодную банку в тёплой лаборатории, на ней и в масле конденсируется влага — результат занижен.",
+tau:"<b>Время воздействия</b> (рис. 1.29). Область I (короткие импульсы, < 10<sup>−3</sup> с): примеси не успевают переместиться, U<sub>пр</sub> от них почти не зависит; при τ < 10<sup>−5</sup> с прочность резко растёт — время сравнимо с временем формирования разряда. Область II (> 10<sup>−3</sup> с): работают влага, волокна и пузырьки — U<sub>пр</sub> падает, тем сильнее, чем грязнее масло.",
+inv:"<b>Инверсия прочности</b> (рис. 1.39). На импульсах короче ≈ 10<sup>−6</sup> с прочность жидкостей растёт быстрее, чем горных пород: масло, а при < (2…3)·10<sup>−7</sup> с даже техническая вода становятся прочнее породы. Тогда разряд между электродами, прижатыми к поверхности камня в жидкости, идёт внутрь камня и раскалывает его — на этом основана электроимпульсная технология разрушения пород (ТПУ).",
+gapn:"<b>Расстояние.</b> U<sub>пр</sub> = A·S<sup>n</sup> (ф. 1.50), n < 1: при удвоении промежутка напряжение растёт меньше чем вдвое, средняя прочность E = U/S падает. В тренажёре n = 0,75, A подобраны по форме кривых рис. 1.30 (острие — плоскость).",
+pol:"<b>Полярность.</b> В несимметричном промежутке U<sub>пр</sub> при отрицательном острие выше, чем при положительном (рис. 1.30). Для полярных жидкостей эффект сильнее — у воды до 2…2,5 раза.",
+vol:"<b>Масштабный эффект.</b> Чем больше площадь электродов и объём жидкости под сильным полем, тем вероятнее, что там окажется «слабое место» — частица, волокно, пузырёк. Поэтому U<sub>пр</sub> в реальном баке ниже, чем в ячейке 2,5 мм. Тренажёр оценивает эффект по распределению Вейбулла: U ∝ (V/V<sub>0</sub>)<sup>−1/m</sup>.",
+weib:"<b>Распределение Вейбулла</b> — стандартное описание пробоя «по слабому звену». Показатель m тем больше, чем меньше разброс: разброс 10…15 % (учебник) соответствует m ≈ 8…12. Модель оценочная.",
+elec:"<b>Состояние электродов</b>: загрязнение, окисление и плохая полировка снижают E<sub>пр</sub>. Влияние материала электродов заметно только в промежутках меньше нескольких миллиметров.",
+gost:"<b>ГОСТ 6581-75</b> «Материалы электроизоляционные жидкие. Методы электрических испытаний». Пробивное напряжение — на переменном напряжении 50 Гц в стандартной ячейке; зазор между электродами (2,5 ± 0,05) мм; подъём напряжения 2 кВ/с ± 20 %; первое напряжение — через 10 мин после заполнения; шесть пробоев с интервалом 5 мин; после каждого пробоя масло между электродами осторожно перемешивают стеклянной палочкой.",
+kv:"<b>Киловольтметр</b> аппарата показывает действующее значение напряжения на ячейке. Стрелка или цифровой индикатор фиксирует напряжение в момент пробоя: защита аппарата сразу снимает напряжение.",
+gauge:"<b>Калибры</b> — пластинки 2,45 и 2,55 мм. Перед серией зазор проверяют: 2,45 мм проходит между электродами, 2,55 мм — нет. Так зазор остаётся (2,5 ± 0,05) мм (ГОСТ 6581-75).",
+stir:"<b>Перемешивание.</b> После пробоя в зазоре остаются пузырьки газа и частицы углерода. Масло между электродами осторожно перемешивают стеклянной палочкой, не взбивая пузырьков, и выдерживают 5 мин — иначе следующий пробой будет занижен.",
+appar:"<b>Аппарат для испытания масла</b>: испытательный трансформатор 50 Гц, ячейка под защитным колпаком с блокировкой, киловольтметр, регулятор с равномерным подъёмом 2 кВ/с и защита, снимающая напряжение при пробое. Работать — только под руководством и после инструктажа.",
+rate:"<b>Подъём напряжения</b> — равномерно, 2 кВ/с ± 20 % (ГОСТ 6581-75, п. 4.1.1.3), от нуля до пробоя. Слишком быстрый подъём завышает результат: примеси не успевают сработать (вкладка 4, время воздействия).",
+cell:"<b>Ячейка (сосуд)</b>: стекло, кварц или пластмасса; стенки не ближе 12 мм к электродам; электроды погружены не менее чем на 15 мм; шероховатость электродов Ra ≤ 0,20 мкм. Зазор проверяют калибрами: 2,45 мм проходит, 2,55 мм — нет.",
+cv:"<b>Коэффициент вариации</b> V = S/Ū·100 %, S — среднее квадратическое отклонение шести значений (по n − 1). Если V > 20 %, ячейку заполняют второй раз той же пробой, делают ещё шесть пробоев и считают по 12 значениям. Если и тогда V > 20 % — качество масла признают неудовлетворительным (ГОСТ 6581-75, п. 4.3).",
+norm:"<b>Нормы ПУЭ</b> (7-е изд., гл. 1.8, п. 1.8.33, табл. 1.8.38) для пробивного напряжения масла по ГОСТ 6581-75, кВ, не менее: до 15 кВ — 30 (свежее до заливки) / 25 (после заливки); св. 15 до 35 кВ — 35/30; 60…220 кВ — 45/40; 330…500 кВ — 55/50. Масло в эксплуатации — по РД 34.45-51.300-97, разд. 25 и СТО 34.01-23.1-001-2017.",
+exnorm:"<b>Эксплуатация.</b> Предельно допустимое пробивное напряжение эксплуатационного масла по РД 34.45-51.300-97: для оборудования до 15 кВ — 20 кВ, св. 15 до 35 кВ — 25 кВ. Ниже — масло сушат, очищают или заменяют. Перед применением сверяйте с документом, действующим в вашей организации.",
+barrier:"<b>Барьер</b> — лист электрокартона в масле между электродами. Он задерживает ионы: заряд растекается по барьеру и выравнивает поле, а ещё барьер рвёт мостики из волокон. Эффект сильнее в неоднородном поле и при длительном напряжении, слабее на импульсах. Оптимум — около 0,25S от острия (рис. 1.31: S = 75 мм, картон 5 мм, 50 Гц — U<sub>пр</sub> почти вдвое выше).",
+mbi:"<b>Маслобарьерная изоляция</b> трансформаторов и вводов: масляный промежуток разбит цилиндрами из электрокартона на узкие каналы. Узкий канал прочнее широкого (ф. 1.50: E<sub>пр</sub> ∝ S<sup>n−1</sup>), а барьеры не дают собраться длинному мостику. В учебнике для вводов с МБИ допустимая напряжённость в масле — 40…65 кВ/см в зависимости от толщины канала. В тренажёре E<sub>доп</sub> = 50·d<sup>−0,25</sup> кВ/см (d в см) — учебная оценка.",
+str:"<b>Стримеры в масле.</b> При положительном острие стример тонкий, нитевидный, ветвистый и быстрый — километры в секунду и больше; при отрицательном — густой «куст», медленнее. Канал заполнен газом и паром. В сантиметровых промежутках, как в газах, развивается лидер (учебник Важова; Lesaint, 2016).",
+mech:"<b>Механизмы пробоя.</b> Длительное напряжение: мостики из воды и волокон, нагрев, кипение, пузырьки → ионизация в газе → стример → пробой. Импульс < 10<sup>−3</sup> с: примеси не успевают переместиться; начальная стадия — при ≈ 100 кВ/см, работают эмиссия электронов с катода, ударная ионизация у катода, автоионизация у анода, локальное вскипание."
+};
+const CASES=[
+{id:"c1",tag:"КТП у карьера",t:"Весенняя проба масла",x:"КТП 6/0,4 кВ у карьера ГОКа. Весной, после оттепелей, пробу масла испытали в лаборатории по ГОСТ 6581-75: среднее из шести пробоев — 18 кВ. Осенью было 42 кВ. Силикагель в воздухоосушителе розовый, течей нет.",q:"Что вероятнее всего произошло и что делать?",o:["Бак «дышал» через отработавший воздухоосушитель, масло набрало влагу; заменить силикагель, масло высушить или заменить, повторить пробу","Масло окислилось от перегрузки; достаточно долить свежего масла","Пробу испытывали неправильно: весной масло всегда слабее, повторять не нужно","Пробой ячейки вызван грязными электродами; трансформатор в порядке"],a:0,e:"При суточных колебаниях температуры трансформатор «вдыхает» воздух через воздухоосушитель. Розовый силикагель уже не поглощает воду — влага попадает в масло. 18 кВ меньше предельно допустимых 20 кВ для оборудования до 15 кВ (РД 34.45-51.300-97): масло надо сушить или менять, а осушитель перезарядить.",src:"учебник Важова, разд. 1.2.1; РД 34.43.105-89; РД 34.45-51.300-97"},
+{id:"c2",tag:"Лаборатория",t:"Проба с мороза",x:"Пробу отобрали из трансформатора на открытой подстанции при −28 °C. Лаборант принёс банку в тёплое помещение, сразу открыл и залил масло в ячейку. Результат — 21 кВ, хотя летом было 48 кВ.",q:"Где ошибка?",o:["Холодную пробу открыли сразу: на холодном стекле и в масле сконденсировалась влага; банку нужно выдержать закрытой до 15…35 °C","Ошибки нет: зимой прочность масла всегда в два раза ниже","Нужно было испытывать прямо на морозе — так ближе к условиям работы","Банку надо было подогреть до 80 °C, чтобы вода испарилась"],a:0,e:"ГОСТ 6581-75 требует испытывать пробу при 15…35 °C. Холодная банка в тёплом влажном воздухе запотевает: влага попадает в масло, результат занижен. Банку выдерживают закрытой до температуры помещения.",src:"ГОСТ 6581-75, п. 4.2.2; РД 34.43.105-89"},
+{id:"c3",tag:"Шахтная ПС",t:"Масляный выключатель после отключений КЗ",x:"Маломасляный выключатель 6 кВ на шахтной подстанции отключил несколько коротких замыканий. Масло в бачке потемнело, в пробе видны чёрные взвешенные частицы.",q:"Чем опасно такое масло?",o:["Дуга разложила масло: взвешенный углерод и газы снижают прочность; масло надо заменить, бачки промыть","Ничем: в выключателе масло только гасит дугу, его прочность не важна","Тёмный цвет — результат окисления, на прочность не влияет","Опасна только пониженная вязкость, углерод безвреден"],a:0,e:"Дуга разлагает масло на газы (в основном водород, ацетилен) и углерод. Частицы углерода — проводящие включения: мостики возникают легче. ПУЭ (табл. 1.8.38) требует отсутствия взвешенного угля в масле; после нормированного числа отключений КЗ масло меняют.",src:"учебник Важова, разд. 1.2.1; ПУЭ, табл. 1.8.38"},
+{id:"c4",tag:"Монтаж",t:"Залили без вакуума",x:"Трансформатор 35 кВ после ремонта залили маслом через верхний кран без вакуума и через час включили под напряжение. Сработало газовое реле, акустический датчик зафиксировал разряды.",q:"Что упустили?",o:["Воздушные пузырьки остались в изоляции и масле: нужна вакуумная заливка дегазированным маслом и выдержка перед включением","Газовое реле неисправно: масло не может давать газ","Масло было слишком сухим, нужно было добавить воды","Нужно было залить масло при −20 °C"],a:0,e:"Пузырёк в масле — слабое место: поле в нём в 1,22 раза больше, а прочность газа мала. В пузырьках начались ЧР, газ выделялся и копился в газовом реле. Масло заливают под вакуумом, дегазированным, и выдерживают время, указанное заводом, чтобы вышел воздух.",src:"учебник Важова, рис. 1.26; тема 10 (ЧР в масле)"},
+{id:"c5",tag:"Испытание",t:"Шесть пробоев — большой разброс",x:"При испытании по ГОСТ 6581-75 получили 42, 28, 51, 35, 22, 47 кВ. Среднее 37,5 кВ, норма для оборудования до 15 кВ после заливки — 25 кВ.",q:"Можно ли записать в протокол «соответствует»?",o:["Нет: коэффициент вариации ≈ 30 % больше 20 % — по ГОСТ нужно второе заполнение и расчёт по 12 значениям","Да: среднее больше нормы","Нет: один пробой (22 кВ) ниже нормы, масло бракуют сразу","Да, но только после отбрасывания минимального и максимального значений"],a:0,e:"S ≈ 11,2 кВ, V = 11,2/37,5 ≈ 30 %. По п. 4.3 ГОСТ 6581-75 при V > 20 % ячейку заполняют второй раз, делают ещё шесть пробоев и считают по 12. Если и тогда V > 20 % — масло неудовлетворительно. Большой разброс сам по себе говорит о примесях.",src:"ГОСТ 6581-75, п. 4.3"},
+{id:"c6",tag:"Обогащение руды",t:"Почему разряд идёт в камень",x:"В электроимпульсной установке кусок руды лежит в воде на двух электродах. Подают импульс с фронтом ≈ 10<sup>−7</sup> с — и разряд проходит не по воде вдоль поверхности, а внутри куска, раскалывая его по границам минералов.",q:"Почему вода не пробивается первой?",o:["На таких коротких импульсах прочность воды выше прочности породы — вольт-секундные характеристики пересекаются (инверсия)","Вода — проводник, ток через неё не опасен","Порода содержит металл и всегда слабее воды","Разряд идёт по кратчайшему пути, а он внутри камня"],a:0,e:"По рис. 1.39 при экспозиции меньше 10<sup>−6</sup> с порода электрически слабее масла, а меньше (2…3)·10<sup>−7</sup> с — слабее технической воды. Разряд «внедряется» в твёрдое тело. Технология развита в Томском политехническом университете и применяется для дробления и избирательного раскрытия руд.",src:"учебник Важова, разд. 1.2.2, рис. 1.39–1.40"},
+{id:"c7",tag:"Ремонт",t:"Волокна после перемотки",x:"После капитального ремонта масляного трансформатора 6 кВ (замена части бумажной изоляции) масло отфильтровали центрифугой. Проба: влагосодержание 12 г/т — хорошо, но U<sub>пр</sub> всего 27 кВ, а при визуальном осмотре в пробе видны волокна.",q:"Что сделать?",o:["Дочистить масло фильтр-прессом или тонкой фильтрацией от волокон: при той же влажности волокна облегчают мостики","Ничего: влажность в норме, значит и масло годно","Добавить ингибитор окисления","Нагреть масло до 100 °C"],a:0,e:"Волокна из бумаги и картона гигроскопичны и выстраиваются в мостики. ПУЭ требует отсутствия механических примесей (визуально). Центрифуга убирает воду и тяжёлые частицы, но лёгкие волокна — плохо; нужна фильтрация.",src:"учебник Важова, разд. 1.2.1; ПУЭ, табл. 1.8.38"},
+{id:"c8",tag:"Север",t:"Трансформатор в мороз −50 °C",x:"Резервный трансформатор на отдалённом объекте простоял отключённым неделю при −50 °C. В баке масло ТКп. Перед включением дежурный видит по маслоуказателю, что уровень «застыл».",q:"В чём риск включения?",o:["Масло ТКп (застывание не выше −45 °C) загустело: циркуляция и охлаждение нарушены, РПН и выключатели могут не работать; для такого климата нужно арктическое масло (АГК, не выше −60 °C) и порядок включения по инструкции завода","Риска нет: на морозе прочность масла максимальна","Опасно только то, что масло станет проводником","Нужно включить на номинальную нагрузку — масло быстро прогреется"],a:0,e:"Электрическая прочность замёрзшей влаги не опасна (лёд не образует мостиков), но вязкое масло не циркулирует, а приборы и приводы в масле работают неправильно. Для районов с такими морозами выбирают арктические масла; ПУЭ требует проверять температуру застывания вне умеренного климата.",src:"ПУЭ, табл. 1.8.38, прим. 1; ТУ 38.1011271-89 (АГК)"}];
+const TASKS=[
+{id:"k1",t:"Средняя прочность пробы",x:"При испытании масла по ГОСТ 6581-75 получены пробивные напряжения 48, 52, 45, 50, 47 и 46 кВ. Зазор ячейки 2,5 мм. Найдите среднюю пробивную напряжённость, кВ/мм.",h:["Сначала среднее арифметическое шести значений.","E = Ū/S, S = 2,5 мм."],a:19.2,tol:0.02,s:"Ū = (48 + 52 + 45 + 50 + 47 + 46)/6 = 288/6 = 48,0 кВ; E = 48,0/2,5 = 19,2 кВ/мм. Это 192 кВ/см — в разы меньше прочности очищенного масла (до 1000 кВ/см): сказываются примеси."},
+{id:"k2",t:"Нужно ли второе заполнение",x:"Пробивные напряжения: 42, 28, 51, 35, 22, 47 кВ. Найдите коэффициент вариации V, %.",h:["Ū = 37,5 кВ.","S = √(Σ(U − Ū)²/(n − 1)), n = 6.","V = S/Ū·100 %. Сравните с 20 %."],a:29.9,tol:0.03,s:"Отклонения: 4,5; −9,5; 13,5; −2,5; −15,5; 9,5. Сумма квадратов 629,5; S = √(629,5/5) = 11,22 кВ; V = 11,22/37,5 = 29,9 % > 20 % — по ГОСТ 6581-75 нужно второе заполнение и расчёт по 12 значениям."},
+{id:"k3",t:"Пузырёк 0,3 мм",x:"В масле (ε = 2,2) плавает воздушный пузырёк диаметром 0,3 мм при атмосферном давлении. Напряжение пробоя воздуха в нём по закону Пашена — 1,93 кВ. При какой напряжённости поля в масле, кВ/мм, в пузырьке начнутся разряды?",h:["Поле в пузырьке больше поля в масле в 3ε/(2ε + 1) раз.","E<sub>в</sub> = U<sub>пр</sub>/d, E<sub>масла</sub> = E<sub>в</sub>/1,22."],a:5.27,tol:0.03,s:"K = 6,6/5,4 = 1,222. E<sub>в</sub> = 1,93/0,3 = 6,44 кВ/мм; E<sub>масла</sub> = 6,44/1,222 = 5,27 кВ/мм. Рабочие поля в маслобарьерной изоляции — 4…6,5 кВ/мм: пузырёк такого размера уже опасен."},
+{id:"k4",t:"Сколько воды в эмульсии",x:"Влагосодержание масла 60 г/т. Растворимость воды при 20 °C — 40 г/т (по учебнику). Сколько воды, г/т, находится в масле в виде эмульсии при 20 °C, если отстоя ещё нет?",h:["Растворено не больше, чем растворимость.","Отстой начинается примерно с 0,02 % = 200 г/т."],a:20,tol:0.02,s:"Растворено 40 г/т, остальное 60 − 40 = 20 г/т — эмульсия. Именно эмульгированная вода сильнее всего снижает прочность. При 80 °C растворимость ≈ 400 г/т — та же вода полностью растворится."},
+{id:"k5",t:"Нагреть, чтобы растворилась",x:"Растворимость воды в масле в тренажёре: lg W<sub>s</sub> = 7,489 − 1726/T (W<sub>s</sub> в г/т, T в К). До какой температуры, °C, нужно нагреть масло с влагосодержанием 60 г/т, чтобы вся вода перешла в растворённое состояние?",h:["Приравняйте W<sub>s</sub> = 60: lg 60 = 1,778.","T = 1726/(7,489 − 1,778), потом вычтите 273."],a:29,tol:0.03,s:"7,489 − 1,778 = 5,711; T = 1726/5,711 = 302,2 К ≈ 29 °C. Поэтому прочность влажного масла растёт при нагреве до 60…80 °C (рис. 1.28), а пробу испытывают при 15…35 °C — иначе результаты несравнимы."},
+{id:"k6",t:"Промежуток острие — плоскость",x:"Пробивное напряжение масляного промежутка острие — плоскость при S = 5 см — 150 кВ (50 Гц, амплитуда). Оцените U<sub>пр</sub> при S = 20 см по формуле U = A·S<sup>n</sup> при n = 0,75.",h:["U<sub>2</sub>/U<sub>1</sub> = (S<sub>2</sub>/S<sub>1</sub>)<sup>n</sup>.","4<sup>0,75</sup> = 2,83."],a:424,tol:0.02,s:"U = 150·(20/5)<sup>0,75</sup> = 150·2,83 = 424 кВ. Промежуток вырос в 4 раза, а напряжение — только в 2,8 раза: средняя прочность падает."},
+{id:"k7",t:"Где поставить барьер",x:"Промежуток острие — плоскость в масле S = 75 мм. На каком расстоянии от острия, мм, поставить барьер из электрокартона, чтобы получить наибольший эффект на 50 Гц (по рис. 1.31)?",h:["Оптимум — около четверти промежутка от острия."],a:18.75,tol:0.03,s:"S<sub>б</sub> ≈ 0,25S = 0,25·75 = 18,75 мм ≈ 19 мм. По рис. 1.31 U<sub>пр</sub> при этом почти вдвое больше, чем без барьера."},
+{id:"k8",t:"Ячейка и бак",x:"В ячейке ГОСТ 6581-75 масло пробивается в среднем при 60 кВ. Объём масла под сильным полем в изоляционном промежутке трансформатора больше, чем в ячейке, в 10<sup>4</sup> раз. Оцените, при каком напряжении в пересчёте на тот же зазор, кВ, пробилось бы такое масло, если разброс описывается законом Вейбулла с m = 10.",h:["U ∝ (V/V<sub>0</sub>)<sup>−1/m</sup>.","(10<sup>4</sup>)<sup>−0,1</sup> = 10<sup>−0,4</sup> = 0,398."],a:23.9,tol:0.03,s:"U = 60·10<sup>−0,4</sup> = 60·0,398 = 23,9 кВ. Масштабный эффект: в большом объёме обязательно найдётся слабое место. Поэтому допустимые напряжённости в конструкциях берут намного ниже, чем по ячейке."},
+{id:"k9",t:"Канал маслобарьерной изоляции",x:"Масляный промежуток 60 мм разделили тремя барьерами по 3 мм на четыре одинаковых канала. Во сколько раз допустимая напряжённость в канале больше, чем в промежутке без барьеров, если E<sub>доп</sub> ∝ d<sup>−0,25</sup>?",h:["Ширина канала d = (60 − 3·3)/4.","Отношение (60/d)<sup>0,25</sup>."],a:1.47,tol:0.02,s:"d = 51/4 = 12,75 мм; (60/12,75)<sup>0,25</sup> = 4,71<sup>0,25</sup> = 1,47. Узкие каналы прочнее — это и даёт маслобарьерная изоляция, вместе с тем, что барьеры рвут мостики."}];
+
+const SLOTS=[
+[{q:"Какие свойства у неполярного минерального (трансформаторного) масла?",o:["ρ ≈ 10<sup>18</sup> Ом·см, ε = 1,8…2,5, tgδ ≈ 0,001","ρ ≈ 10<sup>7</sup> Ом·см, ε ≈ 5, tgδ > 0,1","ρ ≈ 10<sup>11</sup> Ом·см, ε ≈ 80, tgδ ≈ 0,5","ρ ≈ 10<sup>3</sup> Ом·см, ε ≈ 1, tgδ ≈ 0","ρ ≈ 10<sup>14</sup> Ом·см, ε ≈ 12, tgδ ≈ 0,05"],a:0,e:"Неполярные жидкости: ρ ≈ 10<sup>18</sup> Ом·см, ε = 1,8…2,5, tgδ ≈ 0,001 (учебник Важова, разд. 1.2.1)."},
+ {q:"К какой группе жидких диэлектриков относится трансформаторное масло?",o:["Минеральные углеводороды — продукты перегонки нефти","Растительные масла","Хлорированные ароматические углеводороды","Кремнийорганические жидкости","Сильнополярные жидкости"],a:0,e:"Трансформаторное, конденсаторное масла — минеральные углеводороды, продукты перегонки нефти."},
+ {q:"Чем жидкие диэлектрики выгодно отличаются от газов при нормальных условиях?",o:["Значительно более высокой электрической прочностью","Меньшим разбросом пробивных напряжений","Независимостью прочности от примесей","Самовосстановлением без ухудшения после любого пробоя","Отсутствием зависимости прочности от времени"],a:0,e:"Жидкости прочнее газов, поэтому широко применяются в трансформаторах, кабелях, конденсаторах, вводах. Разброс у них, наоборот, больше."},
+ {q:"Какую электрическую прочность может достигать хорошо очищенная и обезгаженная жидкость?",o:["До 1000 кВ/см","До 30 кВ/см","До 1 кВ/см","Около 100 В/см","До 10<sup>6</sup> кВ/см"],a:0,e:"Для хорошо очищенных, обезгаженных жидкостей E<sub>пр</sub> достигает 1000 кВ/см; технические жидкости из-за примесей — в разы слабее."},
+ {q:"Каков разброс пробивных напряжений жидких диэлектриков?",o:["Отклонение отдельных значений от среднего до 50…70 %, СКО 10…15 %","Не больше 1 %","Такой же, как у сухого воздуха в однородном поле","Разброса нет: жидкость однородна","Около 0,1 %, если масло свежее"],a:0,e:"У жидкостей разброс большой: до 50…70 % от среднего, СКО 10…15 %. Поэтому по ГОСТ делают шесть пробоев."}],
+[{q:"Где по рис. 1.31 учебника нужно поставить барьер в промежутке острие — плоскость, чтобы эффект был наибольшим?",o:["На расстоянии около 0,25S от острия","Вплотную к плоскости","Точно посередине промежутка","На расстоянии 0,9S от острия","Положение не влияет"],a:0,e:"Максимум эффекта — при S<sub>б</sub> ≈ 0,25S: пробивное напряжение почти вдвое выше, чем без барьера."},
+ {q:"Почему барьер из электрокартона повышает прочность масляного промежутка?",o:["Задерживает ионы, их заряд выравнивает поле; мешает образованию сплошных мостиков","Поглощает влагу из всего бака","Охлаждает масло","Увеличивает ε всего промежутка в 10 раз","Создаёт вакуум у острия"],a:0,e:"Барьер непроницаем для ионов: заряд растекается по нему и выравнивает поле; кроме того, барьер рвёт мостики из волокон."},
+ {q:"Когда барьеры в масле менее эффективны?",o:["При кратковременных импульсных напряжениях","В резко неоднородном поле","При длительном переменном напряжении","При постоянном напряжении","В трансформаторах"],a:0,e:"Действие барьеров сильнее в неоднородном поле и при длительном напряжении; на коротких импульсах эффект меньше."},
+ {q:"Что такое маслобарьерная изоляция?",o:["Масляный промежуток, разделённый барьерами из электрокартона на узкие каналы","Изоляция из пропитанной маслом бумаги без масляных каналов","Слой масла поверх фарфора","Барьер из воздуха между двумя слоями масла","Полимерная плёнка без масла"],a:0,e:"МБИ — масло + цилиндры и шайбы из электрокартона. Узкие каналы прочнее, барьеры рвут мостики. Применяется в трансформаторах, вводах, реакторах."},
+ {q:"Во сколько раз примерно барьер повышает U<sub>пр</sub> промежутка острие — плоскость 75 мм на 50 Гц при оптимальном положении (рис. 1.31)?",o:["Почти в 2 раза","На 1…2 %","В 10 раз","Не повышает","Снижает вдвое"],a:0,e:"По рис. 1.31: U<sub>б</sub>/U<sub>пр</sub> ≈ 2 при S<sub>б</sub> ≈ 0,25S (картон 5 мм, S = 75 мм)."}],
+[{q:"Какое состояние воды в масле сильнее всего снижает его прочность?",o:["Эмульсия — мелкие капельки","Отстой на дне бака","Лёд","Пар над маслом","Вода в силикагеле"],a:0,e:"Наиболее сильно влияет эмульгированная вода. Отстой прочность почти не снижает, но говорит о сильном увлажнении."},
+ {q:"В каких состояниях может находиться вода в масле?",o:["Молекулярно растворённая, эмульсия, отстой на дне","Только растворённая","Только в виде отстоя","Только в виде пара","Растворённая и связанная в молекулах масла"],a:0,e:"Три состояния: растворённая, эмульсия (капли 2…10 мкм), отстой."},
+ {q:"Что происходит при влагосодержании больше примерно 0,02 %?",o:["Вода коагулирует и выпадает в отстой на дно","Вода полностью растворяется","Масло становится проводником","Вода испаряется","Масло застывает"],a:0,e:"Общее количество растворённой и эмульгированной воды ограничено; выше ≈ 0,02 % она выпадает в отстой."},
+ {q:"Каков размер капелек водяной эмульсии в масле?",o:["Около 2…10 мкм","Около 1 мм","Около 1 см","Меньше 1 нм","Около 0,1 м"],a:0,e:"Эмульсия — мелкие шарики воды размером 2…10 мкм."},
+ {q:"Как отстой воды на дне бака влияет на электрическую прочность масла?",o:["Сам почти не влияет, но говорит о сильном увлажнении масла","Повышает прочность вдвое","Снижает прочность до нуля","Превращает масло в полярную жидкость","Вызывает застывание масла"],a:0,e:"Отстой сам на прочность не влияет, но его появление свидетельствует о существенном ухудшении свойств масла."}],
+[{q:"Сколько воды может раствориться в минеральном масле при 20 °C и при 80 °C (по учебнику)?",o:["≈ 40·10<sup>−6</sup> и ≈ 400·10<sup>−6</sup>","≈ 400·10<sup>−6</sup> и ≈ 40·10<sup>−6</sup>","≈ 1 % и ≈ 10 %","Одинаково — около 0,01 %","Вода в масле не растворяется"],a:0,e:"Растворимость воды сильно растёт с температурой: ≈ 40·10<sup>−6</sup> при 20 °C и ≈ 400·10<sup>−6</sup> при 80 °C."},
+ {q:"Масло с влагосодержанием 30 г/т охладили с 60 °C до 5 °C. Что произойдёт с водой?",o:["Часть растворённой воды перейдёт в эмульсию — прочность упадёт","Вода испарится","Вода полностью растворится","Ничего: растворимость от температуры не зависит","Вся вода сразу выпадет в отстой"],a:0,e:"При охлаждении растворимость падает, избыток воды выделяется в виде эмульсии — самого опасного состояния."},
+ {q:"Что такое относительное насыщение масла водой?",o:["Отношение растворённой воды к растворимости при данной температуре","Отношение массы воды к массе бака","Доля воды в отстое","Отношение влажности воздуха к влажности масла","Отношение ε воды к ε масла"],a:0,e:"RS = W<sub>раств</sub>/W<sub>s</sub>(T); от него, а не только от абсолютной влажности, зависит прочность."},
+ {q:"1 г/т воды в масле — это:",o:["1 ppm, или 0,0001 %","1 %","0,01 %","10 ppm","0,1 %"],a:0,e:"1 г/т = 10<sup>−6</sup> = 1 ppm = 0,0001 %. 0,01 % = 100 г/т."},
+ {q:"Почему пробу масла по ГОСТ 6581-75 испытывают при 15…35 °C?",o:["Прочность влажного масла зависит от температуры — иначе результаты несравнимы","Так удобнее лаборанту","При другой температуре ячейка разрушается","ГОСТ не задаёт температуру","Только при этой температуре масло жидкое"],a:0,e:"Через растворимость воды прочность влажного масла сильно зависит от температуры; поэтому стандарт задаёт диапазон 15…35 °C."}],
+[{q:"Почему капли воды и волокна втягиваются в область сильного поля?",o:["Их ε (вода ≈ 80, целлюлоза ≈ 6,4) больше ε масла — они поляризуются и втягиваются","Они заряжены положительно","Они легче масла и всплывают","Их притягивает магнитное поле тока","Они тяжелее и тонут к электроду"],a:0,e:"Частицы с большей ε, чем у масла, поляризуются, втягиваются в зону наибольшей напряжённости и вытягиваются вдоль силовых линий."},
+ {q:"Что такое «мостик» в масле?",o:["Цепочка из поляризованных капель и волокон вдоль силовых линий","Барьер из электрокартона","Пузырёк газа у электрода","Слой воды на дне бака","Канал дуги после пробоя"],a:0,e:"Мостик — цепочка частиц вдоль поля: по ней течёт ток, масло нагревается до кипения, в разрывах поле усиливается — пробой."},
+ {q:"Почему мостик ведёт к пробою?",o:["По нему течёт ток, масло нагревается до кипения, в разрывах цепочки поле резко усиливается","Мостик охлаждает масло","Мостик выравнивает поле","Мостик поглощает ионы","Мостик увеличивает давление"],a:0,e:"Ток по мостику → нагрев → пузырьки пара; в разрывах мостика поле усиливается → ионизация → пробой."},
+ {q:"Насколько снижает прочность трансформаторного масла 0,01 % влаги (рис. 1.25)?",o:["В несколько раз","На 1 %","Не снижает","Повышает вдвое","Снижает до нуля"],a:0,e:"Рис. 1.25: наличие 0,01 % влаги уменьшает электрическую прочность масла в несколько раз."},
+ {q:"Почему влага и волокна слабо влияют на прочность при импульсах единицы–десятки микросекунд?",o:["Частицы не успевают переместиться и выстроиться в мостики","На импульсах вода замерзает","На импульсах масло высыхает","Импульсное напряжение не создаёт поля","Волокна растворяются"],a:0,e:"За микросекунды частицы не успевают сместиться на заметное расстояние — механизм мостиков не работает."}],
+[{q:"Откуда в масле трансформатора берутся волокна?",o:["Из бумаги и картона твёрдой изоляции, особенно при фильтрации и ремонте","Из воздуха через расширитель","Образуются при окислении масла","Из металла бака","Из силикагеля"],a:0,e:"Волокна бумаги, картона, пряжи попадают в масло из элементов твёрдой изоляции."},
+ {q:"Почему волокна особенно опасны вместе с водой?",o:["Волокна гигроскопичны: впитывают воду и легче образуют проводящие мостики","Волокна растворяют воду в масле","Вода смывает волокна в отстой","Волокна повышают ε масла","Волокна охлаждают масло"],a:0,e:"Гигроскопические загрязнения — волокна бумаги, картона, пряжи — значительно облегчают образование проводящих мостиков."},
+ {q:"Что требует ПУЭ (табл. 1.8.38) по механическим примесям в свежем масле?",o:["Отсутствие (визуально)","Не более 1 %","Не более 100 г/т","Не нормируются","Не более 10 частиц в литре"],a:0,e:"Табл. 1.8.38 ПУЭ: механические примеси — отсутствие (визуально), взвешенный уголь — отсутствие."},
+ {q:"Масло просушено (влаги 10 г/т), но после ремонта в нём много волокон. Как изменится U<sub>пр</sub> по сравнению с чистым маслом той же влажности?",o:["Снизится","Повысится","Не изменится","Станет равным нулю","Повысится вдвое"],a:0,e:"Волокна облегчают мостики даже при малой влажности — U<sub>пр</sub> ниже, чем у чистого масла."},
+ {q:"Как удалить волокна из масла?",o:["Фильтрацией (фильтр-пресс, тонкие фильтры)","Добавлением воды","Нагревом до 100 °C","Барботированием воздухом","Охлаждением до −40 °C"],a:0,e:"Волокна и механические примеси удаляют фильтрацией; центрифуга хорошо отделяет воду и тяжёлые частицы."}],
+[{q:"Как U<sub>пр</sub> трансформаторного масла на 50 Гц зависит от давления?",o:["Растёт с давлением: сжимаются газовые пузырьки, растёт их прочность по Пашену","Падает с ростом давления","Не зависит","Растёт только у дегазированного масла","Зависит только на импульсах"],a:0,e:"На 50 Гц U<sub>пр</sub> растёт с давлением — признак того, что пробой начинается в газовых пузырьках."},
+ {q:"Что происходит с недегазированным маслом при пониженном давлении (рис. 1.26)?",o:["Выделяется растворённый газ — прочность резко падает","Прочность растёт","Масло застывает","Вода испаряется и прочность растёт","Ничего"],a:0,e:"При пониженных давлениях из масла выделяются растворённые газы — кривая 1 на рис. 1.26 идёт резко вниз."},
+ {q:"Влияет ли давление на U<sub>пр</sub> масла при импульсах?",o:["Практически нет","Да, сильнее, чем на 50 Гц","Да, прочность падает с давлением","Только при отрицательной полярности","Только при давлении ниже 1 мм рт. ст."],a:0,e:"При импульсных воздействиях давление практически не сказывается: пузырьки не успевают образоваться."},
+ {q:"Зачем масло заливают в трансформатор под вакуумом?",o:["Чтобы в изоляции и масле не осталось воздушных пузырьков","Чтобы масло охладилось","Чтобы масло окислилось","Чтобы повысить давление в баке","Чтобы масло быстрее застыло"],a:0,e:"Пузырьки — очаги ЧР и пробоя; вакуумная заливка дегазированным маслом их исключает."},
+ {q:"Какое масло прочнее при одинаковом давлении ниже атмосферного (рис. 1.26)?",o:["Дегазированное","Недегазированное","Одинаково","Насыщенное воздухом","С растворённым азотом"],a:0,e:"Дегазированное масло прочнее и меньше реагирует на снижение давления."}],
+[{q:"Во сколько раз поле в сферическом газовом пузырьке больше поля в масле с ε = 2,2?",o:["В 3ε/(2ε + 1) ≈ 1,22 раза","В 2,2 раза","В 80 раз","Поле в пузырьке меньше","Одинаково"],a:0,e:"E<sub>в</sub>/E = 3ε/(2ε + 1) = 6,6/5,4 = 1,22."},
+ {q:"Почему газовый пузырёк — слабое место масла?",o:["Поле в нём больше, а прочность газа гораздо меньше прочности масла","Пузырёк проводит ток как металл","Пузырёк поглощает воду","Пузырёк охлаждает масло","Пузырёк повышает ε"],a:0,e:"В пузырьке поле выше в 1,22 раза, а газ пробивается по Пашену при намного меньших напряжённостях — начинаются ЧР."},
+ {q:"Как изменится напряжённость зажигания разряда в пузырьке, если давление в масле увеличить?",o:["Увеличится — по закону Пашена растёт p·d","Уменьшится","Не изменится","Станет равной нулю","Зависит только от ε масла"],a:0,e:"При росте давления растёт p·d и U<sub>пр</sub> газа, разряд в пузырьке начинается при большем поле."},
+ {q:"Что происходит после начала разрядов в пузырьке?",o:["Газ выделяется, пузырёк растёт, разряды усиливаются — развивается пробой","Пузырёк сразу растворяется","Разряды гасят пузырёк навсегда","Масло затвердевает","Ничего, разряды безвредны"],a:0,e:"Разряды разлагают масло с выделением газа, пузырёк растёт; в газе развиваются стримерные каналы к противоположному электроду."},
+ {q:"Какой закон описывает пробой газа внутри пузырька?",o:["Закон Пашена","Закон Ома","Закон Джоуля","Закон Кулона для масла","Закон Монтзингера"],a:0,e:"Пробой газа в пузырьке — по Пашену (тема 4): зависит от p·d."}],
+[{q:"Какой ход имеет зависимость E<sub>пр</sub> влажного масла от температуры (рис. 1.28)?",o:["Минимум около 0 °C, максимум около 60…80 °C, спад выше 80 °C","Монотонный рост во всём диапазоне","Монотонное падение","Не зависит от температуры","Максимум при −60 °C, минимум при +60 °C"],a:0,e:"Влажное масло: минимум около 0 °C (эмульсия), рост ниже 0 °C (лёд), максимум 60…80 °C, спад выше ≈ 80 °C (кипение)."},
+ {q:"Почему ниже 0 °C прочность влажного масла снова растёт?",o:["Капли замерзают, ε льда близка к ε масла — поле не искажается, мостиков нет","Вода испаряется","Масло становится полярным","Лёд проводит ток","Давление в баке растёт"],a:0,e:"У льда ε близка к ε масла, поэтому замёрзшие капли почти не влияют на прочность."},
+ {q:"Почему прочность масла падает выше примерно 80 °C?",o:["Интенсивное испарение и кипение — образуются пузырьки","Масло застывает","Растворимость воды падает","Растёт вязкость","Масло становится неполярным"],a:0,e:"Выше +80 °C сказываются испарение и кипение жидкости."},
+ {q:"Как зависит от температуры прочность чистого сухого масла?",o:["Почти не зависит до области испарения и кипения","Падает вдвое на каждые 10 °C","Растёт вдвое на каждые 10 °C","Имеет минимум при 0 °C","Обращается в ноль при −40 °C"],a:0,e:"Для чистых сухих жидкостей влияние температуры заметно только в области интенсивного испарения и кипения."},
+ {q:"Чем опасен сильный мороз для масляного трансформатора, если влага в масле замёрзла?",o:["Загустевание масла: нарушена циркуляция и охлаждение, приводы в масле работают неправильно","Лёд образует проводящие мостики","Масло становится проводником","Растворимость воды растёт","Опасности нет"],a:0,e:"Электрически лёд не опасен, но вязкое (застывшее) масло не циркулирует. Для Арктики — масла с низкой температурой застывания."}],
+[{q:"Почему U<sub>пр</sub> технического масла падает при длительности напряжения больше ≈ 10<sup>−3</sup> с?",o:["Успевают сработать влага, волокна и пузырьки от нагрева токами проводимости","Масло испаряется за 1 мс","Электроды окисляются","Растёт давление","Уменьшается ε"],a:0,e:"Область II на рис. 1.29: влага и волокна успевают переместиться, образуются мостики и газовые пузырьки."},
+ {q:"Почему при τ < 10<sup>−5</sup> с U<sub>пр</sub> масла резко растёт?",o:["Время воздействия сравнимо со временем формирования разряда (запаздывание)","Масло замерзает","Исчезает вода","Растёт давление","Барьеры начинают работать"],a:0,e:"Запаздывание развития разряда: напряжению нужно время, чтобы разряд сформировался."},
+ {q:"Почему примеси сильнее влияют на прочность при длительном напряжении?",o:["Частицам нужно время, чтобы переместиться и образовать мостик","Примеси распадаются на импульсах","При длительном напряжении меньше поле","Примеси нагреваются только на импульсах","Не влияют"],a:0,e:"Мостики — медленный механизм: частицы должны переместиться. На коротких импульсах они не успевают."},
+ {q:"Какие две области выделяют на вольт-секундной характеристике масла (рис. 1.29)?",o:["I — примеси не успевают влиять; II — работают влага, волокна, пузырьки","I — газ, II — твёрдое тело","I — постоянное напряжение, II — переменное","I — положительная, II — отрицательная полярность","I — лёд, II — пар"],a:0,e:"Область I (τ < 10<sup>−3</sup> с) и область II (τ > 10<sup>−3</sup> с), с разными механизмами пробоя."},
+ {q:"При какой напряжённости начинается разряд в жидкости на коротких импульсах (по учебнику)?",o:["Около 100 кВ/см","Около 1 кВ/см","Около 30 кВ/см, как в воздухе","Около 10 000 кВ/см","Около 1 В/см"],a:0,e:"Начальная стадия разряда в жидкости на импульсах — около 100 кВ/см: эмиссия электронов, ударная ионизация у катода, автоионизация у анода."}],
+[{q:"Что такое инверсия электрической прочности жидкости и горной породы?",o:["На импульсах короче ≈ 10<sup>−6</sup> с жидкость становится прочнее породы","Порода всегда прочнее жидкости","На постоянном напряжении вода прочнее масла","Прочность масла меняет знак","Лёд прочнее масла"],a:0,e:"Прочность жидкостей с уменьшением экспозиции растёт быстрее, чем у твёрдых тел: характеристики пересекаются (рис. 1.39)."},
+ {q:"При какой экспозиции импульса техническая вода становится прочнее горной породы (по учебнику)?",o:["Меньше (2…3)·10<sup>−7</sup> с","Больше 1 с","Около 10<sup>−3</sup> с","На постоянном напряжении","Никогда"],a:0,e:"Порода слабее масла при экспозиции < 10<sup>−6</sup> с и слабее технической воды при < (2…3)·10<sup>−7</sup> с."},
+ {q:"На чём основана электроимпульсная технология разрушения горных пород?",o:["Разряд при коротком импульсе внедряется в твёрдое тело, а не идёт по жидкости","На нагреве воды током","На химическом растворении породы","На магнитном притяжении руды","На ультразвуке от трансформатора"],a:0,e:"При импульсах левее точки равнопрочности А<sub>к</sub> пробой с вероятностью более 50 % идёт внутри твёрдого тела."},
+ {q:"Что такое точка А<sub>к</sub> на рис. 1.39?",o:["Пересечение вольт-секундных характеристик — равенство прочностей сред","Начало кипения масла","Точка застывания","Максимум прочности масла","Напряжение зажигания короны"],a:0,e:"А<sub>к</sub> — точка равнопрочности: здесь вероятности пробоя жидкости и твёрдого тела равны."},
+ {q:"Почему для электроимпульсного разрушения породы в воде нужен очень крутой фронт импульса?",o:["Вода уступает породе по прочности на более длинных импульсах — нужна экспозиция < (2…3)·10<sup>−7</sup> с","Иначе вода замёрзнет","Иначе руда намагнитится","Чтобы уменьшить ток","Крутизна не важна"],a:0,e:"В технической воде инверсия наступает только при экспозиции < (2…3)·10<sup>−7</sup> с, в масле — уже при < 10<sup>−6</sup> с."}],
+[{q:"Как U<sub>пр</sub> масла зависит от расстояния между электродами?",o:["U<sub>пр</sub> = A·S<sup>n</sup>, n < 1: растёт медленнее расстояния","Прямо пропорционально S","Не зависит от S","Убывает с ростом S","Растёт как S²"],a:0,e:"Формула (1.50): U<sub>пр</sub> = A·S<sup>n</sup>; средняя прочность U/S падает с ростом S."},
+ {q:"При какой полярности острия U<sub>пр</sub> масляного промежутка острие — плоскость выше?",o:["При отрицательной","При положительной","Одинаково","Зависит только от температуры","Зависит только от давления"],a:0,e:"Рис. 1.30: при отрицательном острие U<sub>пр</sub> выше, чем при положительном, — и на импульсах, и на постоянном напряжении."},
+ {q:"Для каких жидкостей полярный эффект наиболее силён?",o:["Для полярных — у воды до 2…2,5 раза","Для неполярных минеральных масел","Для сжиженных газов","Одинаков для всех","Полярного эффекта в жидкостях нет"],a:0,e:"Наиболее ярко зависимость от полярности проявляется у полярных жидкостей: у воды U<sub>пр</sub> при отрицательном острие в 2…2,5 раза выше."},
+ {q:"Как выглядит положительный стример в масле?",o:["Тонкий нитевидный ветвистый канал, быстрый","Густой медленный «куст»","Ровное свечение по всей поверхности","Шар у электрода","Его нет — пробой без стримера"],a:0,e:"Положительные стримеры в масле — тонкие нити, быстрые; отрицательные — густые «кусты», медленнее (Lesaint, 2016)."},
+ {q:"Как влияет увеличение радиуса кривизны электрода в резко неоднородном поле в масле?",o:["Повышает U<sub>пр</sub> заметнее, чем в воздухе","Снижает U<sub>пр</sub>","Не влияет","Влияет только на импульсах","Повышает только при положительной полярности"],a:0,e:"Даже небольшое увеличение радиуса кривизны в масле даёт более существенный рост U<sub>пр</sub>, чем в воздухе."}],
+[{q:"Как влияют площадь электродов и объём жидкости между ними на U<sub>пр</sub> при том же зазоре?",o:["Больше площадь и объём — ниже U<sub>пр</sub>","Больше площадь — выше U<sub>пр</sub>","Не влияют","Влияют только в газах","Влияют только на импульсах"],a:0,e:"Увеличение площади электродов и объёма жидкости снижает U<sub>пр</sub>: больше шансов, что в поле окажется слабое место."},
+ {q:"Почему по результатам ячейки 2,5 мм нельзя напрямую задавать рабочую напряжённость в трансформаторе?",o:["Масштабный эффект: в большом объёме масла прочность ниже","Ячейка испытывается на постоянном напряжении","В трансформаторе нет масла","В ячейке масло всегда грязнее","Результаты ячейки всегда занижены"],a:0,e:"Объём масла под полем в аппарате в тысячи раз больше — в нём обязательно найдётся слабое место. Ячейка — метод контроля качества масла, а не расчёта конструкции."},
+ {q:"Как состояние поверхности электродов влияет на E<sub>пр</sub> масла?",o:["Загрязнение, окисление и плохая полировка снижают E<sub>пр</sub>","Шероховатость повышает E<sub>пр</sub>","Не влияет","Окисление повышает E<sub>пр</sub>","Влияет только на постоянном напряжении"],a:0,e:"Учебник: загрязнение, окисление и плохая полировка электродов снижают E<sub>пр</sub>. Поэтому ГОСТ требует Ra ≤ 0,20 мкм."},
+ {q:"При каких расстояниях заметно влияние материала электродов?",o:["В малых промежутках — меньше нескольких миллиметров","Только в промежутках больше 1 м","Во всех промежутках одинаково","Никогда","Только в вакууме"],a:0,e:"С ростом расстояния влияние материала падает и при нескольких миллиметрах прекращается."},
+ {q:"Какой закон распределения используют для описания пробоя «по слабому звену» и масштабного эффекта?",o:["Вейбулла","Пуассона для токов","Максвелла для скоростей","Ома","Пашена"],a:0,e:"Распределение Вейбулла: U ∝ (V/V<sub>0</sub>)<sup>−1/m</sup> — чем больше объём, тем ниже типичное U<sub>пр</sub>."}],
+[{q:"Какой зазор между электродами задан ГОСТ 6581-75 для определения пробивного напряжения масла?",o:["(2,5 ± 0,05) мм","1 мм","5 мм","10 мм","25 мм"],a:0,e:"Зазор (2,5 ± 0,05) мм, проверяют калибрами 2,45 и 2,55 мм."},
+ {q:"С какой скоростью поднимают напряжение по ГОСТ 6581-75?",o:["2 кВ/с ± 20 %","0,5 кВ/с","10 кВ/с","1 кВ/мин","Скачком до нормы"],a:0,e:"Скорость подъёма — 2 кВ/с с допуском ±20 %."},
+ {q:"Сколько пробоев и с каким интервалом делают по ГОСТ 6581-75?",o:["Шесть пробоев с интервалом 5 мин","Один пробой","Три пробоя подряд без перерыва","Десять пробоев с интервалом 1 мин","Шесть пробоев с интервалом 1 ч"],a:0,e:"Шесть последовательных пробоев с интервалами 5 мин; после каждого — осторожное перемешивание стеклянной палочкой."},
+ {q:"Через сколько минут после заполнения ячейки подают напряжение по ГОСТ 6581-75?",o:["Через 10 мин","Сразу","Через 1 ч","Через 24 ч","Через 30 с"],a:0,e:"Через 10 мин после заполнения — чтобы вышли пузырьки воздуха."},
+ {q:"Что делают по ГОСТ 6581-75, если коэффициент вариации шести пробоев больше 20 %?",o:["Заполняют ячейку второй раз, делают ещё 6 пробоев и считают по 12 значениям","Отбрасывают максимальное значение","Признают масло годным","Повторяют испытание через сутки","Делят результат на 2"],a:0,e:"П. 4.3: при V > 20 % — второе заполнение и расчёт по 12 значениям; если снова V > 20 % — масло неудовлетворительно."}],
+[{q:"Какова норма ПУЭ (табл. 1.8.38) пробивного напряжения масла для оборудования до 15 кВ сразу после заливки?",o:["Не менее 25 кВ","Не менее 10 кВ","Не менее 55 кВ","Не менее 70 кВ","Не нормируется"],a:0,e:"До 15 кВ: свежее масло до заливки — 30 кВ, после заливки — 25 кВ."},
+ {q:"Какова норма ПУЭ для свежего сухого масла перед заливкой в оборудование св. 15 до 35 кВ?",o:["Не менее 35 кВ","Не менее 20 кВ","Не менее 60 кВ","Не менее 25 кВ","Не менее 5 кВ"],a:0,e:"Св. 15 до 35 кВ: 35 кВ до заливки и 30 кВ после (табл. 1.8.38)."},
+ {q:"Что требует ПУЭ (табл. 1.8.38) по температуре застывания масла?",o:["Проверка не обязательна только для умеренного климата — на Севере её делают","Не проверяется никогда","Не выше 0 °C","Не выше +20 °C","Только для масла выключателей"],a:0,e:"Прим. 1 к табл. 1.8.38: проверка температуры застывания не обязательна для трансформаторов в районах с умеренным климатом."},
+ {q:"Какое масло рекомендовано для трансформаторов арктического исполнения?",o:["АГК (ТУ 38.1011271-89), застывание не выше −60 °C","Касторовое","Масло с застыванием около 0 °C","Любое — температура не важна","Вода"],a:0,e:"АГК — арктическое трансформаторное масло, температура застывания не выше −60 °C."},
+ {q:"Каково предельно допустимое пробивное напряжение эксплуатационного масла для оборудования до 15 кВ (РД 34.45-51.300-97)?",o:["20 кВ","5 кВ","45 кВ","60 кВ","100 кВ"],a:0,e:"До 15 кВ — 20 кВ, св. 15 до 35 кВ — 25 кВ. Ниже — масло сушат, очищают или заменяют."}]];
+const TV=[0,1,2,3,4].map(v=>SLOTS.map(s=>s[v]));
+
+const SV=(b,h=150)=>`<svg viewBox="0 0 280 ${h}" role="img" aria-hidden="true">${b}</svg>`;
+const sT=(x,y,t,a,c,s)=>`<text x="${x}" y="${y}" text-anchor="${a||"middle"}" font-size="${s||10}" fill="${c||"#9FB4C0"}" font-family="IBM Plex Sans,Arial,sans-serif">${t}</text>`;
+const pr=i=>{const x=Math.sin(i*12.9898+78.233)*43758.5453;return x-Math.floor(x)};
+const OILF="#3A3115",ELG="url(#gE)";
+const DEFS=`<defs><radialGradient id="gE" cx="35%" cy="30%" r="70%"><stop offset="0" stop-color="#E3EAEE"/><stop offset=".55" stop-color="#9AA8B1"/><stop offset="1" stop-color="#56636C"/></radialGradient><radialGradient id="gG" r="50%"><stop offset="0" stop-color="#F0E6FF"/><stop offset=".4" stop-color="#AA82FF" stop-opacity=".6"/><stop offset="1" stop-color="#6E46FF" stop-opacity="0"/></radialGradient></defs>`;
+const elec=(cx,cy,r)=>`<circle cx="${cx}" cy="${cy}" r="${r}" fill="${ELG}"/>`;
+const vessel=(x,y,w,h)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="none" stroke="#C8D8E4" stroke-width="2" rx="3"/><rect x="${x+2}" y="${y+18}" width="${w-4}" height="${h-20}" fill="${OILF}"/>`;
+const fibS=(x,y,a,l)=>`<line x1="${x-Math.cos(a)*l/2}" y1="${y-Math.sin(a)*l/2}" x2="${x+Math.cos(a)*l/2}" y2="${y+Math.sin(a)*l/2}" stroke="#F0E8D2" stroke-width="1.6" stroke-linecap="round"/>`;
+const dropS=(x,y,r)=>`<circle cx="${x}" cy="${y}" r="${r||2.4}" fill="#78BEF5"/>`;
+const arrowS=(x1,y1,x2,y2,c)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c||"#FFD54A"}" stroke-width="1.2"/><circle cx="${x1}" cy="${y1}" r="1.5" fill="${c||"#FFD54A"}"/><circle cx="${x2}" cy="${y2}" r="1.5" fill="${c||"#FFD54A"}"/>`;
+const TIPF={
+appar:null,
+cell:SV(DEFS+vessel(60,14,160,118)+`<rect x="34" y="78" width="78" height="8" fill="#6E7F8C"/><rect x="168" y="78" width="78" height="8" fill="#6E7F8C"/>`+elec(126,82,14)+elec(154,82,14)+arrowS(140,104,140,110)+sT(140,122,"зазор 2,5 мм","middle","#FFD54A")+sT(252,96,"≥ 12 мм","middle")+sT(252,108,"до стенки","middle")+arrowS(70,32,70,68,"#9FB4C0")+sT(48,52,"≥ 15 мм","middle")+sT(140,10,"сосуд: стекло, кварц, пластмасса","middle","#CFE0EA")),
+gost:SV(DEFS+`<rect x="14" y="70" width="90" height="62" rx="4" fill="#253844" stroke="#56636C"/>`+sT(59,100,"испытательный","middle","#CFE0EA")+sT(59,112,"трансформатор","middle","#CFE0EA")+`<path d="M104 96 H140" stroke="#FF8A3D" stroke-width="2"/><rect x="140" y="40" width="80" height="92" rx="8" fill="none" stroke="#7EE0A8" stroke-dasharray="4 3"/>`+vessel(150,70,60,50)+elec(172,98,7)+elec(188,98,7)+sT(180,34,"колпак с блокировкой","middle","#7EE0A8")+`<circle cx="250" cy="70" r="22" fill="#16242D" stroke="#56636C"/><line x1="250" y1="70" x2="262" y2="56" stroke="#FFD54A" stroke-width="2"/>`+sT(250,104,"кВ","middle")+sT(140,146,"50 Гц · 2 кВ/с · до пробоя","middle","#FFD54A")),
+kv:SV(`<path d="M50 120 A90 90 0 0 1 230 120" fill="none" stroke="#253844" stroke-width="14"/><path d="M50 120 A90 90 0 0 1 230 120" fill="none" stroke="#4FB3FF" stroke-width="14" stroke-dasharray="190 400"/>`+[0,20,40,60,80].map((v,i)=>{const a=Math.PI*(1-v/80),x=140+104*Math.cos(a),y=120-104*Math.sin(a);return sT(x,y,v,"middle","#CFE0EA",11)}).join("")+`<line x1="140" y1="120" x2="${140+80*Math.cos(Math.PI*(1-48/80))}" y2="${120-80*Math.sin(Math.PI*(1-48/80))}" stroke="#FFD54A" stroke-width="3"/><circle cx="140" cy="120" r="6" fill="#FFD54A"/>`+sT(140,142,"киловольтметр: стрелка запоминает U пробоя","middle","#CFE0EA")),
+rate:SV(`<path d="M30 130 H260 M30 130 V14" stroke="#56636C"/><path d="M30 130 L250 26" stroke="#253844" stroke-width="22" opacity=".9"/><path d="M30 130 L210 20" stroke="#FF8A3D" stroke-dasharray="4 3"/><path d="M30 130 L260 50" stroke="#FF8A3D" stroke-dasharray="4 3"/><path d="M30 130 L180 54" stroke="#FFD54A" stroke-width="2.5"/><circle cx="180" cy="54" r="5" fill="#FF5A4E"/>`+sT(196,50,"пробой","start","#FF5A4E")+sT(150,140,"t, с","middle")+sT(22,20,"U","end")+sT(230,70,"±20 %","start","#FF8A3D")+sT(110,108,"2 кВ/с","middle","#FFD54A",11)),
+gauge:SV(DEFS+elec(108,72,34)+elec(172,72,34)+`<rect x="128" y="20" width="24" height="5" fill="#7EE0A8"/><rect x="137" y="25" width="6" height="40" fill="#7EE0A8"/><rect x="128" y="96" width="24" height="5" fill="#FF5A4E"/><rect x="136" y="88" width="8" height="8" fill="#FF5A4E"/>`+sT(276,14,"2,45 мм — проходит","end","#7EE0A8")+sT(276,112,"2,55 мм — нет","end","#FF5A4E")+sT(140,140,"зазор (2,5 ± 0,05) мм","middle","#FFD54A",11)),
+stir:SV(DEFS+vessel(70,20,140,112)+elec(126,88,13)+elec(154,88,13)+`<line x1="160" y1="4" x2="141" y2="78" stroke="#E6F0F6" stroke-width="4" stroke-linecap="round"/><path d="M118 70 q22 -14 44 0" fill="none" stroke="#FFD54A" stroke-width="1.5" marker-end=""/>`+[0,1,2,3,4].map(i=>`<circle cx="${136+i*2}" cy="${66-i*8}" r="1.6" fill="none" stroke="#CFE0EA"/>`).join("")+[0,1,2,3,4,5].map(i=>`<circle cx="${132+i*3}" cy="${96+(i%2)*4}" r="1.2" fill="#111"/>`).join("")+sT(140,146,"после пробоя: газ и углерод убрать из зазора","middle","#CFE0EA")),
+barrier:SV(DEFS+`<path d="M10 55 L70 75 L10 95 Z" fill="#8C9AA4"/><rect x="258" y="14" width="10" height="122" fill="#3A4A55"/><rect x="${70+0.25*188-3}" y="16" width="6" height="118" fill="#C9B98A"/>`+Array.from({length:14},(_,i)=>`<circle cx="${70+0.25*188-6}" cy="${30+i*7.5}" r="1.6" fill="#FFD54A"/>`).join("")+Array.from({length:9},(_,i)=>`<path d="M${70+0.25*188+3} ${22+i*13} H258" stroke="#9FB4C0" stroke-width=".6"/>`).join("")+sT(117,12,"картон в 0,25S","middle","#E3D7A6")+sT(165,146,"ионы оседают на барьере — поле за ним ровнее","middle","#CFE0EA")),
+mbi:SV(`<rect x="10" y="14" width="30" height="122" fill="#B8743A"/><rect x="240" y="14" width="30" height="122" fill="#B8743A"/>`+[1,2,3].map(i=>`<rect x="${40+50*i-3}" y="10" width="6" height="130" fill="#C9B98A"/>`).join("")+[0,1,2,3].map(i=>sT(65+50*i,80,"масло","middle","#FFD54A")).join("")+sT(25,146,"НН","middle","#CFE0EA")+sT(255,146,"ВН","middle","#CFE0EA")+sT(140,8,"цилиндры из электрокартона","middle","#E3D7A6")),
+bubble:SV(Array.from({length:12},(_,i)=>{const x=20+i*22,dx=x-140,p=Math.exp(-(dx*dx)/1800)*0.45;return `<path d="M${x} 14 Q${x-dx*p} 75 ${x} 136" fill="none" stroke="#9FB4C0" stroke-width=".8"/>`}).join("")+`<rect x="0" y="0" width="280" height="10" fill="#9AA8B1"/><rect x="0" y="140" width="280" height="10" fill="#9AA8B1"/><circle cx="140" cy="75" r="20" fill="rgba(225,240,250,.12)" stroke="#E1F0FA" stroke-width="1.5"/>`+sT(140,79,"газ","middle","#E1F0FA",11)+sT(272,32,"E в пузырьке = 1,22·E","end","#FFD54A")),
+bridge:SV(DEFS+elec(26,75,22)+elec(254,75,22)+[0,1,2,3,4,5,6,7].map(i=>i%3===1?dropS(62+i*22,75,3):fibS(62+i*22,75,0,18)).join("")+fibS(90,40,1,18)+fibS(180,118,2.2,18)+dropS(130,30)+sT(140,140,"капли (ε≈80) и волокна (ε≈6,4) вдоль поля","middle","#CFE0EA")),
+water3:SV([["растворена",0],["эмульсия",1],["отстой",2]].map(([n,k],i)=>{const x=20+i*90;let s=`<rect x="${x}" y="20" width="70" height="100" fill="${OILF}" stroke="#C8D8E4"/>`;if(k===1)for(let j=0;j<40;j++)s+=dropS(x+5+pr(j)*60,26+pr(j+99)*88,1.4);if(k===2)s+=`<rect x="${x+1}" y="104" width="68" height="15" fill="#4F9FDF"/>`;return s+sT(x+35,136,n,"middle",k===1?"#FFD54A":"#CFE0EA",11)}).join("")+sT(140,12,"три состояния воды в масле","middle","#CFE0EA")),
+fib:SV(DEFS+[...Array(14)].map((_,i)=>fibS(30+pr(i)*220,20+pr(i+40)*110,pr(i+3)*3,22)).join("")+[...Array(8)].map((_,i)=>dropS(40+((i*71)%200),30+((i*29)%100),1.6)).join("")+sT(140,146,"волокна бумаги и картона впитывают воду","middle","#CFE0EA")),
+degas:SV(`<rect x="40" y="30" width="110" height="90" rx="8" fill="${OILF}" stroke="#C8D8E4"/>`+[...Array(9)].map((_,i)=>`<circle cx="${60+(i*23)%80}" cy="${40+(i*17)%70}" r="${2+i%3}" fill="none" stroke="#E1F0FA"/>`).join("")+`<path d="M150 50 H200" stroke="#9FB4C0" stroke-width="4"/><rect x="200" y="34" width="56" height="34" rx="6" fill="#253844" stroke="#56636C"/>`+sT(228,55,"насос","middle","#CFE0EA")+`<path d="M95 120 V138" stroke="#FF8A3D" stroke-width="4"/>`+sT(95,148,"подогрев","middle","#FF8A3D")+sT(95,22,"вакуум: газ и вода уходят","middle","#CFE0EA")),
+pour:SV([["ТКп","−45 °C",0.45],["АГК","−60 °C",0.25]].map(([n,t,f],i)=>{const x=40+i*130;return `<rect x="${x-6}" y="16" width="12" height="100" rx="6" fill="#253844"/><circle cx="${x}" cy="122" r="11" fill="#4FB3FF"/><rect x="${x-3}" y="${16+100*(1-f)}" width="6" height="${100*f}" fill="#4FB3FF"/>`+sT(x+20,40,n,"start","#CFE0EA",12)+sT(x+20,56,"застывание","start")+sT(x+20,70,"не выше "+t,"start","#FFD54A")}).join("")+sT(140,146,"для Севера проверяют температуру застывания","middle","#CFE0EA")),
+str:SV(`<path d="M0 40 L50 55 L0 70 Z M140 40 L190 55 L140 70 Z" fill="#8C9AA4"/>`+[[-0.5],[-0.2],[0.15],[0.45]].map(([a])=>`<path d="M50 55 l${30*Math.cos(a)} ${30*Math.sin(a)} l20 ${8*Math.sin(a*3)} l18 ${10*a}" fill="none" stroke="#D7C8FF" stroke-width="1.1"/>`).join("")+[...Array(14)].map((_,i)=>{const a=(i/13-0.5)*1.6;return `<path d="M190 55 l${22*Math.cos(a)} ${22*Math.sin(a)} l${8*Math.cos(a+0.4)} ${8*Math.sin(a+0.4)}" stroke="#C8AFFF" stroke-width="2" opacity=".6" fill="none"/>`}).join("")+sT(60,110,"+: нити, быстро","middle","#CFE0EA",11)+sT(205,110,"−: «куст», медленнее","middle","#CFE0EA",11)),
+inv:SV(`<rect x="0" y="0" width="280" height="150" fill="#0E1A24"/><path d="M50 80 L230 72 L250 136 L36 140 Z" fill="#A0805A"/><rect x="86" y="8" width="8" height="70" fill="#8C9AA4"/><rect x="186" y="8" width="8" height="66" fill="#8C9AA4"/><path d="M90 80 Q140 140 190 76" fill="none" stroke="#FFFBE0" stroke-width="2.5"/>`+sT(140,24,"импульс < 1 мкс","middle","#FFD54A")+sT(140,146,"разряд идёт внутри камня","middle","#CFE0EA")),
+lab20:SV(`<rect x="100" y="30" width="80" height="100" rx="6" fill="${OILF}" stroke="#C8D8E4"/><rect x="104" y="20" width="72" height="12" fill="#56636C"/>`+[...Array(16)].map((_,i)=>dropS(98+((i*29)%86),36+((i*41)%90),1.4)).join("")+sT(50,60,"−28 °C","middle","#4FB3FF",13)+sT(230,60,"+20 °C","middle","#FF8A3D",13)+sT(140,146,"открыли холодной — влага сконденсировалась","middle","#CFE0EA")),
+vol:SV(`<rect x="20" y="70" width="40" height="40" fill="${OILF}" stroke="#C8D8E4"/>`+sT(40,124,"ячейка","middle")+`<rect x="100" y="16" width="160" height="110" fill="${OILF}" stroke="#C8D8E4"/>`+[...Array(14)].map((_,i)=>fibS(112+pr(i)*136,26+pr(i+50)*90,pr(i+7)*3,12)).join("")+sT(160,142,"бак: больше объём — больше слабых мест","middle","#9FB4C0",9.5)),
+elec:SV(DEFS+elec(105,70,40)+elec(175,70,40)+sT(140,140,"полированные электроды, Ra ≤ 0,20 мкм","middle","#CFE0EA"))};
+
+TIPF.appar=TIPF.gost;
+
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const SUP={"0":"⁰","1":"¹","2":"²","3":"³","4":"⁴","5":"⁵","6":"⁶","7":"⁷","8":"⁸","9":"⁹","-":"⁻"};
+const fN=(n,d=2)=>{if(!isFinite(n))return "∞";const a=Math.abs(n);if(a<1e4)return a>=100?Math.round(n).toLocaleString("ru-RU").replace(/ /g," "):fx(n,a<10?d:1);const e=Math.floor(Math.log10(a)),m=n/Math.pow(10,e);return fx(m,d)+"·10"+String(e).split("").map(c=>SUP[c]).join("")};
+const qb=k=>`<button class="q" data-tip="${k}" aria-label="Справка">?</button>`;
+const tip=$("#tip");let tipFor=null,tipPin=false;
+function showTip(el,pin){const k=el.dataset.tip;const t0=TIPS[k]||el.dataset.tipt;if(!t0)return;const fg=k&&typeof TIPF!=="undefined"&&TIPF[k];const t=(fg?`<div class="tfig">${fg}</div>`:"")+t0;tipFor=el;tipPin=!!pin;$$(".q.on,.chip.on").forEach(x=>x.classList.remove("on"));el.classList.add("on");
+ tip.classList.toggle("wide",!!fg);tip.innerHTML=(pin?'<button class="x" aria-label="Закрыть">×</button>':"")+t;tip.hidden=false;
+ const r=el.getBoundingClientRect(),w=tip.offsetWidth,h=tip.offsetHeight;let x=Math.min(Math.max(8,r.left+r.width/2-w/2),innerWidth-w-8),y=r.bottom+8;if(y+h>innerHeight-8)y=Math.max(8,r.top-h-8);tip.style.left=x+"px";tip.style.top=y+"px";
+ const xb=tip.querySelector(".x");if(xb)xb.onclick=e=>{e.stopPropagation();hideTip()}}
+function hideTip(){tip.hidden=true;if(tipFor)tipFor.classList.remove("on");tipFor=null;tipPin=false}
+document.addEventListener("mouseover",e=>{if(tipPin)return;const el=e.target.closest&&e.target.closest("[data-tip],[data-tipt]");if(el)showTip(el,false)});
+document.addEventListener("mouseout",e=>{if(tipPin)return;const el=e.target.closest&&e.target.closest("[data-tip],[data-tipt]");if(el&&!(e.relatedTarget&&el.contains(e.relatedTarget)))hideTip()});
+document.addEventListener("click",e=>{const el=e.target.closest&&e.target.closest("[data-tip],[data-tipt]");if(el){e.preventDefault();if(tipFor===el&&tipPin)hideTip();else showTip(el,true)}else if(!tip.contains(e.target))hideTip()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){hideTip();closeDlg()}});
+addEventListener("scroll",()=>{if(!tip.hidden)hideTip()},true);
+const dlg=$("#dlg");function openDlg(h){$("#dlgc").innerHTML=h;dlg.hidden=false;dlg.querySelector(".x").focus()}
+function closeDlg(){if(!dlg.hidden){dlg.hidden=true;const f=dlg._from;if(f)f.focus()}}
+dlg.querySelector(".x").onclick=closeDlg;dlg.addEventListener("click",e=>{if(e.target===dlg)closeDlg()});
+let curTab="t1";
+$$(".tabs button").forEach(b=>b.onclick=()=>{curTab=b.dataset.tab;$$(".tabs button").forEach(x=>x.classList.toggle("on",x===b));$$(".tabp").forEach(s=>s.hidden=s.id!==curTab);hideTip();onTab(curTab)});
+function canvasBox(el,h,draw){const cv=document.createElement("canvas");el.appendChild(cv);const o={cv,ctx:cv.getContext("2d"),w:0,h};
+ const fit=()=>{const w=Math.max(200,el.clientWidth);const dpr=Math.min(2,devicePixelRatio||1);o.w=w;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);cv.style.height=h+"px";o.ctx.setTransform(dpr,0,0,dpr,0,0);draw&&draw()};
+ o.fit=fit;new ResizeObserver(()=>{if(Math.abs(el.clientWidth-o.w)>1)fit()}).observe(el);return o}
+const rng=(id,lab,tk,min,max,step,val,unit)=>`<div class="rng"><div class="tp"><span class="lbl">${lab} ${tk?qb(tk):""}</span><output id="${id}o"></output></div><input type="range" id="${id}" min="${min}" max="${max}" step="${step}" value="${val}" aria-label="${lab.replace(/<[^>]+>/g,"")}">${unit?"":""}</div>`;
+const seg=(id,opts,val)=>`<div class="seg" id="${id}">${opts.map(([v,t])=>`<button data-v="${v}" class="${String(v)===String(val)?"on":""}">${t}</button>`).join("")}</div>`;
+function bindSeg(id,cb){$$("#"+id+" button").forEach(b=>b.onclick=()=>{$$("#"+id+" button").forEach(x=>x.classList.toggle("on",x===b));cb(b.dataset.v)})}
+const rd=(id,lab,tk)=>`<div class="rd" id="${id}w"><span>${lab} ${tk?qb(tk):""}</span><b id="${id}"></b></div>`;
+
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const CY="#FFD54A",CG="#9FB4C0",CT="#CFE0EA",CL="#253844",CO="#FF8A3D",CB="#4FB3FF",CV="#C39BFF",CR="#FF5A4E",CK="#7EE0A8";
+const fL=cm=>cm>=100?fx(cm/100,cm>=1000?1:2)+" м":cm>=1?fx(cm,cm>=10?0:2)+" см":fx(cm*10,cm>=0.1?1:2)+" мм";
+const fK=v=>v>=100?fx(v,0):v>=10?fx(v,1):fx(v,2);
+function linAx(ctx,L,T,W,H,x0,x1,y0,y1,xl,yl,xs,ys,xf,yf){const X=v=>L+(v-x0)/(x1-x0)*W,Y=v=>T+H-(v-y0)/(y1-y0)*H;ctx.font="11px IBM Plex Mono, monospace";ctx.strokeStyle=CL;ctx.lineWidth=1;ctx.fillStyle=CG;
+ for(let v=Math.ceil(x0/xs)*xs;v<=x1+1e-9;v+=xs){const x=X(v);ctx.beginPath();ctx.moveTo(x+.5,T);ctx.lineTo(x+.5,T+H);ctx.stroke();ctx.textAlign="center";ctx.fillText(xf?xf(v):fx(v,0),x,T+H+15)}
+ for(let v=Math.ceil(y0/ys)*ys;v<=y1+1e-9;v+=ys){const y=Y(v);ctx.beginPath();ctx.moveTo(L,y+.5);ctx.lineTo(L+W,y+.5);ctx.stroke();ctx.textAlign="right";ctx.fillText(yf?yf(v):fx(v,0),L-6,y+4)}
+ ctx.textAlign="center";ctx.fillText(xl,L+W/2,T+H+30);ctx.save();ctx.translate(13,T+H/2);ctx.rotate(-Math.PI/2);ctx.fillText(yl,0,0);ctx.restore();return {X,Y}}
+function logXAx(ctx,L,T,W,H,x0,x1,y0,y1,xl,yl,ys,xf,yf){const X=v=>L+(Math.log10(v)-Math.log10(x0))/(Math.log10(x1)-Math.log10(x0))*W,Y=v=>T+H-(v-y0)/(y1-y0)*H;ctx.font="11px IBM Plex Mono, monospace";ctx.strokeStyle=CL;ctx.lineWidth=1;ctx.fillStyle=CG;
+ for(let e=Math.ceil(Math.log10(x0));e<=Math.floor(Math.log10(x1));e++){const x=X(Math.pow(10,e));ctx.beginPath();ctx.moveTo(x+.5,T);ctx.lineTo(x+.5,T+H);ctx.stroke();ctx.textAlign="center";ctx.fillText(xf(Math.pow(10,e)),x,T+H+15)}
+ for(let v=Math.ceil(y0/ys)*ys;v<=y1+1e-9;v+=ys){const y=Y(v);ctx.beginPath();ctx.moveTo(L,y+.5);ctx.lineTo(L+W,y+.5);ctx.stroke();ctx.textAlign="right";ctx.fillText(yf?yf(v):fx(v,0),L-6,y+4)}
+ ctx.textAlign="center";ctx.fillText(xl,L+W/2,T+H+30);ctx.save();ctx.translate(13,T+H/2);ctx.rotate(-Math.PI/2);ctx.fillText(yl,0,0);ctx.restore();return {X,Y}}
+function crv(ctx,A,f,x0,x1,col,o={}){const n=o.n||240;ctx.save();ctx.strokeStyle=col;ctx.lineWidth=o.w||2.2;if(o.d)ctx.setLineDash(o.d);ctx.beginPath();let st=false;
+ for(let k=0;k<=n;k++){const x=o.log?x0*Math.pow(x1/x0,k/n):x0+(x1-x0)*k/n,y=f(x);if(!isFinite(y)){st=false;continue}const Y=A.Y(o.ymax!=null?Math.min(y,o.ymax):y);st?ctx.lineTo(A.X(x),Y):ctx.moveTo(A.X(x),Y);st=true}ctx.stroke();ctx.restore()}
+function hl(ctx,A,y,x0,x1,col,txt,al){ctx.save();ctx.strokeStyle=col;ctx.setLineDash([5,4]);ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(A.X(x0),A.Y(y)+.5);ctx.lineTo(A.X(x1),A.Y(y)+.5);ctx.stroke();ctx.restore();if(txt){ctx.fillStyle=col;ctx.font="11.5px IBM Plex Sans";ctx.textAlign=al||"right";ctx.fillText(txt,al==="left"?A.X(x0)+4:A.X(x1)-4,A.Y(y)-4)}}
+function vl(ctx,A,x,y0,y1,col,d){ctx.save();ctx.strokeStyle=col;if(d)ctx.setLineDash(d);ctx.lineWidth=1.4;ctx.beginPath();ctx.moveTo(A.X(x)+.5,A.Y(y0));ctx.lineTo(A.X(x)+.5,A.Y(y1));ctx.stroke();ctx.restore()}
+function dot(ctx,x,y,col,r){ctx.fillStyle=col;ctx.beginPath();ctx.arc(x,y,r||5,0,2*Math.PI);ctx.fill();ctx.strokeStyle="#0D171E";ctx.lineWidth=1.5;ctx.stroke()}
+function lgd(ctx,x,y,items){ctx.font="12px IBM Plex Sans";ctx.textAlign="left";items.forEach(([c,t,d],i)=>{ctx.save();ctx.strokeStyle=c;ctx.lineWidth=2.2;if(d)ctx.setLineDash(d);ctx.beginPath();ctx.moveTo(x,y+i*17-4);ctx.lineTo(x+18,y+i*17-4);ctx.stroke();ctx.restore();ctx.fillStyle=CT;ctx.fillText(t,x+24,y+i*17)})}
+function txt(ctx,s,x,y,col,al,f){ctx.fillStyle=col||CT;ctx.font=f||"12px IBM Plex Sans";ctx.textAlign=al||"left";ctx.fillText(s,x,y)}
+function rnd(i){const x=Math.sin(i*12.9898+78.233)*43758.5453;return x-Math.floor(x)}
+const OILBG="#14130D",OILT="rgba(214,170,60,.13)";
+function oilBox(ctx,x,y,w,h){ctx.fillStyle=OILBG;ctx.fillRect(x,y,w,h);ctx.fillStyle=OILT;ctx.fillRect(x,y,w,h)}
+function sph(ctx,x,y,r,side){const g=ctx.createRadialGradient(x-r*0.3,y-r*0.35,r*0.1,x,y,r);g.addColorStop(0,"#E3EAEE");g.addColorStop(0.5,"#9AA8B1");g.addColorStop(1,"#56636C");ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,2*Math.PI);ctx.fill()}
+function spark(ctx,x0,y0,x1,y1,seed,a,wd){ctx.save();ctx.strokeStyle=`rgba(255,250,220,${a})`;ctx.shadowColor="rgba(190,170,255,.9)";ctx.shadowBlur=14;ctx.lineWidth=wd||2.5;ctx.beginPath();ctx.moveTo(x0,y0);const n=10;for(let k=1;k<n;k++){const t=k/n;ctx.lineTo(x0+(x1-x0)*t+(rnd(seed+k)-0.5)*6,y0+(y1-y0)*t+(rnd(seed+k*3)-0.5)*14)}ctx.lineTo(x1,y1);ctx.stroke();ctx.restore()}
+
+const ML={};
+function mlab(id,cfg){ML[id]={cfg,tries:0};
+ return `<div class="card mlab" id="${id}"><div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:baseline"><h3>${cfg.t}</h3><span class="tag">мини-опыт · запишите в тетрадь</span></div>
+ <ol class="list">${cfg.steps.map(s=>`<li>${s}</li>`).join("")}</ol>
+ <div class="cmpw"><table class="cmp"><tr><th>Что записать</th><th style="width:150px">Ваше значение</th><th style="width:90px">Ед.</th><th style="width:150px">Проверка</th></tr>${cfg.rows.map((r,i)=>`<tr><td>${r.l}</td><td><input type="text" inputmode="decimal" data-i="${i}" aria-label="${r.l.replace(/<[^>]+>/g,"")}" style="width:130px;font:inherit;font-family:var(--f-mono);padding:4px 6px;border:1px solid var(--line);border-radius:6px"></td><td>${r.u}</td><td class="st" data-i="${i}">—</td></tr>`).join("")}</table></div>
+ <div class="btns"><button class="btn" data-a="chk">Проверить</button><button class="btn ghost" data-a="ans" disabled>Показать ответы</button></div>
+ <div class="log"><b>Обсудите в группе.</b><ol class="list" style="margin-top:4px">${cfg.q.map(s=>`<li>${s}</li>`).join("")}</ol></div></div>`}
+function bindMlab(id){const S=ML[id],box=$("#"+id),rows=S.cfg.rows;
+ const chk=()=>{S.tries++;let all=true;rows.forEach((r,i)=>{const inp=box.querySelector(`input[data-i="${i}"]`),st=box.querySelector(`td.st[data-i="${i}"]`);const v=parseFloat(inp.value.replace(/\s/g,"").replace(",","."));const a=r.a();
+  if(!isFinite(v)){st.innerHTML=`<span style="color:var(--muted)">нет</span>`;all=false;return}const ok=Math.abs(v-a)<=Math.abs(a)*(r.tol??0.03)+1e-9;if(!ok)all=false;st.innerHTML=ok?`<b style="color:var(--ok)">верно</b>`:`<b style="color:var(--hot)">проверьте</b>`});
+  if(all||S.tries>=2)box.querySelector('[data-a="ans"]').disabled=false};
+ box.querySelector('[data-a="chk"]').onclick=chk;
+ box.querySelector('[data-a="ans"]').onclick=()=>rows.forEach((r,i)=>{box.querySelector(`td.st[data-i="${i}"]`).innerHTML=`<span class="mono">${fx(r.a(),r.d)}</span>`})}
+
+const V0=[
+ {id:"cell",t:"Стандартная ячейка",x:"Прочность масла проверяют не в аппарате, а в маленькой ячейке: два полированных электрода, зазор 2,5 мм, переменное напряжение 50 Гц, подъём 2 кВ/с до пробоя. Пробой — яркая искра и щелчок; после него в зазоре остаются пузырьки газа и частички углерода.",k:"Поэтому после каждого пробоя масло перемешивают палочкой и ждут 5 мин (ГОСТ 6581-75)."},
+ {id:"bridge",t:"Мостик из волокон и капель",x:"В поле волокна и капли воды поворачиваются вдоль силовых линий и подтягиваются туда, где поле сильнее, — к оси между электродами. Цепочка растёт от электрода к электроду. По ней течёт ток, масло вскипает, в разрывах цепочки поле резко усиливается.",k:"Самый частый механизм пробоя технического масла при длительном напряжении."},
+ {id:"emul",t:"Эмульсия: мутное масло",x:"Пока вода растворена, масло прозрачное. Когда воды больше, чем может раствориться, — например, при охлаждении — она выделяется мелкими каплями 2…10 мкм. Масло мутнеет. Это самое опасное состояние воды.",k:"Мутная проба на просвет — повод для срочного анализа влагосодержания."},
+ {id:"sludge",t:"Отстой воды на дне",x:"Если воды больше примерно 0,02 %, капли сливаются и оседают на дно бака. Сам отстой прочность почти не снижает: вода внизу, далеко от сильного поля.",k:"Но отстой говорит о сильном увлажнении — масло надо сушить, а источник влаги искать."},
+ {id:"bub",t:"Пузырьки газа",x:"При понижении давления (вакуум, подъём на высоту) из недегазированного масла выделяется растворённый газ. Пузырьки — слабые места: поле в них в 1,22 раза больше, а прочность газа в десятки раз ниже, чем у масла.",k:"Поэтому масло дегазируют и заливают в аппарат под вакуумом."},
+ {id:"sp",t:"Стример у острия +",x:"При положительном острие стример в масле — тонкие светящиеся нити, ветвящиеся как дерево. Растёт быстро: километры в секунду и быстрее. Внутри канала — газ и пар.",k:"Дойдёт до плоскости — пробой. В сантиметровых промежутках, как в газе, развивается лидер."},
+ {id:"sn",t:"Стример у острия −",x:"При отрицательном острие стример густой, кустистый, похож на облачко или зонтик. Растёт медленнее положительного.",k:"Пробивное напряжение при отрицательном острие выше (рис. 1.30 учебника)."},
+ {id:"arc",t:"След пробоя: газ и углерод",x:"Канал пробоя или дуга разлагают масло: выделяются газы (водород, ацетилен) и взвешенный углерод. Масло темнеет. Частицы углерода — новые проводящие включения.",k:"ПУЭ требует отсутствия взвешенного угля в свежем масле; масло выключателей меняют после числа отключений КЗ, указанного заводом."},
+ {id:"mbi",t:"Барьеры в трансформаторе",x:"Между обмотками стоят цилиндры из электрокартона, между ними — узкие масляные каналы. Барьеры рвут мостики, задерживают ионы и выравнивают поле, а узкий канал прочнее широкого.",k:"Это маслобарьерная изоляция — основная внутренняя изоляция силовых трансформаторов (вкладка 6)."}];
+let C0={},a0t=0;
+function t0(){$("#t0").innerHTML=`<div class="card"><h3>Как выглядит пробой жидкости</h3><p style="margin-top:6px">Масло прозрачно, поэтому всё, что происходит в зазоре, можно увидеть: волокна выстраиваются в мостики, вода мутит масло, из пузырьков и с острия растут стримеры. Ниже — схематичные изображения: серый — металл, янтарный фон — масло, голубое — вода, белые нити — волокна, фиолетовое — свечение разряда.</p></div>
+ <div class="vgrid">${V0.map(v=>`<div class="card vt"><div class="scr"><div id="c0${v.id}"></div></div><h4>${v.t}</h4><p>${v.x}</p><p class="vk">${v.k}</p></div>`).join("")}</div>
+ <div class="log"><b>Что видно и слышно без приборов.</b> Мутность пробы — эмульсия воды. Тёмный цвет и чёрная взвесь — продукты дуги. Пузырьки в смотровом стекле — газ. Щелчки внутри бака — разряды; их ловят акустическими датчиками и анализом растворённых газов (тема 10).</div>`;
+ V0.forEach(v=>{C0[v.id]=canvasBox($("#c0"+v.id),170,()=>draw0(v.id));C0[v.id].fit()});anim0()}
+function fib0(ctx,x,y,a,l){ctx.strokeStyle="rgba(240,232,210,.9)";ctx.lineWidth=1.6;ctx.beginPath();ctx.moveTo(x-Math.cos(a)*l/2,y-Math.sin(a)*l/2);ctx.quadraticCurveTo(x+Math.sin(a)*1.5,y-Math.cos(a)*1.5,x+Math.cos(a)*l/2,y+Math.sin(a)*l/2);ctx.stroke()}
+function drop0(ctx,x,y,r){ctx.fillStyle="rgba(120,190,245,.85)";ctx.beginPath();ctx.arc(x,y,r,0,2*Math.PI);ctx.fill()}
+function glow0(ctx,x,y,r,a){const g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,`rgba(240,230,255,${a})`);g.addColorStop(0.4,`rgba(170,130,255,${a*0.6})`);g.addColorStop(1,"rgba(110,70,255,0)");ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,2*Math.PI);ctx.fill()}
+function tree0(ctx,x,y,dir,len,ang,depth,seed,col,wd){if(depth<=0||len<3)return;const x2=x+Math.cos(ang)*len*dir,y2=y+Math.sin(ang)*len;ctx.strokeStyle=col;ctx.lineWidth=wd;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x2,y2);ctx.stroke();
+ const nb=rnd(seed)<0.45?2:1;for(let i=0;i<nb;i++)tree0(ctx,x2,y2,dir,len*(0.72+0.2*rnd(seed+i*7)),ang+(rnd(seed*3+i)-0.5)*0.9,depth-1,seed*1.7+i*13,col,Math.max(0.6,wd*0.8))}
+function draw0(id){const B=C0[id];if(!B)return;const {ctx,w,h}=B;ctx.clearRect(0,0,w,h);oilBox(ctx,0,0,w,h);const cx=w/2,cy=h/2,t=a0t;
+ if(id==="cell"){ctx.strokeStyle="rgba(200,220,235,.55)";ctx.lineWidth=2;ctx.strokeRect(cx-110,22,220,h-34);ctx.fillStyle="rgba(214,170,60,.10)";ctx.fillRect(cx-108,40,216,h-54);
+  ctx.fillStyle="#6E7F8C";ctx.fillRect(cx-104,cy-5,62,10);ctx.fillRect(cx+42,cy-5,62,10);sph(ctx,cx-21,cy,18);sph(ctx,cx+21,cy,18);
+  const ph=t%120;if(ph<8){spark(ctx,cx-2,cy,cx+2,cy,Math.floor(t/120),1-ph/8,3);glow0(ctx,cx,cy,26,1-ph/8)}if(ph>=8&&ph<70){for(let i=0;i<6;i++){const yy=cy-(ph-8)*0.9-i*7;if(yy>44){ctx.strokeStyle="rgba(220,235,245,.7)";ctx.lineWidth=1;ctx.beginPath();ctx.arc(cx+(rnd(i)-0.5)*8,yy,1.5+rnd(i+4)*1.5,0,2*Math.PI);ctx.stroke()}}}
+  txt(ctx,"зазор 2,5 мм",cx,h-16,CG,"center","11px IBM Plex Sans");txt(ctx,"стеклянный сосуд",cx-104,16,CG,"left","11px IBM Plex Sans")}
+ else if(id==="bridge"){ctx.fillStyle="#6E7F8C";ctx.fillRect(0,cy-26,18,52);ctx.fillRect(w-18,cy-26,18,52);sph(ctx,24,cy,22);sph(ctx,w-24,cy,22);
+  const c=0.5+0.5*Math.sin(t*0.02),gx0=46,gx1=w-46,n=11;for(let i=0;i<n;i++){const xx=gx0+(gx1-gx0)*(i+0.5)/n,rx=gx0+(gx1-gx0)*rnd(i+3),ry=cy+(rnd(i+9)-0.5)*110,a0=rnd(i+20)*Math.PI,x=rx+(xx-rx)*c,y=ry+(cy-ry)*c,a=a0*(1-c);i%3===1?drop0(ctx,x,y,2.6):fib0(ctx,x,y,a,(gx1-gx0)/n*1.1)}
+  if(c>0.93)glow0(ctx,cx,cy,14,0.7);txt(ctx,c>0.93?"цепочка замкнулась":"поле выстраивает частицы",8,16,CG,"left","11px IBM Plex Sans")}
+ else if(id==="emul"){ctx.fillStyle="rgba(200,210,215,.10)";ctx.fillRect(cx,0,w-cx,h);for(let i=0;i<160;i++){const x=cx+rnd(i)*(w-cx),y=(rnd(i+500)*h+t*0.15*(rnd(i+90)-0.5)+h)%h;drop0(ctx,x,y,0.8+rnd(i+33)*1.4)}ctx.strokeStyle="rgba(255,255,255,.25)";ctx.beginPath();ctx.moveTo(cx,6);ctx.lineTo(cx,h-6);ctx.stroke();
+  txt(ctx,"вода растворена",cx/2,h-12,CG,"center","11px IBM Plex Sans");txt(ctx,"эмульсия — муть",cx+(w-cx)/2,h-12,CG,"center","11px IBM Plex Sans")}
+ else if(id==="sludge"){ctx.fillStyle="#3A4A55";ctx.fillRect(0,h-10,w,10);ctx.fillStyle="rgba(110,180,240,.55)";ctx.beginPath();ctx.moveTo(0,h-10);for(let x=0;x<=w;x+=8)ctx.lineTo(x,h-24+3*Math.sin(x*0.08+t*0.03));ctx.lineTo(w,h-10);ctx.fill();
+  for(let i=0;i<10;i++){const x=rnd(i)*w,y=(rnd(i+7)*(h-40)+t*0.4)%(h-40);drop0(ctx,x,y+8,2+rnd(i+2)*1.5)}txt(ctx,"капли оседают",8,16,CG,"left","11px IBM Plex Sans");txt(ctx,"отстой воды",w-8,h-30,"#A8D6FF","right","11px IBM Plex Sans")}
+ else if(id==="bub"){for(let i=0;i<22;i++){const x=rnd(i)*w,sp=0.4+rnd(i+40)*0.8,y=h-((t*sp+rnd(i+80)*h)%(h+20)),r=2+rnd(i+11)*4+(h-y)*0.02;ctx.strokeStyle="rgba(225,240,250,.75)";ctx.lineWidth=1.2;ctx.beginPath();ctx.arc(x,y,r,0,2*Math.PI);ctx.stroke();ctx.fillStyle="rgba(225,240,250,.12)";ctx.fill()}
+  txt(ctx,"давление ↓ — газ выходит",8,16,CG,"left","11px IBM Plex Sans")}
+ else if(id==="sp"||id==="sn"){const tx=70;ctx.fillStyle="#8C9AA4";ctx.beginPath();ctx.moveTo(0,cy-24);ctx.lineTo(tx,cy);ctx.lineTo(0,cy+24);ctx.fill();ctx.fillStyle="#3A4A55";ctx.fillRect(w-14,8,8,h-16);
+  const g=(t%150)/150,L=(w-tx-24)*(id==="sp"?Math.min(1,g*1.6):Math.min(0.75,g*0.9));
+  if(id==="sp"){for(let k=0;k<4;k++)tree0(ctx,tx,cy,1,L/5,(k-1.5)*0.35,6,k*31+3,`rgba(215,200,255,${0.8})`,1.2);glow0(ctx,tx,cy,10,0.9)}
+  else{for(let k=0;k<26;k++){const a=(rnd(k)-0.5)*1.6,l=L*(0.35+0.4*rnd(k+5));tree0(ctx,tx,cy,1,l/4,a,4,k*17+1,"rgba(200,175,255,.45)",2.2)}glow0(ctx,tx+L*0.3,cy,L*0.45+8,0.35);glow0(ctx,tx,cy,12,0.9)}
+  txt(ctx,id==="sp"?"острие +: нити, быстро":"острие −: «куст», медленнее",8,h-10,CG,"left","11px IBM Plex Sans")}
+ else if(id==="arc"){ctx.fillStyle="rgba(60,40,15,.35)";ctx.fillRect(0,0,w,h);sph(ctx,cx,24,16);sph(ctx,cx,h-24,16);const ph=t%160;if(ph<10){spark(ctx,cx,40,cx,h-40,Math.floor(t/160),1-ph/10,3.5);glow0(ctx,cx,cy,40,0.8*(1-ph/10))}
+  for(let i=0;i<40;i++){const x=cx+(rnd(i)-0.5)*w*0.9*Math.min(1,ph/60+0.2),y=cy+(rnd(i+70)-0.5)*h*0.8;ctx.fillStyle="#111";ctx.beginPath();ctx.arc(x,y,1.3+rnd(i+3),0,2*Math.PI);ctx.fill()}
+  for(let i=0;i<8;i++){const y=cy-((ph*0.7+i*14)%(h/2));ctx.strokeStyle="rgba(225,240,250,.6)";ctx.beginPath();ctx.arc(cx+(rnd(i+9)-0.5)*30,y,2+rnd(i)*2,0,2*Math.PI);ctx.stroke()}
+  txt(ctx,"газ ↑ и углерод",8,16,CG,"left","11px IBM Plex Sans")}
+ else if(id==="mbi"){ctx.fillStyle="#B8743A";ctx.fillRect(8,14,26,h-28);ctx.fillRect(w-34,14,26,h-28);const n=4;for(let i=1;i<=n;i++){const x=34+(w-68)*i/(n+1);ctx.fillStyle="#C9B98A";ctx.fillRect(x-3,10,6,h-20)}
+  txt(ctx,"обмотка НН",12,h-4,CG,"left","10px IBM Plex Sans");txt(ctx,"обмотка ВН",w-12,h-4,CG,"right","10px IBM Plex Sans");txt(ctx,"картон",34+(w-68)/(n+1),10,"#E3D7A6","center","10px IBM Plex Sans");
+  for(let i=0;i<14;i++){const x=40+rnd(i)*(w-80),y=20+((rnd(i+6)*(h-40)+t*0.5)%(h-40));ctx.fillStyle="rgba(255,213,74,.5)";ctx.beginPath();ctx.arc(x,y,1.5,0,2*Math.PI);ctx.fill()}}}
+function anim0(){a0t++;if(curTab==="t0"&&a0t%2===0)V0.forEach(v=>draw0(v.id));requestAnimationFrame(anim0)}
+
+const T1={W:15,F:0,U:0,ramp:false,flash:0,seed:1,log:[]};let C1a=null,C1b=null,R1=null,A1last=0;
+const ML1={t:"Мини-опыт 1. Вода и волокна",steps:["Волокон нет, влагосодержание 10 г/т. Запишите U<sub>пр</sub> (ячейка 2,5 мм, 20 °C).","Волокон «много», влагосодержание то же. Запишите U<sub>пр</sub>.","Найдите, во сколько раз волокна снизили прочность.","Волокон нет, влагосодержание 60 г/т. Сколько воды в эмульсии? Запишите U<sub>пр</sub>."],
+ rows:[{l:"U<sub>пр</sub>: 10 г/т, без волокон",a:()=>oilU(10,0,20).U,u:"кВ",d:1},{l:"U<sub>пр</sub>: 10 г/т, много волокон",a:()=>oilU(10,1,20).U,u:"кВ",d:1},{l:"Отношение без волокон / с волокнами",a:()=>oilU(10,0,20).U/oilU(10,1,20).U,u:"—",d:2},{l:"Эмульсия при 60 г/т и 20 °C",a:()=>oilU(60,0,20).em,u:"г/т",d:1},{l:"U<sub>пр</sub>: 60 г/т, без волокон",a:()=>oilU(60,0,20).U,u:"кВ",d:1}],
+ q:["Почему одна и та же вода опаснее в масле с волокнами?","Масло с 60 г/т нагрели до 60 °C. Куда денется эмульсия и что станет с U<sub>пр</sub>? Проверьте на вкладке 3."]};
+function t1(){$("#t1").innerHTML=`<div class="lab"><div class="side card">
+ ${rng("w1","Влагосодержание W, г/т","water3",0,120,1,T1.W)}
+ <div><span class="lbl">Волокна в масле ${qb("fib")}</span>${seg("f1",FIB,T1.F)}</div>
+ ${rng("u1","Напряжение на ячейке U","",0,80,0.1,T1.U)}
+ <div class="btns"><button class="btn" id="rp1">Поднимать 2 кВ/с</button><button class="btn ghost" id="st1b">Перемешать</button></div>
+ <div class="reads">${rd("ws1","Растворимость при 20 °C","ws")}${rd("rs1","Относительное насыщение","rs")}${rd("em1","Эмульсия","water3")}${rd("sl1","Отстой","water3")}${rd("up1","U<sub>пр</sub> (2,5 мм, 50 Гц)","umodel")}${rd("ep1","E<sub>пр</sub>","")}${rd("ch1","Мостик собран","bridge")}</div>
+ <div class="log" id="lg1"></div></div>
+ <div class="card">
+ <div class="scr"><div class="scrh"><span><b>Зазор ячейки</b> · волокна и капли в поле</span><span id="h1"></span></div><div id="c1a"></div></div>
+ <div class="log"><b>Что видно.</b> Пока напряжения нет, волокна (белые) и капли эмульсии (голубые) разбросаны и повёрнуты как попало. С ростом U они поворачиваются вдоль поля и стягиваются к оси между электродами — растёт цепочка. Когда цепочка замыкает зазор, течёт ток, масло вскипает — пробой. Растворённую воду не видно, но и она снижает прочность. Подъём ускорен в 5 раз.</div>
+ <div class="scr"><div class="scrh"><span><b>U<sub>пр</sub> от влагосодержания</b> · 20 °C, ячейка 2,5 мм</span></div><div id="c1b"></div></div>
+ <div class="log"><b>Как читать график.</b> Три кривые — масло без волокон, с небольшим и с большим их количеством. Слева от 40 г/т вода растворена — прочность снижается плавно; правее — эмульсия, прочность падает круто. Пунктиры — нормы ПУЭ для оборудования до 15 кВ: 30 кВ для свежего масла и 25 кВ после заливки; 20 кВ — предельно допустимое в эксплуатации по РД 34.45-51.300-97. Ход кривых — по рис. 1.25 учебника, числа — учебная модель ${qb("umodel")}.</div>
+ </div></div>${mlab("ml1",ML1)}`;
+ $("#w1").oninput=e=>{T1.W=+e.target.value;upd1()};bindSeg("f1",v=>{T1.F=+v;upd1()});
+ $("#u1").oninput=e=>{stopR1();T1.U=+e.target.value;chkBrk1();upd1()};
+ $("#rp1").onclick=()=>{if(T1.ramp){stopR1();return}if(T1.U>=oilU(T1.W,T1.F,20).U-0.05)T1.U=0;T1.ramp=true;$("#rp1").textContent="Стоп";A1last=performance.now()};
+ $("#st1b").onclick=()=>{stopR1();T1.U=0;T1.seed++;$("#u1").value=0;upd1()};
+ bindMlab("ml1");C1a=canvasBox($("#c1a"),260,draw1a);C1b=canvasBox($("#c1b"),300,draw1b);C1a.fit();C1b.fit();upd1();anim1()}
+function stopR1(){T1.ramp=false;const b=$("#rp1");if(b)b.textContent="Поднимать 2 кВ/с"}
+function chkBrk1(){const s=oilU(T1.W,T1.F,20);if(T1.U>=s.U){T1.log.unshift(s.U);T1.log=T1.log.slice(0,6);T1.flash=1;T1.U=0;stopR1();$("#u1").value=0}}
+function upd1(){const s=oilU(T1.W,T1.F,20),c=clamp((T1.U/s.U-0.4)/0.6,0,1);
+ $("#w1o").textContent=T1.W+" г/т · "+fx(T1.W/1e4,4)+" %";$("#u1o").textContent=fx(T1.U,1)+" кВ";
+ $("#ws1").textContent=fx(wsat(20),0)+" г/т";$("#rs1").textContent=fx(s.RS*100,0)+" %";$("#em1").textContent=fx(s.em,0)+" г/т";$("#sl1").textContent=s.sl>0?fx(s.sl,0)+" г/т":"нет";
+ $("#up1").textContent=fx(s.U,1)+" кВ";$("#ep1").textContent=fx(s.U/GAP,1)+" кВ/мм";$("#ch1").textContent=fx(c*100,0)+" %";
+ $("#up1w").className="rd "+(s.U>=30?"ok":s.U>=20?"":"hot");
+ $("#lg1").innerHTML=(T1.log.length?`<b>Пробои:</b> ${T1.log.map(v=>fx(v,1)).join("; ")} кВ. `:"")+(s.em>0?`<b>Есть эмульсия ${fx(s.em,0)} г/т</b> — самое опасное состояние воды. `:`Вода растворена (${fx(s.RS*100,0)} % насыщения). `)+(s.sl>0?"Часть воды выпала в отстой — масло сильно увлажнено. ":"")+(T1.F>0?"Волокна впитывают воду и облегчают мостики. ":"")+(s.U<20?`<b style="color:var(--hot)">Ниже 20 кВ — масло непригодно даже для эксплуатации оборудования до 15 кВ.</b>`:s.U<25?"Ниже нормы после заливки (25 кВ), но выше эксплуатационного предела.":s.U<30?"Годится после заливки, но не как свежее масло до заливки (30 кВ).":"Удовлетворяет нормам для оборудования до 15 кВ.");
+ $("#h1").textContent="U = "+fx(T1.U,1)+" кВ · U/U<sub>пр</sub> = ".replace(/<[^>]+>/g,"")+fx(T1.U/s.U,2);C1a.fit();C1b.fit()}
+function draw1a(){if(!C1a)return;const {ctx,w,h}=C1a,s=oilU(T1.W,T1.F,20);ctx.clearRect(0,0,w,h);oilBox(ctx,0,0,w,h);const cy=h/2,R=Math.min(70,h*0.32),gx0=60,gx1=w-60;
+ ctx.fillStyle="#6E7F8C";ctx.fillRect(0,cy-14,gx0-R+6,28);ctx.fillRect(gx1+R-6,cy-14,w,28);sph(ctx,gx0-R+18,cy,R);sph(ctx,gx1+R-18,cy,R);
+ const eL=gx0+18,eR=gx1-18,c=clamp((T1.U/s.U-0.4)/0.6,0,1),sd=T1.seed*101;
+ const nf=Math.round(T1.F*28),nd=Math.round(Math.min(40,s.em*0.9+s.sl*0.05)),nds=Math.round(Math.min(60,s.diss*1.2));
+ ctx.fillStyle="rgba(150,200,240,.18)";for(let i=0;i<nds;i++){const x=eL+rnd(sd+i)*(eR-eL),y=10+rnd(sd+i+300)*(h-20);ctx.fillRect(x,y,1.2,1.2)}
+ const nch=nf+nd,seg=(eR-eL)/Math.max(6,Math.min(16,nch||1));
+ for(let i=0;i<nch;i++){const fib=i<nf,k=i,inCh=k<Math.min(16,nch),tx=eL+seg*((k%16)+0.5),rx=eL+rnd(sd+k*7)*(eR-eL),ry=12+rnd(sd+k*11)*(h-24),cc=inCh?c:c*0.35,x=rx+(tx-rx)*cc,y=ry+(cy-ry)*cc+(inCh?0:0),a0=rnd(sd+k*3)*Math.PI,a=a0*(1-cc)+(a0>Math.PI/2?Math.PI:0)*cc,jit=T1.U>0?(rnd(a1t*0.3+k)-0.5)*0.6:0;
+  fib?fib0(ctx,x+jit,y,a,seg*1.15):drop0(ctx,x+jit,y,2.4)}
+ if(nch>0&&c>0.2){ctx.save();ctx.globalAlpha=c*0.8;ctx.strokeStyle="rgba(255,213,74,.35)";ctx.lineWidth=6;ctx.beginPath();ctx.moveTo(eL,cy);ctx.lineTo(eL+(eR-eL)*Math.min(1,c*Math.min(1,nch/8)),cy);ctx.stroke();ctx.restore()}
+ if(T1.flash>0){spark(ctx,eL,cy,eR,cy,T1.seed*7+T1.log.length,T1.flash,3);glow0(ctx,(eL+eR)/2,cy,60,T1.flash*0.7)}
+ txt(ctx,"электрод",gx0-R+18,cy+R+16>h?h-6:cy+R+14,CG,"center","11px IBM Plex Sans");
+ txt(ctx,nch?`волокон ${nf}, капель ${nd}`:"частиц нет — растворённая вода не видна",8,16,CG,"left","11px IBM Plex Sans")}
+function draw1b(){if(!C1b)return;const {ctx,w,h}=C1b;ctx.clearRect(0,0,w,h);const L=56,T=14,W=w-L-16,H=h-T-46;
+ const A=linAx(ctx,L,T,W,H,0,120,0,80,"влагосодержание W, г/т","U пр, кВ",20,10);
+ ctx.fillStyle="rgba(120,190,245,.07)";ctx.fillRect(A.X(40),T,A.X(120)-A.X(40),H);txt(ctx,"эмульсия",A.X(44),T+14,"#A8D6FF");txt(ctx,"вода растворена",A.X(2),T+14,CG);
+ hl(ctx,A,30,0,120,CK,"30 кВ — свежее, до 15 кВ");hl(ctx,A,25,0,120,CY,"25 кВ — после заливки");hl(ctx,A,20,0,120,CR,"20 кВ — предел в эксплуатации");
+ FIB.forEach(([f,n],i)=>crv(ctx,A,W=>oilU(W,f,20).U,0,120,[CB,CO,CV][i],{w:f===T1.F?3:1.6,d:f===T1.F?null:[6,4]}));
+ const s=oilU(T1.W,T1.F,20);vl(ctx,A,T1.W,0,80,"rgba(255,255,255,.35)",[3,3]);dot(ctx,A.X(T1.W),A.Y(s.U),[CB,CO,CV][FIB.findIndex(x=>x[0]===T1.F)]);
+ lgd(ctx,L+W-170,T+40,[[CB,"волокон нет"],[CO,"волокон мало"],[CV,"волокон много"]])}
+let a1t=0;
+function anim1(){a1t++;const now=performance.now();if(T1.ramp&&curTab==="t1"){const dt=(now-A1last)/1000;T1.U+=2*5*dt;$("#u1").value=T1.U;chkBrk1();upd1()}A1last=now;
+ if(T1.flash>0){T1.flash=Math.max(0,T1.flash-0.03);if(curTab==="t1")draw1a()}else if(curTab==="t1"&&T1.U>0&&a1t%3===0)draw1a();requestAnimationFrame(anim1)}
+
+const T2={ld:Math.log10(0.5),p:760,E:4,deg:0,imp:0};let C2a=null,C2b=null,C2c=null,a2t=0;
+const PR=[[100,"100 мм рт. ст. — вакуум"],[380,"380 — полвакуума"],[760,"760 — атмосфера"],[1520,"1520 — 2 атм"]];
+const ML2={t:"Мини-опыт 2. Когда загорается пузырёк",steps:["Пузырёк 0,5 мм, давление 760 мм рт. ст. Запишите напряжённость зажигания в масле.","Снизьте давление до 380 мм рт. ст. (неполный вакуум). Запишите.","Найдите отношение.","Верните 760 и уменьшите пузырёк до 0,1 мм. Запишите напряжённость зажигания."],
+ rows:[{l:"E<sub>заж</sub>: 0,5 мм, 760 мм рт. ст.",a:()=>eBub(0.5,760),u:"кВ/мм",d:2},{l:"E<sub>заж</sub>: 0,5 мм, 380 мм рт. ст.",a:()=>eBub(0.5,380),u:"кВ/мм",d:2},{l:"Отношение 760 / 380",a:()=>eBub(0.5,760)/eBub(0.5,380),u:"—",d:2},{l:"E<sub>заж</sub>: 0,1 мм, 760 мм рт. ст.",a:()=>eBub(0.1,760),u:"кВ/мм",d:2}],
+ q:["Почему пузырёк меньшего размера загорается при большей напряжённости? Вспомните кривую Пашена из темы 4.","Зачем масло после сушки держат под вакуумом, а заливают в бак тоже под вакуумом, а не под атмосферным давлением?"]};
+function t2(){$("#t2").innerHTML=`<div class="lab"><div class="side card">
+ ${rng("d2","Диаметр пузырька d","bubble",Math.log10(0.05),Math.log10(2),0.005,T2.ld)}
+ ${rng("p2","Давление в масле p, мм рт. ст.","press",50,1520,10,T2.p)}
+ <div class="btns" id="pb2">${PR.map(([v,t])=>`<button class="btn ghost" data-v="${v}" style="font-size:13px;padding:4px 8px">${t}</button>`).join("")}</div>
+ ${rng("e2","Рабочая напряжённость в масле","",1,8,0.1,T2.E)}
+ <div><span class="lbl">Масло ${qb("degas")}</span>${seg("g2",[[0,"недегазированное"],[1,"дегазированное"]],T2.deg)}</div>
+ <div><span class="lbl">Напряжение ${qb("press")}</span>${seg("i2",[[0,"50 Гц"],[1,"импульс"]],T2.imp)}</div>
+ <div class="reads">${rd("kb2","Усиление поля в пузырьке","kb")}${rd("ub2","U<sub>пр</sub> газа в пузырьке","paschen")}${rd("eg2","E<sub>пр</sub> газа","")}${rd("ez2","E<sub>заж</sub> в масле","bubble")}${rd("ec2","U<sub>пр</sub> ячейки","press")}</div>
+ <div class="log" id="lg2"></div></div>
+ <div class="card">
+ <div class="two"><div class="scr"><div class="scrh"><span><b>Пузырёк в поле</b></span><span id="h2"></span></div><div id="c2a"></div></div>
+ <div class="scr"><div class="scrh"><span><b>U<sub>пр</sub> ячейки от давления</b> · рис. 1.26</span></div><div id="c2c"></div></div></div>
+ <div class="scr"><div class="scrh"><span><b>Напряжённость в масле, при которой загорается пузырёк</b> · ось d логарифмическая</span></div><div id="c2b"></div></div>
+ <div class="log"><b>Как читать.</b> Верхний левый рисунок: силовые линии гуще в пузырьке — поле там в 1,22 раза больше, чем в масле. Если рабочая напряжённость выше напряжённости зажигания, газ в пузырьке ионизуется: фиолетовое свечение, газ выделяется, пузырёк растёт. Нижний график: голубая кривая — зажигание при выбранном давлении, пунктир — при атмосферном, жёлтая линия — рабочая напряжённость. Всё, что выше голубой кривой, — разряд в пузырьке. Справа — ход рис. 1.26 учебника: недегазированное масло при откачке теряет прочность, дегазированное почти нет; на импульсе давление не влияет.</div>
+ </div></div>${mlab("ml2",ML2)}`;
+ $("#d2").oninput=e=>{T2.ld=+e.target.value;upd2()};$("#p2").oninput=e=>{T2.p=+e.target.value;upd2()};$("#e2").oninput=e=>{T2.E=+e.target.value;upd2()};
+ $$("#pb2 button").forEach(b=>b.onclick=()=>{T2.p=+b.dataset.v;$("#p2").value=T2.p;upd2()});
+ bindSeg("g2",v=>{T2.deg=+v;upd2()});bindSeg("i2",v=>{T2.imp=+v;upd2()});bindMlab("ml2");
+ C2a=canvasBox($("#c2a"),250,draw2a);C2b=canvasBox($("#c2b"),280,draw2b);C2c=canvasBox($("#c2c"),250,draw2c);[C2a,C2b,C2c].forEach(c=>c.fit());upd2();anim2()}
+function st2(){const d=Math.pow(10,T2.ld),U=paschenP(d,T2.p),Ez=eBub(d,T2.p),on=T2.E>=Ez;return {d,U,Ez,on,Ug:U/d}}
+const uCell=()=>T2.imp?null:uGas(Math.min(T2.p,760),T2.deg);
+function upd2(){const s=st2();$("#d2o").textContent=fx(s.d,s.d<0.1?3:2)+" мм";$("#p2o").textContent=T2.p+" · "+fx(T2.p/760,2)+" атм";$("#e2o").textContent=fx(T2.E,1)+" кВ/мм";
+ $("#kb2").textContent="× "+fx(KB,3);$("#ub2").textContent=fx(s.U,2)+" кВ";$("#eg2").textContent=fx(s.Ug,1)+" кВ/мм";$("#ez2").textContent=fx(s.Ez,2)+" кВ/мм";
+ const uc=uCell();$("#ec2").textContent=T2.imp?"от p не зависит":T2.p>760?"растёт (рис. 1.27)":fx(uc,1)+" кВ";
+ $("#ez2w").className="rd "+(s.on?"hot":"ok");
+ $("#lg2").innerHTML=(s.on?`<b style="color:var(--hot)">В пузырьке разряды.</b> Рабочие ${fx(T2.E,1)} кВ/мм больше напряжённости зажигания ${fx(s.Ez,2)} кВ/мм. Газ выделяется, пузырёк растёт — это частичные разряды (тема 10) и путь к пробою.`:`<b>Пузырёк спокоен.</b> До зажигания не хватает ${fx(s.Ez-T2.E,2)} кВ/мм.`)+` ${T2.p<760?"Пониженное давление — газ в пузырьке слабее, а из недегазированного масла выходят новые пузырьки.":T2.p>760?"Повышенное давление сжимает газ — прочность растёт.":""} ${T2.imp?"На импульсе пузырьки не успевают образоваться и вырасти — давление почти не влияет на U<sub>пр</sub>.":""}`;
+ $("#h2").textContent="d = "+fx(s.d,2)+" мм · p = "+T2.p;[C2a,C2b,C2c].forEach(c=>c.fit())}
+function draw2a(){if(!C2a)return;const {ctx,w,h}=C2a,s=st2();ctx.clearRect(0,0,w,h);oilBox(ctx,0,14,w,h-28);ctx.fillStyle="#9AA8B1";ctx.fillRect(0,0,w,14);ctx.fillRect(0,h-14,w,14);txt(ctx,"+",8,11,"#0D171E","left","bold 12px IBM Plex Sans");
+ const cx=w/2,cy=h/2,r=clamp(8+30*(T2.ld-Math.log10(0.05))/(Math.log10(2)-Math.log10(0.05)),8,48)*(s.on?1+0.05*Math.sin(a2t*0.1)+Math.min(0.25,(T2.E/s.Ez-1)*0.2):1);
+ const n=16;for(let i=0;i<n;i++){const x0=cx+(i-(n-1)/2)*(w/(n+2));ctx.strokeStyle="rgba(159,180,192,.45)";ctx.lineWidth=1;ctx.beginPath();for(let k=0;k<=60;k++){const y=14+(h-28)*k/60,dy=y-cy,dx=x0-cx,rr=Math.hypot(dx,dy),pull=rr<r*3.2?Math.exp(-((rr/r)**2)/2.2)*0.35:0,x=x0-dx*pull;k?ctx.lineTo(x,y):ctx.moveTo(x,y)}ctx.stroke()}
+ ctx.fillStyle="rgba(225,240,250,.10)";ctx.strokeStyle="rgba(225,240,250,.85)";ctx.lineWidth=1.6;ctx.beginPath();ctx.arc(cx,cy,r,0,2*Math.PI);ctx.fill();ctx.stroke();
+ if(s.on){glow0(ctx,cx,cy,r*1.1,0.55+0.35*Math.abs(Math.sin(a2t*0.37)));for(let i=0;i<5;i++){const y=cy-r-((a2t*0.8+i*22)%(cy-r-14));ctx.strokeStyle="rgba(225,240,250,.6)";ctx.beginPath();ctx.arc(cx+(rnd(i)-0.5)*r,y,1.5+rnd(i+5)*2,0,2*Math.PI);ctx.stroke()}}
+ txt(ctx,s.on?"разряд в газе, газ выделяется":"газ в пузырьке не ионизован",8,h-20,s.on?"#E2D4FF":CG,"left","11px IBM Plex Sans")}
+function draw2b(){if(!C2b)return;const {ctx,w,h}=C2b,s=st2();ctx.clearRect(0,0,w,h);const L=56,T=14,W=w-L-16,H=h-T-46;
+ const A=logXAx(ctx,L,T,W,H,0.05,2,0,14,"диаметр пузырька d, мм","E заж в масле, кВ/мм",2,v=>fx(v,v<1?(v<0.1?2:1):0));
+ [0.05,0.2,0.5,2].forEach(v=>{ctx.fillStyle=CG;ctx.font="11px IBM Plex Mono";ctx.textAlign="center";ctx.fillText(fx(v,2).replace(/,?0+$/,""),A.X(v),T+H+15)});
+ ctx.fillStyle="rgba(200,55,43,.10)";ctx.beginPath();ctx.moveTo(A.X(0.05),T);for(let k=0;k<=120;k++){const d=0.05*Math.pow(40,k/120);ctx.lineTo(A.X(d),A.Y(Math.min(14,eBub(d,T2.p))))}ctx.lineTo(A.X(2),T);ctx.fill();
+ crv(ctx,A,d=>eBub(d,760),0.05,2,CG,{log:1,d:[6,4],w:1.4,ymax:14});crv(ctx,A,d=>eBub(d,T2.p),0.05,2,CB,{log:1,ymax:14});
+ hl(ctx,A,T2.E,0.05,2,CY,"рабочая "+fx(T2.E,1)+" кВ/мм");dot(ctx,A.X(s.d),A.Y(Math.min(14,s.Ez)),s.on?CR:CB);
+ txt(ctx,"разряд в пузырьке",A.X(1.2),T+16,"#FF9E96","center");lgd(ctx,L+12,T+H-30,[[CB,"при выбранном p"],[CG,"при 760 мм рт. ст.",[6,4]]])}
+function draw2c(){if(!C2c)return;const {ctx,w,h}=C2c;ctx.clearRect(0,0,w,h);const L=50,T=14,W=w-L-14,H=h-T-46;
+ const A=linAx(ctx,L,T,W,H,0,760,20,50,"p, мм рт. ст.","U пр, кВ",190,5);
+ if(T2.imp){hl(ctx,A,44,0,760,CK,"импульс: от p почти не зависит","left");}
+ crv(ctx,A,p=>uGas(p,0),0,760,CO,{w:T2.deg?1.4:2.6,d:T2.deg?[6,4]:null});crv(ctx,A,p=>uGas(p,1),0,760,CB,{w:T2.deg?2.6:1.4,d:T2.deg?null:[6,4]});
+ const pp=Math.min(T2.p,760);if(!T2.imp)dot(ctx,A.X(pp),A.Y(uGas(pp,T2.deg)),T2.deg?CB:CO);
+ lgd(ctx,L+W-150,T+H-30,[[CB,"дегазированное"],[CO,"недегазированное"]]);if(T2.p>760)txt(ctx,"p > 760: прочность растёт →",L+W-4,T+14,CK,"right")}
+function anim2(){a2t++;if(curTab==="t2"&&st2().on&&a2t%2===0)draw2a();requestAnimationFrame(anim2)}
+
+const T3={W:30,F:0,t:20,oil:"tkp",play:false};let C3a=null,C3b=null,a3t=0,P3last=0;
+const ML3={t:"Мини-опыт 3. Влажное масло на морозе и в жару",steps:["Влагосодержание 30 г/т, волокон нет. Поставьте 20 °C, запишите U<sub>пр</sub>.","Охладите до +2 °C. Запишите U<sub>пр</sub> и сколько воды выделилось в эмульсию.","Нагрейте до 60 °C. Запишите U<sub>пр</sub>.","Найдите отношение U<sub>пр</sub>(60 °C)/U<sub>пр</sub>(2 °C)."],
+ rows:[{l:"U<sub>пр</sub> при 20 °C",a:()=>oilU(30,0,20).U,u:"кВ",d:1},{l:"U<sub>пр</sub> при +2 °C",a:()=>oilU(30,0,2).U,u:"кВ",d:1},{l:"Эмульсия при +2 °C",a:()=>oilU(30,0,2).em,u:"г/т",d:1,tol:0.05},{l:"U<sub>пр</sub> при 60 °C",a:()=>oilU(30,0,60).U,u:"кВ",d:1},{l:"Отношение 60 °C / 2 °C",a:()=>oilU(30,0,60).U/oilU(30,0,2).U,u:"—",d:2}],
+ q:["Почему пробу, взятую зимой из холодного бака, нельзя испытывать сразу, не дав ей нагреться в закрытой банке?","Трансформатор КТП в Апатитах ночью остывает до −25 °C, днём под нагрузкой масло +40 °C. Как меняется состояние воды в масле за сутки? Где здесь опасный момент?"]};
+function t3(){$("#t3").innerHTML=`<div class="lab"><div class="side card">
+ ${rng("t3s","Температура масла t","temp",-60,110,1,T3.t)}
+ <div class="btns"><button class="btn" id="pl3">Прогнать −60 → +110 °C</button></div>
+ ${rng("w3","Влагосодержание W, г/т","water3",2,80,1,T3.W)}
+ <div><span class="lbl">Волокна ${qb("fib")}</span>${seg("f3",FIB,T3.F)}</div>
+ <div><span class="lbl">Марка масла ${qb("pour")}</span>${seg("o3",Object.keys(POUR).map(k=>[k,POUR[k].n]),T3.oil)}</div>
+ <div class="reads">${rd("ws3","Растворимость при t","ws")}${rd("ds3","Растворено","rs")}${rd("em3","Эмульсия (жидкая)","water3")}${rd("ic3","Лёд","ice")}${rd("up3","U<sub>пр</sub> (2,5 мм)","temp")}${rd("pr3","Текучесть","pour")}</div>
+ <div class="log" id="lg3"></div></div>
+ <div class="card">
+ <div class="scr"><div class="scrh"><span><b>U<sub>пр</sub> от температуры</b> · по ходу рис. 1.28</span><span id="h3"></span></div><div id="c3b"></div></div>
+ <div class="log"><b>Как читать график.</b> Оранжевая кривая — выбранное масло, голубая пунктирная — сухое масло (5 г/т) для сравнения. У влажного масла <b>минимум около 0 °C</b>: растворимость мала, вода выделяется в эмульсию. <b>Ниже 0 °C</b> капли замерзают — у льда ε близка к ε масла, прочность снова растёт. <b>При 60…80 °C</b> вода растворена — максимум. <b>Выше 80 °C</b> — испарение и кипение. Серая зона слева — масло ниже температуры застывания: электрически оно ещё прочное, но не течёт. Зелёная полоса — 15…35 °C, при которых пробу испытывают по ГОСТ 6581-75 ${qb("lab20")}.</div>
+ <div class="scr"><div class="scrh"><span><b>Где вода</b> · растворена, эмульсия, лёд, отстой</span></div><div id="c3a"></div></div>
+ </div></div>${mlab("ml3",ML3)}`;
+ $("#t3s").oninput=e=>{stopP3();T3.t=+e.target.value;upd3()};$("#w3").oninput=e=>{T3.W=+e.target.value;upd3()};bindSeg("f3",v=>{T3.F=+v;upd3()});bindSeg("o3",v=>{T3.oil=v;upd3()});
+ $("#pl3").onclick=()=>{if(T3.play){stopP3();return}T3.play=true;T3.t=-60;$("#pl3").textContent="Стоп";P3last=performance.now()};
+ bindMlab("ml3");C3a=canvasBox($("#c3a"),190,draw3a);C3b=canvasBox($("#c3b"),310,draw3b);C3a.fit();C3b.fit();upd3();anim3()}
+function stopP3(){T3.play=false;const b=$("#pl3");if(b)b.textContent="Прогнать −60 → +110 °C"}
+function upd3(){const s=oilU(T3.W,T3.F,T3.t),pp=POUR[T3.oil].p,fr=T3.t<=pp;
+ $("#t3so").textContent=(T3.t>0?"+":"")+fx(T3.t,0)+" °C";$("#w3o").textContent=T3.W+" г/т";
+ $("#ws3").textContent=fx(s.Ws,s.Ws<10?1:0)+" г/т";$("#ds3").textContent=fx(s.diss,1)+" г/т";$("#em3").textContent=fx(s.em,1)+" г/т";$("#ic3").textContent=s.ice>0.05?fx(s.ice,1)+" г/т":"нет";
+ $("#up3").textContent=fx(s.U,1)+" кВ";$("#pr3").textContent=fr?"застыло (ниже "+pp+" °C)":T3.t<pp+10?"густое":"текучее";$("#pr3w").className="rd "+(fr?"hot":T3.t<pp+10?"":"ok");
+ $("#up3w").className="rd "+(s.U>=30?"ok":s.U>=20?"":"hot");
+ const zone=T3.t>85?"Близко к кипению: пар и газ снижают прочность.":T3.t>=40?"Тепло: вода растворена, прочность близка к максимуму.":T3.t>=0?(s.em>0.5?"Холодно, но выше нуля: вода выделилась в эмульсию — самый опасный режим.":"Вода пока растворена."):"Ниже нуля: выделившаяся вода — лёд, мостиков из капель нет.";
+ $("#lg3").innerHTML=`<b>${zone}</b> ${fr?`<span style="color:var(--hot)">Масло ${POUR[T3.oil].n} ниже температуры застывания: циркуляции нет, охлаждение и приводы в масле не работают. Для таких морозов нужно арктическое масло.</span>`:""}`;
+ $("#h3").textContent="W = "+T3.W+" г/т · t = "+fx(T3.t,0)+" °C";C3a.fit();C3b.fit()}
+function draw3b(){if(!C3b)return;const {ctx,w,h}=C3b;ctx.clearRect(0,0,w,h);const L=56,T=14,W=w-L-16,H=h-T-46;
+ const A=linAx(ctx,L,T,W,H,-60,110,0,80,"температура масла t, °C","U пр, кВ",20,10);
+ const pp=POUR[T3.oil].p;ctx.fillStyle="rgba(159,180,192,.12)";ctx.fillRect(A.X(-60),T,A.X(pp)-A.X(-60),H);txt(ctx,"застыло",A.X(-58),T+14,CG);
+ ctx.fillStyle="rgba(30,138,76,.16)";ctx.fillRect(A.X(15),T,A.X(35)-A.X(15),H);txt(ctx,"ГОСТ: 15…35 °C",A.X(25),T+H-6,CK,"center","11px IBM Plex Sans");
+ vl(ctx,A,0,0,80,"rgba(168,214,255,.35)",[2,3]);txt(ctx,"0 °C",A.X(0)+3,T+28,"#A8D6FF");
+ crv(ctx,A,t=>oilU(5,0,t).U,-60,110,CB,{d:[6,4],w:1.6,n:340});crv(ctx,A,t=>oilU(T3.W,T3.F,t).U,-60,110,CO,{w:2.8,n:340});
+ const s=oilU(T3.W,T3.F,T3.t);dot(ctx,A.X(T3.t),A.Y(s.U),CO);
+ lgd(ctx,L+12,T+H-30,[[CO,"выбранное масло, "+T3.W+" г/т"],[CB,"сухое масло, 5 г/т",[6,4]]])}
+function draw3a(){if(!C3a)return;const {ctx,w,h}=C3a,s=oilU(T3.W,T3.F,T3.t);ctx.clearRect(0,0,w,h);ctx.fillStyle="#0D171E";ctx.fillRect(0,0,w,h);
+ const bx=214,bw=Math.max(80,w-bx-14),by=20,bh=h-40;oilBox(ctx,bx,by,bw,bh);ctx.strokeStyle="rgba(200,220,235,.5)";ctx.strokeRect(bx,by,bw,bh);
+ const tot=Math.max(1,T3.W);ctx.fillStyle="rgba(150,200,240,.35)";const nd=Math.round(s.diss*2);for(let i=0;i<nd;i++)ctx.fillRect(bx+rnd(i)*bw,by+rnd(i+999)*(bh-14),1.3,1.3);
+ const ne=Math.round(Math.min(80,s.em*2.5));for(let i=0;i<ne;i++){const x=bx+rnd(i+50)*bw,y=by+((rnd(i+80)*(bh-16)+a3t*0.2)%(bh-16));drop0(ctx,x,y,1.8)}
+ const ni=Math.round(Math.min(80,s.ice*2.5));for(let i=0;i<ni;i++){const x=bx+rnd(i+150)*bw,y=by+rnd(i+180)*(bh-16);ctx.strokeStyle="rgba(235,245,255,.9)";ctx.lineWidth=1;ctx.beginPath();for(let k=0;k<3;k++){const a=k*Math.PI/3;ctx.moveTo(x-Math.cos(a)*3,y-Math.sin(a)*3);ctx.lineTo(x+Math.cos(a)*3,y+Math.sin(a)*3)}ctx.stroke()}
+ if(s.sl>0){ctx.fillStyle="rgba(110,180,240,.6)";ctx.fillRect(bx,by+bh-Math.min(14,4+s.sl*0.05),bw,Math.min(14,4+s.sl*0.05))}
+ if(T3.t>85){const nb=Math.round((T3.t-85)*1.5);for(let i=0;i<nb;i++){const x=bx+rnd(i+300)*bw,y=by+bh-((a3t*1.2+rnd(i+330)*bh)%bh);ctx.strokeStyle="rgba(230,240,250,.7)";ctx.beginPath();ctx.arc(x,y,1.5+rnd(i)*2.5,0,2*Math.PI);ctx.stroke()}}
+ const tx=24,ty0=18,ty1=h-30,tt=clamp((T3.t+60)/170,0,1);ctx.fillStyle="#253844";ctx.fillRect(tx-6,ty0,12,ty1-ty0);ctx.beginPath();ctx.arc(tx,ty1+6,11,0,2*Math.PI);ctx.fill();const col=T3.t<0?CB:T3.t>80?CR:CO;ctx.fillStyle=col;ctx.fillRect(tx-3,ty1-(ty1-ty0)*tt,6,(ty1-ty0)*tt+6);ctx.beginPath();ctx.arc(tx,ty1+6,8,0,2*Math.PI);ctx.fill();
+ txt(ctx,(T3.t>0?"+":"")+fx(T3.t,0)+" °C",54,h-12,CT,"left","bold 14px IBM Plex Sans");
+ const parts=[["растворено",s.diss,"#78BEF5"],["эмульсия",s.em,"#4FB3FF"],["лёд",s.ice,"#EAF4FF"],["отстой",s.sl,"#2F7FC0"]];
+ parts.forEach(([n,v],i)=>txt(ctx,n+": "+fx(v,1)+" г/т",54,by+16+i*20,v>0.05?CT:"#56636C","left","12px IBM Plex Sans"));
+ if(T3.t<=POUR[T3.oil].p){ctx.fillStyle="rgba(159,180,192,.25)";ctx.fillRect(bx,by,bw,bh);txt(ctx,"масло застыло",bx+bw/2,by+bh/2,CT,"center","bold 14px IBM Plex Sans")}}
+function anim3(){a3t++;const now=performance.now();if(T3.play&&curTab==="t3"){T3.t=Math.min(110,T3.t+(now-P3last)/1000*20);$("#t3s").value=T3.t;upd3();if(T3.t>=110)stopP3()}P3last=now;if(curTab==="t3"&&a3t%3===0)draw3a();requestAnimationFrame(anim3)}
+
+const T4={m:"time",lt:-2,cl:0.3,S:10,lv:2,mw:10,lr:-6.3,med:"water",rock:"sand"};let C4a=null,C4b=null,a4t=0;
+const M4=[["time","Время воздействия"],["gap","Промежуток и полярность"],["vol","Объём и площадь"],["rock","Импульс и горная порода"]];
+const ML4={t:"Мини-опыт 4. Промежуток, полярность, объём",steps:["Режим «Промежуток и полярность», S = 10 см. Запишите U<sub>пр</sub> на 50 Гц и при постоянном напряжении с острием «+».","Найдите отношение.","Увеличьте S до 20 см. Запишите U<sub>пр</sub> на 50 Гц.","Режим «Объём и площадь»: V/V<sub>0</sub> = 10<sup>4</sup>, m = 10. Запишите U/U<sub>0</sub>."],
+ rows:[{l:"U<sub>пр</sub>, 50 Гц, S = 10 см",a:()=>uGap(36,10),u:"кВ",d:0},{l:"U<sub>пр</sub>, постоянное, острие +, S = 10 см",a:()=>uGap(22,10),u:"кВ",d:0},{l:"Отношение 50 Гц / постоянное +",a:()=>36/22,u:"—",d:2},{l:"U<sub>пр</sub>, 50 Гц, S = 20 см",a:()=>uGap(36,20),u:"кВ",d:0},{l:"U/U<sub>0</sub> при V/V<sub>0</sub> = 10<sup>4</sup>, m = 10",a:()=>volK(1e4,10),u:"—",d:3}],
+ q:["Промежуток вырос вдвое. Во сколько раз выросло U<sub>пр</sub>? Что стало со средней прочностью U/S?","Почему результат испытания в ячейке 2,5 мм нельзя прямо пересчитать на изоляцию трансформатора?"]};
+function t4(){$("#t4").innerHTML=`<div class="card" style="gap:8px"><span class="lbl">Что исследуем</span>${seg("m4",M4,T4.m)}</div><div class="lab"><div class="side card" id="sd4"></div>
+ <div class="card"><div class="scr"><div class="scrh"><span id="hh4"></span><span id="h4"></span></div><div id="c4a"></div></div><div class="log" id="how4"></div><div class="scr" id="s4b"><div class="scrh"><span id="hb4"></span></div><div id="c4b"></div></div></div></div>${mlab("ml4",ML4)}`;
+ bindSeg("m4",v=>{T4.m=v;side4()});bindMlab("ml4");C4a=canvasBox($("#c4a"),320,draw4a);C4b=canvasBox($("#c4b"),220,draw4b);side4();anim4()}
+function side4(){const m=T4.m;let s="";
+ if(m==="time")s=`${rng("t4","Время воздействия τ","tau",-6,2,0.02,T4.lt)}${rng("c4","Чистота масла","tech",0,1,0.01,T4.cl)}<div class="reads">${rd("r4a","U<sub>пр</sub> при τ","tau")}${rd("r4b","U<sub>пр</sub> при 1 мкс","")}${rd("r4c","U<sub>пр</sub> при длительном","")}${rd("r4d","Область","tau")}</div>`;
+ if(m==="gap")s=`${rng("s4","Расстояние острие — плоскость S, см","gapn",1,25,0.5,T4.S)}<div class="reads">${GAPV.map((g,i)=>rd("g4"+i,g.n,i<2||i>2?"pol":"")).join("")}${rd("g4e","Средняя E<sub>ср</sub> на 50 Гц","gapn")}</div>`;
+ if(m==="vol")s=`${rng("v4","Объём под полем V/V<sub>0</sub>","vol",0,6,0.05,T4.lv)}${rng("mw4","Показатель Вейбулла m","weib",5,20,0.5,T4.mw)}<div class="reads">${rd("v4a","U/U<sub>0</sub>","vol")}${rd("v4b","Если в ячейке 60 кВ","")}${rd("v4c","Разброс (СКО) ≈","scat")}</div>`;
+ if(m==="rock")s=`${rng("lr4","Длительность фронта импульса τ","inv",-7,-5,0.01,T4.lr)}<div><span class="lbl">Жидкость</span>${seg("md4",[["oil","масло"],["water","вода"]],T4.med)}</div><div><span class="lbl">Порода</span>${seg("rk4",[["sand","песчаник"],["quartz","кварц"]],T4.rock)}</div><div class="reads">${rd("k4a","U<sub>пр</sub> жидкости","")}${rd("k4b","U<sub>пр</sub> породы","")}${rd("k4c","Точка А<sub>к</sub>","inv")}${rd("k4d","Куда идёт разряд","inv")}</div>`;
+ $("#sd4").innerHTML=s+`<div class="log" id="lg4"></div>`;
+ const B=(id,k)=>{const el=$("#"+id);if(el)el.oninput=e=>{T4[k]=+e.target.value;upd4()}};B("t4","lt");B("c4","cl");B("s4","S");B("v4","lv");B("mw4","mw");B("lr4","lr");
+ if(m==="rock"){bindSeg("md4",v=>{T4.med=v;upd4()});bindSeg("rk4",v=>{T4.rock=v;upd4()})}
+ $("#s4b").hidden=!(m==="rock"||m==="gap");
+ const HW={time:"<b>Как читать.</b> Это полная вольт-секундная характеристика масла (рис. 1.29). Слева, при микросекундах, разряд не успевает сформироваться — прочность высокая. Область I: примеси ещё не успевают сместиться, кривые чистого и грязного масла почти совпадают. Область II (правее 10<sup>−3</sup> с): работают влага, волокна и пузырьки от нагрева — кривая грязного масла уходит вниз. Ползунок «Чистота» меняет только область II. Числа — учебная модель по форме рисунка.",
+  gap:"<b>Как читать.</b> Промежуток острие — плоскость в масле (рис. 1.30). Пять кривых — пять видов напряжения. U<sub>пр</sub> растёт медленнее расстояния: U = A·S<sup>0,75</sup> (ф. 1.50). Отрицательное острие всегда прочнее положительного. Выше всех — импульсы: примеси не успевают сработать. Нижний рисунок — стример от острия: положительный тонкий и быстрый, отрицательный густой и медленный.",
+  vol:"<b>Как читать.</b> Пробой — «по слабому звену»: чем больше объём масла под сильным полем и площадь электродов, тем вероятнее найти там частицу, волокно или пузырёк. Кривая показывает, во сколько раз падает типичное U<sub>пр</sub> при росте объёма. Чем больше m (меньше разброс), тем слабее эффект. Ячейка ГОСТ — это V<sub>0</sub>; объём масла под полем в изоляции трансформатора больше в тысячи и десятки тысяч раз.",
+  rock:"<b>Как читать.</b> Вольт-секундные характеристики промежутка 10 мм (по рис. 1.39). Кривые жидкостей идут круче, чем пород, и пересекаются с ними в точке А<sub>к</sub>. Левее А<sub>к</sub> жидкость прочнее камня — разряд между электродами, прижатыми к поверхности камня, уходит внутрь камня и раскалывает его. Это электроимпульсная технология дробления и бурения; для воды фронт нужен короче, чем для масла. Числа — учебная модель."};
+ $("#how4").innerHTML=HW[m];$("#hh4").innerHTML={time:"<b>U<sub>пр</sub> масла от времени воздействия</b> · рис. 1.29",gap:"<b>U<sub>пр</sub> от расстояния</b> · острие — плоскость, рис. 1.30",vol:"<b>Масштабный эффект</b> · модель Вейбулла",rock:"<b>Жидкость против породы</b> · рис. 1.39"}[m];
+ $("#hb4").innerHTML=m==="rock"?"<b>Электроды на камне в жидкости</b>":"<b>Стример у острия</b> "+qb("str");[C4a,C4b].forEach(c=>c.fit());upd4()}
+function upd4(){const m=T4.m;let lg="";
+ if(m==="time"){const tau=Math.pow(10,T4.lt);$("#t4o").textContent=fT(tau);$("#c4o").textContent=fx(T4.cl*100,0)+" %";$("#r4a").textContent=fx(uTime(tau,T4.cl),0)+" кВ";$("#r4b").textContent=fx(uTime(1e-6,T4.cl),0)+" кВ";$("#r4c").textContent=fx(uTime(100,T4.cl),0)+" кВ";$("#r4d").textContent=tau<1e-3?"I — примеси не успевают":"II — работают примеси";
+  lg=tau<1e-5?"Импульс короче времени формирования разряда — прочность резко растёт.":tau<1e-3?"Область I: вода и волокна не успевают переместиться и выстроиться в мостики.":"Область II: мостики, пузырьки от нагрева токами проводимости — прочность падает тем сильнее, чем грязнее масло."}
+ if(m==="gap"){$("#s4o").textContent=fx(T4.S,1)+" см";GAPV.forEach((g,i)=>$("#g4"+i).textContent=fx(uGap(g.A,T4.S),0)+" кВ");$("#g4e").textContent=fx(uGap(36,T4.S)/T4.S,1)+" кВ/см";
+  lg=`При S = ${fx(T4.S,1)} см острие «−» прочнее острия «+» в ${fx(58/50,2)} раза на импульсе и в ${fx(27/22,2)} раза на постоянном. Средняя прочность на 50 Гц — ${fx(uGap(36,T4.S)/T4.S,1)} кВ/см и падает с ростом S.`}
+ if(m==="vol"){const v=Math.pow(10,T4.lv),k=volK(v,T4.mw);$("#v4o").textContent="10"+sup(T4.lv)+" ≈ "+fN(v,2);$("#mw4o").textContent=fx(T4.mw,1);$("#v4a").textContent=fx(k,3);$("#v4b").textContent=fx(60*k,1)+" кВ";$("#v4c").textContent=fx(128/T4.mw,0)+" %";
+  lg=`Объём больше в ${fN(v,1)} раз — типичное пробивное напряжение ниже в ${fx(1/k,2)} раза.`}
+ if(m==="rock"){const tau=Math.pow(10,T4.lr),ul=uRock(T4.med,tau),ur=uRock(T4.rock,tau),ak=cross(T4.med,T4.rock),inR=ul>ur;$("#lr4o").textContent=fT(tau);$("#k4a").textContent=fx(ul,0)+" кВ";$("#k4b").textContent=fx(ur,0)+" кВ";$("#k4c").textContent=ak?fT(ak):"нет";$("#k4d").textContent=inR?"в камень":"по жидкости";$("#k4dw").className="rd "+(inR?"ok":"hot");
+  lg=inR?`<b>Разряд внедряется в камень</b>: при τ = ${fT(tau)} ${ROCK[T4.med].n.toLowerCase()} прочнее породы (${fx(ul,0)} > ${fx(ur,0)} кВ).`:`<b>Разряд идёт по жидкости</b> вдоль поверхности: импульс слишком длинный. Нужен фронт короче ${ak?fT(ak):"—"}.`}
+ $("#lg4").innerHTML=lg;$("#h4").textContent="";C4a.fit();if(!$("#s4b").hidden)C4b.fit()}
+const sup=v=>{const s=fx(v,v%1?2:0).replace("−","-");return s.split("").map(c=>SUP[c]||(c===","?"·":c)).join("")};
+const fT=t=>t<1e-6?fx(t*1e9,0)+" нс":t<1e-3?fx(t*1e6,t<1e-5?2:0)+" мкс":t<1?fx(t*1e3,t<1e-2?2:0)+" мс":fx(t,0)+" с";
+function draw4a(){if(!C4a)return;const {ctx,w,h}=C4a;ctx.clearRect(0,0,w,h);const L=58,T=14,W=w-L-16,H=h-T-46,m=T4.m;
+ if(m==="time"){const A=logXAx(ctx,L,T,W,H,1e-6,100,0,600,"время воздействия напряжения τ, с","U пр, кВ",100,v=>{const e=Math.round(Math.log10(v));return "10"+String(e).split("").map(c=>SUP[c]).join("")});
+  ctx.fillStyle="rgba(79,179,255,.06)";ctx.fillRect(A.X(1e-6),T,A.X(1e-3)-A.X(1e-6),H);ctx.fillStyle="rgba(255,138,61,.07)";ctx.fillRect(A.X(1e-3),T,A.X(100)-A.X(1e-3),H);txt(ctx,"область I",A.X(3e-5),T+16,CB,"center","bold 12px IBM Plex Sans");txt(ctx,"область II",A.X(1),T+16,CO,"center","bold 12px IBM Plex Sans");
+  crv(ctx,A,t=>uTime(t,1),1e-6,100,CK,{log:1,d:[6,4],w:1.5});crv(ctx,A,t=>uTime(t,0),1e-6,100,CR,{log:1,d:[6,4],w:1.5});crv(ctx,A,t=>uTime(t,T4.cl),1e-6,100,CY,{log:1,w:2.8});
+  const tau=Math.pow(10,T4.lt);dot(ctx,A.X(tau),A.Y(uTime(tau,T4.cl)),CY);lgd(ctx,L+W-200,T+46,[[CY,"выбранное масло"],[CK,"чистое",[6,4]],[CR,"грязное: влага, волокна",[6,4]]])}
+ if(m==="gap"){const A=linAx(ctx,L,T,W,H,0,25,0,700,"расстояние S, см","U пр, кВ",5,100);GAPV.forEach(g=>crv(ctx,A,S=>uGap(g.A,S),0.3,25,g.c,{w:2.2}));vl(ctx,A,T4.S,0,700,"rgba(255,255,255,.35)",[3,3]);GAPV.forEach(g=>dot(ctx,A.X(T4.S),A.Y(uGap(g.A,T4.S)),g.c,4));lgd(ctx,L+10,T+16,GAPV.map(g=>[g.c,g.n]))}
+ if(m==="vol"){const A=logXAx(ctx,L,T,W,H,1,1e6,0,1.05,"объём под полем V/V₀","U/U₀",0.2,v=>v===1?"1":"10"+String(Math.round(Math.log10(v))).split("").map(c=>SUP[c]).join(""),v=>fx(v,1));
+  [6,10,15].forEach((mm,i)=>crv(ctx,A,v=>volK(v,mm),1,1e6,[CR,CY,CK][i],{log:1,w:1.4,d:[6,4]}));crv(ctx,A,v=>volK(v,T4.mw),1,1e6,CB,{log:1,w:2.8});const v=Math.pow(10,T4.lv);dot(ctx,A.X(v),A.Y(volK(v,T4.mw)),CB);
+  vl(ctx,A,1,0,1.05,CK,[2,2]);txt(ctx,"ячейка ГОСТ",A.X(1)+4,A.Y(0.08),CK);lgd(ctx,L+W-170,T+20,[[CB,"m = "+fx(T4.mw,1)],[CR,"m = 6",[6,4]],[CY,"m = 10",[6,4]],[CK,"m = 15",[6,4]]])}
+ if(m==="rock"){const A=logXAx(ctx,L,T,W,H,1e-7,1e-5,0,320,"длительность импульса τ, с","U пр, кВ",50,v=>"10"+String(Math.round(Math.log10(v))).replace("-","⁻").split("").map(c=>SUP[c]||c).join(""));
+  Object.keys(ROCK).forEach(k=>crv(ctx,A,t=>uRock(k,t),1e-7,1e-5,ROCK[k].c,{log:1,w:(k===T4.med||k===T4.rock)?2.8:1.2,d:(k===T4.med||k===T4.rock)?null:[5,4],ymax:330}));
+  const ak=cross(T4.med,T4.rock);if(ak){dot(ctx,A.X(ak),A.Y(uRock(T4.rock,ak)),"#fff",5);txt(ctx,"Aк",A.X(ak)+7,A.Y(uRock(T4.rock,ak))-7,"#fff","left","bold 12px IBM Plex Sans")}
+  const tau=Math.pow(10,T4.lr);vl(ctx,A,tau,0,320,"rgba(255,255,255,.4)",[3,3]);lgd(ctx,L+W-190,T+18,Object.keys(ROCK).map(k=>[ROCK[k].c,ROCK[k].n]))}}
+function draw4b(){if(!C4b||$("#s4b").hidden)return;const {ctx,w,h}=C4b;ctx.clearRect(0,0,w,h);
+ if(T4.m==="rock"){const water=T4.med==="water";ctx.fillStyle=water?"#0E1A24":OILBG;ctx.fillRect(0,0,w,h);if(!water){ctx.fillStyle=OILT;ctx.fillRect(0,0,w,h)}
+  const tau=Math.pow(10,T4.lr),inR=uRock(T4.med,tau)>uRock(T4.rock,tau),rx=w*0.2,rw=w*0.6,ry=h*0.45;ctx.fillStyle=T4.rock==="quartz"?"#C9C2D6":"#A0805A";ctx.beginPath();ctx.moveTo(rx,ry);ctx.lineTo(rx+rw*0.1,h-10);ctx.lineTo(rx+rw*0.9,h-14);ctx.lineTo(rx+rw,ry+8);ctx.lineTo(rx+rw*0.55,ry-12);ctx.closePath();ctx.fill();
+  ctx.fillStyle="#8C9AA4";ctx.fillRect(rx+rw*0.18-5,10,10,ry-10);ctx.fillRect(rx+rw*0.82-5,10,10,ry-6);
+  const ph=a4t%90;if(ph<14){const a=1-ph/14;if(inR){ctx.save();ctx.strokeStyle=`rgba(255,250,220,${a})`;ctx.shadowColor="rgba(190,170,255,.9)";ctx.shadowBlur=14;ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(rx+rw*0.18,ry);ctx.quadraticCurveTo(rx+rw*0.5,h-6,rx+rw*0.82,ry+4);ctx.stroke();ctx.restore()}else spark(ctx,rx+rw*0.18,ry-4,rx+rw*0.82,ry-2,Math.floor(a4t/90),a,3)}
+  if(inR&&ph>=14){ctx.strokeStyle="rgba(20,20,20,.7)";ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(rx+rw*0.5,ry-10);ctx.lineTo(rx+rw*0.48,ry+20);ctx.lineTo(rx+rw*0.55,h-12);ctx.stroke()}
+  txt(ctx,inR?"разряд внутри камня — камень раскалывается":"разряд по жидкости вдоль поверхности",8,16,inR?CK:CR,"left","12px IBM Plex Sans");txt(ctx,water?"вода":"масло",w-8,16,CG,"right","11px IBM Plex Sans")}
+ else{oilBox(ctx,0,0,w,h);const half=w/2;[[0,"+"],[1,"−"]].forEach(([k,sg])=>{const x0=k*half,cy=h/2;ctx.fillStyle="#8C9AA4";ctx.beginPath();ctx.moveTo(x0,cy-18);ctx.lineTo(x0+50,cy);ctx.lineTo(x0,cy+18);ctx.fill();ctx.fillStyle="#3A4A55";ctx.fillRect(x0+half-14,10,8,h-20);
+  const g=(a4t%160)/160,L=(half-80)*(k?Math.min(0.7,g*0.8):Math.min(1,g*1.5));if(!k){for(let j=0;j<4;j++)tree0(ctx,x0+50,cy,1,L/5,(j-1.5)*0.35,6,j*31+3,"rgba(215,200,255,.85)",1.2)}else{for(let j=0;j<22;j++)tree0(ctx,x0+50,cy,1,L*(0.35+0.4*rnd(j+5))/4,(rnd(j)-0.5)*1.6,4,j*17+1,"rgba(200,175,255,.45)",2.2)}glow0(ctx,x0+50,cy,10,0.9);
+  txt(ctx,"острие "+sg+(k?": «куст», медленнее":": нити, быстро"),x0+8,h-10,CG,"left","11px IBM Plex Sans")});ctx.strokeStyle="rgba(255,255,255,.2)";ctx.beginPath();ctx.moveTo(half,0);ctx.lineTo(half,h);ctx.stroke()}}
+function anim4(){a4t++;if(curTab==="t4"&&(T4.m==="rock"||T4.m==="gap")&&a4t%2===0)draw4b();requestAnimationFrame(anim4)}
+
+const S5=[
+ {n:"Свежее масло из бочки перед заливкой в КТП 6 кВ",cls:"15",kind:"fr",W:8,F:0,cv:0.07},
+ {n:"Трансформатор 10 кВ сразу после заливки",cls:"15",kind:"af",W:14,F:0.3,cv:0.09},
+ {n:"КТП 6 кВ у карьера, весна (эксплуатация)",cls:"15",kind:"ex",W:45,F:0.5,cv:0.14},
+ {n:"Трансформатор 6 кВ после ремонта, сразу после заливки",cls:"15",kind:"af",W:20,F:1,cv:0.22},
+ {n:"Трансформатор 35 кВ (эксплуатация)",cls:"35",kind:"ex",W:16,F:0.4,cv:0.1},
+ {n:"Выключатель 6 кВ после отключений КЗ (эксплуатация)",cls:"15",kind:"ex",W:20,F:1,cv:0.3}];
+const KIND={fr:"свежее масло до заливки",af:"масло после заливки",ex:"эксплуатационное масло, предельно допустимое"};
+const T5={si:0,W:0,F:0,cv:0,fill:1,vals:[],ph:"prep",U:0,tm:0,fast:true,treated:0,seed:1,msg:"",spark:0,stir:0};let C5=null,L5=0,a5t=0;
+function reset5(keep){const s=S5[T5.si];Object.assign(T5,{W:s.W,F:s.F,cv:s.cv,fill:1,vals:[],ph:"prep",U:0,tm:0,msg:"",spark:0,stir:0});if(!keep)T5.treated=0;T5.seed++}
+function gauss(i){const u=Math.max(1e-6,rnd(T5.seed*977+i*13.7)),v=rnd(T5.seed*331+i*7.1);return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)}
+const mean5=()=>oilU(T5.W,T5.F,20).U;
+const nextBrk=()=>Math.max(5,mean5()*(1+T5.cv*gauss(T5.vals.length+20*T5.fill)));
+const norm5=()=>{const s=S5[T5.si],r=NORM.find(x=>x.k===s.cls);return r[s.kind]};
+let C5b=null,C5c=null;
+const ST5=[["prep","Подготовка","1"],["fill","Заливка","2"],["wait","Выдержка 10 мин","3"],["ramp","Подъём до пробоя","4"],["stir","Перемешивание","5"],["pause","Пауза 5 мин","6"],["done","Расчёт и вывод","✓"]];
+const STI={prep:0,turn:0,fill:1,pour:1,wait:2,ready:3,ramp:3,brk:3,stir:4,stirA:4,pause:5,done:6};
+const mmss=s=>String(Math.floor(s/60)).padStart(2,"0")+":"+String(Math.floor(s%60)).padStart(2,"0");
+function t5(){$("#t5").innerHTML=`<div class="card" style="gap:12px">
+ <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:end">
+  <div style="flex:1;min-width:240px"><span class="lbl">Проба масла ${qb("norm")}</span><select id="sm5" style="width:100%;font:inherit;padding:7px;border:1px solid var(--line);border-radius:8px;background:var(--panel)">${S5.map((s,i)=>`<option value="${i}">${s.n}</option>`).join("")}</select></div>
+  <label style="display:flex;gap:8px;align-items:center;font-size:14px;padding-bottom:8px"><input type="checkbox" id="fs5" checked> ускорить выдержки (×100) и подъём (×6)</label>
+  <button class="btn ghost" id="nw5" style="margin-bottom:2px">Начать заново</button></div>
+ <div class="st5" id="sb5"></div>
+ <div class="ban5" id="bn5"></div></div>
+ <div class="card">
+ <div class="scr"><div class="scrh"><span><b>Аппарат</b> ${qb("appar")} · проба · ячейка ${qb("cell")} · зазор под лупой ${qb("gauge")} · киловольтметр ${qb("kv")}</span><span id="h5"></span></div><div id="c5"></div></div>
+ <div class="two"><div class="scr"><div class="scrh"><span><b>Подъём напряжения</b> 2 кВ/с ${qb("rate")} · все пробои</span></div><div id="c5b"></div></div>
+ <div class="scr"><div class="scrh"><span><b>Пробои, среднее и разброс</b> ${qb("cv")}</span></div><div id="c5c"></div></div></div>
+ <div class="log"><b>Как читать.</b> Слева — сосуд с пробой, в центре — ячейка, в круге — зазор 2,5 мм под лупой: с ростом напряжения волокна и капли выстраиваются в мостик, при пробое — искра, газ и углерод. Справа — киловольтметр: красная метка — норма, белая — напряжение последнего пробоя. График внизу слева: каждый подъём — прямая 2 кВ/с, оборвавшаяся на пробое; видно, что пробои разбросаны. Справа — столбики пробоев, среднее (жёлтая линия), полоса ± S и норма (красный пунктир).</div>
+ <div id="res5"></div></div>`;
+ $("#sm5").onchange=e=>{T5.si=+e.target.value;reset5();ui5()};$("#fs5").onchange=e=>{T5.fast=e.target.checked};$("#nw5").onclick=()=>{reset5();ui5()};
+ C5=canvasBox($("#c5"),330,draw5);C5b=canvasBox($("#c5b"),250,draw5b);C5c=canvasBox($("#c5c"),250,draw5c);[C5,C5b,C5c].forEach(c=>c.fit());reset5();ui5();anim5()}
+function ban5(){const P=T5.ph,n=T5.vals.length,need=T5.fill===1?6:12,k=n+1;
+ const B={prep:["Шаг 1 из 6 · Подготовить пробу "+qb("gauge")+" "+qb("lab20"),"Сосуд с пробой несколько раз осторожно переворачивают — примеси распределяются равномерно, но масло не взбивают. Калибрами проверяют зазор 2,5 мм, термометром — температуру пробы 15…35 °C.",[["tu","Перевернуть сосуд, проверить зазор и температуру"]]],
+  turn:["Шаг 1 из 6 · Переворачиваем сосуд…","Медленно, без встряхивания.",[]],
+  fill:["Шаг 2 из 6 · Заполнить ячейку","Ячейку ополаскивают этой же пробой, затем медленно наливают масло по стенке, чтобы не захватить воздух.",[["po","Залить пробу в ячейку"]]],
+  pour:["Шаг 2 из 6 · Наливаем по стенке…","Пузырьки воздуха всё равно попадают в масло — для этого следующий шаг.",[]],
+  wait:[`Шаг 3 из 6 · Выдержка 10 мин — осталось ${mmss(T5.tm)}`,"Пузырьки воздуха, захваченные при заливке, всплывают и уходят из зазора. Без выдержки первый пробой будет занижен.",[]],
+  ready:[`Шаг 4 из 6 · Пробой № ${k} из ${need}: поднимать напряжение`,"Регулятор поднимает напряжение равномерно, 2 кВ/с, от нуля до пробоя. Смотрите на лупу и стрелку киловольтметра.",[["rp","Подать напряжение"]]],
+  ramp:[`Шаг 4 из 6 · Подъём: ${fx(T5.U,1)} кВ`,"Поле в зазоре растёт, частицы выстраиваются вдоль него. Пробой — в случайный момент: у масла большой разброс.",[]],
+  brk:[`Пробой № ${n} при ${fx(T5.vals[n-1]||0,1)} кВ`,"Искра, щелчок. Защита аппарата сняла напряжение. В зазоре — пузырьки газа и частицы углерода.",[]],
+  stir:["Шаг 5 из 6 · Перемешать масло между электродами "+qb("stir"),"Стеклянной палочкой осторожно, без пузырьков: газ и углерод нужно убрать из зазора, иначе следующий пробой будет занижен.",[["st","Перемешать палочкой"],["bad","Сразу поднимать снова"]]],
+  stirA:["Шаг 5 из 6 · Перемешиваем…","",[]],
+  pause:[`Шаг 6 из 6 · Пауза 5 мин — осталось ${mmss(T5.tm)}`,"Масло успокаивается, пузырьки уходят. Затем — следующий пробой.",[]],
+  done:[`Готово: ${n} пробоев. Расчёт и вывод — ниже`,"Среднее арифметическое Ū, среднее квадратическое отклонение S и коэффициент вариации V = S/Ū. Если V > 20 % — второе заполнение (п. 4.3 ГОСТ 6581-75).",[]]};
+ if(P==="done"){const s=stats(T5.vals);if(s.V>20&&T5.fill===1)B.done[2].push(["f2","Второе заполнение той же пробой"]);B.done[2].push(["tr","Сушка, дегазация, фильтрация масла"])}
+ const [h,why,bt]=B[P];$("#bn5").innerHTML=`<div><div class="bh">${h}</div><p>${why}</p>${T5.msg?`<p class="bm">${T5.msg}</p>`:""}</div><div class="bb">${bt.map(([a,t])=>`<button class="btn${a==="bad"?" ghost":""}" data-a="${a}">${t}</button>`).join("")}</div>`;
+ $$("#bn5 button").forEach(b=>b.onclick=()=>act5(b.dataset.a))}
+function bar5(){const i=STI[T5.ph];$("#sb5").innerHTML=ST5.map(([k,n,ic],j)=>`<div class="${j<i?"dn":j===i?"on":""}"><i>${j<i?"✓":ic}</i><span>${n}</span></div>`).join("")}
+function ui5(){bar5();ban5();res5();upd5()}
+let AN5=0;
+function act5(a){T5.msg="";
+ if(a==="tu"){T5.ph="turn";AN5=0}
+ else if(a==="po"){T5.ph="pour";AN5=0}
+ else if(a==="rp"){T5.ph="ramp";T5.U=0;T5.target=nextBrk()}
+ else if(a==="st"){T5.ph="stirA";AN5=0}
+ else if(a==="bad"){T5.msg=`<b style="color:var(--hot)">Так нельзя.</b> После пробоя в зазоре газ и углерод — по ГОСТ 6581-75 масло перемешивают и выдерживают 5 мин.`}
+ else if(a==="f2"){T5.fill=2;T5.ph="pour";AN5=0;T5.msg="Ячейку слили, ополоснули и заполняем той же пробой второй раз."}
+ else if(a==="tr"){T5.treated++;T5.W=Math.max(6,T5.W*0.35);T5.F=T5.F*0.2;T5.cv=Math.min(T5.cv,0.08);const keep=T5.treated;Object.assign(T5,{fill:1,vals:[],ph:"prep",U:0,tm:0,spark:0,hist:[]});T5.seed++;T5.treated=keep;T5.msg="Масло прогнали через установку сушки и дегазации и через фильтр. Отберите новую пробу и повторите испытание."}
+ ui5()}
+function upd5(){$("#h5").textContent=(T5.treated?"после обработки · ":"")+KIND[S5[T5.si].kind]+" · норма ≥ "+norm5()+" кВ"}
+function tick5(dt){const P=T5.ph,need=T5.fill===1?6:12;AN5+=dt;
+ if(P==="turn"&&AN5>1.8){T5.ph="fill";ui5()}
+ if(P==="pour"&&AN5>2.2){T5.ph="wait";T5.tm=600;ui5()}
+ if(P==="stirA"&&AN5>1.6){T5.ph="pause";T5.tm=300;ui5()}
+ if(P==="brk"&&AN5>1.4){T5.ph=T5.vals.length>=need?"done":"stir";ui5()}
+ if((P==="wait"||P==="pause")&&T5.tm>0){const o=Math.floor(T5.tm);T5.tm=Math.max(0,T5.tm-dt*(T5.fast?100:1));if(T5.tm===0){T5.ph="ready";ui5()}else if(Math.floor(T5.tm)!==o)ban5()}
+ if(P==="ramp"){T5.U+=2*dt*(T5.fast?6:1);if(T5.U>=T5.target){T5.U=T5.target;T5.vals.push(Math.round(T5.target*10)/10);T5.spark=1;T5.ph="brk";AN5=0;ui5()}else if(Math.random()<0.25)ban5()}}
+function dial5(ctx,cx,cy,R,U,last,nv){ctx.lineWidth=12;ctx.strokeStyle="#253844";ctx.beginPath();ctx.arc(cx,cy,R,Math.PI,2*Math.PI);ctx.stroke();const ang=u=>Math.PI*(1+clamp(u/80,0,1));
+ ctx.strokeStyle=T5.ph==="ramp"?CY:CB;ctx.beginPath();ctx.arc(cx,cy,R,Math.PI,ang(U));ctx.stroke();ctx.lineWidth=1;
+ for(let u=0;u<=80;u+=10){const a=ang(u);ctx.strokeStyle=CG;ctx.beginPath();ctx.moveTo(cx+Math.cos(a)*(R-10),cy+Math.sin(a)*(R-10));ctx.lineTo(cx+Math.cos(a)*(R-16),cy+Math.sin(a)*(R-16));ctx.stroke();if(u%20===0)txt(ctx,u,cx+Math.cos(a)*(R-28),cy+Math.sin(a)*(R-28)+4,CG,"center","11px IBM Plex Mono")}
+ if(nv){const a=ang(nv);ctx.strokeStyle=CR;ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(cx+Math.cos(a)*(R-7),cy+Math.sin(a)*(R-7));ctx.lineTo(cx+Math.cos(a)*(R+9),cy+Math.sin(a)*(R+9));ctx.stroke();ctx.lineWidth=1}
+ if(last){const a=ang(last);ctx.fillStyle="#fff";ctx.beginPath();ctx.arc(cx+Math.cos(a)*(R+12),cy+Math.sin(a)*(R+12),4,0,2*Math.PI);ctx.fill()}
+ const a=ang(U);ctx.strokeStyle="#FFD54A";ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+Math.cos(a)*(R-20),cy+Math.sin(a)*(R-20));ctx.stroke();ctx.lineWidth=1;ctx.fillStyle="#FFD54A";ctx.beginPath();ctx.arc(cx,cy,5,0,2*Math.PI);ctx.fill();
+ txt(ctx,fx(U,1)+" кВ",cx,cy+24,CT,"center","bold 16px IBM Plex Mono");txt(ctx,"киловольтметр",cx,cy+42,CG,"center","11px IBM Plex Sans")}
+function clock5(ctx,cx,cy,r,f,label){ctx.fillStyle="#16242D";ctx.beginPath();ctx.arc(cx,cy,r,0,2*Math.PI);ctx.fill();ctx.fillStyle="rgba(79,179,255,.35)";ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r-3,-Math.PI/2,-Math.PI/2+2*Math.PI*f);ctx.fill();ctx.strokeStyle=CG;ctx.beginPath();ctx.arc(cx,cy,r,0,2*Math.PI);ctx.stroke();
+ const a=-Math.PI/2+2*Math.PI*f;ctx.strokeStyle="#fff";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+Math.cos(a)*(r-5),cy+Math.sin(a)*(r-5));ctx.stroke();ctx.lineWidth=1;txt(ctx,label,cx,cy+r+16,CT,"center","bold 13px IBM Plex Mono")}
+function draw5(){if(!C5)return;const {ctx,w,h}=C5,P=T5.ph,t=a5t;ctx.clearRect(0,0,w,h);ctx.fillStyle="#0D171E";ctx.fillRect(0,0,w,h);const sm=w<640;
+ const bx=sm?16:w*0.06,bw=sm?50:84,by=h*0.26,bh=sm?120:170;
+ let ang=0;if(P==="turn")ang=Math.sin(AN5/1.8*Math.PI*3)*2.2*Math.sin(AN5/1.8*Math.PI);if(P==="pour")ang=-1.15*Math.min(1,AN5/0.5)*(AN5<1.9?1:Math.max(0,(2.2-AN5)/0.3));
+ const cxB=bx+bw/2,cyB=by+bh/2;ctx.save();ctx.translate(cxB,cyB);ctx.rotate(-ang);ctx.fillStyle="rgba(214,170,60,.55)";const cloudy=T5.W>40?0.3:0;ctx.fillRect(-bw/2+3,-bh/2+30,bw-6,bh-33);if(cloudy){ctx.fillStyle=`rgba(220,230,235,${cloudy})`;ctx.fillRect(-bw/2+3,-bh/2+30,bw-6,bh-33)}
+ for(let i=0;i<Math.round(T5.F*14);i++){fib0(ctx,-bw/2+8+rnd(i+T5.seed)*(bw-16),-bh/2+36+rnd(i*3+T5.seed)*(bh-46),rnd(i*7)*3+(P==="turn"?t*0.05:0),8)}
+ ctx.strokeStyle="rgba(200,220,235,.8)";ctx.lineWidth=2;ctx.strokeRect(-bw/2,-bh/2+14,bw,bh-14);ctx.strokeRect(-bw/4,-bh/2,bw/2,14);ctx.restore();ctx.lineWidth=1;
+ if(!sm)txt(ctx,"проба, 20 °C",cxB,by+bh+22,CG,"center","11px IBM Plex Sans");
+ const vx=sm?bx+bw+24:w*0.2,vw=sm?w-vx-110:w*0.27,vy=h*0.22,vh=h*0.62,cx=vx+vw/2,cy=vy+vh*0.6;
+ const lvl=P==="prep"||P==="turn"||P==="fill"?0:P==="pour"?clamp((AN5-0.3)/1.8,0,1):1;
+ ctx.strokeStyle="rgba(200,220,235,.7)";ctx.lineWidth=2;ctx.strokeRect(vx,vy,vw,vh);ctx.lineWidth=1;
+ if(lvl>0){const top=vy+vh-(vh-16)*lvl;ctx.fillStyle="#2B2410";ctx.fillRect(vx+2,top,vw-4,vy+vh-top-2);ctx.fillStyle=OILT;ctx.fillRect(vx+2,top,vw-4,vy+vh-top-2)}
+ if(P==="pour"&&AN5<1.95){ctx.strokeStyle="rgba(214,170,60,.8)";ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(cxB+bw*0.55,cyB-bh*0.35);ctx.quadraticCurveTo(vx-6,vy-20,vx+8,vy+vh*0.4);ctx.stroke();ctx.lineWidth=1}
+ const er=Math.min(32,vw*0.11);ctx.fillStyle="#6E7F8C";ctx.fillRect(vx-14,cy-5,cx-er-vx+14-er,10);ctx.fillRect(cx+2*er,cy-5,vx+vw+14-cx-2*er,10);sph(ctx,cx-er-1.5,cy,er);sph(ctx,cx+er+1.5,cy,er);
+ if(P==="wait"||P==="pause"||P==="pour"){const f=P==="pour"?1:T5.tm/(P==="wait"?600:300);for(let i=0;i<Math.round(14*f)+2;i++){const y=cy+30-((t*0.7+i*19)%(cy+30-vy-20));ctx.strokeStyle="rgba(225,240,250,.6)";ctx.beginPath();ctx.arc(vx+12+rnd(i+T5.seed)*(vw-24),y,1.3+rnd(i)*1.6,0,2*Math.PI);ctx.stroke()}}
+ const q=P==="ramp"?Math.pow(T5.U/T5.target,4):0;if(q>0)glow0(ctx,cx,cy,8+er*1.2*q,0.25+0.6*q);
+ if(P==="brk"||P==="stir"||P==="stirA"){for(let i=0;i<16;i++){ctx.fillStyle="#111";ctx.beginPath();ctx.arc(cx+(rnd(i+T5.vals.length*9)-0.5)*er*1.4*(P==="stirA"?1+AN5*2:1),cy+(rnd(i+40)-0.5)*er*1.6,1.3,0,2*Math.PI);ctx.fill()}for(let i=0;i<5;i++){ctx.strokeStyle="rgba(225,240,250,.7)";ctx.beginPath();ctx.arc(cx+(rnd(i)-0.5)*6,cy-er-6-i*8-(P==="brk"?AN5*20:0),1.6,0,2*Math.PI);ctx.stroke()}}
+ if(T5.spark>0){spark(ctx,cx-3,cy,cx+3,cy,T5.vals.length+T5.seed,T5.spark,3.5);glow0(ctx,cx,cy,60,T5.spark*0.9);ctx.fillStyle=`rgba(255,250,230,${T5.spark*0.18})`;ctx.fillRect(0,0,w,h)}
+ if(P==="stirA"){const a=Math.sin(AN5*9)*er*1.6;ctx.strokeStyle="rgba(230,240,248,.9)";ctx.lineWidth=5;ctx.lineCap="round";ctx.beginPath();ctx.moveTo(cx+a*0.3+30,vy-26);ctx.lineTo(cx+a,cy-er*0.6);ctx.stroke();ctx.lineWidth=1;ctx.lineCap="butt"}
+ if(P==="prep"||P==="turn"){ctx.fillStyle="#7EE0A8";ctx.fillRect(cx-2,cy-er-30,4,er+18);txt(ctx,"калибр 2,45 мм проходит",cx,vy-8,"#7EE0A8","center","11px IBM Plex Sans")}
+ txt(ctx,"ячейка",vx+6,vy+14,CG,"left","11px IBM Plex Sans");
+ const mx=sm?null:vx+vw+w*0.12,mr=Math.min(72,h*0.24),my=h*0.42;
+ if(mx){ctx.strokeStyle="rgba(255,213,74,.4)";ctx.setLineDash([4,4]);ctx.beginPath();ctx.moveTo(cx+4,cy-6);ctx.lineTo(mx-mr*0.7,my-mr*0.7);ctx.moveTo(cx+4,cy+6);ctx.lineTo(mx-mr*0.7,my+mr*0.7);ctx.stroke();ctx.setLineDash([]);
+  ctx.save();ctx.beginPath();ctx.arc(mx,my,mr,0,2*Math.PI);ctx.clip();ctx.fillStyle=lvl>0.6?"#2B2410":"#0D171E";ctx.fillRect(mx-mr,my-mr,2*mr,2*mr);
+  ctx.fillStyle="#9AA8B1";ctx.beginPath();ctx.arc(mx-mr*2.05,my,mr*1.6,0,2*Math.PI);ctx.fill();ctx.beginPath();ctx.arc(mx+mr*2.05,my,mr*1.6,0,2*Math.PI);ctx.fill();
+  const g0=mx-mr*0.45,g1=mx+mr*0.45;if(lvl>0.6){const c=P==="ramp"?clamp((T5.U/T5.target-0.35)/0.65,0,1):0,nf=Math.round(3+T5.F*8),nd=Math.round(Math.min(6,Math.max(0,T5.W-35)*0.3));
+   for(let i=0;i<nf+nd;i++){const tx=g0+(g1-g0)*((i%6)+0.5)/6,rx=mx+(rnd(i*5+T5.seed+T5.vals.length)-0.5)*mr*1.1,ry=my+(rnd(i*3+T5.seed+T5.vals.length*7)-0.5)*mr*1.4,cc=i<6?c:c*0.3,x=rx+(tx-rx)*cc,y=ry+(my-ry)*cc,aa=rnd(i)*Math.PI*(1-cc);i<nf?fib0(ctx,x,y,aa,(g1-g0)/6*1.1):drop0(ctx,x,y,2.2)}
+   if(c>0.2){ctx.strokeStyle=`rgba(255,213,74,${0.15+0.4*c})`;ctx.lineWidth=2;for(let k=-2;k<=2;k++){ctx.beginPath();ctx.moveTo(g0,my+k*mr*0.18);ctx.lineTo(g1,my+k*mr*0.18);ctx.stroke()}ctx.lineWidth=1}
+   if(T5.spark>0)spark(ctx,g0,my,g1,my,T5.vals.length*3+T5.seed,T5.spark,3)}
+  ctx.restore();ctx.strokeStyle="#FFD54A";ctx.lineWidth=2;ctx.beginPath();ctx.arc(mx,my,mr,0,2*Math.PI);ctx.stroke();ctx.lineWidth=1;txt(ctx,"зазор 2,5 мм под лупой",mx,my+mr+16,"#FFD54A","center","11px IBM Plex Sans")}
+ const dx=sm?w-60:w-Math.min(110,w*0.11),dR=sm?44:Math.min(70,w*0.07),nv=norm5();dial5(ctx,dx,h*0.4,dR,T5.U,T5.vals.length?T5.vals[T5.vals.length-1]:0,nv);
+ if(P==="wait"||P==="pause")clock5(ctx,dx,h*0.8,sm?18:24,1-T5.tm/(P==="wait"?600:300),mmss(T5.tm));
+ if(P==="brk"){txt(ctx,"ПРОБОЙ  "+fx(T5.vals[T5.vals.length-1],1)+" кВ",cx,vy-10,"#FFF6D6","center","bold 18px IBM Plex Sans")}}
+function draw5b(){if(!C5b)return;const {ctx,w,h}=C5b;ctx.clearRect(0,0,w,h);const L=50,T=12,W=w-L-14,H=h-T-44,mx=Math.max(80,...T5.vals,T5.ph==="ramp"?T5.U:0),tm=Math.ceil(mx/2/10)*10+5;
+ const A=linAx(ctx,L,T,W,H,0,tm,0,Math.ceil(mx/10)*10,"время подъёма t, с","U, кВ",10,20);
+ ctx.save();ctx.beginPath();ctx.rect(L,T,W,H);ctx.clip();ctx.fillStyle="rgba(255,138,61,.12)";ctx.beginPath();ctx.moveTo(A.X(0),A.Y(0));ctx.lineTo(A.X(tm),A.Y(2.4*tm));ctx.lineTo(A.X(tm),A.Y(1.6*tm));ctx.closePath();ctx.fill();ctx.restore();txt(ctx,"2 кВ/с ± 20 %",A.X(mx/2.4)-4,A.Y(mx)+14,CO,"right","11px IBM Plex Sans");
+ const nv=norm5();hl(ctx,A,nv,0,tm,CR,"норма "+nv+" кВ","right");
+ T5.vals.forEach((v,i)=>{ctx.strokeStyle=`rgba(79,179,255,${i===T5.vals.length-1&&T5.ph!=="done"?0.9:0.35})`;ctx.lineWidth=1.6;ctx.beginPath();ctx.moveTo(A.X(0),A.Y(0));ctx.lineTo(A.X(v/2),A.Y(v));ctx.stroke();dot(ctx,A.X(v/2),A.Y(v),CB,4);txt(ctx,String(i+1),A.X(v/2)+6,A.Y(v)-4,CT,"left","10px IBM Plex Mono")});
+ if(T5.ph==="ramp"){ctx.strokeStyle=CY;ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(A.X(0),A.Y(0));ctx.lineTo(A.X(T5.U/2),A.Y(T5.U));ctx.stroke();ctx.lineWidth=1;dot(ctx,A.X(T5.U/2),A.Y(T5.U),CY,5)}
+ if(!T5.vals.length&&T5.ph!=="ramp")txt(ctx,"здесь появятся подъёмы напряжения",L+W/2,T+H/2,CG,"center","12px IBM Plex Sans")}
+function draw5c(){if(!C5c)return;const {ctx,w,h}=C5c;ctx.clearRect(0,0,w,h);const L=50,T=12,W=w-L-14,H=h-T-44,need=T5.fill===1?6:12,n=T5.vals.length,mx=Math.max(80,...T5.vals);
+ const A=linAx(ctx,L,T+10,W,H-10,0.3,need+0.7,0,Math.ceil(mx/10)*10,"номер пробоя","U пр, кВ",1,20);const nv=norm5();
+ if(n>=2){const s=stats(T5.vals);ctx.fillStyle="rgba(255,213,74,.12)";ctx.fillRect(A.X(0.3),A.Y(s.m+s.s),A.X(need+0.7)-A.X(0.3),A.Y(s.m-s.s)-A.Y(s.m+s.s));hl(ctx,A,s.m,0.3,need+0.7,CY,"");txt(ctx,"Ū = "+fx(s.m,1)+" кВ · S = "+fx(s.s,1)+" · V = "+fx(s.V,1)+" %",L+W,T+12,CY,"right","bold 12px IBM Plex Sans")}
+ hl(ctx,A,nv,0.3,need+0.7,CR,"норма "+nv+" кВ","right");
+ const bw=Math.min(36,W/need*0.6);T5.vals.forEach((v,i)=>{ctx.fillStyle=v>=nv?"rgba(79,179,255,.75)":"rgba(255,90,78,.75)";ctx.fillRect(A.X(i+1)-bw/2,A.Y(v),bw,A.Y(0)-A.Y(v));txt(ctx,fx(v,1),A.X(i+1),A.Y(v)-4,CT,"center","10px IBM Plex Mono")});
+ if(!n)txt(ctx,"пробоев пока нет",L+W/2,T+H/2,CG,"center","12px IBM Plex Sans")}
+function anim5(){a5t++;const now=performance.now(),dt=Math.min(0.1,(now-L5)/1000);L5=now;if(curTab==="t5"){tick5(dt);if(T5.spark>0)T5.spark=Math.max(0,T5.spark-0.025);draw5();if(a5t%3===0){draw5b();draw5c()}}requestAnimationFrame(anim5)}
+
+function res5(){const n=T5.vals.length;if(!n){$("#res5").innerHTML="";return}const s=stats(T5.vals),need=T5.fill===1?6:12,nv=norm5(),done=T5.ph==="done";
+ let verdict="";if(done){if(s.V>20&&T5.fill===1)verdict=`<div class="warn"><b>V = ${fx(s.V,1)} % > 20 %.</b> По п. 4.3 ГОСТ 6581-75 результат недостоверен: заполните ячейку той же пробой второй раз, сделайте ещё шесть пробоев и посчитайте по 12 значениям.</div>`;
+  else if(s.V>20)verdict=`<div class="bad"><b>И по 12 значениям V = ${fx(s.V,1)} % > 20 %</b> — качество масла неудовлетворительное. Большой разброс — признак примесей (волокна, углерод, вода).</div>`;
+  else verdict=s.m>=nv?`<div class="good"><b>Соответствует.</b> Ū = ${fx(s.m,1)} кВ ≥ ${nv} кВ (${KIND[S5[T5.si].kind]}), V = ${fx(s.V,1)} % ≤ 20 %.</div>`:`<div class="bad"><b>Не соответствует.</b> Ū = ${fx(s.m,1)} кВ < ${nv} кВ. Масло нужно сушить, очищать или заменить. Попробуйте кнопку «Сушка, дегазация, фильтрация».</div>`}
+ $("#res5").innerHTML=`<div class="cmpw"><table class="cmp"><tr><th>№</th>${T5.vals.map((v,i)=>`<th>${i+1}</th>`).join("")}</tr><tr><td>U<sub>пр</sub>, кВ</td>${T5.vals.map(v=>`<td class="mono">${fx(v,1)}</td>`).join("")}</tr></table></div>
+ ${done?verdict:`<p style="font-size:14px;color:var(--muted)">Осталось пробоев: ${need-n}. Расчёт появится после последнего.</p>`}
+ ${done?`<div class="card mlab" style="margin-top:8px"><h3>Проверьте себя: посчитайте по своим значениям</h3><div class="cmpw"><table class="cmp"><tr><th>Величина</th><th>Ваше значение</th><th>Проверка</th></tr>
+ ${[["Ū, кВ",s.m],["S, кВ (по n − 1)",s.s],["V, %",s.V],["E<sub>пр</sub> = Ū/2,5 мм, кВ/мм",s.m/GAP]].map(([l,a],i)=>`<tr><td>${l}</td><td><input type="text" inputmode="decimal" data-i="${i}" style="width:120px;font:inherit;font-family:var(--f-mono);padding:4px 6px;border:1px solid var(--line);border-radius:6px"></td><td class="st" data-i="${i}" data-a="${a}">—</td></tr>`).join("")}</table></div>
+ <div class="btns"><button class="btn" id="ck5">Проверить</button><button class="btn ghost" id="sh5">Показать</button></div></div>`:""}`;
+ if(done){$("#ck5").onclick=()=>$$("#res5 td.st").forEach(td=>{const i=td.dataset.i,a=+td.dataset.a,v=parseFloat(($(`#res5 input[data-i="${i}"]`).value||"").replace(",","."));td.innerHTML=!isFinite(v)?"нет":Math.abs(v-a)<=Math.abs(a)*0.02+0.05?`<b style="color:var(--ok)">верно</b>`:`<b style="color:var(--hot)">проверьте</b>`});
+  $("#sh5").onclick=()=>$$("#res5 td.st").forEach(td=>td.innerHTML=`<span class="mono">${fx(+td.dataset.a,2)}</span>`)}}
+const T6={m:"tip",x:0.25,imp:0,n:3,S:60,tb:3};let C6a=null,C6b=null,a6t=0;
+const U6=uGap(36,7.5);
+const ML6={t:"Мини-опыт 6. Где ставить барьер и сколько барьеров",steps:["Режим «Острие — плоскость», 50 Гц. Поставьте барьер на 0,25S. Запишите U<sub>б</sub>/U<sub>пр</sub>.","Передвиньте барьер на 0,5S и на 0,75S. Запишите отношения.","Переключите на импульс, барьер на 0,25S. Запишите.","Режим «Маслобарьерная изоляция»: промежуток 60 мм, барьеры 3 мм. Найдите отношение U<sub>доп</sub> при трёх барьерах к U<sub>доп</sub> без барьеров."],
+ rows:[{l:"U<sub>б</sub>/U<sub>пр</sub> при 0,25S, 50 Гц",a:()=>barR(0.25,0),u:"—",d:2},{l:"U<sub>б</sub>/U<sub>пр</sub> при 0,5S, 50 Гц",a:()=>barR(0.5,0),u:"—",d:2},{l:"U<sub>б</sub>/U<sub>пр</sub> при 0,75S, 50 Гц",a:()=>barR(0.75,0),u:"—",d:2},{l:"U<sub>б</sub>/U<sub>пр</sub> при 0,25S, импульс",a:()=>barR(0.25,1),u:"—",d:2},{l:"U<sub>доп</sub>(3 барьера)/U<sub>доп</sub>(0)",a:()=>mbi(60,3,3).U/mbi(60,0,3).U,u:"—",d:2}],
+ q:["Почему барьер вплотную к плоскости почти не помогает, а у острия — помогает?","Почему на импульсе барьер даёт меньший выигрыш, чем на 50 Гц?"]};
+function t6(){$("#t6").innerHTML=`<div class="card" style="gap:8px"><span class="lbl">Что исследуем</span>${seg("m6",[["tip","Острие — плоскость, один барьер"],["mbi","Маслобарьерная изоляция"]],T6.m)}</div><div class="lab"><div class="side card" id="sd6"></div>
+ <div class="card"><div class="scr"><div class="scrh"><span id="ha6"></span><span id="h6"></span></div><div id="c6a"></div></div><div class="scr"><div class="scrh"><span id="hb6"></span></div><div id="c6b"></div></div><div class="log" id="how6"></div></div></div>${mlab("ml6",ML6)}`;
+ bindSeg("m6",v=>{T6.m=v;side6()});bindMlab("ml6");C6a=canvasBox($("#c6a"),250,draw6a);C6b=canvasBox($("#c6b"),270,draw6b);side6();anim6()}
+function side6(){const m=T6.m;
+ $("#sd6").innerHTML=(m==="tip"?`${rng("x6","Положение барьера S<sub>б</sub>/S","barrier",0,1,0.01,T6.x)}<div><span class="lbl">Напряжение</span>${seg("i6",[[0,"50 Гц"],[1,"импульс"]],T6.imp)}</div><div class="reads">${rd("r6a","S<sub>б</sub>","")}${rd("r6b","U<sub>б</sub>/U<sub>пр</sub>","barrier")}${rd("r6c","U<sub>пр</sub> без барьера","gapn")}${rd("r6d","U<sub>пр</sub> с барьером","")}</div>`
+ :`${rng("n6","Число барьеров","mbi",0,6,1,T6.n)}${rng("s6","Промежуток между обмотками, мм","",30,120,1,T6.S)}${rng("b6","Толщина барьера, мм","",1,6,0.5,T6.tb)}<div class="reads">${rd("q6a","Ширина масляного канала","mbi")}${rd("q6b","E<sub>доп</sub> в канале","mbi")}${rd("q6c","E в картоне","")}${rd("q6d","U<sub>доп</sub> промежутка","")}${rd("q6e","Выигрыш к промежутку без барьеров","")}</div>`)+`<div class="log" id="lg6"></div>`;
+ if(m==="tip"){$("#x6").oninput=e=>{T6.x=+e.target.value;upd6()};bindSeg("i6",v=>{T6.imp=+v;upd6()})}else{$("#n6").oninput=e=>{T6.n=+e.target.value;upd6()};$("#s6").oninput=e=>{T6.S=+e.target.value;upd6()};$("#b6").oninput=e=>{T6.tb=+e.target.value;upd6()}}
+ $("#ha6").innerHTML=m==="tip"?"<b>Промежуток острие — плоскость 75 мм</b> · барьер из картона 5 мм":"<b>Промежуток между обмотками</b> · масло и цилиндры из электрокартона";
+ $("#hb6").innerHTML=m==="tip"?"<b>U<sub>б</sub>/U<sub>пр</sub> от положения барьера</b> · рис. 1.31":"<b>Допустимое напряжение промежутка от числа барьеров</b>";
+ $("#how6").innerHTML=m==="tip"?"<b>Как читать.</b> Ионы, идущие от острия, оседают на барьере (жёлтые точки) и растекаются по нему: барьер становится как бы вторым, плоским электродом, и поле за ним выравнивается. Кроме того, цепочка из волокон рвётся на барьере. Чем ближе барьер к острию, тем больше выравнивается промежуток — но вплотную к острию заряд не успевает распределиться. Оптимум около 0,25S: U<sub>пр</sub> почти вдвое выше. На импульсе ионы не успевают дойти до барьера — выигрыш меньше. Кривая — по форме рис. 1.31 учебника."
+ :"<b>Как читать.</b> Между обмотками — масло с цилиндрами из электрокартона. Каждый барьер делит масло на более узкие каналы. Узкий канал прочнее широкого: по формуле (1.50) E<sub>пр</sub> ∝ S<sup>n−1</sup>; в тренажёре E<sub>доп</sub> = 50·d<sup>−0,25</sup> кВ/см, что даёт 40…65 кВ/см — те же значения, что в учебнике для вводов с маслобарьерной изоляцией. ε картона (≈ 4,4) вдвое больше ε масла, поэтому поле в картоне вдвое меньше. Выигрыш растёт с числом барьеров, но всё медленнее, а охлаждение ухудшается — в конструкции ищут компромисс. Модель учебная "+qb("mbi")+".";
+ [C6a,C6b].forEach(c=>c.fit());upd6()}
+function upd6(){if(T6.m==="tip"){const r=barR(T6.x,T6.imp);$("#x6o").textContent=fx(T6.x,2)+" · "+fx(T6.x*75,0)+" мм";$("#r6a").textContent=fx(T6.x*75,1)+" мм";$("#r6b").textContent=fx(r,2);$("#r6c").textContent=fx(U6,0)+" кВ";$("#r6d").textContent=fx(U6*r,0)+" кВ";
+  $("#lg6").innerHTML=Math.abs(T6.x-0.25)<0.03?"<b>Оптимальное положение</b> — около четверти промежутка от острия.":T6.x<0.25?"Барьер слишком близко к острию: заряд не успевает растечься.":"Барьер далеко от острия: у острия поле остаётся сильно неоднородным."+(T6.imp?" На импульсе выигрыш заметно меньше.":"")}
+ else{const r=mbi(T6.S,T6.n,T6.tb),r0=mbi(T6.S,0,T6.tb);$("#n6o").textContent=T6.n;$("#s6o").textContent=T6.S+" мм";$("#b6o").textContent=fx(T6.tb,1)+" мм";
+  $("#q6a").textContent=fx(r.d,1)+" мм";$("#q6b").textContent=fx(r.E,1)+" кВ/см";$("#q6c").textContent=fx(r.Eb,1)+" кВ/см";$("#q6d").textContent=fx(r.U,0)+" кВ";$("#q6e").textContent="× "+fx(r.U/r0.U,2);
+  $("#lg6").innerHTML=r.d<5?"<b>Каналы уже 5 мм</b> — масло плохо циркулирует, охлаждение обмоток ухудшается.":T6.n===0?"Без барьеров — широкий масляный промежуток: мостик из волокон может собраться на всю ширину.":`${T6.n} барьер(а) делят масло на ${T6.n+1} канала по ${fx(r.d,1)} мм.`}
+ [C6a,C6b].forEach(c=>c.fit())}
+function draw6a(){if(!C6a)return;const {ctx,w,h}=C6a;ctx.clearRect(0,0,w,h);oilBox(ctx,0,0,w,h);
+ if(T6.m==="tip"){const x0=40,x1=w-30,cy=h/2,bx=x0+(x1-x0)*T6.x;ctx.fillStyle="#8C9AA4";ctx.beginPath();ctx.moveTo(0,cy-22);ctx.lineTo(x0,cy);ctx.lineTo(0,cy+22);ctx.fill();ctx.fillStyle="#3A4A55";ctx.fillRect(x1,10,10,h-20);
+  for(let i=-5;i<=5;i++){const yb=cy+i*(h-40)/10;ctx.strokeStyle="rgba(159,180,192,.35)";ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x0,cy);if(T6.x>0.02){ctx.quadraticCurveTo((x0+bx)/2,cy+(yb-cy)*0.6,bx,yb);ctx.lineTo(x1,yb)}else{ctx.quadraticCurveTo((x0+x1)/2,cy+(yb-cy)*0.4,x1,yb)}ctx.stroke()}
+  ctx.fillStyle="#C9B98A";ctx.fillRect(bx-3,14,6,h-28);const nq=T6.imp?6:24;for(let i=0;i<nq;i++){const y=cy+(rnd(i)-0.5)*(h-40)*(0.3+0.7*Math.min(1,(a6t%400)/200));ctx.fillStyle=CY;ctx.beginPath();ctx.arc(bx-5,y,1.8,0,2*Math.PI);ctx.fill()}
+  const nI=10;for(let i=0;i<nI;i++){const ph=((a6t*0.012+i/nI)%1),x=x0+(bx-x0)*ph;ctx.fillStyle="rgba(255,213,74,.7)";ctx.beginPath();ctx.arc(x,cy+(rnd(i+5)-0.5)*30*ph,1.5,0,2*Math.PI);ctx.fill()}
+  for(let i=0;i<6;i++){const x=bx+12+i*((x1-bx-20)/6);fib0(ctx,x,cy,0,(x1-bx-20)/6*0.9)}for(let i=0;i<3;i++){const x=x0+8+i*((bx-x0-10)/3);if(bx-x0>30)fib0(ctx,x,cy,0,(bx-x0-10)/3*0.9)}
+  txt(ctx,"барьер",bx,12,"#E3D7A6","center","11px IBM Plex Sans");txt(ctx,"ионы оседают на барьере, мостик разорван",8,h-6,CG,"left","11px IBM Plex Sans")}
+ else{const r=mbi(T6.S,T6.n,T6.tb),x0=36,x1=w-36,sc=(x1-x0)/T6.S;ctx.fillStyle="#B8743A";ctx.fillRect(6,10,x0-6,h-20);ctx.fillRect(x1,10,w-x1-6,h-20);txt(ctx,"НН",x0/2+3,h/2,"#0D171E","center","bold 12px IBM Plex Sans");txt(ctx,"ВН",(x1+w)/2-3,h/2,"#0D171E","center","bold 12px IBM Plex Sans");
+  for(let i=1;i<=T6.n;i++){const xs=x0+(r.d*i+T6.tb*(i-1))*sc;ctx.fillStyle="#C9B98A";ctx.fillRect(xs,10,T6.tb*sc,h-20)}
+  for(let i=0;i<=T6.n;i++){const xs=x0+(r.d+T6.tb)*i*sc,cw=r.d*sc;for(let k=0;k<4;k++){const y=20+((a6t*0.6+k*45+i*13)%(h-40));ctx.fillStyle="rgba(255,213,74,.45)";ctx.beginPath();ctx.arc(xs+cw/2,y,1.6,0,2*Math.PI);ctx.fill()}txt(ctx,fx(r.d,0),xs+cw/2,h-14,CT,"center","11px IBM Plex Mono")}
+  txt(ctx,"масляные каналы, мм; жёлтые точки — циркуляция масла",x0,h-0.5,CG,"left","10px IBM Plex Sans")}}
+function draw6b(){if(!C6b)return;const {ctx,w,h}=C6b;ctx.clearRect(0,0,w,h);const L=56,T=14,W=w-L-16,H=h-T-46;
+ if(T6.m==="tip"){const A=linAx(ctx,L,T,W,H,0,1,0.8,2.2,"положение барьера Sб/S (0 — у острия, 1 — у плоскости)","Uб/Uпр",0.25,0.2,v=>fx(v,2),v=>fx(v,1));hl(ctx,A,1,0,1,CG,"без барьера","right");
+  crv(ctx,A,x=>barR(x,0),0,1,CY,{w:T6.imp?1.4:2.8,d:T6.imp?[6,4]:null});crv(ctx,A,x=>barR(x,1),0,1,CB,{w:T6.imp?2.8:1.4,d:T6.imp?null:[6,4]});dot(ctx,A.X(T6.x),A.Y(barR(T6.x,T6.imp)),T6.imp?CB:CY);
+  lgd(ctx,L+W-120,T+20,[[CY,"50 Гц"],[CB,"импульс"]])}
+ else{const A=linAx(ctx,L,T,W,H,-0.5,6.5,0,Math.ceil(mbi(T6.S,6,T6.tb).U/100)*100+50,"число барьеров","U доп, кВ",1,100,v=>fx(v,0));
+  for(let n=0;n<=6;n++){const r=mbi(T6.S,n,T6.tb),x=A.X(n),bw=Math.min(40,W/10);ctx.fillStyle=n===T6.n?CO:"rgba(79,179,255,.55)";ctx.fillRect(x-bw/2,A.Y(r.U),bw,A.Y(0)-A.Y(r.U));if(r.d<5){txt(ctx,"узко",x,A.Y(r.U)-6,CR,"center","11px IBM Plex Sans")}}
+  txt(ctx,"выигрыш растёт всё медленнее",L+W-6,T+14,CG,"right")}}
+function anim6(){a6t++;if(curTab==="t6"&&a6t%2===0)draw6a();requestAnimationFrame(anim6)}
+
+const done7={};
+function t7(){$("#t7").innerHTML=`<div class="card"><h2>Реальные случаи</h2><p>Восемь историй с подстанций, рудников и из лаборатории. Выберите случай, прочитайте и ответьте на вопрос: что случилось с маслом и что делать.</p><div class="dots" id="dt7">${CASES.map(c=>`<i data-k="${c.id}"></i>`).join("")}</div></div>
+ <div class="cases">${CASES.map((c,i)=>`<button class="cs" data-i="${i}"><span class="tag">${c.tag}</span><b>${i+1}. ${c.t}</b></button>`).join("")}</div><div id="cs7"></div>`;
+ $$("#t7 .cs").forEach(b=>b.onclick=()=>{$$("#t7 .cs").forEach(x=>x.classList.toggle("on",x===b));show7(+b.dataset.i)});show7(0);$("#t7 .cs").classList.add("on")}
+function show7(i){const c=CASES[i];$("#cs7").innerHTML=`<div class="card"><span class="tag">${c.tag}</span><h2 style="margin:4px 0 0">${c.t}</h2><p>${c.x}</p><div class="lbl">${c.q}</div><div class="opts" id="o7">${shuf(c.o,i+40).map(([t,j])=>`<button data-j="${j}">${t}</button>`).join("")}</div><div id="f7"></div></div>`;
+ $$("#o7 button").forEach(b=>b.onclick=()=>{const j=+b.dataset.j;$$("#o7 button").forEach(x=>{x.disabled=true;const k=+x.dataset.j;if(k===c.a)x.classList.add("right");else if(k===j)x.classList.add("wrong")});
+  $("#f7").innerHTML=`<div class="${j===c.a?"good":"bad"}"><b>${j===c.a?"Верно.":"Не совсем."}</b> ${c.e}</div><p style="margin:8px 0 0;font-size:13px;color:var(--muted)">Источник: ${c.src}</p>`;
+  if(j===c.a){done7[c.id]=1;$(`#dt7 i[data-k="${c.id}"]`).className="ok";$$("#t7 .cs")[i].classList.add("done")}})}
+function t8(){$("#t8").innerHTML=`<div class="card"><h2>Задачи для самостоятельного решения</h2><p>Решите задачу и введите ответ. Знаки «?» рядом с условием — подсказки: наведите мышь или нажмите. Допуск ответа — 2–3 %.</p><div class="dots" id="dt8">${TASKS.map(t=>`<i data-k="${t.id}"></i>`).join("")}</div></div>`+TASKS.map((t,i)=>`<div class="task" id="${t.id}"><h3><span class="mono">${i+1}</span>${t.t}</h3><p>${t.x}</p><div class="chips">${t.h.map((x,j)=>`<span class="chip" tabindex="0" data-tipt="${x.replace(/"/g,"&quot;")}">подсказка ${j+1}</span>`).join("")}</div><div class="ans"><input type="text" inputmode="decimal" aria-label="Ответ"><button class="btn">Проверить</button><button class="btn ghost">Решение</button></div><div class="fb"></div></div>`).join("");
+ TASKS.forEach(t=>{const box=$("#"+t.id),inp=box.querySelector("input"),[b1,b2]=box.querySelectorAll(".ans button"),fb=box.querySelector(".fb");
+  const chk=()=>{const v=parseFloat(inp.value.replace(/\s/g,"").replace(",","."));if(!isFinite(v)){fb.innerHTML=`<div class="warn">Введите число.</div>`;return}const ok=Math.abs(v-t.a)<=Math.abs(t.a)*t.tol;fb.innerHTML=ok?`<div class="good"><b>Верно.</b> ${t.s}</div>`:`<div class="bad"><b>Пока не так.</b> Проверьте единицы и порядок величины, загляните в подсказки.</div>`;if(ok){$(`#dt8 i[data-k="${t.id}"]`).className="ok"}};
+  b1.onclick=chk;inp.onkeydown=e=>{if(e.key==="Enter")chk()};b2.onclick=()=>{fb.innerHTML=`<div class="warn"><b>Решение.</b> ${t.s}</div>`}})}
+function shuf(a,seed){let s=(Math.imul(seed+11,2654435761)>>>0)^0x9E3779B9;const r=()=>{s^=s<<13;s>>>=0;s^=s>>>17;s^=s<<5;s>>>=0;return s/4294967296};for(let k=0;k<7;k++)r();const o=a.map((x,i)=>[x,i]);for(let i=o.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[o[i],o[j]]=[o[j],o[i]]}return o}
+const LET="АБВГД";
+const T9={v:0,i:0,ans:[],done:false};
+const SEED9=(v,i)=>i+100*v;
+function grade9(s){return s>=14?[5,"отлично"]:s>=11?[4,"хорошо"]:s>=8?[3,"удовлетворительно"]:[2,"неудовлетворительно"]}
+const vsel9=()=>`<div class="seg" id="v9">${TV.map((x,k)=>`<button data-v="${k}" class="${k===T9.v?"on":""}">Вариант ${k+1}</button>`).join("")}</div>`;
+function bindV9(){$$("#v9 button").forEach(b=>b.onclick=()=>{const v=+b.dataset.v;if(v===T9.v&&!T9.done&&!T9.ans.length)return;Object.assign(T9,{v,i:0,ans:[],done:false});t9()})}
+function t9(){const TEST=TV[T9.v],q=TEST[T9.i],n=TEST.length;
+ if(T9.done){const s=TEST.reduce((a,q,k)=>a+(T9.ans[k]===q.a),0),[g,gt]=grade9(s);
+  $("#t9").innerHTML=`<div class="card" style="align-items:center;text-align:center"><span class="tag">Тест завершён · вариант ${T9.v+1}</span><div style="font-size:80px;font-weight:700;line-height:1;color:${g>=4?"var(--ok)":g===3?"var(--warn)":"var(--hot)"}">${g}</div><h2 style="margin:0">Оценка: ${gt}</h2><p style="margin:0">Верных ответов: <b>${s} из ${n}</b>. Шкала: 14–15 — «5», 11–13 — «4», 8–10 — «3», меньше 8 — «2».</p><div class="btns" style="justify-content:center"><button class="btn" id="rv9">Показать разбор ответов</button><button class="btn ghost" id="rs9">Пройти заново</button></div></div><div id="rev9"></div>`;
+  $("#rs9").onclick=()=>{Object.assign(T9,{i:0,ans:[],done:false});t9()};
+  $("#rv9").onclick=()=>{$("#rev9").innerHTML=TEST.map((q,k)=>{const ok=T9.ans[k]===q.a;return `<div class="tq"><div class="qq">${k+1}. ${q.q}</div><div class="${ok?"good":"bad"}"><b>${ok?"Верно":"Неверно"}.</b> ${ok?"":"Ваш ответ: "+(T9.ans[k]==null?"нет ответа":q.o[T9.ans[k]])+". "}Правильно: ${q.o[q.a]}. ${q.e}</div></div>`}).join("");$("#rv9").disabled=true};return}
+ $("#t9").innerHTML=`<div class="card"><h2>Тест: 5 вариантов по 15 вопросов</h2><p style="margin:0">Выберите вариант, который назвал преподаватель, и отвечайте по порядку. Правильные ответы и оценка появятся только в конце. Смена варианта начинает тест заново.</p>${vsel9()}<div class="dots">${TEST.map((x,k)=>`<i class="${T9.ans[k]!=null?"ok":""}" style="${k===T9.i?"outline:2px solid var(--accent)":""}"></i>`).join("")}</div></div>
+ <div class="tq"><div class="qq">Вариант ${T9.v+1} · вопрос ${T9.i+1} из ${n}. ${q.q}</div>${shuf(q.o,SEED9(T9.v,T9.i)).map(([t,j],k)=>`<label><input type="radio" name="r9" value="${j}" ${T9.ans[T9.i]===j?"checked":""}><span><b>${LET[k]})</b> ${t}</span></label>`).join("")}
+ <div class="btns"><button class="btn ghost" id="pv9" ${T9.i?"":"disabled"}>← Назад</button><button class="btn" id="nx9">${T9.i<n-1?"Дальше →":"Завершить тест"}</button></div><div id="w9"></div></div>`;
+ bindV9();
+ $$("#t9 input").forEach(x=>x.onchange=()=>{T9.ans[T9.i]=+x.value});
+ $("#pv9").onclick=()=>{T9.i--;t9()};
+ $("#nx9").onclick=()=>{if(T9.ans[T9.i]==null){$("#w9").innerHTML=`<div class="warn">Выберите вариант ответа.</div>`;return}if(T9.i<n-1){T9.i++;t9()}else{const miss=TEST.findIndex((x,k)=>T9.ans[k]==null);if(miss>=0){T9.i=miss;t9();$("#w9").innerHTML=`<div class="warn">Остался вопрос без ответа.</div>`;return}T9.done=true;t9()}};}
+
+const built={},FIT={t0:()=>Object.values(C0).forEach(b=>b.fit()),t1:()=>upd1(),t2:()=>upd2(),t3:()=>upd3(),t4:()=>side4(),t5:()=>{[C5,C5b,C5c].forEach(c=>c&&c.fit())},t6:()=>side6()};
+function onTab(t){if(!built[t]){built[t]=1;({t0,t1,t2,t3,t4,t5,t6,t7,t8,t9})[t]()}else if(FIT[t])FIT[t]()}
+const h0=(location.hash.match(/t\d/)||[])[0];if(h0&&$(`.tabs button[data-tab="${h0}"]`))$(`.tabs button[data-tab="${h0}"]`).click();else onTab("t1");
+
+</script>
+<a href="../" title="Все материалы" style="position:fixed;right:10px;bottom:10px;z-index:99999;background:rgba(31,95,175,.92);color:#fff;font:600 13px system-ui,sans-serif;padding:6px 11px;border-radius:999px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.25)">⌂ Все материалы</a><script>addEventListener("load",function(){var h=location.hash.slice(1),b=h&&document.querySelector("[data-tab="+h+"]");if(b)b.click()})</script></html>

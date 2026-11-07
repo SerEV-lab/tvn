@@ -796,24 +796,10 @@ alt="Вкладка 3: рост lg n по пути и порог 10⁸" /></p>
 фотоионизацию в газе и фотоэмиссию с катода; 2) положительные ионы
 лавины, приходя к катоду, выбивают электроны (вторичная эмиссия).</p>
 <h3>8.2. Вывод условия самостоятельности</h3>
-<p>Один электрон с катода даёт у анода e<sup>(α−η)S</sup> электронов и
-оставляет в промежутке</p>
-<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>N</mi><mo>+</mo></msub><mo>=</mo><msup><mi>e</mi><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>α</mi><mo>−</mo><mi>η</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>S</mi></mrow></msup><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">N_{+} = e^{(\alpha - \eta)S} - 1</annotation></semantics></math>
-(18)</p>
-<p>положительных ионов (формула 1.12). Каждый ион, придя к катоду,
-выбивает в среднем γ эффективных электронов. Число вторичных электронов
-от одной лавины</p>
-<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>μ</mi><mo>=</mo><mi>γ</mi><mo>⋅</mo><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>e</mi><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>α</mi><mo>−</mo><mi>η</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>S</mi></mrow></msup><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">\mu = \gamma \cdot \left( e^{(\alpha - \eta)S} - 1 \right).</annotation></semantics></math>
-(19)</p>
-<p>Каждый вторичный электрон даёт новую лавину, т. е. поколения образуют
-геометрическую прогрессию 1, μ, μ², μ³, … При μ &lt; 1 поколения
-затухают, при μ ≥ 1 — не затухают или растут. <strong>Условие
-самостоятельности разряда</strong> (формула 1.13 учебника):</p>
-<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi><mo>⋅</mo><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>e</mi><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>α</mi><mo>−</mo><mi>η</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>S</mi></mrow></msup><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>≥</mo><mn>1</mn><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mo>⇔</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><mi>α</mi><mo>−</mo><mi>η</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>S</mi><mo>≥</mo><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>+</mo><mfrac><mn>1</mn><mi>γ</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">\gamma \cdot \left( e^{(\alpha - \eta)S} - 1 \right) \geq 1\ \ \  \Leftrightarrow \ \ \ (\alpha - \eta)S \geq \ln\left( 1 + \frac{1}{\gamma} \right).</annotation></semantics></math>
-(20)</p>
-<p>При γ = 0,01 нужно (α − η)S ≥ ln 101 = 4,62, т. е. лавина из ~100
-электронов. Чем больше γ, тем меньше нужное αS и ниже пробивное
-напряжение.</p>
+<p>При постоянных α и η один электрон с катода создаёт n(x) = exp((α − η)x) электронов. Число положительных ионов получают интегрированием αn(x), а не вычитанием единицы из числа электронов:</p>
+<p>N<sub>+</sub> = α[exp((α − η)S) − 1]/(α − η). (18)</p>
+<p>При α = η предел равен αS. Число вторичных электронов μ = γN<sub>+</sub>. (19) Для самостоятельного разряда требуется μ ≥ 1. (20)</p>
+<p>При пренебрежении прилипанием (η = 0) получаем обычное условие Таунсенда γ(exp(αS) − 1) ≥ 1. При γ = 0,01 оно даёт αS ≥ ln 101 = 4,62. Подстановка α − η вместо α без множителя α/(α − η) неверна, если γ задан на один положительный ион.</p>
 <p><img
 src="l2-lecture/media/b4a2d71d7564d3e92cfe3c590544a77651819584.png"
 title="Поколения лавин от одного электрона: при μ = 0,5 цепочка затухает, при μ = 1,5 — растёт"
@@ -825,9 +811,8 @@ alt="Поколения лавин от одного электрона: при 
 <p>Схема опыта: плоский промежуток в газе подключён к источнику через
 резистор, последовательно включён чувствительный прибор; катод освещён
 ультрафиолетом, создающим фототок I<sub>0</sub>. Суммируя прогрессию
-поколений, получаем ток, который показывает прибор:</p>
-<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mo>=</mo><msub><mi>I</mi><mn>0</mn></msub><mo>⋅</mo><msup><mi>e</mi><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>α</mi><mo>−</mo><mi>η</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>S</mi></mrow></msup><mo>⋅</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>+</mo><mi>μ</mi><mo>+</mo><msup><mi>μ</mi><mn>2</mn></msup><mo>+</mo><mi>…</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mfrac><mrow><msub><mi>I</mi><mn>0</mn></msub><mo>⋅</mo><msup><mi>e</mi><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>α</mi><mo>−</mo><mi>η</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>S</mi></mrow></msup></mrow><mrow><mn>1</mn><mo>−</mo><mi>γ</mi><mo>⋅</mo><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>e</mi><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>α</mi><mo>−</mo><mi>η</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>S</mi></mrow></msup><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">I = I_{0} \cdot e^{(\alpha - \eta)S} \cdot \left( 1 + \mu + \mu^{2} + \ldots \right) = \frac{I_{0} \cdot e^{(\alpha - \eta)S}}{1 - \gamma \cdot \left( e^{(\alpha - \eta)S} - 1 \right)}.</annotation></semantics></math>
-(21)</p>
+поколений и учитывая сбор электронов и отрицательных ионов, получаем установившийся ток прибора (рекомбинацией пренебрегаем):</p>
+<p>I = I<sub>0</sub>(1 + N<sub>+</sub>)/(1 − γN<sub>+</sub>). (21)</p>
 <p>Участки зависимости I(U) при плавном подъёме напряжения:</p>
 <ol type="1">
 <li><p><strong>I — ток насыщения:</strong> собираются все фотоэлектроны,

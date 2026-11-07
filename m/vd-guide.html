@@ -14,7 +14,7 @@ td,th{border:1px solid var(--line);padding:6px 8px;vertical-align:top}th{backgro
 math{font-size:1.08em}math[display=block]{overflow-x:auto;overflow-y:hidden;margin:10px 0}
 blockquote{margin:12px 0;padding:8px 14px;border-left:4px solid var(--acc);background:var(--soft)}
 @media print{.bar{display:none}body{font-size:12pt}main{max-width:none;padding:0}table{display:table}img{background:none}}
-</style></head><body><nav class="bar"><a href="../">← Техника высоких напряжений</a><a class="pdf" href="vd-guide.pdf" download>Скачать PDF</a></nav><main><p>Техника высоких напряжений</p>
+</style></head><body><nav class="bar"><a href="../">← Техника высоких напряжений</a><a class="pdf" href="vd-guide.pdf" download>Скачать PDF</a></nav><main><aside class="audit-note"><p><strong>Границы расчётной модели.</strong> В разделе Д1 Eкр = 25 кВ/мм задано как амплитудная прочность, а Uисп = 21 кВ — действующее испытательное напряжение 50 Гц. Поэтому δисп ≥ √2·21·3/25 = 3,56 мм; с шагом 0,5 мм выбирают δ = 4,0 мм. В Д2 удельная ёмкость 1,14·10⁻⁸ Ф/м² задана отдельно для расчёта покрытия и не пересчитывается из ответа Д1. λ = 1/|γ|, длина спада амплитуды в e раз равна √2λ. Учебные уровни перенапряжений и запас защиты не заменяют паспортную координацию изоляции.</p></aside><p>Техника высоких напряжений</p>
 <p><strong>Методические указания для студентов</strong></p>
 <p><strong>Наладка привода ВД-6300</strong></p>
 <p><em>Деловая игра по расчётному заданию «Вентильный двигатель 10 кВ»,
@@ -410,8 +410,7 @@ ______________________</p>
 теплоотвод.</p>
 <p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mrow><mi>р</mi><mi>а</mi><mi>с</mi><mi>ч</mi></mrow></msub><mo>=</mo><msub><mi>k</mi><mrow><mi>к</mi><mi>о</mi><mi>м</mi><mi>м</mi></mrow></msub><mo>⋅</mo><mi>K</mi><mo>⋅</mo><msub><mi>U</mi><mrow><mi>н</mi><mi>о</mi><mi>м</mi></mrow></msub><mfrac><msqrt><mn>2</mn></msqrt><msqrt><mn>3</mn></msqrt></mfrac></mrow><annotation encoding="application/x-tex">U_{расч} = k_{комм} \cdot K \cdot U_{ном}\frac{\sqrt{2}}{\sqrt{3}}</annotation></semantics></math>
 (29)</p>
-<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>δ</mi><mn>1</mn></msub><mo>=</mo><mfrac><msub><mi>U</mi><mrow><mi>р</mi><mi>а</mi><mi>с</mi><mi>ч</mi></mrow></msub><msub><mi>E</mi><mrow><mi>д</mi><mi>л</mi><mi>.</mi><mi>д</mi><mi>о</mi><mi>п</mi></mrow></msub></mfrac><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><msub><mi>δ</mi><mn>2</mn></msub><mo>=</mo><mfrac><mrow><msub><mi>U</mi><mrow><mi>и</mi><mi>с</mi><mi>п</mi></mrow></msub><msub><mi>k</mi><mi>з</mi></msub></mrow><msub><mi>E</mi><mrow><mi>к</mi><mi>р</mi></mrow></msub></mfrac><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><msub><mi>U</mi><mrow><mi>и</mi><mi>с</mi><mi>п</mi></mrow></msub><mo>=</mo><mn>2</mn><msub><mi>U</mi><mrow><mi>н</mi><mi>о</mi><mi>м</mi></mrow></msub><mo>+</mo><mspace width="0.222em"></mspace><mn>1</mn><mspace width="0.222em"></mspace><mi>к</mi><mi>В</mi></mrow><annotation encoding="application/x-tex">\delta_{1} = \frac{U_{расч}}{E_{дл.доп}},\ \ \delta_{2} = \frac{U_{исп}k_{з}}{E_{кр}},\ \ U_{исп} = 2U_{ном} + \ 1\ кВ</annotation></semantics></math>
-(30)</p>
+<p>δ₁ = Uрасч/Eдл.доп; δ₂ = √2·Uисп·kз/Eкр; Uисп = 2Uном + 1 кВ (действующее). (30)</p>
 <p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mo>≥</mo><mo>max</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>δ</mi><mn>1</mn></msub><mo>;</mo><mspace width="0.222em"></mspace><msub><mi>δ</mi><mn>2</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\delta \geq \max\left( \delta_{1};\ \delta_{2} \right)</annotation></semantics></math>
 (31)</p>
 <p><strong>Расчёт.</strong> Найти: расчётное пиковое напряжение
@@ -427,12 +426,12 @@ ______________________</p>
 ρ<sub>s</sub> = 10⁷…10¹¹ Ом по декадам.</p>
 <p><strong>Пояснение.</strong> Полупроводящее покрытие на выходе стержня
 из паза выравнивает поле вдоль поверхности. Это распределённая RC-цепь:
-λ — длина, на которой потенциал падает в e раз; длина покрытия ≈ 3λ.
+λ = 1/|γ| — характерная длина RC-линии. Амплитуда потенциала падает в e раз на длине √2λ; для спада до 5 % требуется примерно 3√2λ.
 Низкое ρ<sub>s</sub> даёт длинную λ, но больший ёмкостный ток и
 нагрев.</p>
 <p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mn>0</mn></msub><mo>=</mo><mfrac><mrow><msub><mi>ε</mi><mn>0</mn></msub><msub><mi>ε</mi><mi>r</mi></msub></mrow><mi>δ</mi></mfrac><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mi>λ</mi><mo>=</mo><mfrac><mn>1</mn><msqrt><mrow><mi>ω</mi><msub><mi>C</mi><mn>0</mn></msub><msub><mi>ρ</mi><mi>s</mi></msub></mrow></msqrt></mfrac><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><msub><mi>E</mi><mi>τ</mi></msub><mo>=</mo><mfrac><mi>U</mi><mi>λ</mi></mfrac></mrow><annotation encoding="application/x-tex">C_{0} = \frac{\varepsilon_{0}\varepsilon_{r}}{\delta},\ \ \lambda = \frac{1}{\sqrt{\omega C_{0}\rho_{s}}},\ \ E_{\tau} = \frac{U}{\lambda}</annotation></semantics></math>
 (32)</p>
-<p><strong>Расчёт.</strong> Найти: длина затухания λ при ρ<sub>s</sub> =
+<p><strong>Расчёт.</strong> Найти: характерная длина λ при ρ<sub>s</sub> =
 10⁹ Ом, мм.</p>
 <p><strong>Наладка.</strong> Подобрать наибольшее ρ<sub>s</sub>, при
 котором E<sub>τ</sub> ≤ 0,5 кВ/мм и при 50 Гц, и на всплеске.</p>
@@ -485,7 +484,7 @@ ______________________</p>
 <p>АСУ ТП сводит результаты в паспорт изоляции. Этап: баллы узлов и
 индекс состояния HI.</p>
 <h4>Ж1 · Паспорт и индекс HI (расчётная неделя 15)</h4>
-<p><strong>Дано.</strong> Поле в корпусной изоляции статора 3,92 кВ/мм
+<p><strong>Дано.</strong> Поле в корпусной изоляции статора 3,43 кВ/мм
 при норме 4,0. В паспорте восемь узлов с весами w<sub>i</sub>; пять
 баллов заданы, три (снабберы 383/500 В/мкс; реактор 89/100 K;
 трансформатор 93,5/100 K) ставит студент.</p>
@@ -735,7 +734,7 @@ ______________________</p>
 </tr>
 <tr class="odd">
 <td>Д2</td>
-<td>Длина затухания λ при ρs = 10⁹ Ом, мм</td>
+<td>Характерная длина λ при ρs = 10⁹ Ом, мм</td>
 <td></td>
 <td></td>
 <td></td>

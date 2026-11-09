@@ -2,7 +2,10 @@
 const fs=require('fs'),vm=require('vm'),assert=require('assert');
 const html=n=>fs.readFileSync(`${__dirname}/../i/${n}.html`,'utf8');
 for(const n of fs.readdirSync(`${__dirname}/../i`).filter(x=>x.endsWith('.html'))){
- for(const [i,m] of [...html(n.slice(0,-5)).matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/g)].entries())new vm.Script(m[1],{filename:n+':'+i});
+ for(const [i,m] of [...html(n.slice(0,-5)).matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)].entries()){
+  if(/\btype\s*=\s*["']application\/json["']/i.test(m[1]))JSON.parse(m[2]);
+  else new vm.Script(m[2],{filename:n+':'+i});
+ }
 }
 const oil=html('liquid');const stats=vm.runInNewContext('('+oil.match(/function stats\(a\)\{[^\n]+/)[0]+')');
 assert(Math.abs(stats([52,47,55,49,44,53]).V-3.346640106)<1e-6);
@@ -21,4 +24,4 @@ assert(valid({m:['brush','iso']}));assert(valid({m:['brush','cmc']}));assert(!va
 const vd=html('vd6300');const d1=vd.slice(vd.indexOf('{id:"Д1"'),vd.indexOf('{id:"Д2"'));
 const thickness=vm.runInNewContext('('+d1.match(/ok:(s=>[^,]+),h:/)[1]+')');assert(thickness({d:4}));assert(!thickness({d:3.5}));
 assert(vd.includes('a:14.25'));assert(vd.includes('HI = 92,0 %'));
-console.log('PASS: 13 simulator scripts; oil statistics; attachment limits; bearing protection; insulation thickness');
+console.log('PASS: simulator scripts and JSON; oil statistics; attachment limits; bearing protection; insulation thickness');

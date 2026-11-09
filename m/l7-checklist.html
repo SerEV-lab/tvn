@@ -1,0 +1,94 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Чек-лист студента к теме 7</title><style>:root{--ink:#16202c;--muted:#5b6675;--line:#d9dde3;--acc:#1f5faf;--bg:#fff;--soft:#f3f5f8}
+@media (prefers-color-scheme:dark){:root{--ink:#e6eaf0;--muted:#9aa6b5;--line:#33404f;--acc:#7fb3f0;--bg:#121820;--soft:#1b2430}img{background:#fff}}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 "PT Serif",Georgia,"Times New Roman",serif}
+.bar{position:sticky;top:0;display:flex;justify-content:space-between;gap:12px;padding:10px 16px;background:var(--soft);border-bottom:1px solid var(--line);font:600 14px system-ui,-apple-system,"Segoe UI",sans-serif;z-index:5}
+.bar a{color:var(--acc);text-decoration:none}.bar .pdf{border:1px solid var(--acc);border-radius:999px;padding:2px 12px}
+main{max-width:820px;margin:0 auto;padding:16px 16px 64px}
+h1,h2,h3,h4{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.25;margin:1.6em 0 .5em}
+h1{font-size:1.5em}h2{font-size:1.25em}h3{font-size:1.08em}
+p{margin:.5em 0}img{max-width:100%;height:auto;display:block;margin:12px auto;border-radius:6px}
+figure{margin:16px 0}figcaption{text-align:center;color:var(--muted);font-size:.9em}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:.92em;display:block;overflow-x:auto}
+td,th{border:1px solid var(--line);padding:6px 8px;vertical-align:top}th{background:var(--soft);text-align:left}
+math{font-size:1.08em}math[display=block]{overflow-x:auto;overflow-y:hidden;margin:10px 0}
+blockquote{margin:12px 0;padding:8px 14px;border-left:4px solid var(--acc);background:var(--soft)}
+@media print{.bar{display:none}body{font-size:12pt}main{max-width:none;padding:0}table{display:table}img{background:none}}
+</style></head><body><nav class="bar"><a href="../">← Техника высоких напряжений</a><a class="pdf" href="l7-checklist.pdf" download>Скачать PDF</a></nav><main><p><a href="../i/solid.html">Тренажёр «Твёрдая изоляция»</a></p><p>Тема 7 · ТВН · проверка работы в тренажёре</p>
+<p>ФИО _________________________ Группа __________ Дата __________</p>
+<h2 id="перед-работой">Перед работой</h2>
+<p>☐ Открыл тренажёр «Твёрдая изоляция» на сайте курса. Внизу страницы
+указана редакция 6.</p>
+<p>☐ Записал единицы: U и φ в кВ, толщины и радиусы в мм, E в кВ/мм.
+Указал, какое напряжение задано в задаче.</p>
+<h2 id="плоские-слои">Плоские слои</h2>
+<p>☐ Установил 24 кВ, d₁ = 2 мм, d₂ = 4 мм, εᵣ₁ = 2 и εᵣ₂ = 4. Включил
+карты E и φ. Поставил щуп на границу x = 2 мм.</p>
+<p>☐ Записал E₁, E₂, ΔU₁, ΔU₂ и φ на границе. Поменял местами εᵣ при тех
+же толщинах и проверил сумму падений напряжения.</p>
+<p><strong>S = Σ(dᵢ/εᵣᵢ) · Eᵢ = U/(εᵣᵢ S) · ΔUᵢ = Eᵢdᵢ</strong></p>
+<h2 id="кабель-с-изоляцией-из-спэ">Кабель с изоляцией из СПЭ</h2>
+<p>☐ Установил U = 30 кВ, a = 8 мм и b = 16 мм. Записал щупом три точки:
+r = 8, 12 и 16 мм. Сопоставил карты E и φ с графиками.</p>
+<p>☐ Сравнил E у жилы, E у экрана и среднее по радиусу. Повернул модель
+и сверил показания при том же r.</p>
+<p><strong>E(r) = U/[r ln(b/a)] · φ(r) = U ln(b/r)/ln(b/a) · Eср =
+U/(b−a)</strong></p>
+<h2 id="опыт-на-пробой">Опыт на пробой</h2>
+<p>☐ Для толщины 2,5 мм выполнил два автоматических подъёма U, с
+дефектом и без него. Записал оба результата.</p>
+<p>☐ Отметил начало роста канала, замыкание и отключение. Объяснил
+разрыв кривой напряжения во время замыкания и условность времени
+опыта.</p>
+<h2 id="перед-сдачей">Перед сдачей</h2>
+<p>☐ Решил задания, открыл разбор кейсов и выполнил назначенный вариант
+теста. Приложил таблицы, графики, снимок стенда и краткий вывод.</p>
+<h1 id="контрольные-значения">Контрольные значения</h1>
+<table>
+<colgroup>
+<col style="width: 35%">
+<col style="width: 64%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Опыт</strong></th>
+<th><strong>Результат для сверки</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Два слоя, 24 кВ</td>
+<td>E₁ = 6,00, E₂ = 3,00 кВ/мм. ΔU₁ = ΔU₂ = 12 кВ. φ на границе 12
+кВ.</td>
+</tr>
+<tr class="even">
+<td>Те же слои, εᵣ переставлены</td>
+<td>E₁ = 2,40, E₂ = 4,80 кВ/мм. ΔU₁ = 4,80, ΔU₂ = 19,20 кВ.</td>
+</tr>
+<tr class="odd">
+<td>Кабель, 30 кВ, r = 12 мм</td>
+<td>E ≈ 3,61 кВ/мм, φ ≈ 12,45 кВ. Максимум 5,41, минимум 2,71, среднее
+3,75 кВ/мм.</td>
+</tr>
+<tr class="even">
+<td>Пластина 2,5 мм</td>
+<td>Условный порог 30 кВ без дефекта и 20 кВ с дефектом.</td>
+</tr>
+<tr class="odd">
+<td>Абсорбция, 153 и 90 МОм</td>
+<td>Kабс = R₆₀/R₁₅ = 1,70.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="три-вопроса-для-защиты">Три вопроса для защиты</h2>
+<p>1. Почему на границе слоёв потенциал один, а напряжённости две?</p>
+<p>2. Почему поле в СПЭ выше у жилы, даже если материал одинаков по всей
+толщине?</p>
+<p>3. Какие данные потребовались бы для переноса результата на реальный
+образец или кабель?</p>
+<h2 id="что-сдавать">Что сдавать</h2>
+<p>Один лист с исходными данными, измерениями и выводами. Для каждого
+опыта укажите вкладку, параметры, единицы и проверенный баланс. Для
+пробоя отделите условный порог от испытательного напряжения реального
+изделия.</p>
+</main></body></html>

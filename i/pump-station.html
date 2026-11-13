@@ -58,6 +58,7 @@ fieldset{border:0;padding:0;margin:0 0 12px}legend{font-weight:700;margin-bottom
 .wetLabel{color:#05685d}.dryLabel{color:#9b5016}
 #cableTrace,#cableCut{margin:12px 0;background:#eff6f6;border-radius:10px}#cableTrace svg,#cableCut svg{display:block;width:100%;max-width:530px}
 #referenceValues p{margin:0;font-size:.88rem}
+#timeBudget{display:block;color:inherit;font-size:.83rem;font-variant-numeric:tabular-nums}
 </style>
 <header>
   <small>ТЕХНИКА ВЫСОКИХ НАПРЯЖЕНИЙ</small>
@@ -93,12 +94,12 @@ fieldset{border:0;padding:0;margin:0 0 12px}legend{font-weight:700;margin-bottom
   <section class="panel" id="welcome">
    <h2>Задание команды</h2>
    <p>При пуске электропривода насосной станции зарегистрирован перенапряжённый импульс. Проверьте поле в кабеле и заделке, подберите ввод для стенда, локализуйте источник частичных разрядов и оцените результаты повторных измерений.</p>
-   <div class="case"><strong>8 этапов по 7 минут · 3 жизни на команду</strong><br>Последняя минута подсвечивается красным. Неверная попытка расходует жизнь, и ответ можно исправить, пока остаются время и жизни. Третья ошибка завершает попытку. Команда может начать заново.</div>
+   <div class="case"><strong>8 этапов по 7 минут · 3 жизни на команду</strong><br>Последняя минута подсвечивается красным. Неверная попытка расходует жизнь, и ответ можно исправить, пока остаются время и жизни. Третья ошибка завершает попытку. После верного ответа на следующий этап переходит до 3 минут остатка. Если время истекло, следующий этап начинается с 7 минут.</div>
    <p>По истечении времени тренажёр автоматически открывает следующий этап. Контрольные данные для расчёта появляются над заданием и в журнале. Этап с контрольными данными не приносит балла. Насос запускается после итоговой проверки. Для пуска нужно зачесть подбор ввода, локализацию и проверку после ремонта (этапы 5, 7 и 8), всего — не менее пяти этапов.</p>
    <div class="row"><button class="primary" id="start">Начать</button><a href="https://serev-lab.github.io/tvn/" target="_blank" rel="noopener">Материалы курса</a></div>
   </section>
   <section class="panel" id="game" hidden>
-   <div class="alarm"><div class="timebox" id="timebox"><span id="timeLabel">Осталось на этап</span><strong id="clock" role="timer" aria-label="Осталось времени">06:00</strong></div></div>
+   <div class="alarm"><div class="timebox" id="timebox"><div><span id="timeLabel">Осталось на этап</span><small id="timeBudget" hidden></small></div><strong id="clock" role="timer" aria-label="Осталось времени">07:00</strong></div></div>
    <p class="eyebrow" id="stepLabel"></p>
    <h2 id="taskTitle" tabindex="-1"></h2>
    <p id="feedback" class="feedback carry" aria-live="polite" hidden></p>
@@ -165,7 +166,7 @@ const fmt=n=>n.toLocaleString('ru-RU',{useGrouping:false,maximumFractionDigits:2
 const field=(label,unit,value,digits=0,tolerance=0)=>({label,unit,value,digits,tolerance});
 const steps=[
  {title:'Потенциал в кабеле',topic:7,section:'Поле в коаксиальном кабеле',
-  data:'На стенде исследуют кабель насосной станции. Радиус жилы 8 мм, внутренний радиус заземлённого экрана 24 мм. Изоляция однородная. Потенциал жилы относительно экрана в рассматриваемый момент равен 12 кВ.',
+  data:'На стенде исследуют кабель насосной станции. Радиус жилы 8 мм, внутренний радиус заземлённого экрана 24 мм. Изоляция однородная. Потенциал жилы относительно экрана в рассматриваемый момент равен 12 кВ. На бирке кабеля также указаны наружный диаметр оболочки 56 мм и длина трассы 600 м.',
   q:'Найдите потенциал на середине толщины изоляции. Введите долю от потенциала жилы в процентах и потенциал относительно экрана.',
   fields:[field('Доля потенциала жилы','%',36.91,2),field('Потенциал точки','кВ',4.43,2)],
   key:'Середина по толщине находится на радиусе 16 мм. φ/U = ln(24/16)/ln(24/8) ≈ 0,3691. Значит, φ ≈ 4,43 кВ. Половина толщины не означает половину напряжения, поскольку радиальное поле меняется с расстоянием от жилы.'},
@@ -175,7 +176,7 @@ const steps=[
   fields:[field('Пиковое напряжение жилы','кВ',13.18,2),field('Поле на середине толщины','кВ/мм',0.75,2)],
   key:'Максимум E находится у жилы. При 12 кВ он равен 12/[8·ln(24/8)] ≈ 1,37 кВ/мм, ниже предела. Первый порог достигается при U = 1,50×8×ln(24/8) ≈ 13,18 кВ. Средняя точка расположена вдвое дальше от оси, поэтому E там 0,75 кВ/мм. Гипотеза об одновременном достижении предела по всей толщине не подтверждается.'},
  {title:'Двухслойная изоляция заделки',topic:7,section:'Поле в плоской многослойной изоляции',
-  data:'Участок заделки моделируется двумя плоскими слоями без свободного заряда на границе. Слой 1: 2 мм, εᵣ = 2,3, предельное поле 5,0 кВ/мм. Слой 2: 4 мм, εᵣ = 4,6, предельное поле 3,2 кВ/мм. Пик на образце в 1,10 раза выше пика на шинах. На шинах записали импульс при пуске привода. Снимите его максимальное положительное значение с осциллограммы.',
+  data:'Участок заделки моделируется двумя плоскими слоями без свободного заряда на границе. Слой 1: 2 мм, εᵣ = 2,3, предельное поле 5,0 кВ/мм. Слой 2: 4 мм, εᵣ = 4,6, предельное поле 3,2 кВ/мм. Пик на образце в 1,10 раза выше пика на шинах. На шинах записали импульс при пуске привода. Снимите его максимальное положительное значение с осциллограммы. В журнале привода указан номинальный ток двигателя 180 А.',
   graph:{title:'Осциллограмма пуска · напряжение на шинах',x:'Время, мкс',y:'Напряжение, кВ',pts:[[0,0],[1,6],[2,19.2],[3,13],[4,9],[5,10],[6,10]],y0:0,y1:20,dy:4,peakLabel:true},
   q:'Введите максимальный пик на шинах, допустимый по обоим слоям, и превышение этого предела при зарегистрированном пуске.',
   fields:[field('Предел шин','кВ',18.18,2),field('Превышение','кВ',1.02,2,0.15)],
@@ -199,32 +200,33 @@ const steps=[
   fields:[field('Номер события','',3),field('Кажущийся заряд','пКл',144)],
   key:'Калибровочный коэффициент равен 80/20 = 4 пКл/мВ. Событие 1 даёт 196 пКл, но повторяется при снятом напряжении. Событие 2 даёт ровно 100 пКл. Подходит событие 3: 36 × 4 = 144 пКл. Это кажущийся заряд на выводах объекта.'},
  {title:'Локализация по отражённому импульсу',topic:10,section:'§ 12.1. Кабель по отражённому импульсу',
-  data:'Длина кабеля 600 м, скорость распространения импульса 160 м/мкс. Регистратор установлен со стороны А, дальний конец Б разомкнут в учебной схеме. Используйте пару прямого и отражённого импульсов из записи события, отобранного на этапе 6. Муфты расположены на отметках 200, 360 и 520 м от А.',
+  data:'Длина кабеля 600 м, скорость распространения импульса 160 м/мкс. Регистратор установлен со стороны А, дальний конец Б разомкнут в учебной схеме. Регистратор запустил запись за 2 мкс до первого импульса события 1. Используйте пару прямого и отражённого импульсов из записи события, отобранного на этапе 6. Муфты расположены на отметках 200, 360 и 520 м от А.',
   table:[['Событие','Прямой импульс, мкс','Отражённый импульс, мкс'],['1','2,0','7,0'],['2','4,0','5,0'],['3','3,0','6,0']],
   q:'Найдите задержку отражённого импульса и координату источника от А.',
   fields:[field('Задержка отражения','мкс',3,2),field('Координата от А','м',360)],
   key:'Берём запись события 3. Задержка 6 − 3 = 3 мкс. Отражённый импульс проходит лишний путь 2(L−x). Поэтому x = 600 − 160×3/2 = 360 м. Проверяется муфта на отметке 360 м.'},
  {title:'Проверка пуска после ремонта',topic:10,section:'Повторное измерение после устранения дефекта',
-  data:'В протоколе после ремонта найдите строку для муфты, указанной на этапе 7. Канал А сохранил калибровку. Для учебного допуска одновременно требуются пик не выше предела заделки из этапа 3 и кажущийся заряд не выше 100 пКл. Зарегистрированные пики относятся к шинам.',
+  data:'В протоколе после ремонта найдите строку для муфты, указанной на этапе 7. Канал А сохранил калибровку. Для учебного допуска одновременно требуются пик не выше предела заделки из этапа 3 и кажущийся заряд не выше 100 пКл. Зарегистрированные пики относятся к шинам. После ремонта в журнале привода также зафиксирована температура корпуса двигателя 48 °C.',
   table:[['Муфта от А, м','Пик при пуске, кВ','Амплитуда канала А, мВ'],['200','18,40','17'],['360','17,40','21'],['520','16,90','28']],
   q:'Введите запасы по пику и кажущемуся заряду. Вычисляйте каждый запас как предел минус измеренное значение. Оба критерия должны выполняться.',
   fields:[field('Запас по пику','кВ',0.78,2),field('Запас по заряду','пКл',16)],
   key:'По строке 360 м пик 17,40 кВ, заряд 21×4 = 84 пКл. Запасы равны 18,18 − 17,40 = 0,78 кВ и 100 − 84 = 16 пКл. Оба требования учебного сценария соблюдены.'}
 ];
 const STEP_MS=7*60*1000;
+const MAX_CARRY_MS=3*60*1000;
 const WARNING_MS=60*1000;
 const KEY='tvn-pump-team-v5';
 const MAX_LIVES=3;
 const MIN_SCORE_FOR_START=5;
 const $=id=>document.getElementById(id);
-const initial=()=>({deadline:null,lives:MAX_LIVES,records:[],attempts:[]});
+const initial=()=>({deadline:null,carryMs:0,lives:MAX_LIVES,records:[],attempts:[]});
 function load(){
  try{
   const saved=JSON.parse(localStorage.getItem(KEY));
   if(saved && Array.isArray(saved.records) && saved.records.length<=steps.length &&
      Array.isArray(saved.attempts) && Number.isInteger(saved.lives) &&
      saved.lives>=0 && saved.lives<=MAX_LIVES &&
-     (saved.deadline===null || Number.isFinite(saved.deadline)))return saved;
+     (saved.deadline===null || Number.isFinite(saved.deadline)))return {...saved,carryMs:Number.isFinite(saved.carryMs)?Math.min(MAX_CARRY_MS,Math.max(0,saved.carryMs)):0};
  }catch{}
  return initial();
 }
@@ -239,10 +241,11 @@ function missionWon(){
  return [4,6,7].every(i=>state.records[i]?.status==='correct')&&
   countCorrect(state.records)>=MIN_SCORE_FOR_START;
 }
-function closeStep(status,answer,nextDeadline){
+function closeStep(status,answer,nextDeadline,carryMs=0){
  state.records.push({status,answer,attempts:state.attempts});
  state.attempts=[];
  state.deadline=finished()?null:nextDeadline;
+ state.carryMs=finished()?0:carryMs;
  persist();
 }
 function catchUp(now){
@@ -446,15 +449,21 @@ function render(focus=false){
  }));
  const digits=Math.max(...step.fields.map(f=>f.digits));
  $('format').textContent=step.graph?.peakLabel?'Округляйте до сотых. Для превышения допускается отклонение ±0,15 кВ.':step.graph?'Снимите значения с графика. Допускается погрешность чтения до ±0,2 кВ для первого поля и ±0,3 кВ для второго.':digits?'Округляйте до сотых. Принимаются запятая и точка.':'Введите целые числа.';
+ const budget=$('timeBudget');
+ budget.hidden=state.carryMs===0;
+ budget.textContent=clockText(STEP_MS/1000)+' на этап + '+clockText(Math.ceil(state.carryMs/1000))+' с предыдущего';
  $('timebox').dataset.stage=String(n);
  renderClock(Date.now());
  if(focus)$('taskTitle').focus();
+}
+function clockText(seconds){
+ return String(Math.floor(seconds/60)).padStart(2,'0')+':'+String(seconds%60).padStart(2,'0');
 }
 function renderClock(now){
  if(state.deadline===null)return;
  const ms=Math.max(0,state.deadline-now),s=Math.ceil(ms/1000);
  const urgent=ms<=WARNING_MS;
- $('clock').textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
+ $('clock').textContent=clockText(s);
  $('timebox').classList.toggle('danger',urgent);
  const label=urgent?'Осталась одна минута':'Осталось на этап';
  if($('timeLabel').textContent!==label)$('timeLabel').textContent=label;
@@ -488,7 +497,8 @@ $('answerForm').addEventListener('submit',e=>{
  }
  const response=fields.map((f,i)=>fmt(values[i])+(f.unit?' '+f.unit:'')).join(' · ');
  if(fields.every((f,i)=>Math.abs(values[i]-f.value)<=f.tolerance+1e-7)){
-  closeStep('correct',response,now+STEP_MS);render(true);return;
+  const carryMs=Math.min(MAX_CARRY_MS,state.deadline-now);
+  closeStep('correct',response,now+STEP_MS+carryMs,carryMs);render(true);return;
  }
  state.attempts.push(response);
  state.lives=Math.max(0,state.lives-1);

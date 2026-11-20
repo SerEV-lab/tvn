@@ -1,0 +1,1369 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ТВН · Поверхностные и скользящие разряды</title>
+<style>
+:root{color-scheme:light;--ink:#192936;--muted:#506372;--blue:#174c87;--navy:#112331;--line:#d5dfe5;--panel:#f8fafb;--cyan:#66dbf5;--amber:#ffce79;--screen:#10202b;--shade:#e9eff3}
+*{box-sizing:border-box}body{margin:0;background:#e8edf0;color:var(--ink);font:16px/1.48 system-ui,-apple-system,"Segoe UI",sans-serif}button,select,input{font:inherit}button{cursor:pointer}button:disabled{cursor:default;opacity:.5}button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,canvas:focus-visible,a:focus-visible{outline:3px solid #3688db;outline-offset:3px}a{color:var(--blue)}h1,h2,h3,p{margin:0}h2{font-size:clamp(23px,2.2vw,32px);line-height:1.15;letter-spacing:-.025em}h3{font-size:19px;line-height:1.25}p+p{margin-top:8px}[hidden]{display:none!important}
+.hero{background:radial-gradient(ellipse at 80% 30%,#204553,transparent 55%),#142735;color:#fff;border-bottom:3px solid #52b8d4}.wrap{width:min(1500px,100% - 48px);margin:auto}.hero .wrap{padding:18px 0 22px}.course{display:flex;gap:10px;align-items:center;color:#a6dcea;font-size:13px;font-weight:800;letter-spacing:.075em;text-transform:uppercase}.course span{padding:2px 8px;background:#2a4a5b;border-radius:4px}.hero h1{font-size:clamp(27px,3.5vw,50px);line-height:1.06;letter-spacing:-.038em;margin:6px 0}.hero p{color:#c6d8e0;font-size:15px}
+nav{background:#f7fafc;border-bottom:1px solid var(--line)}nav .wrap{display:flex;gap:4px;padding:7px 0;flex-wrap:wrap}nav button{white-space:nowrap;background:transparent;border:1px solid transparent;color:#415766;border-radius:6px;padding:8px 9px;font-weight:680;font-size:14px}nav button[aria-selected=true]{background:#dcebf6;color:#123f6d;border-color:#bcd6e7}nav button:hover{background:#e8f1f7}
+main.wrap{padding:18px 0 44px}.intro{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:13px}.intro p{margin-top:6px;color:#435765}.term{border:0;border-bottom:1px dashed currentColor;padding:0;color:#174c87;background:none;font:inherit;text-align:left}.term:hover{color:#08789d}.term::after{content:' ?';font-size:.72em;font-weight:800}
+.card,.lesson,.case,.quiz{background:#fff;border:1px solid var(--line);border-radius:11px;overflow:hidden}.bench{display:grid;grid-template-columns:minmax(0,1.23fr) minmax(360px,1fr);gap:12px}.panelbar{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:10px 12px;background:#f7fafb;border-bottom:1px solid var(--line)}.panelbar h3{font-size:16px}.toolbar{display:flex;gap:6px;flex-wrap:wrap;align-items:center}.btn{border:1px solid #c9d7e0;border-radius:6px;background:#f8fbfd;color:#244356;padding:5px 9px;font-size:14px;font-weight:690;line-height:1.4}.btn:hover,.btn[aria-pressed=true]{background:#e1eff9;border-color:#9ebfd6}.primary{background:#205486;color:white;border-color:#205486}.primary:hover{background:#2a6d9e;color:white}.quiet{white-space:nowrap}.instrument{position:relative;background:radial-gradient(ellipse at 50% 46%,#1f3b48 0%,#132734 57%,#0c1a24 100%);color:white}.instrument canvas{width:100%;height:326px;display:block;touch-action:none}.scene canvas{cursor:grab}.scene canvas:active{cursor:grabbing}.legend{display:flex;flex-wrap:wrap;gap:5px 13px;padding:7px 12px;background:#0f202c;color:#d5e4ec;border-top:1px solid #2d4755;font-size:13px}.legend span{display:inline-flex;align-items:center;gap:5px}.legend i,.swatch{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--c)}.comparison{padding:5px 10px;background:#f8fbfc}.graph-wrap{background:#122432}.graph-wrap canvas{display:block;width:100%;height:326px;cursor:crosshair;touch-action:pan-y}.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:#d9e3e9;border-top:1px solid #d9e3e9}.metric{background:#f8fbfc;padding:8px 9px;min-width:0}.metric span{display:block;color:#435867;font-size:12px;line-height:1.18}.metric b{display:block;font-size:clamp(14px,1.45vw,22px);font-variant-numeric:tabular-nums;color:#213f55;white-space:nowrap}.readout{font-size:13px;color:#2a495c;padding:7px 10px;background:#eef5f9;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+.strip{padding:10px 12px;margin-top:12px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px}.status{display:flex;align-items:flex-start;gap:8px}.dot{width:9px;height:9px;flex:none;margin-top:7px;border-radius:50%;background:#007a8e}.status b{font-size:15px}.status .channel-info{font-weight:700;color:#164669}.rubric{background:#edf5fa;border-radius:7px;padding:9px 12px;margin-top:10px}.rubric summary{color:#174c87}.source-list{font-size:14px}.status p{font-size:14px;color:#405767;margin-top:1px}.time{display:flex;align-items:center;gap:8px;color:#334f61}.time output{min-width:43px;text-align:right;font-size:14px}.time input{width:110px}
+.controls{padding:11px 13px;margin-top:10px;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px 17px}.run-step{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;padding:7px 12px;margin-top:9px;font-size:14px}.control{min-width:0}.control label{display:flex;align-items:baseline;justify-content:space-between;gap:4px;font-size:14px;font-weight:650}.control output{font-size:13px;color:#1a5480;white-space:nowrap}.control input[type=range]{margin:5px 0 0;width:100%;accent-color:#2375ad}.control select,.assignment select,.quiz select{width:100%;margin-top:5px;padding:4px 7px;border:1px solid #b9cad5;border-radius:6px;background:#fff;color:var(--ink)}input[type=range]{accent-color:#2375ad}
+.scope{margin-top:12px}.scope canvas{display:block;width:100%;height:221px;background:#0d1d28}.scope-now{display:flex;justify-content:space-between;gap:6px;flex-wrap:wrap}.scope-now[data-state="capture"],.scope-now[data-state="event"]{background:#fff1d8;color:#623a10}.scope-speed,.scope-toggle,.scope-note{font-size:14px}.scope-speed select{margin-left:4px;padding:3px 5px;border:1px solid #b8cbd8;border-radius:6px;background:white;color:#214457}.scope-note{padding:8px 12px;color:#425a67}.details-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:15px}.lesson,.case,.quiz{padding:16px}.lesson p,.case p,.quiz p{margin-top:8px;color:#38505f}.lesson h3,.case h3{margin-bottom:8px}.hint{font-size:14px;color:#4a626f}.assignment select{margin:10px 0}.steps{padding-left:23px;margin:9px 0}.steps li{padding:5px 0}.steps .btn{margin:3px 0}.steps .reading{display:block;color:#125477;font-size:13px;margin-top:3px}.compact{margin:8px 0;padding-left:22px}.compact li{margin:5px 0}.guide{background:#edf5fa;padding:11px 13px;border-left:3px solid #629bbd;border-radius:5px;margin:12px 0}.formula{display:block;padding:13px 9px;margin:8px 0;color:#102f4d;background:#edf4f8;border:1px solid #d6e5ee;border-radius:6px;overflow:auto;text-align:center;font-size:clamp(17px,2.5vw,24px);font-family:"Cambria Math","STIX Two Math",serif}.formula math{margin:auto}.formula i{font-family:Georgia,serif}.small{font-size:14px}.cases-grid,.theory-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}.case .toolbar{margin-top:12px}.case details,.lesson details{margin-top:10px}.case summary,.lesson summary{cursor:pointer;color:var(--blue);font-weight:700}.badge{font-size:12px;font-weight:750;color:#225674;background:#e3eff6;display:inline-block;border-radius:4px;padding:3px 6px;margin-bottom:6px}.quiz label[for=variant]{font-weight:700}.quiz select{max-width:205px;margin-left:8px}.quiz-header{display:flex;flex-wrap:wrap;align-items:center;row-gap:6px;justify-content:space-between}.quiz fieldset{border:1px solid var(--line);border-radius:7px;margin:14px 0 0;padding:9px 13px}.quiz legend{font-weight:700}.quiz fieldset label{display:block;padding:4px 0}.quiz label input{vertical-align:middle;margin:0 8px 2px 0;accent-color:#205486}.quiz .right{border-color:#6caa8c;background:#f2fbf7}.quiz .wrong{border-color:#d09f91;background:#fff8f4}.quiz .unanswered{background:#f9f5e9}.quiz-result{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:12px;background:#eaf2f8;border:1px solid #cadae7;padding:8px 10px;border-radius:6px;margin:12px 0}.dialog{max-width:min(480px,calc(100% - 32px));border:1px solid #bed2df;border-radius:10px;padding:18px;background:white;color:var(--ink);box-shadow:0 12px 50px #10273759}.dialog::backdrop{background:#142b49a0}.dialog p{margin:8px 0 12px}.empty{color:#496576}.ctx{margin-bottom:10px;padding:7px 11px;background:#def0f5;border:1px solid #b5d2db;border-radius:7px;font-size:14px;color:#214457}
+@media(max-width:1050px){.wrap{width:calc(100% - 28px)}.toolbar .btn{font-size:12px}.panelbar{padding:8px}.instrument canvas,.graph-wrap canvas{height:300px}.controls{grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}}
+@media(max-width:760px){.bench,.details-grid,.cases-grid,.theory-grid{grid-template-columns:1fr}.hero .wrap{padding:14px 0}.strip{grid-template-columns:1fr}.time{margin-left:auto}.intro{align-items:flex-start}.intro .btn{white-space:normal}.instrument canvas,.graph-wrap canvas{height:285px}.metric b{font-size:18px}.wrap{width:calc(100% - 20px)}}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <div class="course">Техника высоких напряжений <span>Тема 12</span></div>
+    <h1>Поверхностные и скользящие разряды</h1>
+    <p>Вращайте образец, измеряйте поле на его поверхности и сравнивайте режимы.</p>
+  </div>
+</header>
+<nav aria-label="Разделы темы"><div class="wrap" id="nav" role="tablist"></div></nav>
+<main class="wrap">
+  <section id="lab" role="tabpanel">
+    <div class="intro"><div><h2 id="lab-title"></h2><p id="lab-lead"></p></div><button class="btn" id="lab-theory">Открыть формулы</button></div>
+    <div id="case-context" class="ctx" hidden></div>
+    <div class="bench">
+      <article class="card">
+        <div class="panelbar"><h3 id="sample-title"></h3><div class="toolbar">
+          <button class="btn" id="cut" aria-pressed="true" title="Показать внутреннее устройство">Разрез</button>
+          <button class="btn" id="rotate" aria-pressed="false" title="Один оборот вокруг оси">Оборот 360°</button>
+          <button class="btn" id="zoom-out" aria-label="Уменьшить модель">−</button>
+          <button class="btn" id="zoom-in" aria-label="Увеличить модель">+</button>
+          <button class="btn" id="home" title="Исходный ракурс">Ракурс</button>
+        </div></div>
+        <div class="instrument scene"><canvas id="scene" tabindex="0" aria-label="Вращаемая 3D-модель. Потяните мышью или нажимайте клавиши со стрелками. Нажмите на линию измерения, чтобы поставить щуп."></canvas></div>
+        <div id="legend" class="legend"></div>
+        <div class="toolbar comparison"><button class="btn" id="save-ref">Сохранить кривую</button><button class="btn" id="clear-ref" hidden>Убрать кривую</button></div>
+      </article>
+      <article class="card">
+        <div class="panelbar"><h3>График и измеритель</h3><div class="toolbar" id="plots"></div></div>
+        <div class="graph-wrap"><canvas id="graph" tabindex="0" aria-label="Интерактивный график. Наведите курсор или сдвигайте его клавишами со стрелками."></canvas></div>
+        <div class="readout" id="readout"></div>
+        <div class="metrics" id="metrics"></div>
+      </article>
+    </div>
+    <div class="card strip">
+      <div class="status"><span class="dot"></span><div><b id="stage"></b><p id="stage-detail"></p><p id="channel-info" class="channel-info" hidden></p></div></div>
+      <div class="toolbar">
+        <button class="btn primary" id="play">Пуск</button>
+        <button class="btn" id="pause">Пауза</button>
+        <button class="btn" id="reset">Сброс</button>
+        <label class="time"><span class="small">Время</span><input type="range" id="time" min="0" max="14" step=".1" aria-label="Время опыта"><output id="clock"></output></label>
+      </div>
+    </div>
+    <div class="card controls" id="controls"></div>
+    <div class="card run-step" id="stepbar" hidden><span id="stepcaption"></span><div class="toolbar"><button class="btn" id="step-log">Записать этап</button><button class="btn" id="step-next">Следующий этап</button><button class="btn" id="step-go">К заданию</button></div></div>
+    <section class="card scope" aria-labelledby="scope-title">
+      <div class="panelbar"><h3 id="scope-title">Осциллограф</h3><div class="toolbar">
+        <label class="scope-speed" for="scope-speed">Скорость показа
+          <select id="scope-speed">
+            <option value="1" selected>1 период/с</option>
+            <option value="10">10 периодов/с</option>
+            <option value="50">50 периодов/с</option>
+          </select>
+        </label>
+        <label class="scope-toggle"><input type="checkbox" id="scope-trigger" checked> Автозахват события</label>
+        <button class="btn" id="scope-pause">Удержать кадр</button>
+        <button class="btn" id="scope-reset">Начать запись заново</button>
+      </div></div>
+      <canvas id="scope-canvas" aria-label="Расчётная синусоида напряжения и условный импульс виртуального датчика разряда"></canvas>
+      <div class="readout scope-now" id="scope-now"><strong id="scope-status" role="status"></strong><b id="scope-peak"></b></div>
+      <p class="scope-note">Скорость показа влияет на движение графика по экрану. Частота источника остаётся 50 Гц, период на оси равен 20 мс. Оранжевый канал показывает условный отклик датчика при разряде. «Начать запись заново» очищает кадр осциллографа, сохраняя параметры опыта.</p>
+    </section>
+    <div class="details-grid">
+      <article class="lesson assignment" id="assignment"></article>
+      <article class="lesson" id="lab-notes"></article>
+    </div>
+  </section>
+  <section id="theory" role="tabpanel" hidden></section>
+  <section id="cases" role="tabpanel" hidden></section>
+  <section id="tests" role="tabpanel" hidden></section>
+</main>
+<dialog id="definition" class="dialog" aria-labelledby="term-name"><h3 id="term-name"></h3><p id="term-text"></p><form method="dialog"><button class="btn primary">Закрыть</button></form></dialog>
+<script>
+'use strict';
+const $ = id => document.getElementById(id);
+const clamp = (n, min=0, max=1) => Math.min(max, Math.max(min, n));
+const mix = (a,b,f) => a+(b-a)*f;
+const format = (x, digits=1) => x.toLocaleString('ru-RU',{maximumFractionDigits:digits});
+const EPS0 = 8.8541878128e-12;
+const T_END = 14;
+const N = 120;
+const FILM_WIDTH = 25;
+const color = {cyan:'#6ae1f8', amber:'#ffca79', white:'#ebf6fc', coat:'#64deaa', wet:'#4ec9f2', faint:'#9bb8c8'};
+const source = {
+  cad:'https://vmasshtabe.ru/electrooborudovanie/energetika/izolyator-prohodnoy-ipu-10-630-7-5-02-uhl1-s-kvadratnyim-flantsem.html',
+  drawing:'https://meganorm.ru/Data2/1/4293748/4293748126.pdf',
+  tpu:'https://portal.tpu.ru/SHARED/y/YNP2/academics/Tab2/TVN_lek.pdf#page=40',
+  stator:'https://elib.spbstu.ru/dl/000158.pdf/download/000158.pdf',
+  almaty:'https://info.aues.kz/diploms/2018/tef/bt/Satbek_AUES.pdf#page=44',
+  pollution:'https://metall.world/FILES/gosts/gost_r_56735-2015.pdf'
+};
+const glossary = {
+  'Корона':'Газовый разряд в области сильного электрического поля около электрода. При локальной короне проводящий канал не соединяет оба электрода.',
+  'Поверхностный разряд':'Разряд в газе вдоль границы с твёрдым диэлектриком. На его развитие влияют поле у поверхности, состояние поверхности и геометрия электродов.',
+  'Скользящий разряд':'Развитая форма поверхностного разряда. При сильной связи с противоположным электродом ток зарядки поддерживает сравнительно хорошо проводящий канал вдоль поверхности.',
+  'Перекрытие':'Образование разрядного канала между электродами вдоль внешней изоляции. Возможен переход в дугу при наличии питания.',
+  'Пробой':'Потеря электрической прочности изоляции. В этом тренажёре пробой через толщу противопоставляется перекрытию вдоль внешней поверхности.',
+  'Диэлектрик':'Материал, который поляризуется в электрическом поле и слабо проводит ток. На стендах используются учебные эквиваленты стекла, фарфора и слоистой изоляции.',
+  'Потенциал':'Энергетическая характеристика электрического поля на единицу заряда. За начало отсчёта на схемах принят заземлённый электрод.',
+  'Тангенциальная составляющая':'Проекция поля на касательную к поверхности. Eτ = −dφ/ds, где s — координата вдоль выбранного пути.',
+  'Нормальная составляющая':'Проекция электрического поля на нормаль, то есть на направление от поверхности. Для плоского участка внутри диэлектрика над подложкой используем Eₙ ≈ φ/d.',
+  'Путь утечки':'Кратчайшее расстояние между проводящими частями, измеренное вдоль поверхности твёрдой изоляции. Рёбра могут увеличивать это расстояние.',
+  'Поверхностное сопротивление':'В модели ρₛ — сопротивление квадрата однородной тонкой плёнки, в Ом/□. Для прямоугольника длиной ℓ и шириной b сопротивление R = ρₛℓ/b.',
+  'Сухая зона':'Локальный подсушенный участок проводящей плёнки. Его сопротивление выше соседних мокрых участков, поэтому на нём может сосредоточиться большое падение напряжения.',
+  'Ток утечки':'Ток, протекающий по поверхности изоляции. На стенде влажной поверхности показана только проводящая составляющая в резистивной схеме.',
+  'Удельная поверхностная ёмкость':'Ёмкость на единицу площади поверхности относительно противоположного электрода. Для плоского приближения Cₛ = ε₀εᵣ/d, единица СИ — Ф/м².',
+  'Стример':'Ионизованный канал, растущий с фронтом сильного поля. В учебной анимации тонкие ветви обозначают начальную стадию развития канала.',
+  'Фланец':'Металлическая монтажная деталь ввода, соединённая с заземлённой конструкцией. У кромки фланца поле может концентрироваться.',
+  'Краевой эффект':'Локальное усиление поля у кромки электрода или окончания проводящего покрытия. Величина усиления зависит от формы и электрических граничных условий.',
+  'Противокоронное покрытие':'Слой с заданной проводимостью для управления распределением потенциала на изоляции. На лобовых частях могут использоваться покрытия с нелинейной характеристикой.',
+  'Лобовая часть':'Участок обмотки за торцом сердечника статора, где проводники выходят из пазов.',
+  'Действующее напряжение':'Для синусоиды Uдейств = Uпик/√2. На стендах ползунок задаёт действующее напряжение между указанными электродами.',
+  'Нелинейная ВАХ':'Зависимость тока от напряжения, при которой их отношение меняется. В покрытиях с SiC проводимость может расти в зонах с высоким полем.'
+};
+const term = word => `<button type="button" class="term" data-term="${word}">${word}</button>`;
+const btnLink = (label,url) => `<a href="${url}" target="_blank" rel="noopener">${label}</a>`;
+const range = (key,label,min,max,step,value,unit,digits=1) => ({key,label,min,max,step,value,unit,digits});
+const sel = (key,label,options,value) => ({key,label,options,value});
+const voltage = () => range('u','Uзад между электродами',0,50,1,24,'кВ',0);
+const profile = () => sel('shape','Поле вдоль поверхности',[['uniform','Равномерное'],['edge','У кромок']], 'edge');
+const lab = {
+  overview:{name:'Виды разрядов',sample:'Три траектории разряда',lead:`Сравните: ${term('Корона')}, ${term('Поверхностный разряд')}, ${term('Перекрытие')} и ${term('Пробой')}.`,base:'field',
+    controls:[voltage(),sel('mode','Явление',[['corona','Корона у электрода'],['surface','Поверхностный разряд'],['flash','Перекрытие вдоль поверхности'],['bulk','Пробой через толщу']],'surface')],
+    note:'На стенде можно отдельно увидеть четыре траектории при одинаковом напряжении. График даёт поле вдоль поверхности в основном режиме. Для пробоя через толщу обратный электрод находится под пластиной, и поверхностный график скрывается.'},
+  field:{name:'Поле у поверхности',sample:'Пластина и два электрода',lead:`Перемещайте щуп и сравнивайте ${term('Потенциал')} с величиной <button class="term" data-term="Тангенциальная составляющая">тангенциальную составляющую</button> поля.`,
+    controls:[voltage(),range('L','Расстояние между электродами',100,260,10,180,'мм',0),profile(),range('d','Толщина пластины',3,15,1,8,'мм',0)],
+    note:'На графике координата s отсчитывается от заземлённого электрода. Падение напряжения распределяется равномерно либо концентрируется у кромок. Профили заданы аналитически. Подложка выключена, поэтому нормальная составляющая на этом стенде не оценивается.'},
+  moisture:{name:'Влага и пути утечки',sample:'Ребристый образец и слой загрязнения',lead:`Наблюдайте, как появляется <button class="term" data-term="Сухая зона">сухая зона</button> и как меняется <button class="term" data-term="Ток утечки">ток утечки</button>. Сравните длину поверхности с прямым промежутком.`,
+    controls:[voltage(),sel('weather','Увлажнение',[['dry','Сухо'],['fog','Туман'],['rain','Моросящий дождь']],'fog'),sel('dirt','Загрязнение',[['clean','Чистая поверхность'],['even','Равномерное'],['local','Локальное, в середине']],'even'),sel('band','Подсушивание',[['off','Выключено'],['auto','Модель сухой зоны']],'auto'),range('L','Путь утечки (развёртка)',150,400,10,260,'мм',0)],
+    note:'На графике путь по рёбрам развёрнут в прямую. Сухая зона образуется по заданному сценарию при увлажнении загрязнённой поверхности. До локального искрения ток рассчитывается по цепочке сопротивлений. После появления иллюстрации дуги графики относятся к той же резистивной схеме до шунтирования дугой.'},
+  sliding:{name:'Скользящий разряд',sample:'Пластина над заземлённой подложкой',lead:`Измените толщину пластины и <button class="term" data-term="Удельная поверхностная ёмкость">удельную поверхностную ёмкость</button>. Посмотрите, как вдоль поверхности развивается <button class="term" data-term="Стример">стример</button>.`,
+    controls:[voltage(),range('d','Толщина пластины',3,16,1,6,'мм',0),range('er','Проницаемость εᵣ',2,10,.5,6,'',1),range('L','Путь по поверхности',110,260,10,180,'мм',0)],
+    note:'Механизм связан с зарядкой ёмкости между каналом и подложкой. Eₙ ≈ φ/d оценивается внутри пластины. Канал рисуется по относительной форме зависимости Теплера при фиксированной частоте и условной калибровке. Секунды на ползунке описывают развёртку опыта, а не длительность реального разряда.'},
+  flange:{name:'Ввод и фланец',sample:'Проходной изолятор ИПУ‑10',lead:`Найдите максимум поля рядом с <button class="term" data-term="Фланец">фланцем</button>, затем измените радиус кромки и проследите развитие канала по фарфору.`,
+    controls:[voltage(),range('r','Скругление кромки',1,20,1,3,'мм',0),range('L','Путь от фланца до вывода',250,500,10,340,'мм',0),sel('end','Источник канала',[['flange','У фланца · 0 кВ'],['terminal','У вывода · высокое напряжение']],'flange')],
+    note:'Для геометрии взят габаритный чертёж проходного изолятора ИПУ‑10/630 с квадратным фланцем и внешним диаметром рёбер около 160 мм. Шина, фланец и фарфор в разрезе реконструированы. Кривая поля получена из одномерной модели краевого эффекта. Радиус пересчитывает форму учебного профиля, а выбор источника задаёт начало иллюстрации канала. Напряжение стенда задаётся независимо от паспортного класса аппарата.'},
+  winding:{name:'Выход обмотки из паза',sample:'Стержень статора и лобовая часть',lead:`Откройте разрез, найдите выход из паза и проверьте, куда смещается поле, когда появляется <button class="term" data-term="Противокоронное покрытие">противокоронное покрытие</button>.`,
+    controls:[voltage(),range('coat','Длина покрытия',0,160,10,90,'мм',0),sel('grade','Профиль покрытия',[['steep','Резкое окончание'],['soft','Плавное окончание']],'soft'),range('L','Исследуемый участок',180,320,10,240,'мм',0)],
+    note:'В модели заземлённый сердечник задаёт начало координаты. Покрытие перераспределяет падение напряжения, а его резкое окончание даёт второй локальный максимум. Это параметрический профиль. В реальной конструкции проверяют частоту, нелинейную ВАХ, контакт, нагрев и измеренные разряды.'}
+};
+const panels = [...Object.entries(lab).map(([id,x])=>[id,id==='winding'?'Обмотка в пазу':x.name]),['theory','Теория и формулы'],['cases','Реальные кейсы'],['tests','Тесты']];
+const defaults = id => Object.fromEntries(lab[id].controls.map(x=>[x.key,x.value]));
+const states = Object.fromEntries(Object.keys(lab).map(id=>[id,{p:defaults(id),t:8,s:.12,timePanel:false,plot:'E',ref:null,experiment:0,selectedStep:null,notes:[],context:''}]));
+let active='overview', running=false, spin=0;
+let camera={yaw:.37,pitch:.22,zoom:1,cut:true};
+let dataset=null, frame=0;
+const input = () => states[active];
+const type = () => active==='overview' ? lab.overview.base : active;
+const getL = (id,p) => p.L || (id==='overview'&&p.mode==='bulk'?8:180);
+const uAt = (p,t) => p.u*clamp(t/8);
+function wetValues(p,t,u,s){
+  const wet=p.weather==='dry'?0:p.weather==='fog'?.72:.92;
+  const dirt=p.dirt==='clean'?0:p.dirt==='even'?1:(s>.25&&s<.75?1:.18);
+  const dryBand=p.band==='auto'&&p.weather!=='dry'&&p.dirt!=='clean';
+  const heat=dryBand?clamp((t-3)/6)*clamp(u/18):0;
+  const dry=heat*Math.exp(-Math.pow((s-.52)/.027,4));
+  const logR=8.7-.6*dirt-wet*(1.1+2.9*dirt)*(1-dry);
+  return {rho:Math.pow(10,logR),wet,heat,dry};
+}
+function fieldWeights(id,p,s){
+  if(id==='overview') return p.mode==='bulk'?1:1+6*Math.exp(-(1-s)/.075);
+  if(id==='field') return p.shape==='uniform'?1:1+5*Math.exp(-s/.065)+5*Math.exp(-(1-s)/.065);
+  if(id==='sliding') return .65+7*Math.exp(-(1-s)/.15)+1.6*Math.exp(-s/.055);
+  if(id==='flange'){
+    const radius=(p.r-1)/19;
+    return 1+mix(16,3,radius)*Math.exp(-s/mix(.032,.115,radius))+2*Math.exp(-(1-s)/.075);
+  }
+  if(id==='winding'){
+    if(!p.coat) return .5+12*Math.exp(-s/.073);
+    const end=p.coat/p.L, blend=p.grade==='soft';
+    return .9+4*Math.exp(-s/(.045+end*.17))+ (blend?1.15:6.6)*Math.exp(-Math.pow((s-end)/(blend?.13:.036),2));
+  }
+  return 1;
+}
+function calculate(id,p,t){
+  const U=uAt(p,t), L=getL(id,p), dx=L/N;
+  const moisture=id==='moisture';
+  let sum=0;
+  const w=Array.from({length:N},(_,i)=>{
+    const s=(i+.5)/N;
+    const item=moisture?wetValues(p,t,U,s).rho:fieldWeights(id,p,s);
+    sum+=item;
+    return item;
+  });
+  let cumulative=0, max=0, at=0;
+  const phi=[0];
+  const E=w.map((v,i)=>{
+    cumulative+=v;
+    phi.push(U*cumulative/sum);
+    const k=U*v/sum/dx;
+    if(k>max){max=k;at=(i+.5)/N;}
+    return k;
+  });
+  const Cs=id==='sliding'?EPS0*p.er/(p.d/1000):null;
+  const R=moisture?sum*dx/FILM_WIDTH:null;
+  return {U,L,max,at,phi,E,Cs,R,I:moisture?U*1e9/R:null,heat:moisture?wetValues(p,t,U,.52).heat:0};
+}
+function measure(d,s){
+  const pos=clamp(s)*N, i=Math.min(N-1,Math.floor(pos));
+  return {s:d.L*s,phi:mix(d.phi[i],d.phi[i+1],pos-i),E:d.E[i]};
+}
+function discharge(id,p,d,t){
+  const U=d.U;
+  const inactive={f:0,epoch:0,label:'Ожидание подачи напряжения',detail:'Нажмите «Пуск» или переместите ползунок времени.'};
+  if(U===0) return inactive;
+  if(id==='overview'){
+    const modes={
+      corona:[.12,'Корона у кромки','Свечение ограничено областью рядом с высоковольтным электродом.'],
+      surface:[.61,'Разряд вдоль поверхности','Канал идёт по границе воздух–изоляция и заканчивается до второго электрода.'],
+      flash:[1,'Перекрытие поверхности','Канал проходит по поверхности от одного электрода до другого.'],
+      bulk:[1,'Пробой через толщу','Канал проходит от верхнего электрода сквозь диэлектрик к подложке.']
+    };
+    const v=modes[p.mode];
+    const f=v[0]*clamp((t-.6)/5);
+    return {f,epoch:clamp(f*3),label:t<5.6?'Развитие показанной траектории':v[1],
+      detail:(t<5.6?'Дождитесь завершения учебной анимации. ':v[2]+' ')+'Траектория выбрана в меню.'};
+  }
+  if(id==='sliding'){
+    const c=p.er/p.d, onset=12*Math.pow(1/c,.4);
+    const eq=Math.pow(c,2)*Math.pow(U/36,5)*180/d.L;
+    const f=U<onset*.63?0:Math.min(1,eq)*clamp((U-onset*.63)/(onset*.37));
+    return f>=1?{f,epoch:1,label:'Иллюстрация перекрытия',detail:'Канал в учебном сценарии дошёл до заземлённой кромки.'} :
+      U>=onset?{f,epoch:1,label:'Скользящий канал растёт',detail:'Подложка обеспечивает ёмкостную связь с каналом. Измените толщину и сравните при том же напряжении.'} :
+      f>0?{f,epoch:.35,label:'Короткие стримеры у электрода',detail:'На пластине видны начальные ветви. Порог на стенде принят для наглядности.'} :
+      {f,epoch:0,label:'Поле над подложкой',detail:'Пластина и подложка образуют ёмкость. Канал в выбранном сценарии пока не развивается.'};
+  }
+  if(id==='moisture'){
+    const f=(p.dirt!=='clean'&&p.weather!=='dry')?clamp((d.heat-.42)/.5):0;
+    if(f>.88) return {f,epoch:.7,label:'Локальный разряд поперёк сухой зоны',detail:'Сухая зона видна жёлтым на поверхности. Ток справа рассчитан для плёнки до её шунтирования дугой.'};
+    if(d.heat>.02) return {f:0,epoch:0,label:'Плёнка подсыхает локально',detail:'Наведите курсор на пик поля в сухой зоне и сравните потенциалы по её краям.'};
+    if(p.weather!=='dry') return {f:0,epoch:0,label:'На поверхности формируется влажная плёнка',detail:'Синие точки отмечают увлажнение. Сравните ток на чистом и загрязнённом образцах.'};
+    return {f:0,epoch:0,label:'Сухая поверхность',detail:'В учебной модели сопротивление загрязнения велико, ток утечки мал.'};
+  }
+  if(id==='field') return {f:0,epoch:0,label:p.shape==='edge'?'Поле усилено у кромок':'Равномерный профиль поля',detail:'Выберите точку на графике или на измерительной линии образца. Сохраните исходную кривую для сравнения.'};
+  const f=clamp((d.max-(id==='flange'?.17:.24))/(id==='flange'?.46:.62))*clamp((t-1)/6);
+  const label=f>=1?(id==='flange'?'Иллюстрация перекрытия':'Канал дошёл до границы показанного участка'):f>.015?'Канал развивается по поверхности':'Поле у кромки';
+  const detail=id==='flange'?'Оранжевый канал начинается на выбранной кромке и следует профилю фарфора.':'Оранжевые ветви начинаются рядом с краевым максимумом. Покрытие изменяет положение этого максимума.';
+  return {f,epoch:clamp(f*2),label,detail:f>.003?detail:'Переместите щуп в зону максимума. Амплитуда и цвет профиля связаны с расчётной кривой.'};
+}
+const scene=$('scene'), graph=$('graph');
+const world={faces:[],marks:[],path:[],projected:[]};
+const rgb=(r,g,b)=>`rgb(${Math.round(r)},${Math.round(g)},${Math.round(b)})`;
+const material={ceramic:[221,218,196],glass:[148,193,208],steel:[123,151,170],copper:[227,153,82],insulation:[213,165,102],ground:[87,115,132],cut:[237,214,164],coat:[79,173,138]};
+const minus=(a,b)=>a.map((x,i)=>x-b[i]);
+const plus=(a,b)=>a.map((x,i)=>x+b[i]);
+const cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];
+const size=v=>Math.hypot(...v);
+const lerp=(a,b,f)=>a.map((x,i)=>mix(x,b[i],f));
+function face(v,c){
+  const n=cross(minus(v[1],v[0]),minus(v[2],v[0]));
+  const light=.71+(n[0]*.13+n[1]*.21+n[2]*.16)/(size(n)||1);
+  world.faces.push({v,fill:rgb(...c.map(x=>clamp(x*light,0,255)))});
+}
+function box(x,y,z,X,Y,Z,c){
+  const a=[x,y,z],b=[X,y,z],d=[x,Y,z],e=[x,y,Z],f=[X,Y,z],g=[X,y,Z],h=[x,Y,Z],i=[X,Y,Z];
+  [[a,d,f,b],[e,g,i,h],[a,b,g,e],[d,h,i,f],[a,e,h,d],[b,f,i,g]].forEach(v=>face(v,c));
+}
+const radial=(y,r,a)=>[r*Math.sin(a),y,r*Math.cos(a)];
+function lathe(profile,materialColor,section=false,radialInner=0,segments=48){
+  const start=section?.64:0,end=2*Math.PI-start;
+  for(let j=0;j<segments;j++){
+    const a=mix(start,end,j/segments), b=mix(start,end,(j+1)/segments);
+    for(let i=0;i<profile.length-1;i++){
+      const [y,r]=profile[i],[Y,R]=profile[i+1];
+      const endCap=(y===Y);
+      if(r===0&&R===0||endCap&&r===R) continue;
+      face([radial(y,r,a),radial(Y,R,a),radial(Y,R,b),radial(y,r,b)],materialColor);
+    }
+  }
+  if(section){
+    for(const a of [start,end]){
+      for(let i=0;i<profile.length-1;i++){
+        const [y,r]=profile[i],[Y,R]=profile[i+1];
+        if(y===Y) continue;
+        face([radial(y,r,a),radial(y,radialInner,a),radial(Y,radialInner,a),radial(Y,R,a)],materialColor===material.ceramic?material.cut:materialColor);
+      }
+    }
+  }
+}
+function flangeMount(r,cut){
+  const steel=material.steel, rr=39+Math.min(10,r*.34);
+  const edge=5+Math.min(4,r*.20);
+  const squareRadius=a=>77/Math.max(Math.abs(Math.sin(a)),Math.abs(Math.cos(a)));
+  const n=48,start=cut?.64:0,end=2*Math.PI-start;
+  for(let i=0;i<n;i++){
+    const a=mix(start,end,i/n),b=mix(start,end,(i+1)/n);
+    const outerA=squareRadius(a),outerB=squareRadius(b);
+    face([radial(-41,outerA,a),radial(-41,outerB,b),radial(-41,rr,b),radial(-41,rr,a)],steel);
+    face([radial(-51,outerA,a),radial(-51,outerB,b),radial(-41,outerB,b),radial(-41,outerA,a)],steel);
+    face([radial(-51,rr,a),radial(-51,rr,b),radial(-51,outerB,b),radial(-51,outerA,a)],material.ground);
+    for(let j=0;j<4;j++){
+      const a0=j*Math.PI/8,a1=(j+1)*Math.PI/8;
+      const y0=-41+edge*Math.sin(a0),y1=-41+edge*Math.sin(a1);
+      const r0=rr-edge*(1-Math.cos(a0)),r1=rr-edge*(1-Math.cos(a1));
+      face([radial(y0,r0,a),radial(y0,r0,b),radial(y1,r1,b),radial(y1,r1,a)],steel);
+    }
+  }
+  for(let i=0;i<4;i++){
+    const x=i%2?62:-62,z=i<2?62:-62;
+    if(cut&&z>0&&Math.abs(x/z)<Math.tan(start)) continue;
+    box(x-4,-41,z-4,x+4,-35,z+4,material.ground);
+    box(x-2.2,-35,z-2.2,x+2.2,-32,z+2.2,steel);
+  }
+}
+function pathFrom(vertices){
+  const parts=[0];
+  for(let i=1;i<vertices.length;i++) parts.push(parts.at(-1)+size(minus(vertices[i],vertices[i-1])));
+  return Array.from({length:N+1},(_,j)=>{
+    const target=parts.at(-1)*j/N;
+    let k=parts.findIndex(v=>v>=target);
+    if(k<=0)return vertices[0];
+    return lerp(vertices[k-1],vertices[k],(target-parts[k-1])/(parts[k]-parts[k-1]));
+  });
+}
+function drawBushing(p){
+  const cut=camera.cut,a=.79,r=p.r;
+  const tall=.82+p.L/1800;
+  const rib=clamp(.80+(p.L-250)/720,.8,1.16);
+  const top=[[-40,36],[-31,33],[-23,32]];
+  for(let i=0;i<4;i++){
+    const y=-16+26*i*tall;
+    top.push([y-2,34],[y+1,47*rib],[y+5,61*rib],[y+9,59*rib],[y+12,41*rib],[y+15,32]);
+  }
+  const shoulder=89*tall;
+  top.push([shoulder,32],[shoulder+5,26],[shoulder+10,24]);
+  const lower=[[-123,0],[-123,24],[-119,29],[-114,29],[-113,36],[-108,36],[-104,29],[-96,29],[-95,42],[-90,42],[-86,29],[-74,29],[-73,43],[-67,42],[-62,29],[-53,33]];
+  const skin=[...lower,...top,[shoulder+10,0]];
+  lathe(skin,material.ceramic,cut,11);
+  lathe([[-145,0],[-145,10],[shoulder+28,10],[shoulder+28,0]],material.copper,false);
+  lathe([[shoulder+8,0],[shoulder+8,27],[shoulder+13,27],[shoulder+16,20],[shoulder+16,0]],material.steel,cut);
+  box(-13,shoulder+17,-5,13,shoulder+42,5,material.copper);
+  flangeMount(r,cut);
+  world.path=pathFrom(top.map(([y,rad])=>radial(y,rad+1.6,a)));
+  world.marks=[
+    ['Шина', [9,shoulder+32,4], color.amber,'right'],
+    ['Фарфор', radial(37,46,a),color.white,'left'],
+    ['Фланец · 0 кВ', [73,-40,40],color.cyan,'right']
+  ];
+}
+function drawPlate(id,p){
+  const L=getL(id,p);
+  const len=id==='overview'?116:L*.54+23;
+  const thick=id==='overview'?21:(p.d||8)*1.8+8;
+  const backing=id==='sliding'||(id==='overview'&&p.mode==='bulk');
+  const front=46, back=-63;
+  box(-len,-thick,back,len,0,front,id==='sliding'?material.glass:material.ceramic);
+  if(backing){
+    box(-len-4,-thick-6,back-3,len+5,-thick,front+4,material.steel);
+    world.marks.push(['Подложка · 0 кВ',[-len+20,-thick-4,front+2],color.cyan,'left']);
+  }
+  if(id!=='overview'||p.mode!=='bulk'){
+    box(-len-11,0,back,-len+9,10,front+2,material.steel);
+    world.marks.push(['Электрод · 0 кВ',[-len-4,8,-24],color.cyan,'left']);
+  }
+  box(len-11,0,back,len+13,11,front+2,material.copper);
+  if(backing) box(len-1,10,-18,len+7,24,3,material.copper);
+  world.path=id==='overview'&&p.mode==='bulk'
+    ? pathFrom([[len-16,-thick,front+1],[len-16,0,front+1]])
+    : pathFrom([[-len+9,.9,front-14],[len-11,.9,front-14]]);
+  world.marks.push(['Электрод · U',[len+1,12,7],color.amber,'right'],['Диэлектрик',[3,-thick*.63,front],color.white,'right']);
+}
+function drawWet(p){
+  const amplitude=(p.L-150)*.078+13, profile=[];
+  profile.push([-127,0],[-127,25],[-109,27],[-102,26]);
+  for(let j=0;j<5;j++){
+    const y=-101+j*40;
+    profile.push([y,26],[y+6,29],[y+10,amplitude+24],[y+14,amplitude+20],[y+20,30],[y+29,26]);
+  }
+  profile.push([105,26],[115,20]);
+  lathe([...profile,[115,0]],material.ceramic,camera.cut,8);
+  lathe([[-137,0],[-137,30],[-108,30],[-105,27],[-105,0]],material.steel,camera.cut);
+  lathe([[107,0],[107,29],[121,29],[136,16],[136,0]],material.copper,camera.cut);
+  lathe([[-115,0],[-115,8],[120,8],[120,0]],material.copper);
+  const a=.82;
+  world.path=pathFrom(profile.slice(2).map(([y,r])=>radial(y,r+1.5,a)));
+  world.marks=[['Электрод · U',[5,127,15],color.amber,'right'],['Рёбра',[49,50,20],color.white,'left'],['Электрод · 0 кВ',[15,-120,26],color.cyan,'left']];
+}
+function drawWinding(p){
+  const len=p.L*.71, x0=-35, x1=x0+len, bend=22;
+  for(let i=0;i<14;i++){
+    const x=-165+i*9.25;
+    box(x,-37,-78,x+8.5,-16,74,material.steel);
+    box(x,-16,-78,x+8.5,39,-32,material.ground);
+    if(!camera.cut) box(x,-16,32,x+8.5,39,74,material.steel);
+  }
+  const curve=x=>bend*Math.pow(clamp((x-x0)/len),2);
+  for(let i=0;i<24;i++){
+    const x=mix(-165,x1,i/24),X=mix(-165,x1,(i+1)/24),y=curve(x),Y=curve(X);
+    if(!camera.cut) box(x,y-13,-22,X,Y+14,22,material.insulation);
+    else{
+      box(x,y-13,-22,X,Y+14,-8,material.insulation);
+      box(x,y-13,-8,X,Y-6,22,material.insulation);
+      box(x,y-6,-8,X,Y+7,13,material.copper);
+    }
+    if(X>x0&&x<x0+p.coat/p.L*len&&p.coat){
+      const a=Math.max(x,x0),b=Math.min(X,x0+p.coat/p.L*len);
+      const c=p.grade==='soft'?material.coat.map((v,k)=>mix(v,material.insulation[k],clamp((b-x0)/len*p.L/p.coat-.5,0,.5))):material.coat;
+      if(camera.cut) box(a,curve(a)-6,13,b,curve(b)+7,15,c);
+      else box(a,curve(a)+14,-22,b,curve(b)+16,22,c);
+    }
+  }
+  world.path=Array.from({length:N+1},(_,i)=>{const x=mix(x0,x1,i/N);return [x,curve(x)+(camera.cut?4:16.8),camera.cut?15.6:16];});
+  world.marks=[
+    ['Статор · 0 кВ',[-121,31,-45],color.cyan,'left'],
+    ['Выход из паза',[x0,13,37],color.white,'left'],
+    [p.coat?'Конец покрытия':'Лобовая часть',[x0+(p.coat||p.L*.7)/p.L*len,14+curve(x0+(p.coat||p.L*.7)/p.L*len),19],p.coat?color.coat:color.amber,'right']
+  ];
+}
+function canvasSize(c){
+  const {width,height}=c.getBoundingClientRect(), scaling=Math.min(window.devicePixelRatio||1,2);
+  const w=Math.round(width*scaling),h=Math.round(height*scaling);
+  if(c.width!==w||c.height!==h){c.width=w;c.height=h;}
+  const ctx=c.getContext('2d');
+  ctx.setTransform(scaling,0,0,scaling,0,0);
+  ctx.clearRect(0,0,width,height);
+  return {ctx,w:width,h:height};
+}
+function stroke(ctx,points,c,w=1){
+  if(points.length<2) return;
+  ctx.strokeStyle=c;ctx.lineWidth=w;ctx.lineJoin='round';ctx.lineCap='round';ctx.beginPath();
+  points.forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y));
+  ctx.stroke();
+}
+function disc(ctx,x,y,r,c){
+  ctx.beginPath();ctx.fillStyle=c;ctx.arc(x,y,r,0,2*Math.PI);ctx.fill();
+}
+function write(ctx,label,x,y,c=color.white,font=13,align='left'){
+  ctx.font=`${font}px system-ui, sans-serif`;ctx.fillStyle=c;ctx.textAlign=align;ctx.fillText(label,x,y);
+}
+function pathPoint(s){
+  const v=clamp(s)*N,i=Math.min(N-1,Math.floor(v));
+  return lerp(world.path[i],world.path[i+1],v-i);
+}
+function visualize(){
+  const {ctx,w,h}=canvasSize(scene);
+  if(w<=0||h<=0) return;
+  const state=input(),{p,t,s}=state, d=dataset;
+  const id=active, g=type(), stage=discharge(id,p,d,t);
+  world.faces=[];world.path=[];world.marks=[];
+  if(g==='flange') drawBushing(p);
+  else if(g==='moisture') drawWet(p);
+  else if(g==='winding') drawWinding(p);
+  else drawPlate(id,p);
+  const {yaw,pitch,zoom}=camera;
+  const scale=zoom*Math.min(w/(g==='flange'?340:420),h/(g==='flange'?365:315));
+  const cos=Math.cos(yaw),sin=Math.sin(yaw),cp=Math.cos(pitch),sp=Math.sin(pitch);
+  const project=([x,y,z])=>{
+    const X=x*cos-z*sin, Z=x*sin+z*cos;
+    const Y=y*cp-Z*sp, D=y*sp+Z*cp;
+    const k=scale*860/(860-D);
+    return [w/2+X*k,h/2+7-Y*k,D];
+  };
+  const grid=[];
+  for(let i=-4;i<=4;i++){
+    grid.push([[i*35,-146,-144],[i*35,-146,144]],[[-144,-146,i*35],[144,-146,i*35]]);
+  }
+  ctx.save();ctx.globalAlpha=.58;
+  grid.forEach(pair=>stroke(ctx,pair.map(project),'#304a55',1));ctx.restore();
+  const ops=world.faces.map(f=>{
+    const pts=f.v.map(project);
+    return {pts,depth:pts.reduce((sum,v)=>sum+v[2],0)/pts.length,fill:f.fill};
+  });
+  const addLine=(pair,c,width,depthBias=1.7)=>{
+    const pts=pair.map(project);
+    ops.push({pts,depth:(pts[0][2]+pts[1][2])/2+depthBias,line:c,width});
+  };
+  world.path.slice(1).forEach((point,i)=>{
+    const f=d.max ? d.E[i]/d.max : 0;
+    addLine([world.path[i],point],rgb(mix(47,248,f),mix(179,195,f),mix(218,94,f)),f>.65?3.4:2.6);
+  });
+  if(id==='moisture'){
+    for(let i=0;i<42;i++){
+      const z=(i*37%97)/97, wet=wetValues(p,t,d.U,z), pos=pathPoint(z);
+      if(wet.dry>.05) addLine([pathPoint(z),pathPoint(z+.013)],rgb(236,190,98),4.5,3.4);
+      else if(wet.wet>0){
+        const off=[(i%5+4)*2,1,-(i%5+2)*1.8];
+        const v=project(plus(pos,off));
+        ops.push({point:v,depth:v[2]+2,dot:'#69cfe9',r:1.4+wet.wet});
+      }
+    }
+  }
+  let endpoints=null;
+  if(stage.f>.003){
+    let start=(id==='flange'&&p.end==='flange')?0:1, end=1-start;
+    if(id==='winding'){start=d.at;end=1;}
+    if(id==='moisture'){start=.40;end=.64;}
+    const partial=mix(start,end,stage.f);
+    const n=Math.max(1,Math.ceil(Math.abs(partial-start)*N));
+    const run=s=>plus(pathPoint(s),[2,(g==='flange'||g==='moisture')?0:2.1,2.4]);
+    const kernel=Array.from({length:n+1},(_,i)=>run(mix(start,partial,i/n)));
+    kernel.forEach((v,i)=>{
+      if(i===0)return;
+      addLine([kernel[i-1],v],stage.epoch>=.9?'#ff884d':'#ed9a51',stage.epoch>=.9?10:7,3.4);
+      addLine([kernel[i-1],v],stage.epoch>=.9?'#fff1b6':'#ffd589',stage.epoch>=.9?3.6:2.1,3.7);
+    });
+    if(id!=='overview'||p.mode!=='bulk'){
+      for(let b=1;b<=7;b++){
+        const f=b/9;
+        const at=mix(start,partial,f),v=run(at);
+        const branch=run(clamp(mix(start,partial,Math.min(1,f+.12))));
+        const vec=(g==='flange'||g==='moisture')?[Math.sin(b*3.7)*12,2+Math.cos(b)*7,Math.cos(b*4)*7+2]:[0,2,Math.cos(b*2.8)*21];
+        const tip=plus(branch,vec);
+        addLine([v,lerp(v,tip,.58)],'#ffd376',1.3,3.9);
+        addLine([lerp(v,tip,.58),tip],'#ffab65',1.1,3.9);
+      }
+    }
+    if(running&&kernel.length>4){
+      for(let j=0;j<4;j++){
+        const phase=(t*.83+j*.25)%1;
+        const point=project(run(mix(start,partial,phase)));
+        ops.push({point,depth:point[2]+4.2,dot:'#fff7d9',r:1.75});
+      }
+    }
+    const tail=project(kernel.at(-1));
+    ops.push({point:tail,depth:tail[2]+4,dot:'#fff2c1',r:3.4});
+    endpoints=[start,partial];
+  }
+  if(id==='sliding'){
+    for(const f of [.22,.48,.73]){
+      const v=pathPoint(f);
+      const verts=[plus(v,[0,3,0]),plus(v,[0,-p.d*1.8-8,0])];
+      const a=project(verts[0]),b=project(verts[1]);
+      for(let k=0;k<5;k++) addLine([lerp(verts[0],verts[1],k/5),lerp(verts[0],verts[1],(k+.57)/5)],'#8ee2ff',1.35,Math.max(0,(a[2]-b[2])*.1)+9);
+    }
+  }
+  world.projected=world.path.map(project);
+  ops.sort((a,b)=>a.depth-b.depth).forEach(o=>{
+    if(o.fill){
+      ctx.beginPath();o.pts.forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y));
+      ctx.closePath();ctx.fillStyle=o.fill;ctx.fill();
+      ctx.strokeStyle=o.fill;ctx.lineWidth=.55;ctx.stroke();
+    }else if(o.point) disc(ctx,o.point[0],o.point[1],o.r,o.dot);
+    else stroke(ctx,o.pts,o.line,o.width);
+  });
+  if(id==='moisture'&&p.weather!=='dry'){
+    const phase=p.weather==='rain'?t:0;
+    ctx.save();ctx.globalAlpha=p.weather==='fog'?.27:.55;
+    for(let i=0;i<30;i++){
+      const x=w*(.1+((i*67)%101)/126), y=12+((i*49+phase*85)%(h-40));
+      if(p.weather==='rain') stroke(ctx,[[x,y],[x-4,y+12]],'#57bbde',1.1);
+      else disc(ctx,x,y,1.2,'#a4e5ed');
+    }
+    ctx.restore();
+  }
+  if(id==='moisture'&&w>380){
+    const high=project([73,107,32]),low=project([73,-105,32]);
+    ctx.save();ctx.setLineDash([4,4]);
+    stroke(ctx,[high,low],'#8bb4c5',1.2);
+    ctx.restore();
+    for(const [x,y] of [high,low])stroke(ctx,[[x-4,y],[x+4,y]],'#8bb4c5',1);
+    write(ctx,'По воздуху',mix(high[0],low[0],.50)+7,mix(high[1],low[1],.50),color.faint,11);
+  }
+  const m=measure(d,s), a=project(pathPoint(s));
+  if(!(id==='overview'&&p.mode==='bulk')){
+    disc(ctx,a[0],a[1],6.4,'#122838');disc(ctx,a[0],a[1],4.6,color.white);disc(ctx,a[0],a[1],2.1,color.cyan);
+    const x=clamp(a[0]+12,12,w-93), y=clamp(a[1]-10,30,h-38);
+    ctx.fillStyle='#112939e8';ctx.fillRect(x-4,y-12,84,19);
+    write(ctx,`s = ${format(m.s,0)} мм`,x,y+2,color.white,12);
+  }
+  const labelWidth=w<400?102:137;
+  const marks=world.marks.map(([label,xyz,c,side])=>({label,at:project(xyz),c,side}));
+  for(const side of ['left','right']){
+    const row=marks.filter(m=>m.side===side).sort((a,b)=>a.at[1]-b.at[1]);
+    let last=13;
+    row.forEach(({label,at,c})=>{
+      const x=side==='left'?12:w-labelWidth, y=Math.min(h-41,Math.max(last+27,at[1]+6));
+      last=y;
+      const textX=side==='left'?x:x+10;
+      stroke(ctx,[at,[side==='left'?Math.min(at[0],x+labelWidth-19):Math.max(at[0],x-6),y-5],[side==='left'?x+2:x+4,y-5]],'#8cb5c878',1);
+      disc(ctx,at[0],at[1],2.4,c);
+      ctx.fillStyle='#102531df';ctx.fillRect(textX-3,y-15,labelWidth-(side==='left'?9:10),22);
+      write(ctx,label,textX,y,c,w<400?10.5:12);
+    });
+  }
+  const signature=endpoints?'Оранжевый канал · качественная анимация':'Потяните модель, чтобы изменить ракурс';
+  write(ctx,signature,12,h-14,color.faint,12);
+}
+const graphBounds={};
+const plotNames={E:'Поле',phi:'Потенциал',normal:'Нормаль',time:'Время',current:'Ток'};
+const axisNames={E:'|Eτ|, кВ/мм',phi:'φ, кВ',normal:'|Eₙ|, кВ/мм',time:'Uдейств, кВ',current:'I утечки, мА'};
+const graphTabs=()=>active==='sliding'?['E','phi','normal','time']:active==='moisture'?['E','phi','current','time']:['E','phi','time'];
+const timeAxis=mode=>mode==='time'||mode==='current';
+const toMilliamps=(p,t)=>{
+  const U=uAt(p,t);
+  let rho=0;
+  for(let i=0;i<N;i++)rho+=wetValues(p,t,U,(i+.5)/N).rho;
+  return U*1e6/(rho*(p.L/N)/FILM_WIDTH);
+};
+function plotData(id,p,d,mode){
+  if(timeAxis(mode)) return Array.from({length:71},(_,i)=>{const t=i*T_END/70;return[t,mode==='time'?uAt(p,t):toMilliamps(p,t)];});
+  if(mode==='phi'||mode==='normal') return d.phi.map((v,i)=>[i*d.L/N,mode==='phi'?v:v/p.d]);
+  return d.E.flatMap((v,i)=>[[i*d.L/N,v],[(i+1)*d.L/N,v]]);
+}
+function currentMark(d,state,mode){
+  const m=measure(d,state.s);
+  if(timeAxis(mode)) return [state.t,mode==='time'?d.U:d.I/1000];
+  return [m.s,mode==='phi'?m.phi:mode==='normal'?m.phi/state.p.d:m.E];
+}
+function graphTop(top){
+  if(top===0)return 1;
+  const step=Math.pow(10,Math.floor(Math.log10(top)));
+  const steps=[.2,.25,.5,1,2,2.5,5,10,20];
+  return (steps.find(x=>x>=top/step/4)||20)*step*4;
+}
+function updateGraph(){
+  const {ctx,w,h}=canvasSize(graph);
+  if(w<=0||h<=0)return;
+  const state=input(), {p,t,s,plot,ref}=state,d=dataset;
+  const hidden=active==='overview'&&p.mode==='bulk'&&plot!=='time';
+  const points=plotData(active,p,d,plot);
+  const back=ref&&!hidden?plotData(active,ref.p,ref.d,plot):[];
+  const current=currentMark(d,state,plot);
+  const bg=ctx.createLinearGradient(0,0,0,h);
+  bg.addColorStop(0,'#142b3b');bg.addColorStop(1,'#0d1c28');
+  ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);
+  if(hidden){write(ctx,'При пробое путь проходит через толщу.',w/2,h/2-10,color.white,15,'center');write(ctx,'Переключитесь на график времени.',w/2,h/2+16,color.faint,13,'center');return;}
+  const maxX=timeAxis(plot)?T_END:Math.max(d.L,ref?.d.L||0);
+  const maxY=graphTop(Math.max(...points.map(v=>v[1]),...back.map(v=>v[1])));
+  const a=61,b=35,r=w-24,f=h-46;
+  const xTo=v=>a+(r-a)*v/maxX, yTo=v=>f-(f-b)*v/maxY;
+  Object.assign(graphBounds,{a,r,maxX});
+  write(ctx,axisNames[plot],a,21,color.white,13);
+  for(let i=0;i<=4;i++){
+    const y=mix(f,b,i/4);
+    stroke(ctx,[[a,y],[r,y]],i?'#314b5b':'#7292a6',1);
+    write(ctx,format(i*maxY/4,maxY<.02?5:3),a-8,y+4,'#b0c8d6',12,'right');
+  }
+  const columns=w<360?4:5;
+  for(let i=0;i<=columns;i++){
+    const x=mix(a,r,i/columns);
+    stroke(ctx,[[x,b],[x,f]],i?'#284453':'#7794a4',1);
+    write(ctx,format(i*maxX/columns,timeAxis(plot)?1:0),x,f+18,'#b0c8d6',12,'center');
+  }
+  write(ctx,timeAxis(plot)?'t, с':'s вдоль поверхности, мм',r,h-8,color.white,12,'right');
+  const mapped=points.map(([x,y])=>[xTo(x),yTo(y)]);
+  if(back.length){
+    ctx.save();ctx.setLineDash([6,4]);
+    stroke(ctx,back.map(([x,y])=>[xTo(x),yTo(y)]),'#fdc876',2);
+    ctx.restore();
+  }else{
+    const gradient=ctx.createLinearGradient(0,b,0,f);
+    gradient.addColorStop(0,'#4bc3e24b');gradient.addColorStop(1,'#4bc3e206');
+    ctx.beginPath();ctx.moveTo(mapped[0][0],f);
+    mapped.forEach(v=>ctx.lineTo(...v));ctx.lineTo(mapped.at(-1)[0],f);
+    ctx.closePath();ctx.fillStyle=gradient;ctx.fill();
+  }
+  stroke(ctx,mapped,color.cyan,2.4);
+  const cx=xTo(current[0]),cy=yTo(current[1]);
+  ctx.save();ctx.setLineDash([4,4]);stroke(ctx,[[cx,b],[cx,f]],'#d0e9fa98',1.3);ctx.restore();
+  disc(ctx,cx,cy,5.8,'#ecf7fe');disc(ctx,cx,cy,3.2,'#157aa5');
+  if(back.length){stroke(ctx,[[r-105,18],[r-91,18]],'#fdc876',2);write(ctx,'Сохранённая',r-85,22,'#fdc876',12);}
+}
+function draw(){
+  if(!lab[active]||$('lab').hidden)return;
+  const {p,t,s,plot,ref}=input();
+  dataset=calculate(active,p,t);
+  const d=dataset, m=measure(d,s), st=discharge(active,p,d,t);
+  const bulk=active==='overview'&&p.mode==='bulk';
+  const run=track(active,p,d,t);
+  $('channel-info').hidden=!run;
+  if(run)$('channel-info').textContent=(active==='winding'||active==='moisture')?
+    `Локальный канал · ${format(run.length,1)} мм (${run.percent} % показанного пути)`:`${bulk?'Подложка':'Второй электрод'}: ${bulk?(run.bridge==='достигнут'?'достигнута':'не достигнута'):run.bridge} · канал ${format(run.length,1)} мм (${run.percent} % ${bulk?'толщины':'пути'})`;
+  $('stage').textContent=st.label;$('stage-detail').textContent=st.detail;
+  $('clock').textContent=format(t)+' с';$('time').value=t;
+  const alternative=active==='moisture'?['Ток утечки',currentText(d.I)]
+    :active==='sliding'?['Ёмкость Cₛ',format(d.Cs*1e9,1)+' нФ/м²']
+    :['Координата пика',bulk?'—':format(d.at*d.L,0)+' мм'];
+  $('metrics').innerHTML=[['Uдейств',format(d.U,1)+' кВ'],['Макс. |Eτ|',bulk?'—':format(d.max,3)+' кВ/мм'],['Путь ℓ',bulk?'—':format(d.L,0)+' мм'],alternative].map(([k,v])=>`<div class="metric"><span>${k}</span><b>${v}</b></div>`).join('');
+  const pick=bulk?'Щуп вдоль поверхности выключен':`Щуп · s = ${format(m.s,1)} мм · φ = ${format(m.phi,2)} кВ · |Eτ| = ${format(m.E,3)} кВ/мм`;
+  const norm=plot==='normal'?` · |Eₙ| = ${format(m.phi/p.d,3)} кВ/мм`:'';
+  $('readout').textContent=timeAxis(plot)?`Метка · t = ${format(t)} с · U = ${format(d.U)} кВ`+(plot==='current'?` · I = ${currentText(d.I)}`:''):pick+norm;
+  $('play').textContent=running?'Идёт опыт':t>0&&t<T_END&&input().paused?'Продолжить':'Пуск';
+  $('play').disabled=running;$('pause').disabled=!running;
+  $('save-ref').textContent=ref?'Заменить кривую':'Сохранить кривую';
+  $('clear-ref').hidden=!ref;
+  visualize();updateGraph();
+}
+function schedule(){
+  if(!frame)frame=requestAnimationFrame(()=>{frame=0;draw();});
+}
+function renderControls(){
+  $('controls').innerHTML=lab[active].controls.map(({key,label,min,max,step,digits,unit,options})=>{
+    const val=input().p[key];
+    const ui=options?`<select id="set-${key}">${options.map(([x,n])=>`<option value="${x}" ${x===val?'selected':''}>${n}</option>`).join('')}</select>`:
+      `<input id="set-${key}" type="range" min="${min}" max="${max}" step="${step}" value="${val}">`;
+    return `<div class="control"><label for="set-${key}">${label}${options?'':`<output for="set-${key}" id="val-${key}">${format(val,digits)} ${unit}</output>`}</label>${ui}</div>`;
+  }).join('');
+  for(const {key,digits,unit,options} of lab[active].controls){
+    const e=$('set-'+key);
+    e.addEventListener('input',()=>{
+      input().p[key]=options?e.value:Number(e.value);
+      if(!options)$('val-'+key).textContent=`${format(+e.value,digits)} ${unit}`;
+      schedule();
+    });
+  }
+}
+let prev=0;
+function loop(timestamp){
+  const delta=Math.min(.06,(timestamp-prev)/1000||0);
+  prev=timestamp;
+  if(running){
+    input().t=Math.min(T_END,input().t+delta);
+    if(input().t>=T_END){running=false;input().paused=false;}
+    schedule();
+  }
+  if(spin>0){
+    const step=Math.min(spin,delta*1.8);
+    spin-=step;camera.yaw+=step;
+    if(!spin)$('rotate').setAttribute('aria-pressed','false');
+    schedule();
+  }
+  if(running||spin>0)requestAnimationFrame(loop);
+  else prev=0;
+}
+function animate(){if(!prev){prev=performance.now();requestAnimationFrame(loop);}}
+function stopping(){running=false;spin=0;$('rotate').setAttribute('aria-pressed','false');}
+function changeView(id,scroll=true){
+  if(!panels.some(([key])=>key===id))return;
+  stopping();active=id;
+  for(const section of ['lab','theory','cases','tests'])$(section).hidden=section!==(lab[id]?'lab':id);
+  for(const el of $('nav').children){
+    const relevant=el.dataset.view===id;
+    el.setAttribute('aria-selected',String(relevant));
+    el.tabIndex=relevant?0:-1;
+  }
+  if(lab[id]){
+    camera={yaw:id==='winding'?.10:.37,pitch:id==='field'||id==='sliding'||id==='overview'?.36:.22,zoom:1,cut:true};
+    $('cut').hidden=['field','sliding','overview'].includes(id);
+    $('cut').setAttribute('aria-pressed','true');
+    $('lab').setAttribute('aria-labelledby','tab-'+id);
+    $('lab-title').textContent=lab[id].name;
+    $('lab-lead').innerHTML=lab[id].lead;
+    $('sample-title').textContent=lab[id].sample;
+    $('case-context').hidden=!input().context;
+    $('case-context').textContent=input().context;
+    $('legend').innerHTML=[
+      ['Синий · меньшее поле','#42b3da'],['Жёлтый · большее поле','#fac35e'],['Канал','#ff9555'],['Щуп','#fff']
+    ].map(([x,c])=>`<span><i style="--c:${c}"></i>${x}</span>`).join('');
+    renderControls();renderPlots();renderAssignment();renderLabNotes();
+    draw();
+  } else $(id).setAttribute('aria-labelledby','tab-'+id);
+  if(scroll) window.scrollTo({top:0});
+}
+function renderPlots(){
+  $('plots').innerHTML=graphTabs().map(x=>`<button class="btn quiet" aria-pressed="${input().plot===x}" data-plot="${x}">${plotNames[x]}</button>`).join('');
+}
+function setProbe(e){
+  const {a,r,maxX}=graphBounds;
+  if(!a)return;
+  const rx=clamp((e.clientX-graph.getBoundingClientRect().left-a)/(r-a));
+  if(timeAxis(input().plot)){
+    if(e.type==='pointerdown'){running=false;input().paused=true;input().t=rx*T_END;}
+    else return;
+  }else input().s=clamp(rx*maxX/dataset.L);
+  schedule();
+}
+graph.addEventListener('pointermove',e=>{if(e.pointerType==='mouse')setProbe(e);});
+graph.addEventListener('pointerdown',setProbe);
+graph.addEventListener('keydown',e=>{
+  if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;
+  e.preventDefault();
+  const f=e.key==='ArrowRight'?1:e.key==='ArrowLeft'?-1:0;
+  if(timeAxis(input().plot)){running=false;input().paused=true;input().t=f?clamp(input().t+.2*f,0,T_END):(e.key==='Home'?0:T_END);}
+  else input().s=f?clamp(input().s+.01*f):(e.key==='Home'?0:1);
+  schedule();
+});
+let drag=null;
+scene.addEventListener('pointerdown',e=>{
+  if(e.button!==0)return;
+  scene.setPointerCapture(e.pointerId);
+  drag={x:e.clientX,y:e.clientY,travel:0};
+});
+scene.addEventListener('pointermove',e=>{
+  if(!drag)return;
+  const dx=e.clientX-drag.x,dy=e.clientY-drag.y;
+  drag.travel+=Math.hypot(dx,dy);drag.x=e.clientX;drag.y=e.clientY;
+  camera.yaw+=dx*.012;camera.pitch=clamp(camera.pitch+dy*.012,-1.25,1.25);
+  schedule();
+});
+scene.addEventListener('pointerup',e=>{
+  if(drag&&drag.travel<6){
+    const b=scene.getBoundingClientRect();
+    let which=-1,best=32;
+    world.projected.forEach(([x,y],i)=>{
+      const distance=Math.hypot(x+b.left-e.clientX,y+b.top-e.clientY);
+      if(distance<best){best=distance;which=i;}
+    });
+    if(which>=0){input().s=which/N;schedule();}
+  }
+  drag=null;
+});
+scene.addEventListener('pointercancel',()=>{drag=null;});
+scene.addEventListener('keydown',e=>{
+  if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','+','-'].includes(e.key))return;
+  e.preventDefault();
+  if(e.key==='ArrowLeft')camera.yaw-=.13;
+  if(e.key==='ArrowRight')camera.yaw+=.13;
+  if(e.key==='ArrowUp')camera.pitch=clamp(camera.pitch+.13,-1.25,1.25);
+  if(e.key==='ArrowDown')camera.pitch=clamp(camera.pitch-.13,-1.25,1.25);
+  if(e.key==='+'||e.key==='-')camera.zoom=clamp(camera.zoom*(e.key==='+'?1.14:.88),.65,1.9);
+  schedule();
+});
+$('nav').innerHTML=panels.map(([id,title])=>`<button role="tab" id="tab-${id}" aria-controls="${lab[id]?'lab':id}" data-view="${id}">${title}</button>`).join('');
+$('nav').addEventListener('click',e=>{if(e.target.dataset.view)changeView(e.target.dataset.view);});
+$('nav').addEventListener('keydown',e=>{
+  if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;
+  e.preventDefault();
+  const i=panels.findIndex(([key])=>key===active);
+  const next=e.key==='Home'?0:e.key==='End'?panels.length-1:(i+(e.key==='ArrowLeft'?-1:1)+panels.length)%panels.length;
+  changeView(panels[next][0]);$('nav').children[next].focus();
+});
+$('lab-theory').onclick=()=>{const from=active;changeView('theory');$('form-'+from)?.scrollIntoView();};
+$('cut').onclick=()=>{camera.cut=!camera.cut;$('cut').setAttribute('aria-pressed',String(camera.cut));schedule();};
+$('rotate').onclick=()=>{
+  spin=spin?0:Math.PI*2;$('rotate').setAttribute('aria-pressed',String(spin>0));
+  if(spin)animate();else schedule();
+};
+$('zoom-in').onclick=()=>{camera.zoom=clamp(camera.zoom*1.16,.65,1.9);schedule();};
+$('zoom-out').onclick=()=>{camera.zoom=clamp(camera.zoom/1.16,.65,1.9);schedule();};
+$('home').onclick=()=>{camera.yaw=active==='winding'?.1:.37;camera.pitch=['overview','field','sliding'].includes(active)?.36:.22;camera.zoom=1;schedule();};
+$('plots').onclick=e=>{if(e.target.dataset.plot){input().plot=e.target.dataset.plot;renderPlots();schedule();}};
+$('play').onclick=()=>{if(!input().paused||input().t>=T_END)input().t=0;running=true;input().paused=false;animate();schedule();};
+$('pause').onclick=()=>{running=false;input().paused=true;schedule();};
+$('reset').onclick=()=>{stopping();input().t=0;input().paused=false;schedule();};
+$('time').oninput=e=>{running=false;input().paused=true;input().t=+e.target.value;schedule();};
+new ResizeObserver(schedule).observe(scene);
+new ResizeObserver(schedule).observe(graph);
+document.addEventListener('click',e=>{
+  const target=e.target.closest('[data-term]');
+  if(target){$('term-name').textContent=target.dataset.term;$('term-text').textContent=glossary[target.dataset.term];$('definition').showModal();}
+});
+const step = (name,instructions,p={},t=8,s=.12,plot='E')=>({name,instructions,p,t,s,plot});
+const exp = (title,goal,steps)=>({title,goal,steps});
+const assignments={
+  overview:[
+    exp('Сравните траектории','Определите, какие электроды соединяются и где расположен канал.',[
+      step('Корона у электрода','На 8 с найдите область свечения. Проследите, достигает ли она второго электрода.',{mode:'corona'}),
+      step('Частичный канал по поверхности','Снимите длину и долю канала. Отметьте, где заканчивается свечение.',{mode:'surface'}),
+      step('Перекрытие по поверхности','При тех же 24 кВ выберите демонстрацию «Перекрытие». Отметьте, какой электрод теперь достигает фронт.',{mode:'flash'}),
+      step('Пробой через толщу','Поверните модель. Найдите заземлённую подложку и объясните отличие траектории от перекрытия.',{mode:'bulk'},8,.5,'time')])
+  ],
+  field:[
+    exp('Равномерное поле и краевой максимум','Сравните максимум при одной длине и одном напряжении. Объясните, почему площадь под кривой поля одинакова.',[
+      step('Равномерный участок','При 24 кВ и 180 мм запишите |Eτ| посередине и сравните его с U/ℓ.',{u:24,L:180,shape:'uniform'},8,.5),
+      step('Две кромки','Измерьте |Eτ| посередине и вблизи каждого конца. Сравните с сохранённой кривой.',{u:24,L:180,shape:'edge'},8,.5)]),
+    exp('Вдвое выше напряжение','Проверьте, меняется ли положение максимума при масштабировании U.',[
+      step('12 кВ','На участке 180 мм запишите максимум и значение у s ≈ 36 мм.',{u:12,L:180},8,.2),
+      step('24 кВ','Повторите измерение в той же точке. Найдите отношение полей.',{u:24,L:180},8,.2)]),
+    exp('Длина пути','Сравните поле на одинаковой относительной координате 0,5ℓ.',[
+      step('100 мм','Для равномерного участка запишите U и |Eτ| при s = 50 мм.',{L:100,shape:'uniform'},8,.5),
+      step('200 мм','Запишите |Eτ| при s = 100 мм. Сопоставьте с формулой U/ℓ.',{L:200,shape:'uniform'},8,.5)]),
+    exp('Потенциалы у границ','Определите потенциалы электродов по графику. Затем запишите напряжение между двумя внутренними точками.',[
+      step('Начало пути','Наведите щуп на s = 0 и снимите φ. Отметьте потенциал заземлённого электрода.',{},8,0,'phi'),
+      step('Конец пути','Поставьте щуп на s = ℓ. Сравните значение с показанием Uдейств.',{},8,1,'phi')]),
+    exp('Поле из графика потенциала','Оцените Eτ между двух точек и сравните с |Eτ| на плато.',[
+      step('Точка А','На равномерном участке снимите φ при s = 45 мм.',{shape:'uniform'},8,.25,'phi'),
+      step('Точка Б','Снимите φ при s = 135 мм. Разделите разность φ на расстояние и переключитесь на график поля.',{shape:'uniform'},8,.75,'phi')])
+  ],
+  moisture:[
+    exp('Сухо и туман','Изменяйте только увлажнение. Сравните ток утечки в мкА или мА, предварительно приведя значения к одной единице.',[
+      step('Сухое загрязнение','Установите 24 кВ, равномерное загрязнение, подсушивание выключите. На 8 с запишите ток.',{weather:'dry',dirt:'even',band:'off'}),
+      step('То же загрязнение в тумане','Оставьте 24 кВ, переключитесь на туман. Запишите ток, цвет поверхности и форму графика.',{weather:'fog',dirt:'even',band:'off'})]),
+    exp('От плёнки к сухой зоне','Сравните три состояния одной поверхности. Найдите момент, когда большое падение напряжения сосредоточилось в сухой зоне.',[
+      step('Плёнка без сухой зоны · 8 с','Выставьте 36 кВ, морось и равномерное загрязнение. Подсушивание выключено. Снимите ток и поле при s ≈ 135 мм.',{u:36,weather:'rain',dirt:'even',band:'off'},8,.52),
+      step('Сухая зона на том же напряжении · 8 с','Включите модель сухой зоны. При тех же U и t снимите ток, пик поля и его координату.',{u:36,weather:'rain',dirt:'even',band:'auto'},8,.52),
+      step('Локальный разряд · 11 с','Снимите ток и пик. На графике потенциала измерьте φ по краям сухой зоны при s ≈ 124,8 и 145,6 мм. Сохраните исходную запись, если переставляете щуп.',{u:36,weather:'rain',dirt:'even',band:'auto'},11,.52)]),
+    exp('Загрязнение только на участке','Проверьте, на каком участке цепочки больше падение напряжения. Смотрите также потенциал.',[
+      step('Однородная плёнка','Выставьте 24 кВ, туман, подсушивание выключите. Запишите ток и значение поля в центре.',{dirt:'even',band:'off'},8,.5),
+      step('Плёнка неоднородна','Выберите локальное загрязнение. Переместите щуп из центра к краю и сравните |Eτ|.',{dirt:'local',band:'off'},8,.5)]),
+    exp('Длина пути и ток','Сопоставьте изменение пути утечки, сопротивления и тока при одной ширине плёнки.',[
+      step('160 мм','Для одинаковой равномерной плёнки без подсушивания запишите ток и длину.',{L:160,band:'off'},8,.5),
+      step('320 мм','Удвойте путь. Сравните изменение тока с R = ρₛℓ/b.',{L:320,band:'off'},8,.5)]),
+    exp('Чистая и грязная поверхность под моросью','Проверьте отдельно роль загрязнения при одинаковом увлажнении.',[
+      step('Чистая поверхность','Установите моросящий дождь и чистый образец, снимите ток и |Eτ| на 11 с.',{weather:'rain',dirt:'clean',band:'auto'},11,.52),
+      step('Загрязнённая поверхность','Задайте равномерное загрязнение и сравните показания на 11 с. Найдите сухую зону.',{weather:'rain',dirt:'even',band:'auto'},11,.52)])
+  ],
+  sliding:[
+    exp('Толщина и ёмкостная связь','Проверьте, что при удвоении d ёмкость на единицу площади уменьшается вдвое.',[
+      step('6 мм','Задайте 32 кВ и εᵣ = 6. Запишите Cₛ и состояние канала. Снимите |Eₙ| в середине пластины.',{u:32,d:6,er:6},8,.5,'normal'),
+      step('12 мм','Измените только толщину. Сравните Cₛ, |Eₙ| и длину светящегося канала.',{u:32,d:12,er:6},8,.5,'normal')]),
+    exp('Влияние εᵣ','Сравните образцы одинаковой толщины и объясните изменение ёмкостной связи.',[
+      step('εᵣ = 3','При 31 кВ и d = 6 мм запишите Cₛ и оцените длину канала.',{u:31,d:6,er:3}),
+      step('εᵣ = 6','Повторите при той же толщине и напряжении.',{u:31,d:6,er:6})]),
+    exp('Начало и развитие','Определите, достигает ли канал второго электрода. Все сравнения выполните на 8 с.',[
+      step('24 кВ · короткий канал','Задайте d = 6 мм и εᵣ = 6. Снимите длину и долю канала. Укажите, какой электрод остаётся вне канала.',{u:24,d:6},8,.9),
+      step('36 кВ · поиск перекрытия','Увеличьте только U до 36 кВ. Сравните длину с полным путём 180 мм. Найдите на модели место контакта с землёй.',{u:36,d:6},8,.9),
+      step('36 кВ · пластина 12 мм','При тех же U и εᵣ удвойте толщину. Проверьте, сохраняется ли перекрытие, и снимите Cₛ.',{u:36,d:12},8,.9)]),
+    exp('Нормаль и касательная','Сравните две составляющие в одной точке. Объясните, почему для их вычисления используются разные расстояния.',[
+      step('Прочитайте |Eτ|','Поставьте щуп на s = 135 мм при длине 180 мм.',{},8,.75,'E'),
+      step('Прочитайте |Eₙ|','Оставьте щуп на месте и измерьте нормальную составляющую. Проверьте φ/d.',{},8,.75,'normal')]),
+    exp('Длина образца и достижение кромки','Проверьте, как влияет длина пути на достижение противоположного электрода в условном сценарии.',[
+      step('Путь 120 мм','При 34 кВ отметьте долю пути, занятую каналом.',{u:34,L:120},8,.5),
+      step('Путь 240 мм','Удвойте путь при прежних d и εᵣ. Сравните видимую долю.',{u:34,L:240},8,.5)])
+  ],
+  flange:[
+    exp('Острая и скруглённая кромка','В одинаковом режиме измерьте максимум и его координату. Сравните две кривые на одной шкале.',[
+      step('Кромка 2 мм','При 24 кВ и пути 340 мм найдите пик поля около фланца. Сохраните кривую.',{r:2},8,.02),
+      step('Кромка 14 мм','Измените только радиус. Измерьте новый максимум и оцените, как изменилась область повышенного поля.',{r:14},8,.02)]),
+    exp('Начало и конец пути','Установите, где расположен нулевой потенциал и чему равен потенциал высоковольтной шины.',[
+      step('Нулевая отметка','На графике потенциала переведите щуп к s = 0. Найдите ту же точку на модели.',{},8,0,'phi'),
+      step('Верхняя отметка','Переставьте щуп на s = ℓ. Сравните φ с напряжением между электродами.',{},8,1,'phi')]),
+    exp('Как разворачивается канал','Зафиксируйте показания поэтапно при одинаковой конфигурации. Отметьте начало канала на модели.',[
+      step('Начало подъёма напряжения','Установите 33 кВ и радиус 2 мм. На 2 с найдите положение пика.',{u:33,r:2},2,.03),
+      step('Поле усилилось','Передвиньте время на 6 с, сравните максимум и длину канала.',{u:33,r:2},6,.03),
+      step('Плато напряжения','На 8 с запишите состояние канала. Поверните ввод и найдите его на фарфоре.',{u:33,r:2},8,.03)]),
+    exp('Два начала разряда','Различите направление анимации и распределение поля при одинаковой геометрии.',[
+      step('Начало у фланца','Установите 30 кВ, выберите фланец. Снимите |Eτ| и укажите источник канала.',{u:30,end:'flange'},8,.05),
+      step('Начало у шины','Выберите источник у вывода. Сравните траекторию и значения поля.',{u:30,end:'terminal'},8,.05)]),
+    exp('Фланец и рёбра','Проследите, как меняются развёртка и график, если удлинить путь при прежнем радиусе.',[
+      step('250 мм','При 24 кВ снимите максимальное поле и расстояние до вывода.',{L:250},8,.025),
+      step('450 мм','Удлините путь и поверните изолятор, чтобы рассмотреть рёбра. Сравните максимумы.',{L:450},8,.025)])
+  ],
+  winding:[
+    exp('Зачем покрытие у выхода из паза','Зафиксируйте максимум и его положение. Объясните, как меняется профиль около торца статора.',[
+      step('Без покрытия','При 24 кВ задайте длину покрытия 0 мм. Снимите максимум у s ≈ 0.',{coat:0},8,.025),
+      step('Плавное покрытие 100 мм','Сохраните напряжение. Снимите новый максимум и поле у окончания покрытия.',{coat:100,grade:'soft'},8,100/240)]),
+    exp('Резкий или плавный конец','Установите, почему край покрытия тоже требует внимания.',[
+      step('Резкий участок','При длине 100 мм и U = 24 кВ измерьте поле у s = 100 мм.',{coat:100,grade:'steep'},8,100/240),
+      step('Плавный участок','Оставьте ту же длину. Сравните поле у конца покрытия и два профиля целиком.',{coat:100,grade:'soft'},8,100/240)]),
+    exp('Длина покрытия','Найдите вторую область повышенного поля по кривой и проверьте её положение на модели.',[
+      step('60 мм','Выберите резкое окончание и запишите поле у s = 60 мм.',{coat:60,grade:'steep'},8,.25),
+      step('120 мм','Удвойте длину. Укажите сдвиг зоны и значение поля у её новой границы.',{coat:120,grade:'steep'},8,.5)]),
+    exp('Напряжение при неизменной защите','Сравните поле и положение максимума при двух напряжениях.',[
+      step('18 кВ','Выберите плавное покрытие 90 мм. Запишите максимум и его координату.',{u:18},8,.375),
+      step('36 кВ','Удвойте напряжение. Сравните показания и стадию иллюстрации.',{u:36},8,.375)]),
+    exp('Падение потенциала на покрытии','Измерьте, до какого потенциала поднимается поверхность у окончания покрытия.',[
+      step('У выхода из паза','При длине покрытия 90 мм измерьте φ на s = 0 и запишите его.',{coat:90},8,0,'phi'),
+      step('У конца покрытия','Найдите s = 90 мм. Снимите φ и |Eτ| при покрытии 90 мм.',{coat:90},8,.375,'phi'),
+      step('Та же точка без покрытия','Выключите покрытие. При прежних U и s сравните φ и |Eτ|.',{coat:0},8,.375,'phi')])
+  ]
+};
+const exerciseGuide={"overview": [["Доля пути канала и электроды, которые он соединяет. Для пробоя отмечайте направление.", "Сравните четыре этапа. В каком режиме по поверхности возникает непрерывный путь между электродами?", "У короны свечение у кромки, поверхностный канал занимает часть пути, при перекрытии он соединяет оба электрода. Пробой через толщу ведёт к подложке. Режимы здесь задаёт переключатель. Подбор напряжения выполните во вкладке «Скользящий разряд»."]], "field": [["|Eτ| в центре и максимум, кВ/мм. В режиме с кромками дополнительно снимите |Eτ| у обоих концов.", "Сравните максимум и центр в двух режимах. Проверьте U/ℓ для равномерного поля.", "В равномерном режиме центр и максимум дают 0,133 кВ/мм. Кромки повышают максимум за счёт снижения поля в середине. Интеграл |Eτ| по пути даёт 24 кВ в обоих режимах."], ["Макс. |Eτ| и |Eτ| при s = 36 мм, кВ/мм. Укажите координату пика.", "Вычислите отношение показаний B/A и сравните места максимума.", "Оба показания поля удваиваются. Геометрия и координаты максимумов сохраняются."], ["|Eτ| в точках 50 и 100 мм, кВ/мм. Это середины двух участков.", "Сравните |Eτ| для 100 и 200 мм и проверьте U/ℓ.", "При удвоении длины равномерное поле уменьшается с 0,24 до 0,12 кВ/мм."], ["φ при s = 0 и s = 180 мм. Дополнительно снимите φ при 45 и 135 мм.", "Найдите разности потенциалов между электродами и между внутренними точками.", "Потенциалы электродов 0 и 24 кВ. Напряжение между двумя внутренними точками получают вычитанием их показаний φ."], ["φ при s = 45 и 135 мм, кВ. В конце снимите |Eτ| на графике «Поле».", "Разделите разность показаний потенциала на 90 мм и сравните с |Eτ|.", "φ равно 6 и 18 кВ, поэтому |Eτ| ≈ 0,133 кВ/мм. Знак Eτ относительно положительного направления s отрицательный."]], "moisture": [["I на 8 с, приведите обе записи к мкА. Запишите также U.", "Найдите Iтуман/Iсухо. Как изменилась проводимость при неизменных U и пути?", "Примерно 18,3 мкА и 13,9 мА, то есть рост около 759 раз. Это результат заданной модели плёнки."], ["Для каждого этапа снимите I, макс. |Eτ| и его координату. На последнем этапе снимите φ на s ≈ 124,8 и 145,6 мм.", "Сравните A и B при 36 кВ на 8 с. Что меняется после локального подсушивания? На 11 с отметьте, до каких участков дошёл канал.", "При подсушивании ток плёнки может упасть, а поле и падение потенциала в сухой зоне растут. На последнем этапе изображён локальный мостик через сухую зону. До электродов он не доходит."], ["I и |Eτ| на s = 0,5ℓ. В локальном режиме дополнительно измерьте |Eτ| на s ≈ 0,1ℓ.", "Где при неоднородной плёнке выше |Eτ|? Сравните токи.", "Более проводящая центральная область даёт меньший градиент, чем края. Последовательные менее проводящие участки ограничивают ток."], ["I в одной единице для 160 и 320 мм. U и ширина плёнки одинаковы.", "Найдите I₁/I₂ и сравните с отношением ℓ₂/ℓ₁.", "В этой цепи R пропорционально ℓ, поэтому I для пути 320 мм вдвое меньше."], ["I, |Eτ| при s ≈ 135 мм и состояние сухой зоны на 11 с.", "Сравните чистый и загрязнённый образцы. Объясните, почему важны и ток, и локальный пик поля.", "У чистого образца сценарий сухой зоны выключен, поэтому локального пика в середине нет. У загрязнённого можно увидеть локальную концентрацию поля, даже когда итоговый ток ограничен сухой зоной."]], "sliding": [["Cₛ, |Eₙ| при s = 90 мм и длина канала. Напряжение 32 кВ.", "Вычислите отношения для 6 и 12 мм. Проверьте, как меняется Cₛ² при изменении толщины.", "При удвоении d величины Cₛ и |Eₙ| в той же точке уменьшаются вдвое. В этих режимах длина развитого канала уменьшается примерно в четыре раза."], ["Cₛ и длина канала на 8 с при 31 кВ.", "Сравните Cₛ и длину при εᵣ = 3 и 6. Объясните разницу степенной зависимостью.", "Ёмкость на единицу площади удваивается. Длина развитого канала до насыщения возрастает примерно в четыре раза."], ["Uдейств, длина канала и отметка «Второй электрод». Параметры d = 6 мм, εᵣ = 6, ℓ = 180 мм.", "Сравните 24 и 36 кВ при t = 8 с. Затем оставьте 36 кВ и удвойте толщину. В каком режиме фронт достигает земли?", "При 24 кВ канал около 24 мм из 180. При 36 кВ он достигает 180 мм. При 36 кВ и d = 12 мм канал около 45 мм. Порог относится к учебному образцу и принятой калибровке."], ["φ, |Eτ| и |Eₙ| при s = 135 мм в одном режиме.", "Проверьте |Eₙ| через φ/d. Почему результат нельзя получить делением φ на s?", "Нормальная составляющая в плоском приближении связана с падением напряжения по толщине. Касательная связана с наклоном φ вдоль поверхности."], ["Длина пути, длина и доля канала на 8 с. U = 34 кВ, d = 6 мм.", "Где при том же U канал достигает второго электрода? Сравните доли канала.", "При пути 120 мм канал соединяет электроды. При 240 мм канал занимает лишь часть пути. До ограничения геометрией формула задаёт одну и ту же расчётную длину."]], "flange": [["Макс. |Eτ| и его координата. Сохраните первый профиль поля перед установкой второго режима.", "Вычислите, на сколько процентов снизился максимум при увеличении радиуса с 2 до 14 мм.", "В принятом профиле скругление уменьшает максимум у фланца и распределяет падение потенциала на более протяжённой области."], ["φ на s = 0 и на s = ℓ. Найдите те же места на разрезе.", "Определите потенциал фланца и шины. Найдите их разность.", "Фланец задаёт 0 кВ, шина 24 кВ. Разность совпадает с приложенным напряжением."], ["Uдейств, длина канала и отметка «Второй электрод» на 2, 6 и 8 с.", "Последовательно сопоставьте три этапа. На каком из них появляется непрерывный путь до второго электрода?", "При малом U канал ещё не виден или короток. К 8 с при 33 кВ и радиусе 2 мм фронт в принятом сценарии достигает вывода."], ["Макс. |Eτ|, поле у s = 17 мм и место начала канала для двух вариантов.", "Проверьте, изменяется ли график вместе с выбранным направлением канала.", "График и числа совпадают. Меню задаёт исходную точку изображения канала, параметры поля сохраняются."], ["Макс. |Eτ| при 250 и 450 мм. Оставьте 24 кВ и тот же радиус.", "Найдите отношение максимумов и сопоставьте его с 450/250.", "В этом профиле при фиксированном радиусе веса заданы по относительной координате. Максимум обратно пропорционален принятой длине. Это не расчёт реальных рёбер."]], "winding": [["Макс. |Eτ| и его координата. С покрытием дополнительно снимите |Eτ| около s = 100 мм.", "Сравните глобальные максимумы и участок у окончания слоя.", "Без покрытия доминирует выход из паза. Плавное покрытие распределяет напряжение вдоль поверхности. Место и высоту максимума оценивают по всей кривой."], ["|Eτ| у s = 100 мм и глобальный максимум, кВ/мм. Сохраните первую кривую.", "Насколько изменился локальный пик при плавном окончании? Сравните и состояние у торца статора.", "Плавное окончание ослабляет локальный пик у края слоя. Глобальный максимум может находиться у торца."], ["Снимите |Eτ| в окрестности 60 и 120 мм и отметьте положение второго пика.", "Как сдвинулся локальный пик при изменении длины слоя? Отличайте локальный пик от глобального.", "Выраженная особенность профиля смещается вместе с краем слоя. Изменение координаты глобального максимума проверяют независимо."], ["Макс. |Eτ| и его координата при 18 и 36 кВ. Отдельно запишите стадию канала.", "Найдите отношение полей и сравните координаты максимумов.", "В заданном профиле поле удваивается. Его максимум остаётся на той же координате. Анимационная стадия может измениться."], ["φ у выхода, φ и |Eτ| на s = 90 мм для двух вариантов покрытия.", "Вычислите Δφ на первых 90 мм и сравните распределения.", "Покрытие перераспределяет падение напряжения. Для сравнения используйте одну координату и одно U, а не точку произвольного пика."]]};
+const readingSources={"field": ["В. Ф. Важов, В. А. Лавринович. Техника высоких напряжений. ТПУ, 2008, § 1.1 и § 1.14, с. 39–40", "https://portal.tpu.ru/SHARED/y/YNP2/academics/Tab2/TVN_lek.pdf#page=39"], "corona": ["Важов, Лавринович. Техника высоких напряжений, § 1.12 и § 1.14", "https://portal.tpu.ru/SHARED/y/YNP2/academics/Tab2/TVN_lek.pdf#page=34"], "wet": ["Важов, Лавринович. Техника высоких напряжений, § 1.14, с. 42–43", "https://portal.tpu.ru/SHARED/y/YNP2/academics/Tab2/TVN_lek.pdf#page=42"], "sliding": ["Важов, Лавринович. Техника высоких напряжений, § 1.14, с. 40–42, формула (1.36)", "https://portal.tpu.ru/SHARED/y/YNP2/academics/Tab2/TVN_lek.pdf#page=41"], "drawing": ["Тяжпромэлектропроект. Габаритный чертёж А6–2006.05 ГЧ, ИПУ‑10/630", "https://meganorm.ru/Data2/1/4293748/4293748126.pdf"], "g20454": ["ГОСТ 20454‑85. Типы, основные параметры и размеры проходных изоляторов", "https://protect.gost.ru/gost/details/186e8c93-f4b0-4937-a5ac-f40b6adde2df"], "g22229": ["ГОСТ 22229‑83. Общие технические условия на керамические проходные изоляторы", "https://protect.gost.ru/gost/details/33557717-4d5f-414d-84e8-7530dbdd774b"], "g56735": ["ГОСТ Р 56735‑2015. Выбор изоляторов для загрязнённых условий, ч. 1, пп. 3.1.5–3.1.6 и приложение А", "https://protect.gost.ru/gost/details/88fde0d7-8301-4eff-9f94-55b473349440"], "g10390": ["ГОСТ 10390‑2015. Методы испытаний внешней изоляции в загрязнённом состоянии", "https://protect.gost.ru/gost/details/29fde741-1063-402c-a0ea-1584cb659068"], "g9920": ["ГОСТ 9920‑89. Длина пути утечки наружной изоляции электроустановок 3–750 кВ", "https://protect.gost.ru/gost/details/3d65c216-f6f2-4455-9425-967e3b1cad19"], "stator": ["Б. Д. Ваксер, А. Г. Гегенава, Ю. А. Полонский. Исследование противокоронных покрытий. СПбГТУ, 2001, с. 76–77", "https://elib.spbstu.ru/dl/000158.pdf/download/000158.pdf"], "iec": ["IEC 60034‑27‑1:2017. Измерения частичных разрядов изоляции обмоток на отключённой машине", "https://webstore.iec.ch/en/publication/29254"], "vei": ["М. З. Гилязов, А. Р. Корявин, Е. А. Милкин. Принципы выбора опорных изоляторов. Электричество, 2024, № 8", "https://www.electricity.mpei.ru/index.php/electricity/article/view/800"], "almaty": ["АУЭС. Материалы об эксплуатации внешней изоляции Алматы, глава 3", "https://info.aues.kz/diploms/2018/tef/bt/Satbek_AUES.pdf#page=44"]};
+const readingsByLab={"overview": ["corona"], "field": ["field"], "moisture": ["wet", "g56735", "g10390", "g9920"], "sliding": ["sliding"], "flange": ["sliding", "drawing", "g20454", "g22229"], "winding": ["stator", "iec"]};
+function referencesFor(id){
+  return readingsByLab[id].map(key=>{const [label,url]=readingSources[key];return `<li>${btnLink(label,url)}</li>`;}).join('');
+}
+function track(id,p,d,t){
+  if(id==='field')return null;
+  const stage=discharge(id,p,d,t);
+  const span=id==='moisture'?.24:id==='winding'?1-d.at:1;
+  const f=span*stage.f;
+  const canBridge=id==='sliding'||id==='flange'||id==='overview';
+  return {label:stage.label, length:d.L*f, percent:f===1?'100':format(Math.min(99.9,f*100),1),
+    bridge:canBridge?(stage.f===1?'достигнут':'не достигнут'):'контроль локального участка'};
+}
+const currentText=v=>v>=1000?format(v/1000,2)+' мА':format(v,3)+' мкА';
+function renderAssignment(){
+  const state=input(), all=assignments[active], ex=all[state.experiment];
+  const [measurements,question,answer]=exerciseGuide[active][state.experiment];
+  $('assignment').innerHTML=`<h3>Самостоятельные опыты</h3>
+    <label for="experiment" class="small">Выберите опыт</label>
+    <select id="experiment">${all.map(({title},i)=>`<option value="${i}" ${state.experiment===i?'selected':''}>${i+1}. ${title}</option>`).join('')}</select>
+    <p>${ex.goal}</p><p><b>Запишите.</b> ${measurements}</p><ol class="steps">${ex.steps.map((s,i)=>`<li><b>${s.name}</b><div>${s.instructions}</div>
+      <div class="toolbar"><button class="btn" data-step="${i}">Установить режим</button><button class="btn" data-record="${i}">Записать показания</button></div><span class="reading" id="record-${i}">${state.notes[state.experiment]?.[i]||''}</span></li>`).join('')}</ol>
+    <div class="rubric"><b>Вывод по опыту</b><p>${question}</p><p class="small" id="exercise-progress"></p>
+    <details id="exercise-review" hidden><summary>Сверить вывод</summary><p>${answer}</p><ul class="compact" id="reference-values"></ul></details></div>`;
+  $('experiment').onchange=e=>{state.experiment=+e.target.value;state.selectedStep=null;renderAssignment();};
+  updateStepBar();
+}
+$('assignment').addEventListener('click',e=>{
+  const {step:si,record:ri}=e.target.dataset, state=input();
+  if(si!==undefined){
+    const selected=assignments[active][state.experiment].steps[+si];
+    stopping();state.p={...defaults(active),...selected.p};
+    state.t=selected.t;state.s=selected.s;state.plot=selected.plot;state.paused=false;state.selectedStep=+si;
+    renderControls();renderPlots();draw();updateStepBar();
+    document.querySelector('.bench').scrollIntoView({block:'start'});
+  }
+  if(ri!==undefined){
+    const d=calculate(active,state.p,state.t), m=measure(d,state.s);
+    const line=readings(active,state.p,state.t,state.s,d,m);
+    state.notes[state.experiment]??=[];
+    state.notes[state.experiment][+ri]=line;
+    $('record-'+ri).textContent=line;
+    updateStepBar();
+  }
+});
+function readings(id,p,t,s,d=calculate(id,p,t),m=measure(d,s)){
+  const bulk=id==='overview'&&p.mode==='bulk';
+  const props=[`t ${format(t)} с`,`U ${format(d.U)} кВ`];
+  if(!bulk)props.push(`s ${format(m.s)} мм`,`φ ${format(m.phi,2)} кВ`,`|Eτ| ${format(m.E,3)} кВ/мм`,`пик ${format(d.max,3)} кВ/мм при ${format(d.at*d.L,1)} мм`);
+  if(d.Cs!==null)props.push(`Cₛ ${format(d.Cs*1e9)} нФ/м²`,`|Eₙ| ${format(m.phi/p.d,3)} кВ/мм`);
+  if(d.I!==null)props.push(`I ${currentText(d.I)}`);
+  const r=track(id,p,d,t);
+  if(r)props.push(`${r.label}`,`канал ${format(r.length,1)} мм (${r.percent} %)`,
+    id==='overview'&&bulk?`подложка: ${r.bridge==='достигнут'?'достигнута':'не достигнута'}`:r.bridge);
+  return props.join(' · ');
+}
+function updateStepBar(){
+  const state=input(), id=state.selectedStep;
+  const {steps}=assignments[active][state.experiment];
+  const count=steps.filter((_,i)=>state.notes[state.experiment]?.[i]).length;
+  $('exercise-progress').textContent=`Записано этапов ${count} из ${steps.length}. После записи всех этапов откроется сверка.`;
+  $('exercise-review').hidden=count!==steps.length;
+  if(count===steps.length&&!$('reference-values').childElementCount){
+    $('reference-values').innerHTML=steps.map(s=>`<li><b>${s.name}</b> · ${readings(active,{...defaults(active),...s.p},s.t,s.s)}</li>`).join('');
+  }
+  $('stepbar').hidden=id===null;
+  if(id===null)return;
+  const recorded=Boolean(state.notes[state.experiment]?.[id]);
+  $('stepcaption').textContent=`Этап ${id+1} из ${steps.length} · ${steps[id].name}`+(recorded?' · показания записаны':'');
+  $('step-next').disabled=id>=steps.length-1;
+}
+$('step-log').onclick=()=>document.querySelector(`[data-record="${input().selectedStep}"]`).click();
+$('step-next').onclick=()=>document.querySelector(`[data-step="${input().selectedStep+1}"]`).click();
+$('step-go').onclick=()=>$('assignment').scrollIntoView({block:'start'});
+const relevantTerms={
+  overview:['Корона','Поверхностный разряд','Перекрытие','Пробой'],
+  field:['Потенциал','Тангенциальная составляющая','Краевой эффект'],
+  moisture:['Путь утечки','Ток утечки','Поверхностное сопротивление','Сухая зона'],
+  sliding:['Удельная поверхностная ёмкость','Стример','Нормальная составляющая'],
+  flange:['Фланец','Путь утечки','Краевой эффект'],
+  winding:['Противокоронное покрытие','Лобовая часть','Нелинейная ВАХ']
+};
+function renderLabNotes(){
+  $('lab-notes').innerHTML=`<h3>Что показывает стенд</h3><p>${lab[active].note}</p>
+  <div class="guide"><b>Сравнение на одной шкале</b><p class="small">Сохраните кривую в исходном режиме и измените один параметр. Пунктир показывает первый опыт. На временных графиках щелчок устанавливает нужную секунду.</p>
+  </div>
+  <p>${relevantTerms[active].map(term).join(' · ')} · ${term('Действующее напряжение')}</p>
+  <details open><summary>Учебники, статьи и стандарты</summary><ul class="compact source-list">${referencesFor(active)}</ul></details>`;
+  $('save-ref').onclick=()=>{
+    const {p,t}=input();input().ref={p:{...p},d:calculate(active,p,t)};draw();
+  };
+  $('clear-ref').onclick=()=>{input().ref=null;draw();};
+}
+const m = expr => `<div class="formula"><math display="block">${expr}</math></div>`;
+const mi=x=>`<mi>${x}</mi>`, mn=x=>`<mn>${x}</mn>`, mo=x=>`<mo>${x}</mo>`;
+const row=(...x)=>`<mrow>${x.join('')}</mrow>`;
+const sub=(a,b)=>`<msub>${mi(a)}${mi(b)}</msub>`;
+const frac=(a,b)=>`<mfrac>${a}${b}</mfrac>`;
+const sup=(a,b)=>`<msup>${a}${b}</msup>`;
+const rhs=(a,b)=>a+mo('=')+b;
+const phi=mi('φ'), ell=mi('ℓ'), dx=mi('s'), u=mi('U'), cs=sub('C','s'), et=sub('E','τ'), en=sub('E','n');
+const expMath=(a,n)=>sup(row(mo('('),a,mo(')')),mn(n));
+const section = (id,title,body)=>`<article class="lesson" id="form-${id}"><h3>${title}</h3>${body}<details open><summary>Источники раздела</summary><ul class="compact source-list">${referencesFor(id)}</ul></details></article>`;
+$('theory').innerHTML=`<div class="intro"><div><h2>Теория и формулы</h2><p>Обозначения, расчётные зависимости и источники. Стандарты относятся к выбору оборудования и методикам испытаний в своей области применения. Для анимации и численных режимов здесь приняты учебные параметры.</p></div></div>
+<div class="theory-grid">
+${section('overview','Напряжение и виды разрядов',`
+<p>${term('Корона')} развивается в неоднородном поле у электрода. ${term('Поверхностный разряд')} идёт в газе вдоль диэлектрика. Если он соединяет два электрода, это ${term('Перекрытие')}. На стенде ${term('Пробой')} через толщу показан отдельной траекторией.</p>
+${m(rhs(sub('U','действ'),frac(sub('U','пик'),'<msqrt><mn>2</mn></msqrt>')))}
+<p>Соотношение справедливо для синусоиды. U — напряжение между электродами стенда, заданное действующим значением. Осциллограф рассчитывает u(t) = √2 Uдейств(t) sin(2π·50·t). При постоянном U период равен 20 мс. Оранжевый сигнал датчика условный, его величина не является зарядом в пКл. Время опыта управляет линейным подъёмом этого значения в течение первых 8 с. Быстрые процессы реального разряда показаны замедленно и качественно.</p>`)}
+${section('field','Поле на границе сред',`
+<p>Координата s идёт вдоль поверхности от электрода 0 кВ. ${term('Тангенциальная составляющая')} связана с наклоном потенциала. На графике отображён модуль.</p>
+${m(rhs(et,mo('−')+frac(row(mi('d'),phi),row(mi('d'),dx)))+mo(',')+rhs(row(mo('|'),et,mo('|')),frac(u,ell)))}
+<p>Вторая формула относится к равномерному полю. На границе в квазистатике тангенциальное поле непрерывно. При отсутствии свободного заряда на границе непрерывна нормальная составляющая электрической индукции D, а нормальное поле может изменяться.</p>
+${m(sub('E','τ1')+mo('=')+sub('E','τ2')+mo(',')+sub('D','n1')+mo('=')+sub('D','n2')+mo(',')+rhs(mi('D'),sub('ε','0')+sub('ε','r')+mi('E')))}
+<p>На расчётных профилях интеграл |Eτ| по всей длине равен U при монотонном потенциале. В формулах стенда кВ и мм дают кВ/мм.</p>`)}
+${section('moisture','Проводящая плёнка и сухая зона',`
+<p>Влага растворяет часть загрязнений. В модели плёнка разбита на последовательно соединённые участки шириной b = 25 мм. ${term('Поверхностное сопротивление')} ρₛ задаёт сопротивление каждого участка. В подсушенном участке оно выше.</p>
+${m(rhs(sub('R','i'),sub('ρ','s,i')+frac(sub('Δs','i'),mi('b')))+mo(',')+rhs(mi('I'),frac(u,mi('∑')+sub('R','i')))+mo(',')+rhs(sub('Δφ','i'),mi('I')+sub('R','i')))}
+${m(rhs(sub('P','i'),sup(mi('I'),mn(2))+sub('R','i'))+mo(',')+rhs(sub('E','i'),frac(sub('Δφ','i'),sub('Δs','i'))))}
+<p>Для тока в амперах U подставляют в вольтах, R — в омах. Pᵢ — джоулева мощность участка, Вт. Для k одинаковых участков напряжение на каждом U/k. Время появления ${term('Сухая зона')} задано учебным сценарием. В цепи не моделируются ток смещения и дуговая ветвь.</p>
+<details><summary>Как заданы влажность и сопротивление</summary><p>ρₛ = 10<sup>8,7 − 0,6q − w(1,1 + 2,9q)(1 − z)</sup> Ом/□. q — доля загрязнения (0…1), w — индекс увлажнения (0 для сухого воздуха, 0,72 для тумана и 0,92 для мороси), z — доля локального подсушивания (0…1). Это параметры стенда, а их численные значения выбраны для сравнения режимов.</p></details>`)}
+${section('sliding','Поверхностная ёмкость и длина канала',`
+<p>Плоская подложка заземлена. d — толщина пластины, εᵣ — её относительная проницаемость, ε₀ ≈ 8,854 × 10<sup>−12</sup> Ф/м — электрическая постоянная. Для Cₛ в Ф/м² d берут в метрах.</p>
+${m(rhs(cs,frac(sub('ε','0')+sub('ε','r'),mi('d')))+mo(',')+en+mo('≈')+frac(phi,mi('d')))}
+<p>Оценка Eₙ относится к полю внутри пластины в плоском приближении, вдали от кромок. Зарядка ёмкости канала относительно подложки поддерживает <button class="term" data-term="Скользящий разряд">скользящий разряд</button>.</p>
+${m(rhs(sub('ℓ','ск'),sub('χ','1')+sup(cs,mn(2))+sup(u,mn(5))+ `<mroot>${frac(row(mi('d'),u),row(mi('d'),mi('t')))}${mn(4)}</mroot>`))}
+<p>Эмпирическая формула Теплера приведена по конспекту ТПУ, § 1.14, с. 41, формула (1.36). χ₁ получают опытным путём для установки и принятых единиц. Под dU/dt понимают скорость изменения напряжения в исходной зависимости, а не скорость ползунка времени стенда.</p>
+${m(frac(sub('ℓ','ск'),sub('ℓ','0'))+mo('≈')+expMath(frac(cs,sub('C','s0')),2)+expMath(frac(u,sub('U','0')),5))}
+<p>На стенде используется относительная зависимость при условно постоянном dU/dt: ℓ₀ = 180 мм, U₀ = 36 кВ, Cₛ₀ соответствует εᵣ = 6 и d = 6 мм. Начальные стадии задаются отдельно. Эти числа служат калибровкой анимации.</p>`)}
+${section('flange','Ввод и краевая концентрация',`
+<p>Шина под напряжением проходит через заземлённую конструкцию. Фарфоровый корпус отделяет шину от фланца. Видимый путь нанесён от кромки фланца к выводу. При меньшем радиусе концентрация поля у кромки сильнее в принятом профиле.</p>
+${m(rhs(row(mo('|'),sub('E','i'),mo('|')),frac(row(u,sub('w','i')),row(mi('∑'),sub('w','j'),mi('Δs'))))+mo(',')+rhs(sub('φ','k'),mi('∑')+mo('|')+sub('E','i')+mo('|')+mi('Δs')))}
+<p>wᵢ — безразмерный вес участка, Δs = ℓ/N. В сумме для φₖ участвуют участки от фланца до точки k. При увеличении радиуса пиковый вклад уменьшается, а его ширина увеличивается. Такая же нормировка используется для сухой пластины и обмотки.</p>
+<details><summary>Профиль и чертёж</summary><p>w(s) = 1 + A exp(−x/a) + 2 exp[−(1−x)/0,075], где x = s/ℓ. При изменении радиуса от 1 до 20 мм A линейно уменьшается с 16 до 3, a растёт с 0,032 до 0,115. Коэффициенты заданы для иллюстрации. На рисунке учебная реконструкция по габаритным материалам.</p><p>${btnLink('Габаритный чертёж ИПУ‑10/630',source.drawing)} · ${btnLink('Образец 3D-сборки КОМПАС',source.cad)}</p></details>`)}
+${section('winding','Покрытие у выхода из паза',`
+<p>В пазу наружная поверхность стержня связана с заземлённым сердечником. За торцом сердечника покрытие перераспределяет градиент потенциала. Резкая граница проводимости способна дать второй максимум.</p>
+<p>Использована та же нормировка весов, что у фланца. Вес без покрытия убывает экспоненциально от выхода. Вес с покрытием складывается из фона, затухающего краевого вклада и гауссовой добавки около конца покрытия. Меньшая и более широкая добавка соответствует плавному окончанию. Это эквивалентный профиль, пригодный для анализа формы графика.</p>
+<p>В технологии реальных машин может применяться ${term('Нелинейная ВАХ')} покрытия с SiC. Сравнение состава, удельного сопротивления и нагрева требует результатов испытаний.</p>`)}
+</div>
+<div class="lesson" style="margin-top:12px"><h3>Источники и словарь</h3>
+<ul class="compact">
+<li>${btnLink('ТПУ · конспект по технике высоких напряжений',source.tpu)}. Разделы о разрядах вдоль поверхности, формулы (1.36), (1.37) и механизм образования сухой зоны.</li>
+<li>${btnLink('ГОСТ Р 56735–2015 · общие принципы выбора изоляторов',source.pollution)}. Загрязнения типов А и В, приложение А о механизмах перекрытия.</li>
+<li>${btnLink('СПбГТУ и ОАО «Электросила» · противокоронные покрытия',source.stator)}. Использование SiC и измерение нелинейных характеристик.</li>
+</ul>
+<p>${Object.keys(glossary).map(term).join(' · ')}</p></div>`;
+const cases=[
+  {kind:'Эксплуатация · Казахстан',title:'Перекрытия при туманах около Алматинской ТЭЦ‑2',tab:'moisture',ex:0,
+    fact:'В русскоязычной работе АУЭС собран опыт эксплуатации наружной изоляции. Автор описывает повторные перекрытия загрязнённых изоляторов, преимущественно во время туманов, в том числе осенью 1987 года.',
+    ask:'Какие наблюдения позволили бы связать отключения с увлажнением загрязнений? Сравните ток на сухом образце и в тумане.',
+    review:'Сопоставьте метеоданные и время отключений, состояние рёбер, путь утечки и ток утечки. В тумане загрязнённая плёнка проводит лучше. Локально подсушенный участок может принять на себя значительное падение напряжения. Для вывода о конкретном отключении нужны результаты осмотра и журнал защит.',
+    doc:'АУЭС, глава 3, сведения об эксплуатации в Алматы',url:source.almaty},
+  {kind:'Испытания · Россия',title:'ВЭИ: опорные изоляторы при загрязнении и увлажнении',tab:'moisture',ex:3,
+    fact:'Гилязов, Корявин и Милкин (ВЭИ, 2024) сопоставили испытания с предварительным загрязнением и солевым туманом. Авторы связывают часть отрицательных результатов с геометрией колонок и неравномерностью распределения напряжения.',
+    ask:'Проверьте, как меняется ток при удвоении пути в модели плёнки. Какие ограничения мешают перенести этот вывод на реальную колонку?',
+    review:'При той же ширине и одинаковой плёнке R пропорционально пути, а ток обратно пропорционален ему. На реальных рёбрах плёнка и плотность тока неоднородны. Для оценки изолятора учитывают также высоту, форму, режим увлажнения и конкретную методику испытания.',
+    doc:'Журнал «Электричество», № 8, 2024, с. 15–25',url:'https://www.electricity.mpei.ru/index.php/electricity/article/view/800'},
+  {kind:'Исследование покрытия · Россия',title:'СПбГТУ и «Электросила»: стержни статора',tab:'winding',ex:1,
+    fact:'Ваксер, Гегенава и Полонский исследовали характеристики полупроводящих покрытий для лобовых частей статорных обмоток. Описаны составы с наполнителем из карбида кремния и нелинейной ВАХ.',
+    ask:'Сравните резкое и плавное окончание покрытия при той же длине. Где находится повышенный градиент поля?',
+    review:'Покрытие перераспределяет потенциал за торцом паза. Если оно резко заканчивается, локальный пик возможен и у его края. Увеличение длины и плавный переход следует проверять по всей кривой, а для реальной машины дополнительно проверять ВАХ, нагрев и разряды.',
+    doc:'СПбГТУ, XXIX Неделя науки, 2001, с. 76–77',url:source.stator},
+  {kind:'Конструкция оборудования · Россия',title:'ИПУ‑10: заземлённый фланец на проходной плите',tab:'flange',ex:0,
+    fact:'В альбоме Тяжпромэлектропроекта приведены габариты ИПУ‑10/630 и узел установки на проходную плиту. На чертеже различимы токоведущая шина, оребрение и монтажный фланец.',
+    ask:'При 24 кВ сравните расчётные профили поля для двух радиусов кромки. На каком участке нужно было бы искать следы разрядов?',
+    review:'Сначала обследуют область кромки фланца и переход к фарфору. Уменьшение радиуса даёт более высокий и узкий максимум в модели. Это упражнение по реальной конструкции. Для оценки отказа конкретного ввода нужны результаты осмотра и испытаний.',
+    doc:'Тяжпромэлектропроект, габаритный чертёж А6–2006.05 ГЧ',url:source.drawing}
+];
+$('cases').innerHTML=`<div class="intro"><div><h2>Реальные кейсы</h2><p>Русскоязычные источники и связанные с ними задания на стендах.</p></div></div>
+<div class="cases-grid">${cases.map((c,i)=>`<article class="case"><span class="badge">${c.kind}</span><h3>${c.title}</h3>
+<p>${c.fact}</p><p><b>Задание.</b> ${c.ask}</p><details><summary>Сравнить с разбором</summary><p>${c.review}</p></details>
+<div class="toolbar"><button class="btn primary" data-case="${i}">Открыть опыт</button></div><p class="small">${btnLink(c.doc,c.url)}</p></article>`).join('')}</div>`;
+$('cases').onclick=e=>{
+  if(e.target.dataset.case===undefined)return;
+  const c=cases[+e.target.dataset.case], st=states[c.tab], first=assignments[c.tab][c.ex].steps[0];
+  st.experiment=c.ex;st.selectedStep=0;
+  st.p={...defaults(c.tab),...first.p};
+  st.t=first.t;st.s=first.s;st.plot=first.plot;st.ref=null;st.paused=false;
+  st.context='Опыт по кейсу «'+c.title+'». '+c.ask;
+  changeView(c.tab);
+};
+const question=(prompt,correct,other,why)=>({prompt,options:[correct,...other],why});
+const num=(n,unit,precision=3)=>format(n,precision)+' '+unit;
+function numeric(prompt,correct,other,unit,why,digits=3){
+  return question(prompt,num(correct,unit,digits),other.map(x=>num(x,unit,digits)),why);
+}
+const bank=[
+  question('Почему корона у одного электрода ещё не является перекрытием?','Канал не соединяет оба электрода.',['Ток утечки точно равен нулю.','Подложка в обоих случаях обязательно из стекла.','Поле должно быть строго равномерным.'],'Для перекрытия проводящий канал достигает второго электрода.'),
+  question('Что позволяет различить внешнее перекрытие и пробой через толщу?','Траектория канала относительно поверхности и толщи.',['Действующее значение напряжения без осмотра.','Материал заземлённой шины.','Масса образца.'],'Внешнее перекрытие идёт вдоль диэлектрика, а сквозной пробой пересекает его толщу.'),
+  question('Какая составляющая поля связана с изменением потенциала вдоль поверхности?','Тангенциальная.',['Только нормальная.','Магнитная.','Полный ток утечки.'],'Eτ = −dφ/ds.'),
+  question('При отсутствии свободного заряда на границе сред с разными εᵣ что непрерывно по нормали?','Нормальная составляющая D.',['Нормальная составляющая E обязательно имеет то же значение.','Поверхностное сопротивление.','Толщина изоляции.'],'Dₙ непрерывна. При разных εᵣ нормальные составляющие E могут различаться.'),
+  question('Что показывает график |Eτ| при монотонном φ?','Площадь под кривой равна напряжению между концами пути.',['Площадь равна току утечки.','Площадь равна ёмкости.','Площадь всегда равна нулю.'],'Интегрирование поля вдоль пути даёт разность потенциалов по модулю.'),
+  question('Где в резистивной плёнке с сухой зоной обычно больше локальное падение напряжения для равных длин?','В сухой зоне с большим сопротивлением.',['В наиболее влажной части.','Одинаково на всех участках.','Только внутри фарфора.'],'В последовательной цепи ток общий, а Δφᵢ = I Rᵢ.'),
+  question('При одинаковом U и той же геометрии что меняет ток плёнки при увлажнении загрязнения?','Влага понижает сопротивление растворимой загрязнённой плёнки.',['Влага всегда увеличивает толщину фарфора.','Меняется только напряжение источника.','Воздушное расстояние становится меньше при неизменных электродах.'],'Растворимые загрязнения создают проводящую плёнку.'),
+  question('Что означает ток на стенде влаги после появления оранжевого канала?','Расчёт тока в цепочке плёнки до шунтирования дугой.',['Фактический ток полной дуги.','Ток короткого замыкания реальной подстанции.','Чисто ёмкостный ток.'],'Расчётная цепочка не включает дуговой канал.'),
+  question('Чем путь утечки отличается от воздушного промежутка?','Путь утечки измеряют вдоль поверхности, воздушный — через воздух.',['Оба измеряют через толщу.','Путь утечки всегда равен прямому расстоянию.','Воздушный промежуток измеряют по всем рёбрам.'],'Рёбра удлиняют путь вдоль поверхности.'),
+  question('Какой ток помогает поддерживать скользящий канал над заземлённой подложкой?','Ток зарядки ёмкости канала относительно подложки.',['Номинальный ток двигателя.','Только ток через крепёжные отверстия.','Ток цепи освещения.'],'Ёмкостная связь с противоположным электродом поддерживает проводимость канала.'),
+  question('Если d растёт при прежних εᵣ и площади, как меняется Cₛ?','Уменьшается.',['Увеличивается.','Не меняется.','Становится отрицательной.'],'Для плоского приближения Cₛ обратно пропорциональна толщине.'),
+  question('В каком направлении оценивается φ/d на стенде скользящего разряда?','Перпендикулярно поверхности внутри пластины.',['Вдоль верхней поверхности.','Вдоль фланца по всему периметру.','По воздушному промежутку до тумана.'],'d — расстояние между поверхностью и подложкой по толщине.'),
+  question('Где в тренажёре отсчитывается s = 0 для проходного ввода?','На заземлённом фланце.',['На высоковольтной шине.','Посередине любого ребра.','На конце канала при любом режиме.'],'Фланец задаёт граничный потенциал 0 кВ.'),
+  question('Что изменяется на стенде ввода при увеличении радиуса кромки и прежних U и ℓ?','Пик поля у фланца уменьшается и становится шире.',['Потенциал фланца становится равным U.','Длина пути обнуляется.','Ток плёнки возрастает при любом радиусе.'],'В учебном профиле амплитуда края снижается, а область поля расширяется.'),
+  question('Что на стенде меняет переключатель источника канала у фланца или у вывода?','Начало визуализации канала, при том же расчётном поле.',['Потенциал заземлённого фланца с 0 на U.','Радиус кромки.','Проницаемость фарфора.'],'Расчёт поля и сценарий начала канала разделены.'),
+  question('Что можно узнать, сохранив кривую при одном радиусе и изменив его?','Сравнить максимумы при одинаковой шкале.',['Получить заводской протокол испытаний.','Найти абсолютную стойкость реального ввода в любой среде.','Рассчитать сопротивление статора без данных.'],'Пунктир и текущая кривая строятся на общей шкале.'),
+  question('У выхода стержня из паза где ещё ищут краевой максимум при нанесении покрытия?','У окончания покрытия.',['Только внутри металлической шины.','Только на фундаменте машины.','На шкале времени независимо от графика поля.'],'Резкий переход проводимости формирует дополнительную неоднородность.'),
+  question('Зачем применяют нелинейное полупроводящее покрытие на лобовой части?','Чтобы перераспределять потенциал и ограничивать локальные пики поля.',['Чтобы удвоить номинальное напряжение сети.','Чтобы повысить ток утечки во всех точках.','Чтобы заменить основную изоляцию обмотки.'],'Покрытие изменяет распределение потенциала вдоль поверхности.'),
+  question('Почему результаты по покрытию на стенде требуют проверки для конкретной машины?','Нужны реальные ВАХ, геометрия, потери и испытания.',['У всех машин одинаковый паз.','Поле в реальной машине всегда равно нулю.','Достаточно значения влажности воздуха.'],'Учебная модель задаёт профиль, а реальное покрытие имеет электрофизические и тепловые характеристики.'),
+  question('Как проверить предположение о загрязнении возле ТЭЦ?','Сопоставить туман, время отключений, состояние поверхности и токи утечки.',['Взять только номинальный ток оборудования.','Взять цвет изолятора на фотографии.','Использовать один ползунок влажности как порог аварии.'],'Диагноз требует нескольких независимых наблюдений.'),
+  question('Почему больший путь утечки реального изолятора не гарантирует пропорциональный выигрыш прочности?','Важны форма рёбер и неравномерность смачивания и поля.',['Путь по поверхности никогда не влияет.','Сопротивление плёнки всегда нулевое.','Фланец полностью экранирует всю поверхность.'],'Результаты натурных испытаний зависят от распределений поля и тока и от геометрии.'),
+  question('В каком режиме корректно сравнить влияние формы кромки?','Менять только радиус, оставив напряжение и длину пути.',['Одновременно повысить U и укоротить путь.','Сравнить один режим на нуле и другой на полном U.','Сменить материал, место щупа и U одновременно.'],'При поочерёдном изменении параметров можно выделить влияние одного из них.'),
+  question('Что означает жёлтый цвет измерительной линии при сравнении двух режимов?','Локально более высокое поле в текущем профиле.',['Одинаковое фиксированное поле во всех опытах.','Температуру диэлектрика.','Момент реального полного пробоя.'],'Цвет линии нормирован на текущий максимум. Числа сравнивают по общей шкале двух графиков.'),
+  question('Что описывает время на ползунке при анимации скользящего разряда?','Время развёртки учебного сценария.',['Измеренные секунды существования стримера.','Период 50 Гц.','Время восстановления питания.'],'Подъём U и стадии показаны в учебном темпе.'),
+  question('Для чего в формуле Теплера нужен коэффициент χ₁?','Для учёта экспериментальной калибровки и выбранных единиц.',['Это универсальная электрическая постоянная.','Это относительная влажность.','Это число рёбер, равное 1.'],'Размерный коэффициент определяют по опытным данным установки.')
+];
+function exam(k){
+  const v=k+1, U=12+v*3, L=100+v*20, dmm=2+v, er=3+v;
+  const sheet=2+v, W=20+v*5, bands=3+v;
+  const C=EPS0*er/(dmm/1000)*1e9;
+  const E=U/L, R=sheet*L/W, I=U*1000/R, nfield=U/dmm;
+  const x=2+v, end=2+v;
+  const n=[
+    numeric(`Равномерное поле между электродами. U = ${U} кВ, ℓ = ${L} мм. Найдите |Eτ|.`,E,[E/2,E*2,E*10],'кВ/мм','В равномерном поле |Eτ| = U/ℓ.'),
+    numeric(`Равномерный профиль. При s = 0 потенциал 0, при s = ℓ потенциал ${U} кВ. Чему равен φ при s = ℓ/3?`,U/3,[U/2,U,U*2/3],'кВ','При постоянном поле потенциал растёт линейно.'),
+    numeric(`Пластина над заземлённой подложкой: εᵣ = ${er}, d = ${dmm} мм. Найдите Cₛ, приняв ε₀ = 8,854 × 10⁻¹² Ф/м.`,C,[C/10,C*2,C*10],'нФ/м²','Подставьте d в метрах, затем Ф/м² умножьте на 10⁹.',2),
+    numeric(`В выбранной точке над подложкой φ = ${U} кВ, местная толщина ${dmm} мм. Оцените |Eₙ| в пластине.`,nfield,[nfield/2,nfield*2,nfield*10],'кВ/мм','В плоском приближении |Eₙ| ≈ φ/d.',2),
+    numeric(`В плёнке ρₛ = ${sheet} МОм/□, длина ${L} мм, ширина ${W} мм. U = ${U} кВ. Найдите ток утечки.`,I,[I/2,I*2,I*10],'мкА','R = ρₛℓ/b. Для кВ и МОм: I в мкА = 1000U/R.',2),
+    numeric(`Плёнка состоит из ${bands} одинаковых последовательных участков. U = ${U} кВ. Какое напряжение падает на каждом?`,U/bands,[U/(bands-1),U/(bands+1),U],'кВ','Падение напряжения на равных сопротивлениях делится поровну.',2),
+    numeric(`Установлено Uзад = ${U} кВ, подъём длится 8 с. Чему равно Uдейств при t = ${end} с?`,U*end/8,[U*end/16,U,U*(end-1)/8],'кВ','До 8 с Uдейств(t) = Uзад·t/8.',2),
+    numeric(`Удельная поверхностная ёмкость выросла в ${x} ${x<=4?'раза':'раз'}, U и dU/dt прежние. Каков множитель для расчётной длины развитого канала по Теплеру до ограничения геометрией?`,x*x,[x,2*x+1,x**3],'раз','Длина в этой зависимости пропорциональна Cₛ².',0)
+  ];
+  const conceptual=Array.from({length:7},(_,i)=>bank[(k*5+i*3)%bank.length]);
+  return [...n.slice(0,3),...conceptual.slice(0,3),...n.slice(3),...conceptual.slice(3)];
+}
+const quizSets=Array.from({length:5},(_,i)=>exam(i));
+const storedAnswers=quizSets.map(set=>set.map(()=>null));
+const graded=quizSets.map(()=>false);
+let variant=0;
+$('tests').innerHTML=`<article class="quiz"><div class="quiz-header"><h2>Проверка знаний</h2><label for="variant">Выберите вариант <select id="variant">${quizSets.map((_,i)=>`<option value="${i}">Вариант ${i+1}</option>`).join('')}</select></label></div>
+<p>В каждом варианте 15 вопросов. Выберите по одному ответу. После проверки появятся объяснения.</p>
+<div class="quiz-result"><span id="quiz-result" role="status"></span><button class="btn primary" id="check-test">Проверить ответы</button></div>
+<form id="questions"></form><button class="btn" id="reset-test" style="margin-top:12px">Очистить ответы этого варианта</button></article>`;
+function showQuiz(){
+  const saved=storedAnswers[variant], set=quizSets[variant];
+  let points=0, selected=0;
+  $('questions').innerHTML=set.map((q,i)=>{
+    const ans=saved[i], order=Array.from({length:4},(_,j)=>(j+i*3+variant*5+Math.floor(i*i/7))%4);
+    if(ans!==null)selected++;
+    if(ans===0)points++;
+    const state=graded[variant]?ans===null?'unanswered':ans===0?'right':'wrong':'';
+    const answer=state?`<p class="small"><b>${ans===0?'Верно.':'Ответ: '+q.options[0]}</b> ${q.why}</p>`:'';
+    return `<fieldset class="${state}"><legend>${i+1}. ${q.prompt}</legend>
+      ${order.map(j=>`<label><input type="radio" name="q${i}" value="${j}" data-q="${i}" ${j===ans?'checked':''}>${q.options[j]}</label>`).join('')}${answer}</fieldset>`;
+  }).join('');
+  const score=graded[variant]?`Результат: ${points} из 15. `:'';
+  $('quiz-result').textContent=score+`Отвечено: ${selected} из 15`;
+}
+$('variant').onchange=e=>{variant=+e.target.value;showQuiz();};
+$('questions').onchange=e=>{
+  if(e.target.dataset.q===undefined)return;
+  storedAnswers[variant][+e.target.dataset.q]=+e.target.value;
+  if(graded[variant]){
+    graded[variant]=false;
+    const q=e.target.name;
+    showQuiz();
+    $('questions').querySelector(`[name="${q}"]:checked`).focus();
+  }else $('quiz-result').textContent=`Отвечено: ${storedAnswers[variant].filter(x=>x!==null).length} из 15`;
+};
+$('check-test').onclick=()=>{graded[variant]=true;showQuiz();};
+$('reset-test').onclick=()=>{storedAnswers[variant].fill(null);graded[variant]=false;showQuiz();};
+showQuiz();
+changeView('overview',false);
+const osc=$('scope-canvas');
+const scope={
+  points:[],clock:0,lastU:null,lastStage:null,id:null,wall:performance.now(),
+  freeze:null,pending:null,auto:true,periodsPerSecond:1,metric:'',lastDraw:0
+};
+const SCOPE_F=50, SCOPE_DT=.0005, SCOPE_WINDOW=.1;
+function scopeRestart(wall=performance.now()){
+  const {p,t}=input();
+  const currentU=dataset.U;
+  Object.assign(scope,{points:[],clock:0,lastU:currentU,lastStage:scopeStage(p,dataset,t),
+    id:active,pending:null,freeze:null,wall,lastDraw:wall});
+  for(let i=240;i>=0;i--){
+    const x=-i*SCOPE_DT;
+    scope.points.push({x,u:Math.SQRT2*currentU*Math.sin(2*Math.PI*SCOPE_F*x),sensor:0});
+  }
+  $('scope-pause').textContent='Удержать кадр';
+  drawScope();
+}
+function scopeStage(p,d,t){
+  const r=track(active,p,d,t);
+  if(!r)return 0;
+  if(r.bridge==='достигнут')return 2;
+  if(active==='moisture')return r.length>0?1:0;
+  if(active==='overview'&&p.mode==='bulk')return r.length>0?1:0;
+  return r.length>=(active==='field'?1:Math.max(.8,.012*d.L))?1:0;
+}
+function scopeTick(wall){
+  if(!lab[active]||!dataset||$('lab').hidden){scope.wall=wall;return;}
+  if(scope.id!==active){scopeRestart(wall);return;}
+  const elapsed=clamp((wall-scope.wall)/1000,0,.12)*scope.periodsPerSecond/SCOPE_F;
+  scope.wall=wall;
+  const {p,t}=input(), currentU=dataset.U, stage=scopeStage(p,dataset,t);
+  const counted=scope.lastStage!==null&&stage>scope.lastStage;
+  const voltageJump=Math.abs(currentU-scope.lastU)>2.5;
+  if(!scope.freeze&&!scope.pending&&(voltageJump||counted)){
+    const bulk=active==='overview'&&p.mode==='bulk';
+    scope.pending={time:scope.clock,
+      reason:counted?(stage===2?(bulk?'Пробой через толщу':'Перекрытие в модели'):'Разряд в модели'):
+        'Резкое изменение напряжения',
+      pulse:counted,hold:scope.auto,peak:Math.SQRT2*currentU};
+  }
+  const from=scope.clock;
+  const end=from+elapsed;
+  let next=(scope.points.at(-1)?.x??from)+SCOPE_DT;
+  while(next<=end){
+    const blend=voltageJump?1:clamp((next-from)/Math.max(SCOPE_DT,elapsed));
+    const u=mix(scope.lastU,currentU,blend);
+    const when=scope.pending?next-scope.pending.time:-1;
+    const pulse=scope.pending?.pulse&&when>=0&&when<.022?Math.exp(-when/.003)*Math.sin(2*Math.PI*460*when):0;
+    scope.points.push({x:next,u:Math.SQRT2*u*Math.sin(2*Math.PI*SCOPE_F*next),sensor:pulse});
+    next+=SCOPE_DT;
+  }
+  scope.clock=end;scope.lastU=currentU;scope.lastStage=stage;
+  if(scope.pending&&scope.clock-scope.pending.time>.060){
+    if(scope.pending.hold){
+      scope.freeze={...scope.pending,points:scope.points.slice()};
+      $('scope-pause').textContent='Продолжить запись';
+    }
+    scope.pending=null;
+  }
+  const cutoff=scope.clock-.24;
+  const keep=scope.points.findIndex(v=>v.x>=cutoff);
+  if(keep>0)scope.points.splice(0,keep);
+  if(wall-scope.lastDraw>=33){
+    scope.lastDraw=wall;
+    drawScope();
+  }
+}
+function drawScope(){
+  const {ctx,w,h}=canvasSize(osc);
+  if(!w||!h)return;
+  const l=65,r=w-25,top=27,mid=124,bot=h-33;
+  const capture=scope.freeze?.reason ? scope.freeze : null;
+  const a=capture?capture.time-.04:(scope.freeze?.end??scope.clock)-SCOPE_WINDOW;
+  const b=a+SCOPE_WINDOW;
+  const points=(scope.freeze?.points??scope.points).filter(v=>v.x>=a&&v.x<=b);
+  const topU=Math.max(10,Math.ceil(points.reduce((max,v)=>Math.max(max,Math.abs(v.u)),0)/10)*10);
+  const X=x=>l+(x-a)*(r-l)/(b-a);
+  const Y=u=>mix(top,mid,(1-u/topU)/2);
+  const Z=u=>mix(mid+15,bot,(1-u)/2);
+  ctx.fillStyle='#0d1d28';ctx.fillRect(0,0,w,h);
+  for(let i=0;i<=10;i++){
+    const x=mix(l,r,i/10);
+    stroke(ctx,[[x,top],[x,bot]],'#2e4756',1);
+    const mark=capture?-40+i*10:-100+i*10;
+    write(ctx,String(mark),x,bot+17,color.faint,11,'center');
+  }
+  for(const [y,label] of [[Y(topU),'+'+topU],[Y(0),'0'],[Y(-topU),'−'+topU],[Z(0),'0']]){
+    stroke(ctx,[[l,y],[r,y]],'#3a596b',1);
+    write(ctx,label,l-7,y+4,color.faint,11,'right');
+  }
+  write(ctx,'U, кВ',l,18,color.cyan,12);
+  write(ctx,'Датчик, усл. ед.',l,mid+10,color.amber,11);
+  write(ctx,'t, мс',r,h-4,color.white,11,'right');
+  if(points.length>1){
+    stroke(ctx,points.map(v=>[X(v.x),Y(v.u)]),color.cyan,1.9);
+    stroke(ctx,points.map(v=>[X(v.x),Z(v.sensor)]),color.amber,1.8);
+  }
+  const armed=capture??(scope.freeze?null:scope.pending);
+  if(armed&&armed.time>=a&&armed.time<=b){
+    const x=X(armed.time);
+    ctx.save();ctx.setLineDash([5,4]);stroke(ctx,[[x,top],[x,bot]],'#ffdc94',1.4);ctx.restore();
+    ctx.font='12px system-ui, sans-serif';
+    write(ctx,armed.reason,clamp(x+8,l,Math.max(l,r-ctx.measureText(armed.reason).width-6)),36,'#ffdc94',12);
+  }
+  const state=capture?'event':scope.freeze?'manual':scope.pending?.hold?'capture':'live';
+  const speed=scope.periodsPerSecond===1?'1 период/с':scope.periodsPerSecond+' периодов/с';
+  const message=capture?'Запись остановлена автозахватом · '+capture.reason:
+    scope.freeze?'Кадр удержан вручную':
+    scope.pending?.hold?'Идёт автозахват · '+scope.pending.reason:
+    'Запись идёт · '+speed+' · 100 мс в кадре';
+  if(message!==scope.metric){
+    scope.metric=message;$('scope-status').textContent=message;$('scope-now').dataset.state=state;
+  }
+  if(dataset){
+    const value=scope.freeze?scope.freeze.peak:Math.SQRT2*dataset.U;
+    $('scope-peak').textContent='Uпик расч. '+format(value,2)+' кВ';
+  }
+}
+$('scope-pause').onclick=()=>{
+  if(scope.freeze){scope.freeze=null;$('scope-pause').textContent='Удержать кадр';}
+  else{
+    if(scope.pending)scope.pending.hold=false;
+    scope.freeze={end:scope.clock,points:scope.points.slice(),peak:Math.SQRT2*dataset.U};
+    $('scope-pause').textContent='Продолжить запись';
+  }
+  drawScope();
+};
+$('scope-reset').onclick=()=>scopeRestart();
+$('scope-speed').onchange=e=>{
+  scope.periodsPerSecond=Number(e.target.value);
+  scope.wall=performance.now();
+  drawScope();
+};
+$('scope-trigger').onchange=e=>{
+  scope.auto=e.target.checked;
+  if(scope.pending&&!scope.auto)scope.pending.hold=false;
+  drawScope();
+};
+const scopeResize=new ResizeObserver(()=>{if(lab[active]&&dataset)drawScope();});
+scopeResize.observe(osc);
+scopeRestart();
+setInterval(()=>scopeTick(performance.now()),20);
+
+</script>
+</body>
+</html>

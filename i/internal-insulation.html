@@ -1,0 +1,1397 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ТВН 14 · Внутренняя изоляция</title>
+<meta name="description" content="Интерактивный тренажёр по внутренней изоляции кабелей, электрических машин, трансформаторов и вводов RIP.">
+<style>:root{color-scheme:light;--ink:#172f3b;--sub:#4a626d;--back:#eaf0f2;--paper:#fff;--line:#d6e1e4;--accent:#08655d;--mint:#76e0c9;--amber:#ffd09c;--dark:#122d3b;--round:11px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.55}
+*{box-sizing:border-box}
+body{margin:0;background:var(--back);color:var(--ink)}
+[hidden]{display:none!important}
+.frame{width:min(1160px,calc(100% - 44px));margin-inline:auto}
+.skip{position:absolute;left:12px;top:-100px;padding:9px 14px;background:white;z-index:10}.skip:focus{top:12px}
+.hero{background:linear-gradient(113deg,#142b39 15%,#164e57 100%);color:#f2fcff;border-bottom:3px solid #79d5be}
+.hero-inner{display:grid;grid-template-columns:minmax(0,1fr) 280px;align-items:center;gap:24px;padding:30px 0 31px}
+.eyebrow{color:#ade4df;margin:0 0 8px;font-size:13px;font-weight:700;letter-spacing:.055em}
+.eyebrow span{padding:0 5px}
+h1,h2,h3,p{margin-top:0}
+h1{font-size:clamp(29px,5vw,56px);line-height:1.05;margin-bottom:14px;letter-spacing:-.031em}
+.hero p:last-child{margin-bottom:0;color:#c9e4e7}
+.hero-diagram{opacity:.92}
+.nav-wrap{background:#fff;border-bottom:1px solid var(--line)}
+.nav nav{display:flex;flex-wrap:wrap;gap:0 6px}
+.nav button{border:0;border-bottom:3px solid transparent;border-radius:0;font-size:14px;background:transparent;padding:11px 8px 9px;color:#334f5f;font-weight:650;white-space:nowrap}
+.nav button[aria-selected=true]{color:var(--accent);border-color:var(--accent);background:#eff9f6}
+main{padding:25px 0 36px}
+.section-title{margin-bottom:17px}
+.section-title p{max-width:870px;color:var(--sub);margin:0}
+h2{font-size:clamp(22px,3vw,32px);line-height:1.2;letter-spacing:-.017em;margin-bottom:8px}
+h3{font-size:19px;line-height:1.27;margin-bottom:9px}
+h4{font-size:16px;margin:0 0 4px}
+p{margin-bottom:.75em}
+p:last-child{margin-bottom:0}
+.lab,.two,.concepts{display:grid;gap:14px;align-items:start}
+.lab{grid-template-columns:minmax(245px,30%) minmax(0,1fr)}
+.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.concepts{grid-template-columns:repeat(3,minmax(0,1fr));align-items:stretch}
+.detailgrid,.guide{margin-top:14px}
+.lab-body{display:grid;gap:13px;min-width:0}
+.line-results{display:grid;gap:13px;align-items:start}
+@media(min-width:1000px){.line-results:has(#line-distribution:not([hidden])){grid-template-columns:minmax(210px,.8fr) minmax(0,1.35fr)}}
+.card{min-width:0;padding:16px 17px;background:var(--paper);border:1px solid var(--line);border-radius:var(--round);box-shadow:0 2px 4px #1235430a}
+.panel-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.panel-head h3{margin:0}
+.tag,.meta{font-size:12px;font-weight:700;color:var(--accent)}
+.tag{background:#e9f6f1;padding:3px 8px;border-radius:20px}
+.meta{margin:0 0 5px}
+canvas{display:block;width:100%;border-radius:7px;background:var(--dark)}
+.line-scene{height:260px;touch-action:pan-y;cursor:grab}
+.line-scene:active{cursor:grabbing}
+.profile-scene{height:250px}
+.scope canvas{height:218px;touch-action:pan-y}
+.controls label,.quiz-tools label{display:block;font-size:14px;font-weight:650;margin-top:10px}
+.controls label:first-of-type{margin-top:4px}
+.controls label>select,.controls label>input[type=number]{width:100%;margin-top:4px}
+label>output{float:right;color:var(--accent);font-variant-numeric:tabular-nums}
+label.check{display:flex;align-items:center;gap:7px;margin:10px 0 6px}
+input[type=range]{width:100%;accent-color:var(--accent);margin:5px 0 2px}
+input[type=checkbox],input[type=radio]{accent-color:var(--accent)}
+button,input[type=number],input[type=text],select{color:var(--ink);font:inherit;border:1px solid #9eb6bd;border-radius:6px;background:white;padding:5px 9px}
+button{cursor:pointer;font-size:14px;font-weight:640}
+button:hover{background:#ecf6f2}
+button.primary{background:var(--accent);border-color:var(--accent);color:#fff}button.primary:hover{background:#074b45}
+button:disabled,input:disabled{opacity:.55;cursor:default}
+:focus-visible{outline:3px solid #298c84;outline-offset:2px}
+a{color:#065f70;text-underline-offset:2px}
+.actions{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin:10px 0 0}
+.scene-tools,.scene-legend,.scope-tools,.scope-meta,.quiz-tools{display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px}
+.scene-tools,.scene-legend,.scope-meta{margin-top:7px}
+.scene-tools label{min-width:120px;font-size:13px}
+.scene-tools input{flex:1;min-width:80px;width:auto}.scene-tools output{float:none}
+.scene-legend,.scope-tools,.scope-meta{font-size:13px}
+.scope-tools label{display:flex;align-items:center;gap:5px}
+.scope-tools{margin:2px 0 9px}
+.scope-meta{justify-content:space-between}
+.scope-meta strong{font-size:13px;color:var(--accent)}
+.key{display:inline-block;width:12px;height:3px;vertical-align:middle;margin-right:6px;background:currentColor}
+.key.teal{color:#08776d}.key.amber{color:#a85815}
+.small,.source{font-size:13px;color:var(--sub);margin-top:8px}
+.stats{display:flex;flex-wrap:wrap;gap:5px 12px;background:#edf5f7;padding:8px 10px;border-radius:6px;margin:9px 0;font-size:13px;color:#214758;font-variant-numeric:tabular-nums}
+.stats span{white-space:normal}.stats b{color:var(--ink)}
+.formula{background:#f0f6f7;border-left:3px solid #389589;border-radius:4px;padding:8px 10px;margin:9px 0;overflow-x:auto}
+math{font-size:1.12em}
+details{margin-top:10px}
+details > :last-child{margin-bottom:0}
+summary{cursor:pointer;font-weight:700;color:#105753}
+table{width:100%;border-collapse:collapse;font-size:14px;margin:10px 0}
+td,th{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+th{background:#edf5f7}caption{text-align:left;margin-bottom:4px;font-weight:650}
+tr.current td,tr.current th{background:#d9f0e8}
+.live-note{color:#15514a;margin-top:8px}
+[data-pass=no]{color:#9a411c}
+.bar-list{display:grid;gap:4px;margin:10px 0}
+.bar-row{display:grid;grid-template-columns:31px minmax(30px,1fr) 69px;align-items:center;gap:8px;padding:3px 7px;text-align:left;font-size:13px;border-color:#e0e9e9}
+.bar-row[aria-pressed=true]{border-color:#187969;background:#edf9f4}
+.bar-row span:last-child{text-align:right;font-variant-numeric:tabular-nums}
+.track{height:10px;position:relative;border-radius:4px;background:#ecf2f2}
+.track i{height:100%;border-radius:inherit;display:block}
+.track em{position:absolute;top:-3px;height:16px;width:2px;background:#223f52}
+.circuit{width:100%;min-height:74px;background:#eff6f7;margin-top:8px;border-radius:6px}
+#line-circuit{overflow:auto}
+.bar-list.long{max-height:232px;overflow:auto;padding-right:4px}
+.theory-circuit{aspect-ratio:20/7;display:block;width:100%;background:#eff6f7;border-radius:8px;margin:10px 0 6px}
+.schematic{margin:12px 0;font-size:13px;color:var(--sub)}
+.calculation-block{margin-top:15px}
+.callout{background:#edf5f7;border-left:3px solid #389589;padding:8px 10px;border-radius:5px}
+.practice-group{margin-bottom:16px}
+.practice-group .two>.card{height:100%}
+.practice-group ol{padding-left:21px;margin:8px 0}
+.practice-group li{padding-bottom:3px}
+.practice-journal{margin-top:12px}
+.table-scroll{overflow:auto}
+.task-form{display:flex;align-items:end;gap:7px;flex-wrap:wrap}
+.task-form label{display:grid;font-size:13px}
+.task-form input{width:120px}
+.task-result,.quiz-result{font-weight:650;color:#15514a}
+.quiz-tools{margin-bottom:11px}.quiz-tools label,.quiz-tools p{margin:0}
+#questions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.question{margin:0;min-inline-size:0}
+.question h3{font-size:16px}
+.question label{display:flex;gap:7px;align-items:start;margin:4px 0;cursor:pointer}
+.question input{margin-top:.38em}
+.question[data-status=wrong]{border-color:#be7b58}
+.question[data-status=right]{border-color:#509b85}
+.question p{margin-top:8px;color:var(--sub);font-size:13px}
+.quiz-actions{padding-bottom:7px}
+.references{border-top:1px solid #b8cbd0;margin-top:23px;padding-top:6px;color:var(--sub);font-size:14px}
+.references li{margin:4px 0}
+@media(max-width:820px){.lab{grid-template-columns:minmax(195px,32%) minmax(0,1fr)}.hero-inner{grid-template-columns:1fr 180px}.nav nav{gap:0 4px}.nav button{padding-inline:6px}}
+@media(max-width:650px){.frame{width:calc(100% - 22px)}.hero-inner{grid-template-columns:1fr;padding:20px 0}.hero-diagram{display:none}.lab,.two,.concepts,#questions{grid-template-columns:1fr}.card{padding:13px}.nav button{font-size:13px}.line-scene,.profile-scene{height:220px}.scope canvas{height:195px}}
+:root{--accent:#087265;--back:#e9eff2;--dark:#142e3c}
+.hero{background:linear-gradient(110deg,#142c3b,#17535d)}
+.hero-inner{grid-template-columns:minmax(0,1fr) 300px}
+.nav nav{gap:0 10px}
+.lab{grid-template-columns:minmax(240px,28%) minmax(0,1fr)}
+.model-scene{height:270px;touch-action:pan-y;cursor:grab}
+.model-scene:active{cursor:grabbing}
+.model-scene.longitudinal,.model-scene.longitudinal:active{cursor:crosshair}
+.section-chooser{display:flex;gap:6px;margin:0 0 8px}
+.section-chooser button[aria-pressed=true]{color:#fff;background:var(--accent);border-color:var(--accent)}
+.scene-instruction{margin:3px 0;color:var(--sub);font-size:12px}
+.plot-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:8px}
+.plot-pair canvas{height:190px;cursor:crosshair}
+.plot-pair h4{font-size:14px}
+.plot-pair>div{min-width:0}
+.model-key{display:flex;flex-wrap:wrap;gap:4px 14px;margin:7px 0 4px;color:#4a626d;font-size:13px}
+.model-key i{width:10px;height:10px;border-radius:2px;display:inline-block;margin-right:5px}
+.controls .control{margin-top:10px}
+.controls .control label{margin-top:0}
+.controls .control select{width:100%}
+.control output{float:right;color:var(--accent);font-weight:650}
+.panel-head .tag{white-space:normal}
+.readout{min-height:36px;font-size:13px;background:#edf5f7;padding:8px 9px;border-radius:6px;margin-top:7px;font-variant-numeric:tabular-nums;color:#214758}
+.note{border-left:3px solid #57a99d;padding-left:10px}
+.tip{border-bottom:1px dotted #298b7e;font-style:normal;cursor:help}
+.mini-circuit{display:block;width:100%;background:#edf5f5;border-radius:8px;margin:6px 0}
+.experiment-grid,.case-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.experiment-grid h3{font-size:17px}
+.experiment-grid ol{padding-left:20px}
+.case-grid .card{height:100%}
+.task-result{min-height:1.5em}
+.chart-mark{color:#9c542c;font-size:13px}
+@media(max-width:820px){.hero-inner{grid-template-columns:1fr 160px}.nav nav{gap:0 4px}.lab{grid-template-columns:minmax(190px,31%) minmax(0,1fr)}}
+@media(max-width:660px){.hero-inner,.lab,.experiment-grid,.case-grid,.plot-pair{grid-template-columns:1fr}.model-scene{height:226px}.plot-pair canvas{height:174px}}
+.question legend{color:var(--ink);font-weight:700;max-width:100%;padding:0 4px}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Перейти к содержанию</a>
+<header class="hero">
+ <div class="frame hero-inner">
+  <div>
+   <p class="eyebrow">Техника высоких напряжений · Тема 14</p>
+   <h1>Внутренняя изоляция</h1>
+   <p>Кабели, электрические машины и трансформаторы</p>
+  </div>
+  <svg class="hero-diagram" viewBox="0 0 310 135" aria-hidden="true">
+   <g fill="none" stroke-width="2"><path stroke="#5a828f" d="M12 68h286M73 13v110"/>
+   <circle cx="73" cy="68" r="51" stroke="#82a9b6"/><circle cx="73" cy="68" r="41" stroke="#67d1ba"/><circle cx="73" cy="68" r="25" stroke="#9cded2"/>
+   <path d="M169 93c21-2 27-4 43-11s37-20 76-53" stroke="#67d1ba"/><path d="M169 104c38-3 71-3 119-14" stroke="#edb482" stroke-dasharray="4 5"/>
+   <path d="M169 21v90h119" stroke="#7da7b3"/></g><circle cx="73" cy="68" r="16" fill="#ecae77"/>
+  </svg>
+ </div>
+</header>
+<div class="nav-wrap"><div class="frame nav"><nav role="tablist" aria-label="Разделы темы">
+ <button type="button" role="tab" id="tab-theory" aria-controls="theory">Теория</button>
+ <button type="button" role="tab" id="tab-cable" aria-controls="cable">Кабели</button>
+ <button type="button" role="tab" id="tab-machine" aria-controls="machine">Электрические машины</button>
+ <button type="button" role="tab" id="tab-transformer" aria-controls="transformer">Трансформаторы</button>
+ <button type="button" role="tab" id="tab-bushing" aria-controls="bushing">Вводы RIP</button>
+ <button type="button" role="tab" id="tab-practice" aria-controls="practice">Практика</button>
+ <button type="button" role="tab" id="tab-cases" aria-controls="cases">Кейсы</button>
+ <button type="button" role="tab" id="tab-tasks" aria-controls="tasks">Задачи</button>
+ <button type="button" role="tab" id="tab-quiz" aria-controls="quiz">Тесты</button>
+</nav></div></div>
+<main class="frame" id="main">
+ <section id="theory" role="tabpanel" aria-labelledby="tab-theory">
+  <div class="section-title"><h2>Как изоляция распределяет напряжение</h2><p>Измените геометрию или материал, найдите максимум на графике и проверьте его на разрезе. Потенциал отсчитывается от указанного опорного электрода.</p></div>
+  <div class="concepts">
+   <article class="card"><h3>Кабели</h3><p>Полупроводящие слои сглаживают границы поля. Металлический экран задаёт опорный потенциал в принятой модели.</p><button type="button" data-go="cable">Открыть кабель</button></article>
+   <article class="card"><h3>Электрические машины</h3><p>Межвитковая изоляция разделяет проводники. Корпусная отделяет обмотку от стали статора. Лобовая часть работает вне паза.</p><button type="button" data-go="machine">Открыть статор</button></article>
+   <article class="card"><h3>Трансформаторы и вводы</h3><p>Масляные каналы, барьеры и литые обмотки формируют разные пути поля. Во вводе <abbr class="tip" title="Бумажный остов, пропитанный смолой">RIP</abbr> потенциал распределяют проводящие обкладки.</p><div class="actions"><button type="button" data-go="transformer">Открыть трансформатор</button><button type="button" data-go="bushing">Открыть ввод</button></div></article>
+  </div>
+  <div class="two detailgrid">
+   <article class="card"><h3>Коаксиальный кабель</h3>
+    <p><i>a</i> — радиус границы внутреннего экрана, <i>b</i> — внутренний радиус внешней эквипотенциальной границы, <i>U</i> — напряжение жила–экран. Для однородного кабеля при Φ(b) = 0</p>
+    <div class="formula"><math display="block"><mrow><mi>φ</mi><mo>(</mo><mi>r</mi><mo>)</mo><mo>=</mo><mi>U</mi><mfrac><mrow><mi>ln</mi><mo>(</mo><mi>b</mi><mo>/</mo><mi>r</mi><mo>)</mo></mrow><mrow><mi>ln</mi><mo>(</mo><mi>b</mi><mo>/</mo><mi>a</mi><mo>)</mo></mrow></mfrac><mo>,</mo><mspace width=".65em"/><mi>E</mi><mo>(</mo><mi>r</mi><mo>)</mo><mo>=</mo><mfrac><mi>U</mi><mrow><mi>r</mi><mi>ln</mi><mo>(</mo><mi>b</mi><mo>/</mo><mi>a</mi><mo>)</mo></mrow></mfrac></mrow></math></div>
+    <p>Максимум находится при <i>r</i> = <i>a</i>. При неизменном <i>b</i> минимум этого максимума достигается при <i>a</i> = <i>b</i>/e, где e ≈ 2,718. Геометрический оптимум учитывает только поле однородного кабеля.</p>
+    <div class="formula"><math display="block"><mrow><msub><mi>E</mi><mi>i</mi></msub><mo>(</mo><mi>r</mi><mo>)</mo><mo>=</mo><mfrac><mi>U</mi><mrow><mi>r</mi><msub><mi>p</mi><mi>i</mi></msub><munder><mo>∑</mo><mi>j</mi></munder><mfrac><mrow><mi>ln</mi><mo>(</mo><msub><mi>r</mi><mrow><mi>j</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>/</mo><msub><mi>r</mi><mi>j</mi></msub><mo>)</mo></mrow><msub><mi>p</mi><mi>j</mi></msub></mfrac></mrow></mfrac></mrow></math></div>
+    <p>В ёмкостной модели <i>p</i><sub>i</sub> = ε<sub>ri</sub>. В установившемся проводящем режиме <i>p</i><sub>i</sub> = σ<sub>i</sub>. При AC и пренебрежимо малых потерях без свободного заряда на границе непрерывен нормальный <i>D</i>. При DC в установившемся состоянии непрерывен нормальный <i>J</i>. Потенциал непрерывен в обоих расчётах. Переход между режимами, температура и пространственный заряд выходят за границы модели.</p>
+    <p class="source"><a href="https://eng.libretexts.org/Bookshelves/Electrical_Engineering/Electro-Optics/Electromagnetic_Field_Theory:_A_Problem_Solving_Approach_(Zahn)/08:_Guided_Electromagnetic_Waves/8.01:_The_Transmission_Line_Equations" target="_blank" rel="noopener">М. Зан, поле коаксиальной линии</a> · <a href="https://api.pageplace.de/preview/DT0400.9781466513778_A24034461/preview-9781466513778_A24034461.pdf" target="_blank" rel="noopener">High Voltage Engineering, § 2.4</a></p>
+   </article>
+   <article class="card"><h3>Участок обмотки</h3><p>Для начала крутого фронта в учебной цепочке есть одинаковые межвитковые ёмкости <i>C</i><sub>в</sub> и ветви <i>C</i><sub>з</sub> от внутренних узлов к корпусу. Граничные потенциалы на концах участка равны <i>U</i> и 0.</p>
+    <svg class="mini-circuit" viewBox="0 0 475 120" role="img" aria-label="Три последовательные межвитковые ёмкости, две поперечные ёмкости на корпус">
+     <path d="M24 46H83m10 0H225m10 0H367m10 0h74M83 37v18m10-18v18m132-18v18m10-18v18m132-18v18m10-18v18" fill="none" stroke="#23535d" stroke-width="2"/>
+     <path d="M148 46v22m0 8v21m-8-29h16m-16 8h16m140-30v22m0 8v21m-8-29h16m-16 8h16M24 97h427" fill="none" stroke="#397b71" stroke-width="2"/>
+     <g fill="#23535d" font-family="system-ui" font-size="13"><text x="18" y="32">U</text><text x="446" y="32">0</text><text x="73" y="31">Cв</text><text x="215" y="31">Cв</text><text x="357" y="31">Cв</text><text x="156" y="76">Cз</text><text x="304" y="76">Cз</text><text x="31" y="113">Корпус</text></g>
+     <circle cx="148" cy="46" r="3" fill="#397b71"/><circle cx="296" cy="46" r="3" fill="#397b71"/>
+    </svg>
+    <div class="formula"><math display="block"><mrow><mo>(</mo><mn>2</mn><mo>+</mo><mi>k</mi><mo>)</mo><msub><mi>φ</mi><mi>i</mi></msub><mo>=</mo><msub><mi>φ</mi><mrow><mi>i</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>+</mo><msub><mi>φ</mi><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>,</mo><mspace width=".7em"/><mi>k</mi><mo>=</mo><mfrac><msub><mi>C</mi><mtext>з</mtext></msub><msub><mi>C</mi><mtext>в</mtext></msub></mfrac></mrow></math></div>
+    <p>Межвитковое напряжение — разность соседних потенциалов, корпусное — потенциал витка относительно корпуса. При равномерном опорном распределении разность равна <i>U</i>/<i>N</i>. Ёмкостный снимок отражает начало фронта. Распространение, отражение и затухание импульсов рассматриваются в теме 15.</p>
+    <p class="source"><a href="https://library.e.abb.com/public/5df66cce8dd649689ab7c2c66abd52db/voltstress.pdf" target="_blank" rel="noopener">ABB, Technical Guide 102</a></p>
+   </article>
+   <article class="card"><h3>Плоские слои трансформатора</h3><p>Участок между электродами с суммарной толщиной <i>d</i> приближённо заменён плоской последовательностью слоёв. На границе без свободного заряда нормальный <i>D</i> непрерывен.</p>
+    <div class="formula"><math display="block"><mrow><msub><mi>E</mi><mi>i</mi></msub><mo>=</mo><mfrac><mi>U</mi><mrow><msub><mi>ε</mi><mrow><mi>r</mi><mi>i</mi></mrow></msub><munder><mo>∑</mo><mi>j</mi></munder><mfrac><msub><mi>d</mi><mi>j</mi></msub><msub><mi>ε</mi><mrow><mi>r</mi><mi>j</mi></mrow></msub></mfrac></mrow></mfrac><mo>,</mo><mspace width=".6em"/><mi>Δ</mi><msub><mi>U</mi><mi>i</mi></msub><mo>=</mo><msub><mi>E</mi><mi>i</mi></msub><msub><mi>d</mi><mi>i</mi></msub></mrow></math></div>
+    <p>Перестановка слоёв при сохранении толщин меняет профиль потенциала и положение границ. Величина поля в каждом материале при этом остаётся прежней. В реальной конструкции барьеры меняют траектории разряда, масляные каналы и поле у кромок. В сухом варианте газовая прослойка условно изображает внутреннюю полость.</p>
+   </article>
+   <article class="card"><h3>Ёмкостные секции ввода RIP</h3><p>RIP — бумага, пропитанная смолой. В учебном вводе центральный стержень и заземлённый фланец ограничивают цепочку плавающих обкладок. В каждой секции <i>L</i><sub>i</sub> означает эффективную длину перекрытия.</p>
+    <div class="formula"><math display="block"><mrow><msub><mi>C</mi><mi>i</mi></msub><mo>=</mo><mfrac><mrow><mn>2</mn><mi>π</mi><msub><mi>ε</mi><mn>0</mn></msub><msub><mi>ε</mi><mi>r</mi></msub><msub><mi>L</mi><mi>i</mi></msub></mrow><mrow><mi>ln</mi><mo>(</mo><msub><mi>b</mi><mi>i</mi></msub><mo>/</mo><msub><mi>a</mi><mi>i</mi></msub><mo>)</mo></mrow></mfrac><mo>,</mo><mspace width=".5em"/><mi>Δ</mi><msub><mi>U</mi><mi>i</mi></msub><mo>=</mo><mi>U</mi><mfrac><mrow><mn>1</mn><mo>/</mo><msub><mi>C</mi><mi>i</mi></msub></mrow><mrow><munder><mo>∑</mo><mi>j</mi></munder><mn>1</mn><mo>/</mo><msub><mi>C</mi><mi>j</mi></msub></mrow></mfrac></mrow></math></div>
+    <p>Равные ёмкости дают равные падения напряжения. Радиальная оценка в секции равна Δ<i>U</i><sub>i</sub> / [<i>r</i> ln(<i>b</i><sub>i</sub>/<i>a</i><sub>i</sub>)]. Равенство падений ещё не устанавливает максимум поля у торцов. Краевое поле и утечки между обкладками исключены.</p>
+    <p class="source"><a href="https://www.hitachienergy.com/us/en/products-and-solutions/insulation-and-components/transformer-insulation-components/transformer-bushings/technologies" target="_blank" rel="noopener">Hitachi Energy, технология RIP</a></p>
+   </article>
+  </div>
+  <article class="card guide" id="norms">
+   <h3>Нормативные документы</h3><p>Таблица помогает выбрать источник по типу оборудования. Параметры тренажёра учебные. Для оценки конкретного изделия используют применимые нормы, программу испытаний и документацию изготовителя.</p>
+   <div class="table-scroll"><table><thead><tr><th>Объект</th><th>Документ и область применения</th></tr></thead><tbody>
+    <tr><td>Стационарные кабели 6–35 кВ</td><td><a href="https://protect.gost.ru/gost/details/531b0404-3f46-4df7-b3c2-ba6e465f56a9" target="_blank" rel="noopener">ГОСТ 34834‑2022</a> — силовые кабели с экструдированной изоляцией. Режим DC в модели предназначен для сравнения полей.</td></tr>
+    <tr><td>Вращающиеся машины</td><td><a href="https://protect.gost.ru/gost/details/ba60d93a-e8a1-45db-97e0-f4bd515d387d" target="_blank" rel="noopener">ГОСТ IEC 60034‑18‑1‑2014</a> — принципы оценки систем изоляции. Для систем с питанием от преобразователя источника напряжения — <a href="https://protect.gost.ru/gost/details/0abb7313-e61c-4692-8323-fc5fb419526a" target="_blank" rel="noopener">ГОСТ IEC/TS 60034‑18‑41‑2014</a> (тип I) и <a href="https://protect.gost.ru/gost/details/6f8655c5-4aed-4b9d-b66d-6fb843e81c67" target="_blank" rel="noopener">ГОСТ IEC/TS 60034‑18‑42‑2014</a> (тип II). Применимость проверяется по области действия и системе изоляции.</td></tr>
+    <tr><td>Трансформаторы</td><td><a href="https://protect.gost.ru/gost/details/6688e57f-32cd-4833-9866-11cf8c93578b" target="_blank" rel="noopener">ГОСТ 1516.3‑96</a> — электрическая прочность изоляции оборудования в пределах области действия. <a href="https://protect.gost.ru/gost/details/c32743c4-fac4-4886-bbdd-d9a261f16e6a" target="_blank" rel="noopener">ГОСТ Р 54827‑2011</a> — сухие трансформаторы.</td></tr>
+    <tr><td>Вводы и измерения</td><td><a href="https://webstore.iec.ch/en/publication/29183" target="_blank" rel="noopener">IEC 60137:2017</a> — характеристики и испытания вводов переменного тока свыше 1 кВ. <a href="https://protect.gost.ru/gost/details/0f7c99ed-a9d0-47c7-a1f2-2ef59d1b74f7" target="_blank" rel="noopener">ГОСТ Р 55191‑2012</a> — измерения частичных разрядов в области применения.</td></tr>
+    <tr><td>Приёмка электроустановок</td><td><a href="https://www.consultant.ru/document/cons_doc_LAW_91515/d0508bb060cdb762b612baf4bb3b79a68e71a2c3/" target="_blank" rel="noopener">ПУЭ 7, гл. 1.8</a> — нормы приёмо-сдаточных испытаний для соответствующих объектов.</td></tr>
+   </tbody></table></div>
+  </article>
+ </section>
+ <section id="cable" role="tabpanel" aria-labelledby="tab-cable" hidden></section>
+ <section id="machine" role="tabpanel" aria-labelledby="tab-machine" hidden></section>
+ <section id="transformer" role="tabpanel" aria-labelledby="tab-transformer" hidden></section>
+ <section id="bushing" role="tabpanel" aria-labelledby="tab-bushing" hidden></section>
+ <section id="practice" role="tabpanel" aria-labelledby="tab-practice" hidden><div class="section-title"><h2>Самостоятельные опыты</h2><p>Кнопка открывает исходный режим опыта. Запишите два набора показаний, сравните их и только после этого откройте разбор.</p></div><div class="experiment-grid" id="experiments"></div></section>
+ <section id="cases" role="tabpanel" aria-labelledby="tab-cases" hidden><div class="section-title"><h2>Случаи из практики</h2><p>Сопоставьте факты из источника с расчётной моделью. В учебных осциллограммах заданы условия опыта.</p></div><div class="case-grid" id="case-grid"></div></section>
+ <section id="tasks" role="tabpanel" aria-labelledby="tab-tasks" hidden><div class="section-title"><h2>Расчётные задачи</h2><p>Введите численный ответ. Десятичную часть можно отделить точкой или запятой. Решение раскрывается отдельно.</p></div><div class="experiment-grid" id="tasks-grid"></div></section>
+ <section id="quiz" role="tabpanel" aria-labelledby="tab-quiz" hidden>
+  <div class="section-title"><h2>Тесты</h2><p>В каждом варианте 15 вопросов. После проверки доступны балл и пояснения.</p></div>
+  <div class="card quiz-tools"><label>Вариант <select id="quiz-variant"></select></label><p id="quiz-count" aria-live="polite"></p><button type="button" id="quiz-reset">Очистить ответы</button></div>
+  <form id="quiz-form"><div id="questions"></div><div class="actions quiz-actions"><button type="submit" class="primary">Проверить тест</button><strong id="quiz-result" role="status"></strong></div></form>
+ </section>
+</main>
+<script>"use strict";
+
+const EPSILON_0=8.8541878128e-12;
+const FREQUENCY=50;
+const MATERIALS={
+  xlpe:{name:"СПЭ",eps:2.3,color:"#57b2ad"},
+  epr:{name:"ЭПР",eps:3.1,color:"#8b9ddc"},
+  oil:{name:"Масло",eps:2.2,color:"#58a7bc"},
+  board:{name:"Электрокартон",eps:4.2,color:"#d8a971"},
+  resin:{name:"Литая смола",eps:3.7,color:"#63b9ad"},
+  air:{name:"Газовая прослойка",eps:1,color:"#a6b9d2"}
+};
+
+function radialModel(params){
+  const {a,b,voltage,ratio,mode,first,second,two,sigma}=params;
+  const materials=two ? [first,second] : [first];
+  const edges=two ? [a,a+(b-a)*ratio,b] : [a,b];
+  const divisors=materials.map((m,i)=>mode==="dc" ? (i===0 ? 1 : sigma) : MATERIALS[m].eps);
+  const weights=divisors.map((m,i)=>Math.log(edges[i+1]/edges[i])/m);
+  const factor=voltage/weights.reduce((sum,w)=>sum+w,0);
+  const layers=materials.map((material,i)=>({
+    material,start:edges[i],end:edges[i+1],divisor:divisors[i],drop:factor*weights[i]
+  }));
+  let startPotential=voltage;
+  for(const layer of layers){
+    layer.phiStart=startPotential;
+    layer.phiEnd=startPotential-layer.drop;
+    startPotential=layer.phiEnd;
+    layer.field=factor/(layer.divisor*layer.start);
+  }
+  const at=(r,index)=>{
+    const i=index??(layers.length===2&&r>=edges[1] ? 1 : 0);
+    const l=layers[i];
+    const phi=r>=b ? 0 : l.phiStart-factor*Math.log(r/l.start)/l.divisor;
+    return {phi,e:factor/(r*l.divisor),material:l.material};
+  };
+  const maximum=layers.reduce((best,l)=>l.field>best.field ? l : best);
+  return {layers,edges,factor,at,maximum,optimum:b/Math.E};
+}
+
+function turnsModel(n,voltage,groundRatio){
+  const diagonal=Array(n-1).fill(2+groundRatio);
+  const rhs=Array(n-1).fill(0);
+  rhs[0]=voltage;
+  for(let i=1;i<n-1;i++){
+    const multiplier=1/diagonal[i-1];
+    diagonal[i]-=multiplier;
+    rhs[i]+=multiplier*rhs[i-1];
+  }
+  const potentials=[voltage,...Array(n).fill(0)];
+  for(let i=n-2;i>=0;i--)potentials[i+1]=(rhs[i]+potentials[i+2])/diagonal[i];
+  const drops=potentials.slice(1).map((p,i)=>potentials[i]-p);
+  return {potentials,drops};
+}
+
+function transformerLayers(kind,width,insert,location){
+  if(kind==="dry"){
+    if(insert===0)return [{material:"resin",width}];
+    return [{material:"resin",width:(width-insert)/2},{material:"air",width:insert},{material:"resin",width:(width-insert)/2}];
+  }
+  if(insert===0)return [{material:"oil",width}];
+  return [{material:"oil",width:(width-insert)*location},{material:"board",width:insert},
+    {material:"oil",width:(width-insert)*(1-location)}];
+}
+
+function planarModel(voltage,parts){
+  const weighted=parts.reduce((sum,l)=>sum+l.width/MATERIALS[l.material].eps,0);
+  let x=0,phi=voltage;
+  const layers=parts.map(p=>{
+    const e=voltage/(weighted*MATERIALS[p.material].eps);
+    const l={...p,start:x,end:x+p.width,e,phiStart:phi,phiEnd:phi-e*p.width};
+    x=l.end;
+    phi=l.phiEnd;
+    return l;
+  });
+  const at=(point,index)=>{
+    const i=index??layers.findIndex((l,i)=>point<l.end||i===layers.length-1);
+    const l=layers[i];
+    const potential=point>=x ? 0 : l.phiStart-l.e*(point-l.start);
+    return {phi:potential,e:l.e,material:l.material};
+  };
+  return {layers,at,width:x,maximum:layers.reduce((best,l)=>l.e>best.e ? l : best)};
+}
+
+function bushingModel({a,b,n,voltage,style,relative,affected}){
+  const edges=Array.from({length:n+1},(_,i)=>a+(b-a)*i/n);
+  const logs=edges.slice(1).map((end,i)=>Math.log(end/edges[i]));
+  const lengths=logs.map((log,i)=>{
+    const base=style==="balanced" ? 210*log/logs[0] : 210;
+    return i===affected ? base*relative : base;
+  });
+  const capacitances=lengths.map((length,i)=>2*Math.PI*EPSILON_0*3.8*(length/1000)/logs[i]*1e12);
+  const equivalent=1/capacitances.reduce((sum,c)=>sum+1/c,0);
+  const drops=capacitances.map(c=>voltage*equivalent/c);
+  const maxDrop=Math.max(...drops);
+  const maxSections=Array.from({length:n},(_,i)=>i+1).filter(i=>maxDrop-drops[i-1]<1e-9);
+  let phi=voltage;
+  const sections=drops.map((drop,i)=>{
+    const s={a:edges[i],b:edges[i+1],length:lengths[i],c:capacitances[i],drop,
+      phiStart:phi,phiEnd:phi-drop,maxRadial:drop/(edges[i]*logs[i])};
+    phi=s.phiEnd;
+    return s;
+  });
+  return {sections,equivalent,edges,maxIndex:maxSections[0]-1,maxSections};
+}
+
+function voltageSignal(t,mode){
+  if(mode==="dc")return 1;
+  if(mode==="impulse"){
+    const front=.42,elapsed=t-2;
+    return elapsed<=0 ? 0 : 1-Math.exp(-elapsed/front);
+  }
+  return Math.SQRT2*Math.sin(2*Math.PI*FREQUENCY*t/1000);
+}
+
+const $=id=>document.getElementById(id);
+const number=(value,digits=2)=>value.toLocaleString("ru-RU",{minimumFractionDigits:digits,maximumFractionDigits:digits});
+const limit=(value,lo,hi)=>Math.min(hi,Math.max(lo,value));
+const element=(tag,text,className)=>{
+  const node=document.createElement(tag);
+  if(text!==undefined)node.textContent=text;
+  if(className)node.className=className;
+  return node;
+};
+const stats=(node,items)=>{
+  node.replaceChildren(...items.map(([label,value])=>{
+    const entry=element("span",label+" ");
+    entry.append(element("b",value));
+    return entry;
+  }));
+};
+const labelText=(ctx,text,x,y,opts={})=>{
+  ctx.font=(opts.size??13)+"px system-ui, sans-serif";
+  ctx.fillStyle=opts.color??"#e4f4f7";
+  ctx.textAlign=opts.align??"left";
+  ctx.fillText(text,x,y);
+};
+function stroke(ctx,points,color,width=1,fill=null){
+  ctx.beginPath();
+  points.forEach(([x,y],i)=>i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y));
+  if(fill){ctx.closePath();ctx.fillStyle=fill;ctx.fill();}
+  if(width){ctx.strokeStyle=color;ctx.lineWidth=width;ctx.stroke();}
+}
+function paintCanvas(canvas){
+  const {width:w,height:h}=canvas.getBoundingClientRect();
+  if(!w||!h)return null;
+  const ratio=Math.min(window.devicePixelRatio||1,2);
+  const width=Math.round(w*ratio),height=Math.round(h*ratio);
+  if(canvas.width!==width||canvas.height!==height){canvas.width=width;canvas.height=height;}
+  const ctx=canvas.getContext("2d");
+  ctx.setTransform(ratio,0,0,ratio,0,0);
+  ctx.clearRect(0,0,w,h);
+  ctx.lineCap="round";ctx.lineJoin="round";
+  return {w,h,ctx};
+}
+
+const INK="#1c3947",LIGHT="#c7e4e9",TEAL="#75e5d0",ORANGE="#ffc08b",GRID="#355564";
+const COPPER="#eaae77",STEEL="#6a899d";
+function projector(w,h,angle,zoom=1){
+  const t=angle*Math.PI/180,p=.30,scale=Math.min(w*.84/380,h*.90/180)*zoom;
+  return (x,y,z)=>{
+    const depth=z*Math.cos(t)-x*Math.sin(t);
+    return [w*.50+(x*Math.cos(t)+z*Math.sin(t))*scale,
+      h*.53+(y*Math.cos(p)-depth*Math.sin(p))*scale];
+  };
+}
+function ringPoints(project,r,z){
+  return Array.from({length:57},(_,i)=>{
+    const theta=2*Math.PI*i/56;
+    return project(r*Math.cos(theta),r*Math.sin(theta),z);
+  });
+}
+function hull(points){
+  const sorted=points.toSorted((a,b)=>a[0]-b[0]||a[1]-b[1]);
+  const cross=(a,b,c)=>(b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]);
+  function half(items){
+    const result=[];
+    for(const p of items){
+      while(result.length>1&&cross(result.at(-2),result.at(-1),p)<=0)result.pop();
+      result.push(p);
+    }
+    return result.slice(0,-1);
+  }
+  return [...half(sorted),...half(sorted.toReversed())];
+}
+function nearestSegment(segments,x,y,maxDistance){
+  let closestDistance=maxDistance;
+  let selection=null;
+  for(const {start,end,pick} of segments){
+    const dx=end[0]-start[0],dy=end[1]-start[1];
+    const lengthSquared=dx*dx+dy*dy;
+    const t=lengthSquared ? limit(((x-start[0])*dx+(y-start[1])*dy)/lengthSquared,0,1) : 0;
+    const distance=Math.hypot(x-start[0]-t*dx,y-start[1]-t*dy);
+    if(distance<closestDistance){closestDistance=distance;selection=pick(t);}
+  }
+  return selection;
+}
+function cableScene(ctx,w,h,state,view,chosen,result){
+  if(view.section==="longitudinal")return cableLongitudinalScene(ctx,w,h,state,view,chosen,result);
+  const project=projector(w,h,view.angle);
+  const near=Math.cos(view.angle*Math.PI/180)>=0 ? 1 : -1;
+  const zFront=near*(100-view.cut*.55),zBack=-near*114;
+  const geometry=result.edges.map(r=>r/state.b*68);
+  const layers=result.layers.map(l=>MATERIALS[l.material].color);
+  const outer=72,cover=78;
+  const baseColor=state.exploded ? "#385866" : "#3e5461";
+  stroke(ctx,hull([...ringPoints(project,cover,zBack),...ringPoints(project,cover,zFront)]),"#65828e",1.6,baseColor);
+  const drawRing=(r,z,fill,edge="#183b47")=>stroke(ctx,ringPoints(project,r,z),edge,1.2,fill);
+  let i=0;
+  const frontRings=[[cover,baseColor],[outer,"#adc4cd"],[70,"#28454d"]];
+  result.layers.slice().reverse().forEach((l,j)=>frontRings.push([geometry[result.layers.length-j],layers[result.layers.length-j-1]]));
+  frontRings.push([geometry[0],"#28454d"],[Math.max(3,geometry[0]-3),COPPER]);
+  for(const [r,color] of frontRings){
+    const dz=state.exploded ? near*9*i++ : 0;
+    drawRing(r,zFront+dz,color);
+  }
+  const zPick=zFront+near*(state.exploded ? 16 : 0);
+  drawRing(chosen/state.b*68,zPick,null,TEAL);
+  const start=project(0,0,zPick);
+  const marker=project(0,-chosen/state.b*68,zPick);
+  stroke(ctx,[start,marker],"#e7ffef",1);
+  ctx.beginPath();ctx.arc(marker[0],marker[1],4,0,2*Math.PI);ctx.fillStyle="#e7ffef";ctx.fill();
+  labelText(ctx,"Жила · U",14,22,{color:ORANGE});
+  labelText(ctx,"Металлический экран · 0 кВ",w-13,22,{color:LIGHT,align:"right",size:w<400 ? 10 : 13});
+  labelText(ctx,"Курсор r = "+number(chosen,1)+" мм",14,h-12,{color:TEAL});
+  const basisX=project(68,0,zPick),basisY=project(0,68,zPick);
+  return (x,y)=>{
+    const ix=basisX[0]-start[0],iy=basisX[1]-start[1],jy=basisY[1]-start[1];
+    if(Math.abs(ix)<2)return null;
+    const u=(x-start[0])/ix,v=(y-start[1]-u*iy)/jy;
+    const radius=Math.hypot(u,v)*state.b;
+    return radius<=state.b*1.12 ? Math.round(1000*limit((radius-state.a)/(state.b-state.a),0,1)) : null;
+  };
+}
+function cableLongitudinalScene(ctx,w,h,state,view,chosen,result){
+  const left=26,right=w-26,axis=.51*h,scale=Math.min(h*.30,80)/78;
+  const drawLayer=(r,color)=>{
+    const thickness=r*scale;
+    ctx.fillStyle=color;ctx.fillRect(left,axis-thickness,right-left,2*thickness);
+    ctx.strokeStyle="#273f4d";ctx.lineWidth=1;ctx.strokeRect(left,axis-thickness,right-left,2*thickness);
+  };
+  drawLayer(78,"#3e5461");drawLayer(74,"#adc4cd");drawLayer(71,"#28454d");
+  for(const layer of result.layers.slice().reverse())drawLayer(layer.end/state.b*68,MATERIALS[layer.material].color);
+  const inner=state.a/state.b*68;
+  drawLayer(inner,"#28454d");drawLayer(Math.max(2,inner-3),COPPER);
+  ctx.setLineDash([6,5]);stroke(ctx,[[left,axis],[right,axis]],"#65472b",1);ctx.setLineDash([]);
+  const probeX=left+(right-left)*view.axialFraction;
+  const probeY=axis-view.radialSide*chosen/state.b*68*scale;
+  stroke(ctx,[[probeX,axis],[probeX,probeY]],"#f3fff4",2);
+  ctx.beginPath();ctx.arc(probeX,probeY,4,0,Math.PI*2);ctx.fillStyle="#f3fff4";ctx.fill();
+  labelText(ctx,"Жила · U",14,22,{color:ORANGE});
+  labelText(ctx,"Металлический экран · 0 кВ",w-13,22,{color:LIGHT,align:"right",size:w<400 ? 10 : 13});
+  labelText(ctx,"Курсор r = "+number(chosen,1)+" мм",14,h-13,{color:TEAL});
+  labelText(ctx,"Ось кабеля z →",w-14,h-13,{color:LIGHT,align:"right",size:w<400 ? 10 : 13});
+  return (x,y)=>{
+    const fromAxis=Math.abs(y-axis)/scale;
+    if(x<left||x>right||fromAxis>78)return null;
+    view.axialFraction=(x-left)/(right-left);view.radialSide=y<=axis ? 1 : -1;
+    const radius=fromAxis/68*state.b;
+    return Math.round(1000*limit((radius-state.a)/(state.b-state.a),0,1));
+  };
+}
+function box(ctx,project,x,y,z,dx,dy,dz,color,edge="#284756"){
+  const a=project(x,y,z),b=project(x+dx,y,z),c=project(x+dx,y+dy,z),d=project(x,y+dy,z);
+  const e=project(x,y,z+dz),f=project(x+dx,y,z+dz),g=project(x+dx,y+dy,z+dz),k=project(x,y+dy,z+dz);
+  stroke(ctx,hull([a,b,c,d,e,f,g,k]),edge,1.4,color);
+  stroke(ctx,[a,e,f,b],edge,1);
+  stroke(ctx,[a,e,k,d],edge,1);
+  stroke(ctx,[e,f,g,k],edge,1);
+}
+function blockProjector(w,h,view){
+  // Keep the primary cut face visible as the viewer rotates the model.
+  const t=view.angle*Math.PI/180;
+  const scale=Math.min((w-20)/390,h/209);
+  const squash=.86+.12*Math.abs(Math.cos(t));
+  return (x,y,z)=>[w*.50+(x*squash+z*.53*Math.sin(t))*scale,
+    h*.53+(y+z*.22*Math.cos(t))*scale];
+}
+function machineScene(ctx,w,h,state,view,chosen,result){
+  const p=blockProjector(w,h,view);
+  const n=result.drops.length,delta=236/n,depth=18+(100-view.cut)*.48;
+  const dz=state.exploded ? 12 : 0;
+  box(ctx,p,-145,19,-23,290,40,depth,STEEL);
+  if(state.region!=="end"){
+    box(ctx,p,-144,-57,-22,20,98,depth,STEEL);
+    box(ctx,p,124,-57,-22,20,98,depth,STEEL);
+    box(ctx,p,-123,1-dz,-14,246,18,depth-3,"#d9ae81");
+  }else{
+    const line=Array.from({length:35},(_,j)=>{const x=-116+j*232/34;return p(x,-5-56*(1-(x/120)**2),0);});
+    stroke(ctx,line,"#b68163",12);
+  }
+  const targets=[];
+  for(let i=0;i<n;i++){
+    const height=state.kind==="random" ? 27 : 36;
+    const y=state.region==="end" ? -28-28*Math.sin(Math.PI*(i+.5)/n) : -34-dz;
+    const x=-119+i*delta;
+    const highlight=i+1===chosen&&(state.region==="turn"||state.region==="end");
+    box(ctx,p,x,y,-6,delta-4,height,depth-10,highlight ? "#ffe5b2" : COPPER,highlight ? "#fff2ca" : INK);
+    const loc=p(x+(delta-4)/2,y+height/2,depth-10);
+    targets.push({start:loc,end:loc,pick:()=>i+1});
+    labelText(ctx,String(i+1),loc[0],loc[1]+4,{align:"center",color:"#384049",size:10});
+  }
+  if(state.region==="ground"){
+    const x=-119+(chosen-.5)*delta;
+    stroke(ctx,[p(x,-2-dz,depth-6),p(x,26,depth-6)],TEAL,3);
+  }
+  labelText(ctx,"Начало катушки · U",14,21,{color:ORANGE});
+  labelText(ctx,state.region==="end" ? "Лобовая часть" : "Корпус / сталь статора",w-13,h-12,{align:"right",color:LIGHT});
+  return (x,y)=>nearestSegment(targets,x,y,28);
+}
+function transformerScene(ctx,w,h,state,view,chosen,result){
+  const p=blockProjector(w,h,view);
+  const depth=19+(100-view.cut)*.49;
+  const x=d=>-110+220*d/result.width;
+  const targets=[];
+  box(ctx,p,-154,-65,-18,43,124,depth,"#bb855c");
+  box(ctx,p,110,-65,-18,43,124,depth,STEEL);
+  result.layers.forEach((l,i)=>{
+    const shift=state.exploded ? (i-(result.layers.length-1)/2)*9 : 0;
+    box(ctx,p,x(l.start)+shift,-56,-9,220*l.width/result.width,106,depth-4,MATERIALS[l.material].color);
+    for(const y of [-45,-23,0,23,46])targets.push({start:p(x(l.start)+shift,y,depth-13),end:p(x(l.end)+shift,y,depth-13),
+      pick:t=>Math.round(1000*(l.start+t*l.width)/result.width)});
+  });
+  const y=51,z=depth-8;
+  stroke(ctx,[p(x(chosen),-62,z),p(x(chosen),y,z)],"#eaffee",2);
+  labelText(ctx,"Электрод · U",14,22,{color:ORANGE});
+  labelText(ctx,"Опорный электрод · 0 кВ",w-13,22,{color:LIGHT,align:"right",size:w<400 ? 10 : 13});
+  labelText(ctx,"Координата среза x = "+number(chosen,1)+" мм",14,h-12,{color:TEAL});
+  return (px,py)=>nearestSegment(targets,px,py,17);
+}
+function bushingScene(ctx,w,h,state,view,chosen,result){
+  const p=blockProjector(w,h,view);
+  const depth=15+(100-view.cut)*.46;
+  box(ctx,p,-171,-7,-15,342,15,depth,COPPER);
+  const n=result.sections.length;
+  const targets=[];
+  for(let i=0;i<n;i++){
+    const s=result.sections[i];
+    const extent=67+93*s.length/210;
+    const y=10+i*(state.exploded ? 10.4 : 8.2);
+    const selected=i+1===chosen;
+    for(const k of [-1,1]){
+      box(ctx,p,-extent,y*k,-9,extent*2,5,depth-6,selected ? "#ffcc8f" : "#5e9eac",selected ? "#ffdead" : INK);
+      targets.push({start:p(-extent,y*k+2.5,depth-15),end:p(extent,y*k+2.5,depth-15),pick:()=>i+1});
+    }
+  }
+  const yGround=(14+n*(state.exploded ? 10.4 : 8.2));
+  box(ctx,p,-158,yGround,-14,316,7,depth,"#a9c2cf");
+  labelText(ctx,"Токоведущий стержень · U",14,21,{color:ORANGE,size:w<400 ? 11 : 13});
+  labelText(ctx,"Обкладки RIP · секция "+chosen,w-13,21,{color:TEAL,align:"right",size:w<400 ? 11 : 13});
+  labelText(ctx,"Фланец · 0 кВ",w-12,h-12,{color:LIGHT,align:"right"});
+  return (x,y)=>nearestSegment(targets,x,y,12);
+}
+
+function chart(canvas,graphs,{maxX,maxY,chosen,xUnit,yUnit,discrete=false}){
+  const view=paintCanvas(canvas);
+  if(!view)return;
+  const {w,h,ctx}=view,left=43,right=w-13,top=16,bottom=h-30;
+  const x=v=>left+(right-left)*v/maxX;
+  const y=v=>bottom-(bottom-top)*v/maxY;
+  const ticks=discrete ? maxX : 4;
+  for(let i=0;i<=4;i++){
+    const value=maxY*i/4,mark=y(value);
+    stroke(ctx,[[left,mark],[right,mark]],GRID);
+    labelText(ctx,number(value,maxY>=100 ? 0 : maxY>=10 ? 1 : 2),left-5,mark+3,{align:"right",size:10});
+  }
+  for(let i=0;i<=ticks;i++){
+    const value=maxX*i/ticks,mark=x(value);
+    stroke(ctx,[[mark,top],[mark,bottom]],GRID);
+    labelText(ctx,number(value,discrete||maxX%4===0 ? 0 : 1),mark,h-12,{align:"center",size:10});
+  }
+  if(chosen!==null){
+    const mark=x(chosen);
+    ctx.setLineDash([4,3]);stroke(ctx,[[mark,top],[mark,bottom]],ORANGE,1.4);ctx.setLineDash([]);
+  }
+  for(const g of graphs){
+    stroke(ctx,g.points.map(([a,b])=>[x(a),y(b)]),g.color??TEAL,2);
+    if(discrete){
+      for(const [a,b] of g.points){
+        ctx.beginPath();ctx.arc(x(a),y(b),a===chosen ? 4.3 : 2.3,0,Math.PI*2);
+        ctx.fillStyle=a===chosen ? ORANGE : g.color??TEAL;ctx.fill();
+      }
+    }
+  }
+  labelText(ctx,yUnit,5,10,{size:9});
+  if(xUnit)labelText(ctx,xUnit,right,h-2,{align:"right",size:9});
+}
+function bulkSeries(result,offset,key){
+  return result.layers.flatMap((l,i)=>Array.from({length:41},(_,j)=>{
+    const pos=l.start+(l.end-l.start)*j/40;
+    return [pos-offset,result.at(pos,i)[key]];
+  }));
+}
+
+class ReplayScope{
+  constructor(container){
+    this.root=container;
+    this.mode="ac";this.time=0;this.play=false;this.rate=1;this.values=[0,0];
+    container.innerHTML='<div class="panel-head"><h3>Осциллограф модели</h3><span class="tag" data-signal></span></div>'+
+      '<div class="scope-tools"><button type="button" data-play>Пуск</button><button type="button" data-zero>Начать сначала</button>'+
+      '<label>Скорость показа <select><option value="1">Обычная</option><option value=".25">Замедленная ×4</option></select></label></div>'+
+      '<canvas aria-label="Две осциллограммы с общим временем"></canvas>'+
+      '<label class="scope-tools">Курсор времени <input type="range" min="0" max="40" value="0" step=".1"></label><p class="readout" data-scopeout></p>';
+    this.canvas=container.querySelector("canvas");
+    this.slider=container.querySelector("input");
+    this.out=container.querySelector("[data-scopeout]");
+    this.tag=container.querySelector("[data-signal]");
+    this.playButton=container.querySelector("[data-play]");
+    this.playButton.addEventListener("click",()=>{
+      if(!this.play&&this.time>=this.end)this.time=0;
+      this.play=!this.play;this.draw();
+    });
+    container.querySelector("[data-zero]").addEventListener("click",()=>this.reset());
+    container.querySelector("select").addEventListener("change",e=>this.rate=+e.target.value);
+    this.slider.addEventListener("input",()=>{
+      this.time=+this.slider.value;this.play=false;this.draw();
+    });
+    this.canvas.addEventListener("pointerdown",e=>{
+      const {left,width}=this.canvas.getBoundingClientRect();
+      this.time=this.end*limit((e.clientX-left-48)/(width-62),0,1);this.play=false;this.draw();
+    });
+  }
+  configure(mode,values,labels){
+    if(this.mode!==mode){this.time=0;this.play=false;}
+    this.mode=mode;this.values=values;this.labels=labels;this.end=mode==="impulse" ? 6 : 40;
+    this.slider.max=this.end;this.slider.step=mode==="impulse" ? .02 : .1;
+  }
+  reset(){this.time=0;this.play=false;this.draw();}
+  tick(dt){
+    if(!this.play)return;
+    this.time=Math.min(this.end,this.time+dt*this.end*this.rate/3.2);
+    this.play=this.time<this.end;
+    this.draw();
+  }
+  draw(){
+    const view=paintCanvas(this.canvas);
+    if(!view)return;
+    this.slider.value=this.time;
+    this.playButton.textContent=this.play ? "Пауза" : this.time===0||this.time>=this.end ? "Пуск" : "Продолжить";
+    const impulse=this.mode==="impulse",timeUnit=impulse ? "мкс" : "мс";
+    this.tag.textContent=impulse ? "Условный фронт" : this.mode==="dc" ? "Установившийся DC" : "50 Гц · действующая база";
+    const {ctx,w,h}=view,left=48,right=w-14,top=12,bottom=h-26;
+    const atX=t=>left+(right-left)*t/this.end;
+    const signal=voltageSignal(this.time,this.mode);
+    const colors=[TEAL,ORANGE];
+    for(let i=0;i<=6;i++){
+      const k=this.end*i/6,x=atX(k);
+      stroke(ctx,[[x,top],[x,bottom]],GRID);
+      if(i%2===0)labelText(ctx,number(k,impulse ? 0 : 1),x,h-9,{align:"center",size:10});
+    }
+    if(impulse){const mark=atX(2);stroke(ctx,[[mark,top],[mark,bottom]],"#7d9a9c",1);}
+    for(let i=0;i<2;i++){
+      const center=top+(bottom-top)*(i===0 ? .25 : .75);
+      const half=(bottom-top)*.205,amp=this.mode==="ac" ? Math.SQRT2 : 1;
+      const max=Math.max(this.values[i]*amp,1e-3);
+      stroke(ctx,[[left,center],[right,center]],GRID);
+      labelText(ctx,number(max,max>=10 ? 1 : 2),left-6,center-half+4,{align:"right",size:10,color:colors[i]});
+      labelText(ctx,"0",left-6,center+4,{align:"right",size:10,color:colors[i]});
+      const pts=Array.from({length:201},(_,j)=>{
+        const t=this.end*j/200;
+        return [atX(t),center-half*this.values[i]*voltageSignal(t,this.mode)/max];
+      });
+      stroke(ctx,pts,colors[i],2);
+    }
+    const x=atX(this.time);
+    stroke(ctx,[[x,top],[x,bottom]],"#fff4d5",1.2);
+    labelText(ctx,timeUnit,right,10,{size:10,align:"right"});
+    this.out.textContent=number(this.time,2)+" "+timeUnit+" · "+this.labels.map((l,i)=>l+" "+number(this.values[i]*signal,3)+" кВ").join(" · ");
+  }
+}
+
+const CAP=()=>{
+  const pool=[["xlpe","СПЭ"],["epr","Этиленпропиленовая резина (ЭПР)"]];
+  return pool;
+};
+const configs={
+  cable:{
+    title:"Кабели с экструдированной изоляцией",
+    lead:"Одножильный экранированный кабель. На продольном разрезе видна протяжённость слоёв, на поперечном — их расположение вокруг жилы. Оба вида показывают один расчёт поля.",
+    note:"Ёмкостная модель AC принимает экраны эквипотенциальными, потери малы. Двухслойный и DC-режимы служат для изучения распределения. εᵣ выбраны для учебного сравнения.",
+    primary:"Разрез экранированного кабеля",labels:["Потенциал φ(r), кВ","Напряжённость E(r), кВ/мм"],
+    controls:[
+      ["voltage","range","Напряжение жила–экран",2,38,.1,10,"кВ"],
+      ["a","range","Внутренний радиус a",3,30,.1,8,"мм"],
+      ["b","range","Внешний радиус b",16,48,.1,24,"мм"],
+      ["mode","select","Режим",[["ac","AC · ёмкостное поле"],["dc","DC · установившееся поле"]],"ac"],
+      ["first","select","Материал внутреннего слоя",CAP(),"xlpe"],
+      ["two","check","Два слоя изоляции",false],
+      ["second","select","Материал наружного слоя",CAP(),"epr"],
+      ["radius","range","Положение границы слоёв",20,80,1,50,"% толщины"],
+      ["conductivity","range","log₁₀(σ₂/σ₁)",-2,2,.1,1,""]
+    ],
+    legend:[["Жила",COPPER],["Полупроводящие слои","#35545d"],["СПЭ",MATERIALS.xlpe.color],["ЭПР",MATERIALS.epr.color],["Металлический экран","#a9c2cf"]],
+    explanations:[
+      ["Жила","Токоведущая жила и покрывающий её тонкий внутренний полупроводящий слой приняты на одном потенциале."],
+      ["Внутренний экран","Сглаживает геометрию границы со стороны жилы. Радиус a измеряется до внешней поверхности этого слоя."],
+      ["Изоляция","Поле вычисляется в диэлектрике между a и b. На графике E возможен скачок на границе материалов."],
+      ["Внешний экран","Наружный полупроводящий слой контактирует с металлическим экраном. В расчёте их граница с изоляцией имеет потенциал 0."],
+      ["Оболочка","Защитная оболочка лежит снаружи металлического экрана. В радиальную модель между жилой и экраном она не входит."]
+    ],
+    render:cableScene,
+  },
+  machine:{
+    title:"Внутренняя изоляция электрических машин",
+    lead:"Сравните типовые конструкции статора и посмотрите отдельно межвитковое напряжение, потенциал относительно корпуса и лобовую часть.",
+    note:"В равномерном режиме U/N — заданное опорное приближение. Крутой фронт использует начальный ёмкостный снимок. Форма фронта на осциллографе иллюстрирует этот снимок при постоянных долях ΔU/U.",
+    primary:"Разрез статора и проводников",labels:["Потенциал узла относительно корпуса, кВ","Падение между соседними узлами, кВ"],
+    controls:[
+      ["kind","select","Конструкция",[["form","Асинхронная · формованные катушки"],["random","Асинхронная · всыпная обмотка"],["sync","Синхронная · формованные катушки"]],"form"],
+      ["region","select","Зона",[["turn","Межвитковая"],["ground","Корпусная в пазу"],["end","Лобовая часть"]],"turn"],
+      ["mode","select","Воздействие",[["ac","Синусоида · опорное распределение"],["impulse","Крутой фронт · ёмкостный снимок"]],"impulse"],
+      ["voltage","range","Напряжение на участке",.2,12,.1,6,"кВ"],
+      ["ground","range","Отношение Cз/Cв",0,.7,.01,.28,""]
+    ],
+    legend:[["Медь",COPPER],["Сталь статора",STEEL],["Корпусная изоляция","#d9ae81"],["Выбранная зона",TEAL]],
+    explanations:[
+      ["Межвитковая","Разделяет соседние витки. В модели отсчитывайте падение от первого узла пары к следующему."],
+      ["Корпусная","Разделяет проводник и заземлённую сталь статора. Смотрите потенциал проводника относительно корпуса."],
+      ["Лобовая","Вне паза меняется окружение проводников и их взаимное положение. Выбранный виток можно подсветить, поле у края паза в этой схеме не рассчитывается."]
+    ],
+    render:machineScene,
+  },
+  transformer:{
+    title:"Внутренняя изоляция трансформаторов",
+    lead:"Переключите масляную и сухую конструкции, измените слои и сравните доли приложенного напряжения.",
+    note:"Модель рассчитывает плоские слои. Кромочный эффект, пробой, развитие ЧР, влияние потока масла и границы охлаждения в расчёт не входят.",
+    primary:"Разрез между электродами",labels:["Потенциал φ(x), кВ","Напряжённость E(x), кВ/мм"],
+    controls:[
+      ["kind","select","Конструкция",[["oil","Масляный · масло и электрокартон"],["dry","Сухой · литая смола и модель полости"]],"oil"],
+      ["voltage","range","Напряжение участка (действ.)",4,38,.1,20,"кВ"],
+      ["width","range","Суммарная толщина",12,60,.5,30,"мм"],
+      ["barrier","range","Толщина барьера",0,10,.5,4,"мм"],
+      ["position","range","Доля масла до барьера",15,85,1,50,"%"],
+      ["void","range","Газовая прослойка",0,4,.2,1,"мм"]
+    ],
+    legend:[["Электрод",COPPER],["Масло",MATERIALS.oil.color],["Электрокартон",MATERIALS.board.color],["Литая смола",MATERIALS.resin.color],["Газ",MATERIALS.air.color]],
+    explanations:[
+      ["Масляный вариант","Электрокартон между масляными промежутками. При перемещении барьера общее количество материала не меняется."],
+      ["Сухой вариант","Локальный участок заливки заменён твёрдым слоем с условной газовой прослойкой. Её толщина может быть нулевой."],
+      ["Границы","В точке границы курсор показывает правую сторону. В таблице приведены значения с обеих сторон в соседних строках."]
+    ],
+    render:transformerScene
+  },
+  bushing:{
+    title:"Ввод RIP с уравнительными обкладками",
+    lead:"Сопоставьте длины перекрытия, ёмкости и падения напряжения. Затем измените одну секцию.",
+    note:"Lᵢ — эффективное перекрытие, условная геометрия, εᵣ = 3,8. Радиальное поле вычислено вдали от торцов. 3D-схема показывает протяжённость секций в условном масштабе.",
+    primary:"Обкладки, стержень и заземлённый фланец",labels:["Падение напряжения на секции, кВ","Ёмкость секции, пФ"],
+    controls:[
+      ["voltage","range","Стержень–фланец (действ.)",10,94,.5,60,"кВ"],
+      ["n","range","Число секций",3,9,1,6,""],
+      ["style","select","Исходные перекрытия",[["balanced","Равные ёмкости"],["equal","Равные длины"]],"balanced"],
+      ["a","range","Внутренний радиус a",12,30,.5,20,"мм"],
+      ["b","range","Внешний радиус b",42,90,.5,62,"мм"],
+      ["affected","range","Изменяемая секция",1,9,1,3,""],
+      ["relative","range","Перекрытие этой секции",40,100,1,100,"%"]
+    ],
+    legend:[["Стержень",COPPER],["Секции","#5e9eac"],["Выбранная секция",ORANGE],["Фланец","#a9c2cf"]],
+    explanations:[
+      ["Стержень","Граничный металлический проводник на потенциале U."],
+      ["Обкладки","Внутренние плавающие электроды создают последовательность ёмкостных секций."],
+      ["Фланец","Заземлённая сторона ёмкостной цепочки. Напряжения отсчитываются от неё."],
+      ["Торцы","Краевое поле у торцов требует модели другой размерности. Радиальные данные тренажёра описывают центральную часть секции."]
+    ],
+    render:bushingScene
+  }
+};
+
+const tabs=[...document.querySelectorAll("[role=tab]")];
+const identifiers=tabs.map(tab=>tab.getAttribute("aria-controls"));
+const models={};
+let currentTab="theory";
+
+function currentModel(id){return models[id];}
+function go(id,focusContent=false){
+  if(!identifiers.includes(id))id="theory";
+  currentTab=id;
+  for(const [i,tab] of tabs.entries()){
+    const selected=identifiers[i]===id;
+    tab.tabIndex=selected ? 0 : -1;tab.setAttribute("aria-selected",String(selected));$(identifiers[i]).hidden=!selected;
+  }
+  if(models[id])refresh(id,true);
+  if(focusContent){
+    const title=$(id).querySelector("h2");title.tabIndex=-1;title.focus();
+  }
+}
+function navigate(id,focusContent=false){
+  if(location.hash!=="#"+id)history.pushState(null,"","#"+id);
+  go(id,focusContent);
+}
+function followHash(){go(location.hash.slice(1));}
+window.addEventListener("hashchange",followHash);
+window.addEventListener("popstate",followHash);
+document.querySelector("nav[role=tablist]").addEventListener("click",e=>{
+  const tab=e.target.closest("[role=tab]");
+  if(tab)navigate(tab.getAttribute("aria-controls"));
+});
+document.querySelector("nav[role=tablist]").addEventListener("keydown",e=>{
+  const index=identifiers.indexOf(currentTab);
+  const target={ArrowLeft:(index-1+tabs.length)%tabs.length,ArrowRight:(index+1)%tabs.length,Home:0,End:tabs.length-1}[e.key];
+  if(target===undefined)return;
+  e.preventDefault();navigate(identifiers[target]);tabs[target].focus();
+});
+document.addEventListener("click",e=>{
+  const link=e.target.closest("[data-go]");
+  if(link)navigate(link.dataset.go,true);
+});
+
+function controlHTML(id,spec){
+  const [key,type,label,arg,maximum,step,initial,unit]=spec,name=id+"-"+key;
+  if(type==="select")return '<div class="control" data-control="'+key+'"><label for="'+name+'">'+label+'</label><select id="'+name+'">'+
+    arg.map(([value,text])=>'<option value="'+value+'"'+(value===maximum ? ' selected' : '')+'>'+text+'</option>').join("")+'</select></div>';
+  if(type==="check")return '<label class="check" data-control="'+key+'"><input type="checkbox" id="'+name+'">'+label+'</label>';
+  return '<div class="control" data-control="'+key+'"><label for="'+name+'">'+label+' <output for="'+name+'"></output></label>'+
+    '<input type="range" id="'+name+'" min="'+arg+'" max="'+maximum+'" value="'+initial+'" step="'+step+'"></div>';
+}
+const initialView=()=>({angle:58,cut:45,section:"longitudinal",axialFraction:.57,radialSide:1});
+function modelTemplate(id,cfg){
+  return '<div class="section-title"><h2>'+cfg.title+'</h2><p>'+cfg.lead+'</p></div><div class="lab">'+
+   '<aside class="card controls"><h3>Условия опыта</h3><div data-params>'+cfg.controls.map(s=>controlHTML(id,s)).join("")+'</div>'+
+   '<div class="actions"><button type="button" data-reset>Сбросить</button><button type="button" data-save>Запомнить показания</button></div>'+
+   '<p class="small note">'+cfg.note+'</p></aside>'+
+   '<div class="lab-body"><article class="card model-card"><div class="panel-head"><h3>'+cfg.primary+'</h3><span class="tag">Учебный разрез</span></div>'+
+   (id==="cable" ? '<div class="section-chooser" role="group" aria-label="Вид разреза"><button type="button" data-section="longitudinal" aria-pressed="true">Продольный</button><button type="button" data-section="transverse" aria-pressed="false">Поперечный</button></div>' : '')+
+   '<canvas class="model-scene" data-scene aria-label="'+cfg.primary+'"></canvas>'+
+   '<div class="scene-tools" data-scene-tools '+(id==="cable" ? 'hidden' : '')+'><label>Поворот <input type="range" data-angle min="-180" max="180" value="58"></label>'+
+   '<label>Глубина разреза <input type="range" data-cut min="0" max="100" value="45"></label>'+
+   '<label class="check"><input type="checkbox" data-explode>Разнести детали</label></div>'+
+   '<p class="scene-instruction" data-scene-instruction></p>'+
+   '<div class="model-key">'+cfg.legend.map(([label,color])=>'<span><i style="background:'+color+'"></i>'+label+'</span>').join("")+'</div>'+
+   '<details><summary>Назначение деталей</summary>'+cfg.explanations.map(([label,text])=>'<p><strong>'+label+'.</strong> '+text+'</p>').join("")+'</details>'+
+   '<div class="stats" data-stats></div><p class="small live-note" data-saved hidden></p></article>'+
+   '<article class="card"><div class="panel-head"><h3>Профили и измерения</h3><span class="tag" data-mode-label></span></div>'+
+   '<div class="plot-pair">'+cfg.labels.map((label,i)=>'<div><h4>'+label+'</h4><canvas data-plot="'+i+'" aria-label="'+label+'"></canvas></div>').join("")+'</div>'+
+   '<label class="scope-tools"><span data-probe-label>Курсор</span><input type="range" data-probe min="0" max="1000" value="0" step="1"></label>'+
+   '<p class="readout" data-readout></p><details><summary>Расчётные значения</summary><div class="table-scroll" data-table></div></details></article>'+
+   '<section class="card scope" data-scope></section></div></div>';
+}
+function mountModel(id,cfg){
+  const root=$(id);root.innerHTML=modelTemplate(id,cfg);
+  const q=selector=>root.querySelector(selector);
+  const model={id,root,cfg,q,
+    params:Object.fromEntries(cfg.controls.map(spec=>{
+      const [key,type,argValue,arg,last,step,initial]=spec;
+      return [key,type==="select" ? last : type==="check" ? arg : initial];
+    })),
+    view:initialView(),scope:new ReplayScope(q("[data-scope]")),probe:null,saved:null
+  };
+  models[id]=model;
+  q("[data-params]").addEventListener("input",e=>{
+    const key=e.target.id.slice(id.length+1);
+    readControl(id,key);refresh(id,true);
+  });
+  q("[data-angle]").addEventListener("input",e=>{model.view.angle=+e.target.value;drawModel(id);});
+  q("[data-cut]").addEventListener("input",e=>{model.view.cut=+e.target.value;drawModel(id);});
+  q("[data-explode]").addEventListener("input",()=>drawModel(id));
+  for(const button of root.querySelectorAll("[data-section]"))button.addEventListener("click",()=>{
+    model.view.section=button.dataset.section;
+    syncSceneControls(id);drawModel(id);
+  });
+  q("[data-reset]").addEventListener("click",()=>setModel(id,{}));
+  q("[data-save]").addEventListener("click",()=>{
+    const data=measure(id);
+    model.saved={label:data[0],value:data[1]};
+    refresh(id,true);
+  });
+  q("[data-probe]").addEventListener("input",e=>setProbe(id,+e.target.value));
+  for(const plot of root.querySelectorAll("[data-plot]")){
+    const use=e=>{
+      if(e.type==="pointermove"&&e.pointerType!=="mouse")return;
+      const {left,width}=plot.getBoundingClientRect(),d=plotData(id);
+      const x=d.maxX*limit((e.clientX-left-43)/(width-56),0,1);
+      setProbe(id,d.discrete ? Math.round(x) : Math.round(x/d.maxX*1000));
+    };
+    plot.addEventListener("pointerdown",use);plot.addEventListener("pointermove",use);
+  }
+  let drag=null;
+  const scene=q("[data-scene]");
+  scene.addEventListener("pointerdown",e=>{drag={start:e.clientX,y:e.clientY,angle:model.view.angle,moved:false};scene.setPointerCapture(e.pointerId);});
+  scene.addEventListener("pointermove",e=>{
+    if(drag===null)return;
+    drag.moved||=Math.hypot(e.clientX-drag.start,e.clientY-drag.y)>5;
+    if(!drag.moved||(id==="cable"&&model.view.section==="longitudinal"))return;
+    model.view.angle=((drag.angle+(e.clientX-drag.start)*1.15+180)%360+360)%360-180;
+    q("[data-angle]").value=model.view.angle;drawModel(id);
+  });
+  scene.addEventListener("pointerup",e=>{
+    if(drag&&!drag.moved){
+      const {left,top}=scene.getBoundingClientRect();
+      const selection=model.pick?.(e.clientX-left,e.clientY-top);
+      if(Number.isFinite(selection))setProbe(id,selection);
+    }
+    drag=null;
+  });
+  for(const event of ["pointercancel","lostpointercapture"])scene.addEventListener(event,()=>{drag=null;});
+}
+function syncSceneControls(id){
+  const m=currentModel(id),longitudinal=id==="cable"&&m.view.section==="longitudinal";
+  m.q("[data-scene-tools]").hidden=longitudinal;
+  const scene=m.q("[data-scene]");
+  scene.classList.toggle("longitudinal",longitudinal);
+  scene.setAttribute("aria-label",id==="cable" ? (longitudinal ? "Продольный разрез кабеля" : "Поперечный разрез кабеля") : m.cfg.primary);
+  m.q("[data-scene-instruction]").textContent=longitudinal ?
+    "Щёлкните по слою. При том же расстоянии от оси показания вдоль кабеля совпадают в этой модели." :
+    "Щёлкните по разрезу, чтобы поставить курсор. Перетащите разрез для поворота.";
+  for(const button of m.root.querySelectorAll("[data-section]"))button.setAttribute("aria-pressed",String(button.dataset.section===m.view.section));
+}
+function readControl(id,key){
+  const model=currentModel(id),control=$(id+"-"+key),type=model.cfg.controls.find(s=>s[0]===key)[1];
+  model.params[key]=type==="check" ? control.checked : type==="range" ? +control.value : control.value;
+}
+function setModel(id,overrides){
+  const m=currentModel(id);
+  for(const spec of m.cfg.controls){
+    const [key,type,,arg,maximum,,initial]=spec;
+    const ctrl=$(id+"-"+key),value=overrides[key]??(type==="select" ? maximum : type==="check" ? arg : initial);
+    if(type==="check")ctrl.checked=value;
+    else{
+      if(type==="range")ctrl.max=maximum;
+      ctrl.value=value;
+    }
+    readControl(id,key);
+  }
+  m.probe=null;m.saved=null;m.view=initialView();
+  m.q("[data-angle]").value=58;m.q("[data-cut]").value=45;m.q("[data-explode]").checked=false;
+  syncSceneControls(id);refresh(id,true);m.scope.reset();
+}
+function modelResult(id,p){
+  if(id==="cable")return radialModel({...p,ratio:p.radius/100,sigma:10**p.conductivity});
+  if(id==="machine"){
+    const count={form:8,random:10,sync:6}[p.kind];
+    return turnsModel(count,p.voltage,p.mode==="impulse" ? p.ground : 0);
+  }
+  if(id==="transformer")return planarModel(p.voltage,transformerLayers(p.kind,p.width,p.kind==="oil" ? p.barrier : p.void,p.position/100));
+  return bushingModel({...p,relative:p.relative/100,affected:p.affected-1});
+}
+function tuneControls(id){
+  const m=currentModel(id),p=m.params;
+  const hide=(key,hidden)=>{m.q('[data-control="'+key+'"]').hidden=hidden;};
+  if(id==="cable"){
+    const ctrl=$(id+"-a");ctrl.max=Math.min(p.b-2,30);
+    if(p.a>+ctrl.max){ctrl.value=ctrl.max;p.a=+ctrl.value;}
+    hide("second",!p.two);hide("radius",!p.two);hide("conductivity",!p.two||p.mode!=="dc");
+  }else if(id==="machine")hide("ground",p.mode!=="impulse");
+  else if(id==="transformer"){
+    hide("barrier",p.kind!=="oil");hide("position",p.kind!=="oil"||p.barrier===0);hide("void",p.kind!=="dry");
+  }else{
+    const ctrl=$(id+"-affected");ctrl.max=p.n;
+    if(p.affected>p.n)p.affected=+ctrl.value;
+  }
+  for(const spec of m.cfg.controls){
+    const [key,type,,,,step,,unit]=spec;
+    if(type==="range"){
+      const digits=step===.01 ? 2 : step<1 ? 1 : 0;
+      m.q('[data-control="'+key+'"] output').value=number(p[key],digits)+(unit ? " "+unit : "");
+    }
+  }
+}
+function tableRows(id){
+  const {result:r}=currentModel(id);
+  if(id==="cable")return [["Материал","Интервал, мм","ΔU, кВ","E слева → справа, кВ/мм"],r.layers.map((l,i)=>[MATERIALS[l.material].name,
+    number(l.start,1)+" – "+number(l.end,1),number(l.drop,3),number(l.field,3)+" → "+number(r.at(l.end,i).e,3)])];
+  if(id==="transformer")return [["Материал","Толщина, мм","ΔU, кВ","E, кВ/мм"],r.layers.map(l=>
+    [MATERIALS[l.material].name,number(l.width,2),number(l.phiStart-l.phiEnd,3),number(l.e,3)])];
+  if(id==="machine")return [["Пара узлов","φ начального, кВ","φ следующего, кВ","ΔU, кВ"],r.drops.map((v,i)=>[
+    (i+1)+" → "+(i+2),number(r.potentials[i],3),number(r.potentials[i+1],3),number(v,3)])];
+  return [["Секция","Lᵢ, мм","Cᵢ, пФ","ΔU, кВ","E у внутренней границы, кВ/мм"],r.sections.map((s,i)=>
+    [i+1,number(s.length,1),number(s.c,2),number(s.drop,3),number(s.maxRadial,3)])];
+}
+function drawTable(id){
+  const m=currentModel(id),[cols,rows]=tableRows(id);
+  const table=element("table"),head=table.createTHead().insertRow(),body=table.createTBody();
+  for(const key of cols){const cell=element("th",key);cell.scope="col";head.append(cell);}
+  for(const row of rows){
+    const tr=body.insertRow();
+    for(const value of row)tr.append(element("td",value));
+  }
+  m.q("[data-table]").replaceChildren(table);
+}
+function plotData(id){
+  const m=currentModel(id),r=m.result;
+  if(id==="cable"){
+    const maxX=m.params.b-m.params.a;
+    return {maxX,series:[bulkSeries(r,m.params.a,"phi"),bulkSeries(r,m.params.a,"e")],xUnit:"r−a, мм",units:["кВ","кВ/мм"]};
+  }
+  if(id==="transformer")return {maxX:r.width,series:[bulkSeries(r,0,"phi"),bulkSeries(r,0,"e")],xUnit:"x, мм",units:["кВ","кВ/мм"]};
+  if(id==="machine")return {maxX:r.drops.length+1,discrete:true,
+    series:[r.potentials.map((v,i)=>[i+1,v]),r.drops.map((v,i)=>[i+1,v])],xUnit:"№",units:["кВ","кВ"]};
+  return {maxX:r.sections.length,discrete:true,series:[r.sections.map((s,i)=>[i+1,s.drop]),r.sections.map((s,i)=>[i+1,s.c])],xUnit:"№",units:["кВ","пФ"]};
+}
+function defaultProbe(id){
+  const r=currentModel(id).result;
+  if(id==="cable")return Math.round(1000*(r.maximum.start-r.edges[0])/(r.edges.at(-1)-r.edges[0]));
+  if(id==="transformer")return Math.round(1000*(r.maximum.start+r.maximum.width/2)/r.width);
+  if(id==="bushing")return r.maxIndex+1;
+  return 1;
+}
+function refresh(id,compute){
+  const m=currentModel(id);
+  if(compute){tuneControls(id);m.result=modelResult(id,m.params);drawTable(id);}
+  const d=plotData(id),ctl=m.q("[data-probe]");
+  ctl.min=d.discrete ? 1 : 0;
+  ctl.max=d.discrete ? id==="machine" ? d.maxX-1 : d.maxX : 1000;
+  m.q("[data-probe-label]").textContent=d.discrete ? "Номер пары / секции" : "Курсор по срезу";
+  if(m.probe===null)m.probe=defaultProbe(id);
+  m.probe=limit(m.probe,+ctl.min,+ctl.max);ctl.value=m.probe;
+  drawStats(id);drawModel(id);
+}
+function setProbe(id,key){
+  const m=currentModel(id),ctl=m.q("[data-probe]");
+  m.probe=limit(key,+ctl.min,+ctl.max);ctl.value=m.probe;
+  drawStats(id);drawModel(id);
+}
+function probePoint(id){
+  const m=currentModel(id),data=plotData(id);
+  if(data.discrete)return m.probe;
+  return (id==="cable" ? m.params.a : 0)+data.maxX*m.probe/1000;
+}
+function measure(id){
+  const {result:r}=currentModel(id);
+  if(id==="cable")return ["Макс. E",number(r.maximum.field,3)+" кВ/мм"];
+  if(id==="transformer")return ["Макс. E",number(r.maximum.e,3)+" кВ/мм"];
+  if(id==="machine")return ["Первое межвитковое ΔU",number(r.drops[0],3)+" кВ"];
+  return ["Макс. ΔU секции",number(Math.max(...r.sections.map(s=>s.drop)),3)+" кВ"];
+}
+function drawStats(id){
+  const m=currentModel(id),r=m.result,p=m.params,spot=probePoint(id),readout=m.q("[data-readout]");
+  let second,name,mode="ac",line=measure(id),extras=[];
+  if(id==="cable"||id==="transformer"){
+    const v=r.at(spot);second=v.phi;name="Потенциал в точке";
+    readout.textContent=(id==="cable" ? "r = " : "x = ")+number(spot,2)+" мм · "+MATERIALS[v.material].name+" · φ = "+number(v.phi,3)+" кВ · E = "+number(v.e,3)+" кВ/мм";
+    if(id==="cable"){
+      mode=p.mode;
+      extras=[["Материал максимума",MATERIALS[r.maximum.material].name],["Положение максимума","r = "+number(r.maximum.start,2)+" мм"],["a* при однородной изоляции",number(r.optimum,2)+" мм"]];
+    }else extras=[["Материал максимума",MATERIALS[r.maximum.material].name],["Толщина участка",number(r.width,1)+" мм"]];
+  }else if(id==="machine"){
+    mode=p.mode;
+    second=p.region==="turn" ? r.drops[spot-1] : r.potentials[spot-1];
+    name=p.region==="turn" ? "ΔU соседних узлов" : "φ относительно корпуса";
+    readout.textContent="Пара "+spot+" → "+(spot+1)+" · φ начального узла "+number(r.potentials[spot-1],3)+" кВ · ΔU "+number(r.drops[spot-1],3)+" кВ";
+    if(p.region==="end")readout.textContent+=" · лобовая часть, без расчёта краевого поля";
+    extras=[["Доля на первой паре",number(100*r.drops[0]/p.voltage,1)+" %"],["Сумма ΔU",number(r.drops.reduce((a,b)=>a+b,0),3)+" кВ"]];
+  }else{
+    const s=r.sections[spot-1];second=s.drop;name="ΔU секции";
+    const maxSections=r.maxSections.length===r.sections.length ? "Все секции равны" : r.maxSections.join(", ");
+    extras=[["Секции с максимальным ΔU",maxSections],["Эквивалентная ёмкость",number(r.equivalent,2)+" пФ"]];
+    readout.textContent="Секция "+spot+" · φ "+number(s.phiStart,3)+" → "+number(s.phiEnd,3)+" кВ · C "+number(s.c,2)+" пФ · макс. Eᵣ "+number(s.maxRadial,3)+" кВ/мм";
+  }
+  stats(m.q("[data-stats]"),[line,...extras]);
+  const mark=m.q("[data-saved]");
+  mark.hidden=!m.saved;
+  if(m.saved)mark.textContent="Контрольное показание · "+m.saved.label+" "+m.saved.value;
+  m.q("[data-mode-label]").textContent=mode==="dc" ? "Установившийся DC" : mode==="impulse" ? "Амплитуда фронта" : "Действующие значения";
+  m.scope.configure(mode,[p.voltage,Math.max(0,second)],["Приложено",name]);
+}
+function drawModel(id){
+  if(currentTab!==id)return;
+  const m=currentModel(id),view=paintCanvas(m.q("[data-scene]")),d=plotData(id),spot=probePoint(id);
+  if(!view)return;
+  m.pick=m.cfg.render(view.ctx,view.w,view.h,{...m.params,exploded:m.q("[data-explode]").checked},m.view,spot,m.result);
+  const marker=d.discrete ? spot : (id==="cable" ? spot-m.params.a : spot);
+  d.series.forEach((points,i)=>{
+    const yMax=Math.max(...points.map(p=>p[1]))*1.08||1;
+    chart(m.q('[data-plot="'+i+'"]'),[{points,color:i===0 ? TEAL : ORANGE}],{maxX:d.maxX,maxY:yMax,chosen:marker,xUnit:d.xUnit,yUnit:d.units[i],discrete:d.discrete});
+  });
+  m.scope.draw();
+}
+
+let lastFrame=0;
+function frame(time){
+  const active=models[currentTab];
+  if(active&&lastFrame)active.scope.tick(Math.min(.1,(time-lastFrame)/1000));
+  lastFrame=time;
+  requestAnimationFrame(frame);
+}
+for(const [id,cfg] of Object.entries(configs)){mountModel(id,cfg);setModel(id,{});}
+window.addEventListener("resize",()=>{if(models[currentTab])drawModel(currentTab);});
+followHash();
+requestAnimationFrame(frame);
+
+const experiments=[
+ {title:"Оптимальный радиус при фиксированном b",model:"cable",settings:{a:5,b:24,voltage:10},steps:[
+  "При b = 24 мм и 10 кВ сохраните максимум поля для a = 5 мм.",
+  "Сравните a = 8,8 и 14 мм. Объясните форму зависимости и укажите, какое ограничение задачи остаётся фиксированным."
+ ],hint:"a* = 24/e ≈ 8,83 мм. При a = 8,8 мм максимум около 1,133 кВ/мм. Вы сравниваете поле однородного кабеля при фиксированных b и U."},
+ {title:"Перестановка двух материалов в AC",model:"cable",settings:{a:8,b:24,voltage:10,two:true,radius:50},steps:[
+  "Откройте «Расчётные значения». Запишите падение напряжения и поле по обе стороны r = 16 мм.",
+  "Поменяйте местами СПЭ и ЭПР. Найдите новый максимум и сравните потенциалы, вычисленные с двух сторон границы."
+ ],hint:"φ непрерывен. При AC без свободного заряда на границе сохраняется εᵣE. Максимум определяют сравнением внутренних границ обоих слоёв."},
+ {title:"Экран, радиус и установившееся DC",model:"cable",settings:{a:8,b:24,voltage:10,two:true,conductivity:1},steps:[
+  "Снимите поле у границы жилы и на границе слоёв. Переключитесь на DC с σ₂/σ₁ = 10.",
+  "Установите σ₂/σ₁ = 0,1, сравните порядок полей. В режиме AC увеличьте b до 30 мм, сохраняя a. Объясните, почему физическое снятие экрана эта модель не описывает."
+ ],hint:"В DC сохраняется J, поэтому E₁/E₂ на границе равно σ₂/σ₁. Изменение b переносит эквипотенциальную границу. Снятие экрана меняет граничную задачу."},
+ {title:"Один радиус на двух разрезах",model:"cable",settings:{a:8,b:24,voltage:10,two:true,radius:50},steps:[
+  "На продольном разрезе выберите точку примерно посередине толщины внутреннего слоя. Запишите r, φ и E. Затем щёлкните дальше вдоль оси на той же высоте и сравните показания при совпадающем r.",
+  "Переключитесь на поперечный вид и проверьте, что r, φ и E сохранились. В таблице сравните поле у границы слоёв r = 16 мм с обеих сторон. Объясните, почему оно зависит от радиуса и материала."
+ ],hint:"Схема описывает ровный участок с постоянным сечением. Например, при r = 12 мм в СПЭ φ ≈ 5,921 кВ и E ≈ 0,838 кВ/мм. Возле муфт и концов поле может зависеть от продольной координаты."},
+ {title:"Крутой фронт и первая пара витков",model:"machine",settings:{kind:"form",mode:"ac",voltage:6,ground:.28},steps:[
+  "Для восьми пар запишите долю напряжения на первой паре в равномерном режиме.",
+  "Выберите крутой фронт. Сравните ΔU/U на первой и последней парах при k = 0,28. Включите осциллограф, поставьте курсор после начала фронта."
+ ],hint:"Равномерно первая пара принимает 12,5 %. При k = 0,28 модель даёт около 40,8 % на первой паре. Сравнивайте доли, поскольку синусоида задана действующим значением, а фронт — амплитудой."},
+ {title:"Витковая, корпусная и лобовая зоны",model:"machine",settings:{mode:"impulse",voltage:6,kind:"form"},steps:[
+  "Выберите вторую пару узлов. Запишите её ΔU и потенциал начального узла.",
+  "Переключите от межвитковой зоны к корпусной и лобовой. Запишите, какое показание отображает второй канал. Смените исполнение статора, сохраняя U и k."
+ ],hint:"Межвитковая изоляция воспринимает разность потенциалов. Корпусная связана с потенциалом проводника относительно стали. Для лобовой части в этой модели дан потенциал проводника, поле у кромки не вычисляется."},
+ {title:"Смещение масляного барьера",model:"transformer",settings:{kind:"oil",voltage:20,width:30,barrier:4,position:25},steps:[
+  "Запишите E в масле и электрокартоне, отметьте положение обеих границ.",
+  "Измените положение барьера с 25 до 75 % при прежних толщинах. Сравните профиль потенциала и поле по материалам."
+ ],hint:"Толщины материалов и U сохранились. Поля останутся прежними, а границы и изломы φ(x) переместятся."},
+ {title:"Толщина электрокартона",model:"transformer",settings:{kind:"oil",voltage:20,width:30,barrier:0},steps:[
+  "При 20 кВ и 30 мм запишите E в полностью масляном промежутке.",
+  "Установите барьер 8 мм и снова запишите поля. Объясните, почему меняется поле масла и почему отсюда нельзя предсказать прочность всей конструкции."
+ ],hint:"При постоянной общей толщине замена части масла картоном с большей εᵣ увеличивает поле в оставшемся масле в плоской модели. В реальном трансформаторе на прочность влияют геометрия промежутков и кромки."},
+ {title:"Условная полость в литой смоле",model:"transformer",settings:{kind:"dry",voltage:20,width:30,void:0},steps:[
+  "Снимите поле без прослойки. Добавьте 1 мм газа.",
+  "Откройте таблицу, сравните E в газе и смоле. Найдите отношение полей и объясните, какой критерий проверяет лишь эта модель."
+ ],hint:"На плоской границе Eгаз/Eсмола = 3,7. Модель показывает перераспределение поля. Диагноз ЧР требует измерений и данных о реальной полости."},
+ {title:"Равные длины и равные ёмкости во вводе",model:"bushing",settings:{voltage:60,n:6,style:"equal",relative:100},steps:[
+  "Снимите максимальное ΔU и номер секции при равных длинах.",
+  "Выберите «Равные ёмкости» и проверьте, сходятся ли столбцы ΔU к одному уровню. Сравните оценки радиального поля двух секций."
+ ],hint:"При равных ёмкостях 60 кВ делятся на шесть падений по 10 кВ. Геометрия секций остаётся разной, поэтому это не гарантирует одинаковый максимум E."},
+ {title:"Уменьшение перекрытия в секции RIP",model:"bushing",settings:{voltage:60,n:6,style:"balanced",affected:3,relative:100},steps:[
+  "Отметьте C и ΔU секции 3. Затем установите перекрытие 50 %.",
+  "Проверьте, какая секция приняла наибольшую долю, и сложите все падения. Снимите второй канал осциллографа при выбранной третьей секции."
+ ],hint:"Ёмкость секции 3 уменьшается вдвое, а на ней получается около 17,143 кВ. Сумма напряжений остаётся 60 кВ."}
+];
+const reporting="https://rosseti-kuban.ru/media/files/2024/02/06/24476/file_65c234865c6c77.86872291.pdf";
+const cases=[
+ {title:"Пробой кабельной линии 10 кВ",status:"Акт № 803 · 21 июля 2023 г.",model:"cable",settings:{voltage:5.8,a:8,b:24},text:
+  "В отчёте «Россетей Кубань» запись № 803 от 21 июля 2023 года описывает пробой изоляции КЛ‑10 кВ А117–А384(1) в целом месте с межфазным замыканием.",
+  question:"Можно ли по одной записи определить исходный дефект и вычислить поле в точке пробоя?",
+  answer:"Запись определяет вид замыкания и место вне соединительной муфты. Для расчёта нужны конструкция, реальные размеры и условия аварии. Одножильная коаксиальная модель объясняет распределение в нормальном срезе, а межфазное повреждение в ней не моделируется.",
+  source:[reporting,"Отчёт «Россетей Кубань» за 2023 год, акт № 803"]},
+ {title:"Первые витки при питании от преобразователя",status:"Технический разбор измерений · ABB",model:"machine",settings:{voltage:6,mode:"impulse",ground:.28},text:
+  "Руководство ABB по электрическим нагрузкам от преобразователя разбирает влияние фронта напряжения и расположения проводников на межвитковую нагрузку.",
+  question:"Какие данные нужны, чтобы сравнить нагрузку на изоляцию двух двигателей, питаемых от одного ПЧ?",
+  answer:"Нужны осциллограммы непосредственно на выводах двигателей, данные о кабеле и построении обмотки, а также допустимые режимы от изготовителя. Ёмкостная цепочка иллюстрирует начальный профиль по участку, а не даёт диагноз двигателя.",
+  source:["https://library.e.abb.com/public/5df66cce8dd649689ab7c2c66abd52db/voltstress.pdf","ABB Technical Guide 102, раздел о межвитковых напряжениях"]},
+ {title:"Внутреннее повреждение ТМ‑160",status:"Акт № 801 · 13 октября 2023 г.",model:"transformer",settings:{kind:"oil",barrier:4},text:
+  "В отчёте «Россетей Кубань» описан пробой изоляции и межвитковое замыкание ТМ‑160 на ТП Кт‑7‑49.",
+  question:"Можно ли связать запись о повреждении с наблюдаемым полем в масляном канале?",
+  answer:"В записи указан вид внутреннего повреждения обмотки. Для связи с масляным каналом нужны дополнительные данные. Модель здесь показывает поле между электродами в плоских слоях. Межвитковое поле повреждённой обмотки за пределами этой схемы.",
+  source:[reporting,"Отчёт «Россетей Кубань» за 2023 год, акт № 801"]},
+ {title:"Твёрдый остов конденсаторного ввода",status:"Промышленная конструкция · Hitachi Energy",model:"bushing",settings:{voltage:60,n:6,style:"balanced",relative:50,affected:3},text:
+  "Для вводов линейки RMF изготовитель описывает твёрдый остов из бумаги, пропитанной смолой, и проводящие слои для регулирования поля.",
+  question:"Как в расчётной цепочке изменение ёмкости одной секции отражается на её падении напряжения?",
+  answer:"При последовательном соединении перенос заряда на секциях в модели одинаков. Уменьшение ёмкости повышает её долю напряжения. Это учебное изменение, а не зарегистрированный отказ ввода RMF.",
+  source:["https://www.hitachienergy.com/products-and-solutions/insulation-and-components/transformer-insulation-components/transformer-bushings/bushings-product-selection/ac-bushings-type-rmf","Hitachi Energy, конструкция ввода RMF"]}
+];
+
+const tasks=[
+ {title:"Поле у жилы",text:"a = 8 мм, b = 24 мм, U = 10 кВ. Найдите E(a) в однородном кабеле.",unit:"кВ/мм",
+  exact:10/(8*Math.log(3)),tol:.006,solution:"E(a) = U/[a·ln(b/a)] = 10/[8·ln(3)] ≈ 1,138 кВ/мм."},
+ {title:"Оптимальный радиус",text:"Для однородного кабеля при фиксированном b = 24 мм найдите a, минимизирующий E(a).",unit:"мм",
+  exact:24/Math.E,tol:.03,solution:"Максимизируем a·ln(b/a). Его производная ln(b/a) − 1 равна нулю при a = b/e ≈ 8,829 мм."},
+ {title:"Потенциал в кабеле",text:"В однородном кабеле a = 8 мм, b = 32 мм, U = 12 кВ. Найдите φ(16 мм).",unit:"кВ",
+  exact:6,tol:.02,solution:"φ = 12·ln(32/16)/ln(32/8) = 12·ln(2)/ln(4) = 6 кВ."},
+ {title:"Скачок поля в двух слоях",text:"AC, свободного заряда на границе нет. εᵣ₁ = 2,3, εᵣ₂ = 3,1. Каково отношение E₁/E₂ непосредственно на границе?",unit:"безразм.",
+  exact:3.1/2.3,tol:.008,solution:"Из εᵣ₁E₁ = εᵣ₂E₂ следует E₁/E₂ = 3,1/2,3 ≈ 1,348."},
+ {title:"Первая пара витков",text:"В равномерном приближении напряжение участка 6 кВ распределено по восьми парам. Найдите ΔU на первой паре.",unit:"кВ",
+  exact:.75,tol:.01,solution:"ΔU = U/N = 6/8 = 0,75 кВ. Амплитуда синусоиды была бы в √2 раза больше."},
+ {title:"Масло и электрокартон",text:"Плоский участок на 20 кВ содержит 26 мм масла (εᵣ = 2,2) и 4 мм картона (εᵣ = 4,2). Найдите E в масле.",unit:"кВ/мм",
+  exact:20/(2.2*(26/2.2+4/4.2)),tol:.006,solution:"Eмасла = 20/[2,2·(26/2,2 + 4/4,2)] ≈ 0,712 кВ/мм. Сумма Eᵢdᵢ равна 20 кВ."},
+ {title:"Напряжение секции RIP",text:"Изначально шесть секций равной ёмкости и 60 кВ на вводе. Ёмкость третьей секции уменьшили вдвое. Найдите её ΔU.",unit:"кВ",
+  exact:120/7,tol:.025,solution:"Веса 1/C пропорциональны 1, 1, 2, 1, 1, 1. Третья секция принимает (2/7)·60 ≈ 17,143 кВ."},
+ {title:"Амплитудное значение",text:"В выбранной точке под действием синусоиды поле составляет 1,4 кВ/мм по действующему значению. Найдите амплитуду.",unit:"кВ/мм",
+  exact:1.4*Math.SQRT2,tol:.015,solution:"Амплитуда равна √2·1,4 ≈ 1,980 кВ/мм."}
+];
+function openModel(id,settings){
+  setModel(id,settings);navigate(id,true);
+}
+function appendDetail(card,title,answer){
+  const disclosure=element("details");
+  disclosure.append(element("summary",title),element("p",answer));card.append(disclosure);
+}
+function exerciseButton(card,id,settings,label){
+  const button=element("button",label,"primary");button.type="button";
+  button.addEventListener("click",()=>openModel(id,settings));card.append(button);
+}
+function populatePractice(){
+  const host=$("experiments");let index=0;
+  for(const e of experiments){
+    const card=element("article",undefined,"card"),steps=element("ol");
+    for(const step of e.steps)steps.append(element("li",step));
+    card.append(element("h3",(++index)+". "+e.title),steps);
+    exerciseButton(card,e.model,e.settings,"Открыть исходный режим");
+    appendDetail(card,"Разбор опыта",e.hint);host.append(card);
+  }
+}
+function populateCases(){
+  const host=$("case-grid");
+  for(const c of cases){
+    const card=element("article",undefined,"card");
+    card.append(element("p",c.status,"meta"),element("h3",c.title),
+      element("p",c.text),element("p",c.question,"callout"));
+    exerciseButton(card,c.model,c.settings,"Сравнить в тренажёре");
+    appendDetail(card,"Обсудить результат",c.answer);
+    const source=element("a",c.source[1],"source");source.href=c.source[0];source.target="_blank";source.rel="noopener";
+    const footer=element("p",undefined,"source");footer.append(source);card.append(footer);host.append(card);
+  }
+}
+function populateTasks(){
+  const host=$("tasks-grid");
+  for(const [i,task] of tasks.entries()){
+    const card=element("article",undefined,"card");
+    card.append(element("h3",(i+1)+". "+task.title),element("p",task.text));
+    const form=element("form",undefined,"task-form");
+    const input=element("input");input.id="answer-"+(i+1);input.inputMode="decimal";input.autocomplete="off";
+    const label=element("label","Ответ, "+task.unit);label.htmlFor=input.id;label.append(input);
+    const button=element("button","Проверить");button.type="submit";
+    const result=element("p","","task-result small");result.setAttribute("role","status");
+    form.append(label,button);
+    form.addEventListener("submit",event=>{
+      event.preventDefault();
+      const raw=input.value.trim().replace(",",".");
+      const valid=/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)$/.test(raw);
+      if(!valid){result.textContent="Введите число.";result.dataset.pass="no";return;}
+      const ok=Math.abs(+raw-task.exact)<=task.tol;
+      result.textContent=ok ? "Верно." : "Проверьте единицы и округление, затем попробуйте снова.";
+      result.dataset.pass=ok ? "yes" : "no";
+    });
+    card.append(form,result);appendDetail(card,"Решение",task.solution);host.append(card);
+  }
+}
+populatePractice();populateCases();populateTasks();
+
+const concepts=[
+ [
+ ["В каких единицах получится E, если U задано в кВ, а размер — в мм?","кВ/мм","кВ·мм","Ф/мм","Напряжённость — напряжение на единицу длины."],
+ ["Как связаны действующее значение и амплитуда синусоиды?","Амплитуда равна √2·U","Амплитуда равна U/√2","Амплитуда равна 2·U","Эта связь относится к синусоидальному сигналу."],
+ ["Как использовать учебный максимум E?","Для сравнения выбранных режимов модели","Как паспортное выдерживаемое напряжение","Как доказательство прохождения испытаний","Паспорт и применимая программа испытаний задают отдельные требования."],
+ ["Какой документ относится к приёмо-сдаточным испытаниям электроустановок?","ПУЭ, глава 1.8","Только каталог производителя","Таблица учебных εᵣ","Глава 1.8 ПУЭ содержит нормы для соответствующих типов объектов."],
+ ["Что такое разность потенциалов двух узлов?","Напряжение между этими узлами","Длина пути утечки","Отношение их ёмкостей","Потенциалы отсчитываются от общей опорной точки."]
+ ],[
+ ["Где максимум E в однородном экранированном коаксиале?","На внутренней границе диэлектрика r = a","У металлического экрана r = b","Посередине слоя","Поле пропорционально 1/r."],
+ ["При каком a минимизируется E(a), если b фиксирован?","a = b/e","a = b/2","a = b/e²","Максимум a·ln(b/a) достигается при ln(b/a) = 1."],
+ ["Что непрерывно на границе при AC без свободного заряда и малых потерях?","Нормальная составляющая D","Нормальная E при разных εᵣ","Электропроводность обоих диэлектриков","Граничное условие связывает εᵣ₁E₁ и εᵣ₂E₂."],
+ ["Что непрерывно в установившемся DC-режиме проводящих слоёв?","Нормальная плотность тока J","Нормальная E при любых σ","Значение εᵣ","В стационарном режиме через границу проходит один и тот же нормальный ток."],
+ ["Какой вариант описывает функцию полупроводящих слоёв?","Сглаживают электрическую границу диэлектрика","Заменяют металлический экран как самостоятельная цепь заземления","Создают электрическую прочность всего кабеля самостоятельно","Полупроводящие слои обеспечивают равномерный контакт, а металлический экран задаёт опорный потенциал."],
+ ["От чего зависит напряжение U одножильной модели?","От разности потенциалов жилы и экрана","Оно всегда равно линейному напряжению сети","Оно всегда равно максимальному фазному при КЗ","Выбирается напряжение между электродами для конкретного расчётного режима."]
+ ],[
+ ["Какая изоляция разделяет обмотку и сталь статора?","Корпусная","Межвитковая","Межфазная в воздухе за пределами статора","Корпус воспринимают как опорный электрод."],
+ ["Что определяет межвитковое напряжение?","Разность потенциалов соседних узлов","Потенциал жилы кабеля относительно экрана","Высота установки над морем","На паре соседних узлов снимают ΔU."],
+ ["Что происходит с начальным распределением при повышении Cз/Cв в показанной цепочке?","Первая пара принимает большую долю U","Падения строго равны","Потенциал начала уменьшается при неизменном U","Ёмкость на корпус нелинейно изменяет профиль по номеру витка."],
+ ["Что показывает лобовой режим?","Конструкцию вне паза и потенциал выбранного проводника","Трёхмерный расчёт поля у края паза","Предельно допустимое импульсное напряжение","Модель упрощена до цепочки потенциалов; поле у края паза не вычисляется."],
+ ["Какой набор нужен для оценки реального двигателя с ПЧ?","Данные двигателя, кабеля и осциллограмма непосредственно на выводах","Только номинальная частота","Только число узлов учебной цепочки","Крутизна и величина напряжения зависят от всей системы питания."],
+ ["Чем тип I отличается от типа II в ГОСТ IEC/TS 60034‑18‑41/42?","Тип I квалифицируют для работы без ЧР в заданных условиях, тип II — по стойкости к ЧР","Тип I относится только к трансформаторам","Различие определяется количеством фаз","Применимость проверяют по системе изоляции и области каждого стандарта."]
+ ],[
+ ["При одинаковом D где больше E — в масле εᵣ = 2,2 или картоне εᵣ = 4,2?","В масле","В картоне","Величины равны","В плоской ёмкостной схеме E обратно пропорциональна εᵣ."],
+ ["Что меняется при переносе барьера в плоской модели с неизменными толщинами?","Положение границ и изломов φ(x)","Напряжённость внутри каждого материала","Суммарная приложенная U","Формула учитывает толщины материалов, а их перемещение меняет координаты границ."],
+ ["Как проверить баланс напряжения плоских слоёв?","Просуммировать Eᵢdᵢ по слоям","Просуммировать εᵣ по слоям","Поделить суммарный зазор на число слоёв","Интеграл поля по направлению между электродами равен заданному U."],
+ ["Почему в условной газовой прослойке E выше, чем в смоле?","У газа меньше εᵣ, нормальное D непрерывно","Газ имеет больший εᵣ","Потенциал на границе скачком возрастает","Разность полей на границе характеризуется εᵣ материалов."],
+ ["Какой вывод допускает расчёт поля в условной газовой прослойке?","Можно сравнить статическое распределение в упрощённой геометрии","Достоверно наблюдаются импульсы ЧР","Определена электрическая прочность реальной обмотки","Реальная полость требует учёта формы, газа и измерений."]
+ ],[
+ ["Что означает RIP в названии ввода?","Бумажный остов, пропитанный смолой","Внутренний экран кабеля из резины","Воздушный барьер трансформатора","RIP: resin-impregnated paper."],
+ ["Как распределится U при равных ёмкостях последовательных секций?","Все ΔU равны","Первая секция принимает U целиком","Последняя секция принимает U целиком","При одинаковом заряде падение на каждой C равно Q/C."],
+ ["Что произойдёт с ΔU секции при сокращении её эффективного перекрытия?","Вырастет при остальных неизменных секциях","Уменьшится всегда","Останется прежним при любой длине","Меньшая площадь взаимодействия снижает C, поэтому доля 1/C растёт."],
+ ["Какое поле показывает оценка Eᵣ ввода?","Радиальное в условной центральной части секции","Максимум поля у торцов","Поле внутри бака возле выводов обмотки","Коаксиальная формула выводится вдали от краёв."],
+ ["Как соотносятся равенство ΔU и равенство максимумов E?","Равенство ΔU само по себе не гарантирует равенства E","Всегда выполняются одновременно","Ёмкости перестают влиять на ΔU","Радиальная оценка также зависит от радиусов секции."]
+ ]
+];
+function numericQuestion(query,answer,wrong1,wrong2,unit,why){
+  const value=x=>number(x,3)+" "+unit;
+  return [query,value(answer),value(wrong1),value(wrong2),why];
+}
+function concreteQuestions(i){
+  const a=5+i,b=25+i*2,u=8+i,turns=6+i,d=22+i,c=3+i,n=4+i;
+  const m=u/(a*Math.log(b/a));
+  const k=b/Math.E;
+  const e=u/(d-c+c*2.2/4.2);
+  const target=2*u/(n+1);
+  return [
+    numericQuestion("Однородный кабель: a = "+a+" мм, b = "+b+" мм, U = "+u+" кВ. Найдите E(a).",m,u/(b-a),u/a,"кВ/мм","Подставьте величины в U/[a·ln(b/a)]."),
+    numericQuestion("Внешний радиус "+b+" мм. Каков оптимальный a по полю однородного кабеля?",k,b/2,b/3,"мм","a = b/e при неизменных b и U."),
+    numericQuestion("В равномерном приближении "+u+" кВ делятся на "+turns+" одинаковых падений. Чему равно одно падение?",u/turns,u/(turns+1),u/2,"кВ","Разделите полное напряжение на число пар."),
+    numericQuestion("Плоский участок "+d+" мм содержит "+c+" мм электрокартона (4,2) и масло (2,2). U = "+u+" кВ. Найдите E в масле.",e,u/d,e*2.2/4.2,"кВ/мм","Учтите взвешенную толщину: dмасла + dкартона·2,2/4,2."),
+    numericQuestion(n+" равных секций ввода соединены последовательно. Ёмкость одной уменьшена вдвое. На вводе "+u+" кВ. Найдите ΔU изменённой секции.",target,u/n,2*u/n,"кВ","Изменённая секция принимает долю 2/(N+1).")
+  ];
+}
+function variantQuestions(variant){
+  const subject=concepts.flatMap((bank,i)=>{
+    const a=(variant+i)%bank.length;
+    return [bank[a],bank[(a+2)%bank.length]];
+  });
+  return [...subject,...concreteQuestions(variant)].map(([stem,answer,b,c,why],i)=>{
+    const correct=(variant+2*i+Math.floor(i/3))%3,options=[b,c];options.splice(correct,0,answer);
+    return {stem,options,correct,why};
+  });
+}
+let variant=0;
+const chosenAnswers=Array.from({length:5},()=>Array(15).fill(null));
+function clearResults(){
+  $("quiz-result").textContent="";
+  for(const e of $("questions").querySelectorAll(".question"))delete e.dataset.status;
+  for(const e of $("questions").querySelectorAll(".quiz-explanation"))e.hidden=true;
+}
+function paintQuizCount(){
+  $("quiz-count").textContent="Заполнено "+chosenAnswers[variant].filter(v=>v!==null).length+" из 15";
+}
+function populateQuiz(){
+  const host=$("questions");host.replaceChildren();
+  for(const [i,q] of variantQuestions(variant).entries()){
+    const group=element("fieldset",undefined,"card question"),legend=element("legend",(i+1)+". "+q.stem);
+    group.append(legend);
+    for(const [j,text] of q.options.entries()){
+      const label=element("label"),radio=element("input");
+      radio.type="radio";radio.name="q"+i;radio.value=j;radio.checked=chosenAnswers[variant][i]===j;
+      radio.addEventListener("change",()=>{chosenAnswers[variant][i]=j;clearResults();paintQuizCount();});
+      label.append(radio,element("span",text));group.append(label);
+    }
+    const info=element("p","","quiz-explanation");info.hidden=true;group.append(info);host.append(group);
+  }
+  clearResults();paintQuizCount();
+}
+for(let i=0;i<5;i++){
+  const option=element("option","Вариант "+(i+1));option.value=i;$("quiz-variant").append(option);
+}
+$("quiz-variant").addEventListener("change",e=>{variant=+e.target.value;populateQuiz();});
+$("quiz-reset").addEventListener("click",()=>{chosenAnswers[variant].fill(null);populateQuiz();});
+$("quiz-form").addEventListener("submit",e=>{
+  e.preventDefault();
+  const missing=chosenAnswers[variant].indexOf(null);
+  if(missing!==-1){
+    $("quiz-result").textContent="Ответьте на вопрос "+(missing+1)+".";
+    $("questions").children[missing].querySelector("input").focus();return;
+  }
+  let score=0;
+  for(const [i,q] of variantQuestions(variant).entries()){
+    const ok=chosenAnswers[variant][i]===q.correct;
+    if(ok)score++;
+    const card=$("questions").children[i],info=card.querySelector(".quiz-explanation");
+    card.dataset.status=ok ? "right" : "wrong";
+    info.hidden=false;info.textContent=(ok ? "Верно. " : "Правильный ответ: "+q.options[q.correct]+". ")+q.why;
+  }
+  $("quiz-result").textContent="Результат "+score+" из 15.";
+});
+populateQuiz();
+</script>
+</body>
+</html>

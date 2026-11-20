@@ -1,0 +1,1408 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Учебный тренажёр ТВН. Внешняя изоляция воздушных линий и подстанций."><title>ТВН 13 · Внешняя изоляция ВЛ и подстанций</title><style>:root{color-scheme:light;--ink:#172f3b;--sub:#4a626d;--back:#eaf0f2;--paper:#fff;--line:#d6e1e4;--accent:#08655d;--mint:#76e0c9;--amber:#ffd09c;--dark:#122d3b;--round:11px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.55}
+*{box-sizing:border-box}
+body{margin:0;background:var(--back);color:var(--ink)}
+[hidden]{display:none!important}
+.frame{width:min(1160px,calc(100% - 44px));margin-inline:auto}
+.skip{position:absolute;left:12px;top:-100px;padding:9px 14px;background:white;z-index:10}.skip:focus{top:12px}
+.hero{background:linear-gradient(113deg,#142b39 15%,#164e57 100%);color:#f2fcff;border-bottom:3px solid #79d5be}
+.hero-inner{display:grid;grid-template-columns:minmax(0,1fr) 280px;align-items:center;gap:24px;padding:30px 0 31px}
+.eyebrow{color:#ade4df;margin:0 0 8px;font-size:13px;font-weight:700;letter-spacing:.055em}
+.eyebrow span{padding:0 5px}
+h1,h2,h3,p{margin-top:0}
+h1{font-size:clamp(29px,5vw,56px);line-height:1.05;margin-bottom:14px;letter-spacing:-.031em}
+.hero p:last-child{margin-bottom:0;color:#c9e4e7}
+.hero-diagram{opacity:.92}
+.nav-wrap{background:#fff;border-bottom:1px solid var(--line)}
+.nav nav{display:flex;flex-wrap:wrap;gap:0 6px}
+.nav button{border:0;border-bottom:3px solid transparent;border-radius:0;font-size:14px;background:transparent;padding:11px 8px 9px;color:#334f5f;font-weight:650;white-space:nowrap}
+.nav button[aria-selected=true]{color:var(--accent);border-color:var(--accent);background:#eff9f6}
+main{padding:25px 0 36px}
+.section-title{margin-bottom:17px}
+.section-title p{max-width:870px;color:var(--sub);margin:0}
+h2{font-size:clamp(22px,3vw,32px);line-height:1.2;letter-spacing:-.017em;margin-bottom:8px}
+h3{font-size:19px;line-height:1.27;margin-bottom:9px}
+h4{font-size:16px;margin:0 0 4px}
+p{margin-bottom:.75em}
+p:last-child{margin-bottom:0}
+.lab,.two,.concepts{display:grid;gap:14px;align-items:start}
+.lab{grid-template-columns:minmax(245px,30%) minmax(0,1fr)}
+.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.concepts{grid-template-columns:repeat(3,minmax(0,1fr));align-items:stretch}
+.detailgrid,.guide{margin-top:14px}
+.lab-body{display:grid;gap:13px;min-width:0}
+.line-results{display:grid;gap:13px;align-items:start}
+@media(min-width:1000px){.line-results:has(#line-distribution:not([hidden])){grid-template-columns:minmax(210px,.8fr) minmax(0,1.35fr)}}
+.card{min-width:0;padding:16px 17px;background:var(--paper);border:1px solid var(--line);border-radius:var(--round);box-shadow:0 2px 4px #1235430a}
+.panel-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.panel-head h3{margin:0}
+.tag,.meta{font-size:12px;font-weight:700;color:var(--accent)}
+.tag{background:#e9f6f1;padding:3px 8px;border-radius:20px}
+.meta{margin:0 0 5px}
+canvas{display:block;width:100%;border-radius:7px;background:var(--dark)}
+.line-scene{height:260px;touch-action:pan-y;cursor:grab}
+.line-scene:active{cursor:grabbing}
+.profile-scene{height:250px}
+.scope canvas{height:218px;touch-action:pan-y}
+.controls label,.quiz-tools label{display:block;font-size:14px;font-weight:650;margin-top:10px}
+.controls label:first-of-type{margin-top:4px}
+.controls label>select,.controls label>input[type=number]{width:100%;margin-top:4px}
+label>output{float:right;color:var(--accent);font-variant-numeric:tabular-nums}
+label.check{display:flex;align-items:center;gap:7px;margin:10px 0 6px}
+input[type=range]{width:100%;accent-color:var(--accent);margin:5px 0 2px}
+input[type=checkbox],input[type=radio]{accent-color:var(--accent)}
+button,input[type=number],input[type=text],select{color:var(--ink);font:inherit;border:1px solid #9eb6bd;border-radius:6px;background:white;padding:5px 9px}
+button{cursor:pointer;font-size:14px;font-weight:640}
+button:hover{background:#ecf6f2}
+button.primary{background:var(--accent);border-color:var(--accent);color:#fff}button.primary:hover{background:#074b45}
+button:disabled,input:disabled{opacity:.55;cursor:default}
+:focus-visible{outline:3px solid #298c84;outline-offset:2px}
+a{color:#065f70;text-underline-offset:2px}
+.actions{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin:10px 0 0}
+.scene-tools,.scene-legend,.scope-tools,.scope-meta,.quiz-tools{display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px}
+.scene-tools,.scene-legend,.scope-meta{margin-top:7px}
+.scene-tools label{min-width:120px;font-size:13px}
+.scene-tools input{flex:1;min-width:80px;width:auto}.scene-tools output{float:none}
+.scene-legend,.scope-tools,.scope-meta{font-size:13px}
+.scope-tools label{display:flex;align-items:center;gap:5px}
+.scope-tools{margin:2px 0 9px}
+.scope-meta{justify-content:space-between}
+.scope-meta strong{font-size:13px;color:var(--accent)}
+.key{display:inline-block;width:12px;height:3px;vertical-align:middle;margin-right:6px;background:currentColor}
+.key.teal{color:#08776d}.key.amber{color:#a85815}
+.small,.source{font-size:13px;color:var(--sub);margin-top:8px}
+.stats{display:flex;flex-wrap:wrap;gap:5px 12px;background:#edf5f7;padding:8px 10px;border-radius:6px;margin:9px 0;font-size:13px;color:#214758;font-variant-numeric:tabular-nums}
+.stats span{white-space:normal}.stats b{color:var(--ink)}
+.formula{background:#f0f6f7;border-left:3px solid #389589;border-radius:4px;padding:8px 10px;margin:9px 0;overflow-x:auto}
+math{font-size:1.12em}
+details{margin-top:10px}
+details > :last-child{margin-bottom:0}
+summary{cursor:pointer;font-weight:700;color:#105753}
+table{width:100%;border-collapse:collapse;font-size:14px;margin:10px 0}
+td,th{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+th{background:#edf5f7}caption{text-align:left;margin-bottom:4px;font-weight:650}
+tr.current td,tr.current th{background:#d9f0e8}
+.live-note{color:#15514a;margin-top:8px}
+[data-pass=no]{color:#9a411c}
+.bar-list{display:grid;gap:4px;margin:10px 0}
+.bar-row{display:grid;grid-template-columns:31px minmax(30px,1fr) 69px;align-items:center;gap:8px;padding:3px 7px;text-align:left;font-size:13px;border-color:#e0e9e9}
+.bar-row[aria-pressed=true]{border-color:#187969;background:#edf9f4}
+.bar-row span:last-child{text-align:right;font-variant-numeric:tabular-nums}
+.track{height:10px;position:relative;border-radius:4px;background:#ecf2f2}
+.track i{height:100%;border-radius:inherit;display:block}
+.track em{position:absolute;top:-3px;height:16px;width:2px;background:#223f52}
+.circuit{width:100%;min-height:74px;background:#eff6f7;margin-top:8px;border-radius:6px}
+#line-circuit{overflow:auto}
+.bar-list.long{max-height:232px;overflow:auto;padding-right:4px}
+.theory-circuit{aspect-ratio:20/7;display:block;width:100%;background:#eff6f7;border-radius:8px;margin:10px 0 6px}
+.schematic{margin:12px 0;font-size:13px;color:var(--sub)}
+.calculation-block{margin-top:15px}
+.callout{background:#edf5f7;border-left:3px solid #389589;padding:8px 10px;border-radius:5px}
+.practice-group{margin-bottom:16px}
+.practice-group .two>.card{height:100%}
+.practice-group ol{padding-left:21px;margin:8px 0}
+.practice-group li{padding-bottom:3px}
+.practice-journal{margin-top:12px}
+.table-scroll{overflow:auto}
+.task-form{display:flex;align-items:end;gap:7px;flex-wrap:wrap}
+.task-form label{display:grid;font-size:13px}
+.task-form input{width:120px}
+.task-result,.quiz-result{font-weight:650;color:#15514a}
+.quiz-tools{margin-bottom:11px}.quiz-tools label,.quiz-tools p{margin:0}
+#questions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.question{margin:0;min-inline-size:0}
+.question h3{font-size:16px}
+.question label{display:flex;gap:7px;align-items:start;margin:4px 0;cursor:pointer}
+.question input{margin-top:.38em}
+.question[data-status=wrong]{border-color:#be7b58}
+.question[data-status=right]{border-color:#509b85}
+.question p{margin-top:8px;color:var(--sub);font-size:13px}
+.quiz-actions{padding-bottom:7px}
+.references{border-top:1px solid #b8cbd0;margin-top:23px;padding-top:6px;color:var(--sub);font-size:14px}
+.references li{margin:4px 0}
+@media(max-width:820px){.lab{grid-template-columns:minmax(195px,32%) minmax(0,1fr)}.hero-inner{grid-template-columns:1fr 180px}.nav nav{gap:0 4px}.nav button{padding-inline:6px}}
+@media(max-width:650px){.frame{width:calc(100% - 22px)}.hero-inner{grid-template-columns:1fr;padding:20px 0}.hero-diagram{display:none}.lab,.two,.concepts,#questions{grid-template-columns:1fr}.card{padding:13px}.nav button{font-size:13px}.line-scene,.profile-scene{height:220px}.scope canvas{height:195px}}
+</style></head>
+<body>
+<a class="skip" href="#main">Перейти к содержанию</a>
+<header class="hero"><div class="frame hero-inner"><div><p class="eyebrow">Техника высоких напряжений <span>·</span> Тема 13</p><h1>Внешняя изоляция<br>ВЛ и подстанций</h1><p>От устройства изолятора до анализа отключения питания электропривода.</p></div><div class="hero-diagram" aria-hidden="true"><svg viewBox="0 0 280 145"><path d="M8 33h154v23M50 33 93 6l46 27M92 7v122M10 130h253" fill="none" stroke="#86b9c1" stroke-width="2"/><path d="M162 47v68m0-8q51 16 113-12" fill="none" stroke="#eabe8d" stroke-width="3"/><g fill="#68d4c3"><ellipse cx="162" cy="57" rx="19" ry="4"/><ellipse cx="162" cy="67" rx="19" ry="4"/><ellipse cx="162" cy="77" rx="19" ry="4"/><ellipse cx="162" cy="87" rx="19" ry="4"/><ellipse cx="162" cy="97" rx="19" ry="4"/></g><path d="M189 56q9-22 17 0t17 0t17 0t17 0" fill="none" stroke="#f7ce93" stroke-width="2"/></svg></div></div></header>
+<div class="nav-wrap"><div class="frame nav"><nav role="tablist" aria-label="Разделы темы">
+<button role="tab" id="tab-theory" aria-controls="theory">Теория</button>
+<button role="tab" id="tab-line" aria-controls="line">Воздушные линии</button>
+<button role="tab" id="tab-yard" aria-controls="yard">Подстанции</button>
+<button role="tab" id="tab-weather" aria-controls="weather">Загрязнение и климат</button>
+<button role="tab" id="tab-choice" aria-controls="choice">Выбор изоляции</button>
+<button role="tab" id="tab-practice" aria-controls="practice">Практика</button>
+<button role="tab" id="tab-cases" aria-controls="cases">Реальные кейсы</button>
+<button role="tab" id="tab-tasks" aria-controls="tasks">Задачи</button>
+<button role="tab" id="tab-quiz" aria-controls="quiz">Тесты</button>
+</nav></div></div>
+<main class="frame" id="main">
+<section id="theory" role="tabpanel" aria-labelledby="tab-theory">
+<div class="section-title"><h2>От провода до земли</h2><p>Внешняя изоляция включает воздушные промежутки и открытые поверхности твёрдых диэлектриков. Она одновременно работает под напряжением и подвергается воздействию погоды и загрязнений.</p></div>
+<div class="concepts">
+<article class="card"><h3>Воздушный промежуток</h3><p>Кратчайшее расстояние в воздухе между частями разных потенциалов. На ВЛ это, например, промежуток от провода до заземлённой траверсы. Для ОРУ отдельно проверяют расстояния до заземлённых конструкций.</p></article>
+<article class="card"><h3>Длина пути утечки</h3><p>Кратчайшая линия по поверхности изоляционной детали между металлическими частями разных потенциалов. Рёбра меняют длину этого пути и геометрию увлажнения.</p></article>
+<article class="card"><h3>Перекрытие и пробой</h3><p>При перекрытии разряд проходит во внешней среде вдоль поверхности или по воздуху. При пробое канал проходит через материал. В журнале аварии ищите признаки, подтверждающие конкретный механизм.</p></article>
+</div>
+<div class="two detailgrid">
+<article class="card"><h3>Ёмкостная схема гирлянды</h3>
+<p>Тарелки образуют цепочку одинаковых ёмкостей <var>C</var>. Промежуточные узлы связаны с опорой ёмкостью <var>C<sub>о</sub></var>, с проводом — <var>C<sub>п,i</sub></var>. В нормальном симметричном режиме потенциалы отсчитываются от заземлённой опоры.</p>
+<figure class="schematic"><svg xmlns="http://www.w3.org/2000/svg" class="theory-circuit" role="img" aria-label="Три последовательные ёмкости C. От каждого внутреннего узла одна ветвь идёт к проводу и одна к заземлённой опоре." viewBox="0 0 800 280">
+<rect x="0" y="0" width="800" height="280" rx="12" fill="#eff6f7"/>
+<g fill="none" stroke-width="3" stroke-linejoin="round">
+  <path stroke="#234654" d="M90 137H181 M196 137H385 M400 137H589 M604 137H702 M181 119v36 M196 119v36 M385 119v36 M400 119v36 M589 119v36 M604 119v36"/>
+  <path stroke="#a35a24" d="M292 137V88 M292 76V53H702V137 M498 137V88 M498 76V53 M278 76h28 M278 88h28 M484 76h28 M484 88h28"/>
+  <path stroke="#11685f" d="M292 137v46 M292 195v54 M498 137v46 M498 195v54 M278 183h28 M278 195h28 M484 183h28 M484 195h28 M90 137v112h408 M90 249v6 M76 255h28 M81 262h18 M86 269h8"/>
+</g>
+<g fill="#234654"><circle cx="292" cy="137" r="5"/><circle cx="498" cy="137" r="5"/></g>
+<g fill="#a35a24"><circle cx="702" cy="137" r="5"/></g>
+<g fill="#11685f"><circle cx="90" cy="137" r="5"/></g>
+<g font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="600">
+  <text x="90" y="114" fill="#11685f" text-anchor="middle">φ₀ = 0</text><text x="90" y="228" fill="#11685f" text-anchor="start">Опора</text>
+  <text x="292" y="166" fill="#234654" text-anchor="middle">φ₁</text><text x="498" y="166" fill="#234654" text-anchor="middle">φ₂</text>
+  <text x="702" y="115" fill="#a35a24" text-anchor="middle">φ₃ = U<tspan baseline-shift="sub" font-size="12">ф</tspan></text>
+  <text x="640" y="37" fill="#a35a24">Провод</text>
+  <text x="188" y="114" fill="#234654" text-anchor="middle">C</text><text x="392" y="114" fill="#234654" text-anchor="middle">C</text><text x="596" y="114" fill="#234654" text-anchor="middle">C</text>
+  <text x="315" y="85" fill="#a35a24">C<tspan baseline-shift="sub" font-size="13">п,1</tspan></text><text x="522" y="85" fill="#a35a24">C<tspan baseline-shift="sub" font-size="13">п,2</tspan></text>
+  <text x="315" y="195" fill="#11685f">C<tspan baseline-shift="sub" font-size="13">о</tspan></text><text x="522" y="195" fill="#11685f">C<tspan baseline-shift="sub" font-size="13">о</tspan></text>
+</g></svg>
+<figcaption>Схема замещения трёх тарелок. Тёмная цепь соответствует тарелкам, зелёные ветви идут к опоре, оранжевые — к проводу. Для большего числа тарелок повторяется внутренняя ячейка.</figcaption></figure>
+<div class="formula"><math display="block"><mrow><msub><mi>U</mi><mtext>ф</mtext></msub><mo>=</mo><mfrac><msub><mi>U</mi><mtext>л</mtext></msub><msqrt><mn>3</mn></msqrt></mfrac><mo>,</mo><mspace width="1em"/><msub><mi>φ</mi><mn>0</mn></msub><mo>=</mo><mn>0</mn><mo>,</mo><mspace width="1em"/><msub><mi>φ</mi><mi>N</mi></msub><mo>=</mo><msub><mi>U</mi><mtext>ф</mtext></msub></mrow></math></div>
+<div class="formula"><math display="block"><mrow><mo>(</mo><mn>2</mn><mo>+</mo><msub><mi>k</mi><mtext>о</mtext></msub><mo>+</mo><msub><mi>k</mi><mrow><mtext>п</mtext><mo>,</mo><mi>i</mi></mrow></msub><mo>)</mo><msub><mi>φ</mi><mi>i</mi></msub><mo>−</mo><msub><mi>φ</mi><mrow><mi>i</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>−</mo><msub><mi>φ</mi><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>=</mo><msub><mi>k</mi><mrow><mtext>п</mtext><mo>,</mo><mi>i</mi></mrow></msub><msub><mi>φ</mi><mi>N</mi></msub></mrow></math></div>
+<div class="formula"><math display="block"><mrow><msub><mi>k</mi><mtext>о</mtext></msub><mo>=</mo><mfrac><msub><mi>C</mi><mtext>о</mtext></msub><mi>C</mi></mfrac><mo>,</mo><mspace width=".6em"/><msub><mi>k</mi><mrow><mtext>п</mtext><mo>,</mo><mi>i</mi></mrow></msub><mo>=</mo><mfrac><msub><mi>C</mi><mrow><mtext>п</mtext><mo>,</mo><mi>i</mi></mrow></msub><mi>C</mi></mfrac><mo>,</mo><mspace width=".6em"/><mi>Δ</mi><msub><mi>U</mi><mi>i</mi></msub><mo>=</mo><mo>|</mo><msub><mi>φ</mi><mi>i</mi></msub><mo>−</mo><msub><mi>φ</mi><mrow><mi>i</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>|</mo></mrow></math></div>
+<p>Уравнение записывается для внутренних узлов <var>i</var> от 1 до <var>N</var> − 1. Индекс 1 соответствует тарелке у опоры. Экран на потенциале провода увеличивает связь с ним и перераспределяет напряжение. Его эффект зависит от положения и геометрии.</p>
+<details><summary>Добавка ёмкости от кольца в учебной модели</summary><div class="formula"><math display="block"><mrow><mi>Δ</mi><msub><mi>k</mi><mrow><mtext>п</mtext><mo>,</mo><mi>i</mi></mrow></msub><mo>=</mo><mn>0,32</mn><mo>[</mo><mi>p</mi><msup><mi>x</mi><mn>4</mn></msup><mo>+</mo><mo>(</mo><mn>1</mn><mo>−</mo><mi>p</mi><mo>)</mo><msup><mi>x</mi><mn>2</mn></msup><mo>]</mo></mrow></math></div><p><var>x</var> = <var>i</var>/<var>N</var>, <var>p</var> — относительное положение кольца от опоры. При сдвиге к опоре влияние распределяется на большее число узлов. Закон задан для опытов.</p></details>
+<p class="source"><a href="https://portal.tpu.ru/SHARED/k/KGE/elect/Tab/labtvn1.pdf" target="_blank" rel="noopener">ТПУ. «Техника высоких напряжений», лабораторная работа о гирлянде, рис. 2 и 4</a></p>
+</article>
+<article class="card"><h3>Синусоида и ток утечки</h3>
+<p>Расчётная частота сети составляет 50 Гц. Действующее значение синусоидального сигнала связано с амплитудой множителем √2. Для ветви с равномерным проводящим слоем берём поверхностное сопротивление прямоугольной полосы.</p>
+<div class="formula"><math display="block"><mrow><mi>u</mi><mo>(</mo><mi>t</mi><mo>)</mo><mo>=</mo><msqrt><mn>2</mn></msqrt><mi>U</mi><mi>sin</mi><mo>(</mo><mn>2</mn><mi>π</mi><mi>f</mi><mi>t</mi><mo>)</mo></mrow></math></div>
+<div class="formula"><math display="block"><mrow><msub><mi>R</mi><mtext>сл</mtext></msub><mo>=</mo><msub><mi>R</mi><mo>□</mo></msub><mfrac><msub><mi>L</mi><mtext>п</mtext></msub><mi>b</mi></mfrac><mo>,</mo><mspace width=".8em"/><msub><mi>I</mi><mtext>ут</mtext></msub><mo>=</mo><mfrac><msub><mi>U</mi><mtext>ф</mtext></msub><msub><mi>R</mi><mtext>сл</mtext></msub></mfrac></mrow></math></div>
+<p><var>R<sub>□</sub></var> — сопротивление слоя на квадрат, <var>L<sub>п</sub></var> — длина проводящей дорожки, <var>b</var> — её эффективная ширина, одинаковые единицы длины. При вводе в кВ и МОм ток получается в мА. В этой омической схеме ток совпадает по фазе с напряжением.</p>
+<p>Увлажнение растворимых загрязнений может увеличить проводимость. Сухие зоны и дуги дают нелинейность, которой в омической модели нет. Ледяные перемычки и талая вода показаны отдельно.</p>
+<p class="source"><a href="https://protect.gost.ru/gost/details/88fde0d7-8301-4eff-9f94-55b473349440" target="_blank" rel="noopener">ГОСТ Р 56735‑2015. Загрязнение и выбор изоляторов</a> · <a href="https://doi.org/10.1109/CEIDP.2000.885300" target="_blank" rel="noopener">Исследование обледенения опорных изоляторов</a></p>
+</article></div>
+<article class="card guide"><h3>Три базы напряжения</h3><p><b>Номинальное</b> задаёт класс и строку таблицы. <b>Действующее фазное</b> подаётся на учебную модель «фаза–земля». <b>Наибольшее рабочее междуфазное</b> используется в расчёте по ПУЭ 1.9.9. Удельная длина пути утечки по ГОСТ Р 56735‑2015 привязана к наибольшему длительному рабочему напряжению непосредственно на изоляторе. Для фазной изоляции основания различаются.</p><button type="button" class="primary" data-tab="line">Открыть модель гирлянды</button></article>
+</section>
+<section id="line" role="tabpanel" aria-labelledby="tab-line" hidden>
+<div class="section-title"><h2>Изоляция воздушных линий</h2><p>Меняйте конструкцию и параметры. Выбранный элемент показывает одно и то же напряжение на модели, диаграмме и осциллографе.</p></div>
+<div class="lab">
+<aside class="card controls">
+<h3>Конструкция и режим</h3>
+<label>Тип изолятора <select id="line-type"><option value="glass">Подвесная гирлянда · стекло</option><option value="porcelain">Подвесная гирлянда · фарфор</option><option value="polymer">Длинностержневой · композит</option><option value="pin">Штыревой · фарфор</option></select></label>
+<p class="small" id="line-type-note"></p>
+<label>Линейное напряжение, кВ <select id="line-u"></select></label>
+<div id="string-controls">
+<label for="line-count">Число тарелок <output id="line-count-out"></output></label><input type="range" id="line-count" min="2" max="40" value="6">
+<p class="small" id="line-basis"></p><button type="button" data-tab="choice">Рассчитать число по ПУЭ</button>
+<label for="line-ground">Связь с опорой <var>C<sub>о</sub>/C</var> <output id="line-ground-out"></output></label><input type="range" id="line-ground" min="0" max=".30" step=".01" value=".10">
+<label for="line-wire">Связь с проводом <var>C<sub>п</sub>/C</var> <output id="line-wire-out"></output></label><input type="range" id="line-wire" min="0" max=".30" step=".01" value="0">
+<label class="check"><input type="checkbox" id="line-screen"> Кольцо на потенциале провода</label>
+<label for="line-ring">Положение кольца по оси <output id="line-ring-out"></output></label><input id="line-ring" type="range" min="72" max="100" step="4" value="100" disabled>
+<p class="small">Положение отсчитывается от опоры. Добавка к нормированной ёмкости задана в модели. Электрическое поле у кольца требует отдельного расчёта.</p>
+</div>
+<div class="actions"><button type="button" id="line-save" class="primary">Запомнить опыт</button><button type="button" id="line-reset">Сбросить</button></div>
+<p class="small source"><a href="https://dspace.www1.vlsu.ru/bitstream/123456789/7626/1/01788.pdf" target="_blank" rel="noopener">ВлГУ. Учебный материал, с. 45</a></p>
+</aside>
+<div class="lab-body">
+<article class="card model-card"><div class="panel-head"><h3>Подвеска и арматура</h3><span class="tag">Вращаемая 3D-схема</span></div><canvas class="line-scene" id="line-scene" aria-label="Объёмная модель изоляции ВЛ с заземлённой опорой и проводом"></canvas>
+<div class="scene-tools"><label for="line-angle">Поворот <output id="line-angle-out">0°</output></label><input type="range" id="line-angle" min="-180" max="180" value="0" aria-label="Поворот схемы вокруг вертикальной оси"><button id="line-view" type="button">Исходный вид</button></div>
+<p class="small">Перетащите модель для поворота. При выборе тарелки на диаграмме она выделяется на подвеске. Регулировка от 2 до 40 элементов позволяет сравнивать учебные конфигурации.</p>
+<div class="stats" id="line-stats"></div></article>
+<div class="line-results">
+<article class="card" id="line-distribution"><h3>Напряжение на тарелках</h3><div class="bar-list" id="line-bars" aria-label="Напряжение на тарелках"></div><p class="small live-note" id="line-saved" aria-live="polite"></p>
+<details><summary>Схема замещения</summary><div id="line-circuit"></div><p class="small">Связь узлов с опорой и с проводом показана в нормированных ёмкостях. Знаки земли относятся к одной заземлённой опоре.</p></details></article>
+<section class="card scope" id="line-scope" aria-label="Осциллограф ВЛ"></section>
+</div>
+</div></div>
+</section>
+<section id="yard" role="tabpanel" aria-labelledby="tab-yard" hidden>
+<div class="section-title"><h2>Внешняя изоляция подстанций</h2><p>На открытом распределительном устройстве (ОРУ) изоляция отделяет токоведущие части от заземлённых опор и соседних фаз. У ввода есть наружная часть и внутренняя изоляция.</p></div>
+<div class="lab">
+<aside class="card controls"><h3>Исполнение</h3>
+<label>Оборудование <select id="yard-type"><option value="post">Опорный изолятор шины</option><option value="bushing">Проходной ввод трансформатора</option><option value="breaker">Колонка выключателя</option></select></label>
+<p id="yard-note" class="small"></p>
+<label>Линейное напряжение, кВ <select id="yard-u"></select></label>
+<label>Профиль рёбер <select id="yard-ribs"><option value="base">Обычный</option><option value="deep">Развитый</option></select></label>
+<label for="yard-r">Сопротивление слоя, МОм/□ <output id="yard-r-out"></output></label><input type="range" id="yard-r" min="0" max="4" step=".1" value="2">
+<label class="check"><input type="checkbox" id="yard-path" checked> Показать путь по поверхности</label>
+<label class="check"><input type="checkbox" id="yard-air" checked> Показать расстояние по воздуху</label>
+<button id="yard-reset" type="button">Сбросить</button>
+<p class="small">Сопротивление меняется по логарифмической шкале. Модель сравнивает геометрию при эффективной ширине проводящей полосы 0,20 м.</p>
+</aside>
+<div class="lab-body">
+<article class="card model-card"><div class="panel-head"><h3>Разрез выбранного узла</h3><span class="tag">Путь утечки</span></div><canvas class="profile-scene" id="yard-scene" aria-label="Разрез наружной изоляции подстанции"></canvas><div class="scene-legend"><span><i class="key teal"></i>По поверхности</span><span><i class="key amber"></i>По воздуху</span></div><div class="stats" id="yard-stats"></div><p class="small">Длины вычисляются по нарисованному профилю до металла. Длина воздушного пути на схеме относится только к показанной геометрии. Расстояния на реальном ОРУ проверяют по <a href="https://samelectrik.ru/wp-content/uploads/2019/02/pue-7-4-2.pdf" target="_blank" rel="noopener">ПУЭ, гл. 4.2</a>.</p></article>
+<section class="card scope" id="yard-scope" aria-label="Осциллограф подстанции"></section>
+</div></div>
+</section>
+<section id="weather" role="tabpanel" aria-labelledby="tab-weather" hidden>
+<div class="section-title"><h2>Загрязнение и климат</h2><p>На загрязнённой поверхности при увлажнении может появиться проводящая плёнка. В опыте отдельно сравниваются рост тока утечки и заданное для анализа отключение.</p></div>
+<div class="lab">
+<aside class="card controls"><h3>Условия опыта</h3>
+<label>Условия <select id="wx-mode"><option value="dry">Сухой воздух</option><option value="fog">Туман или роса</option><option value="rain">Дождь</option><option value="ice">Обледенение и оттепель</option></select></label>
+<label for="wx-dirt">Доля загрязнения в модели <output id="wx-dirt-out"></output></label><input type="range" id="wx-dirt" min="0" max="100" value="60">
+<label>Линейное напряжение, кВ <select id="wx-u"></select></label>
+<label for="wx-time">Время опыта <output id="wx-time-out"></output></label><input type="range" id="wx-time" min="0" max="16" step=".1" value="0">
+<div class="actions"><button type="button" id="wx-run" class="primary">Пуск опыта</button><button type="button" id="wx-reset">Сбросить время</button></div>
+<div class="actions"><button type="button" id="wx-trip">Воспроизвести отключение</button><button type="button" id="wx-return" hidden>Вернуть питание в модели</button></div>
+<p class="small">Кнопка события показывает условные перекрытие и снятие напряжения за выключателем. Тренажёр не вычисляет напряжение перекрытия и уставки защиты.</p>
+</aside>
+<div class="lab-body">
+<article class="card model-card"><div class="panel-head"><h3>Внешняя поверхность</h3><span class="tag" id="wx-stage"></span></div><canvas class="profile-scene" id="wx-scene" aria-label="Схема увлажнения и обледенения внешней поверхности изолятора"></canvas><div class="stats" id="wx-stats"></div>
+<p class="small live-note" id="wx-event" role="status"></p><details><summary>Как получен ток</summary><p>Геометрия и омическая ветвь совпадают со вкладкой «Подстанции» для опорного изолятора обычного профиля. Для наглядного сравнения задано <var>R<sub>□</sub></var> = 100 / (1 + 250 × <var>d</var> × <var>w</var> + 5 × <var>w</var>) МОм/□. <var>d</var> — доля загрязнения от 0 до 1, <var>w</var> — условная доля увлажнения от 0 до 1. Функция задана для опыта. При смене погоды серия начинается с сухой поверхности, смыв и высыхание в этой модели опущены.</p><p>В опыте с обледенением сначала показаны сосульки, затем добавляется проводящая талая вода. Лёд сам по себе может изменить расстояния между рёбрами. Значения индикаторов иллюстрируют ход процесса.</p><p class="source"><a href="https://ieeexplore.ieee.org/abstract/document/6927327" target="_blank" rel="noopener">IEEE. Обзор перекрытий при обледенении</a></p></details></article>
+<section class="card scope" id="wx-scope" aria-label="Осциллограф погодного опыта"></section>
+</div></div>
+</section>
+<section id="choice" role="tabpanel" aria-labelledby="tab-choice" hidden>
+<div class="section-title"><h2>Выбор длины пути утечки</h2><p>Оценка по ПУЭ 7, п. 1.9.9, с исходными данными из табл. 1.9.1 и ГОСТ 721‑77. Пределы калькулятора — высота до 1000 м, стекло и фарфор в показанной области применения.</p></div>
+<div class="two">
+<article class="card controls"><h3>Исходные данные</h3>
+<label>Конструкция <select id="choice-kind"><option>ВЛ · стекло или фарфор, поддерживающая гирлянда</option><option>ОРУ · наружная фарфоровая изоляция</option></select></label>
+<label>Номинальный класс напряжения, кВ <select id="choice-u"></select></label>
+<label>Степень загрязнения <select id="choice-dirt"><option value="0">1-я</option><option value="1">2-я</option><option value="2">3-я</option><option value="3">4-я</option></select></label>
+<label>Коэффициент использования <var>k</var> <input id="choice-k" type="number" min="1" step="any" value="1.15" inputmode="decimal"></label>
+<label>Паспортная длина пути, см <input id="choice-pass" type="number" min="0.01" step="any" value="355" inputmode="decimal"></label>
+<p class="small">В примере <var>k</var> дан как исходное число. Для реальной конструкции его определяют по пп. 1.9.44–1.9.53.</p>
+</article>
+<article class="card"><h3>Нормативная проверка по одному критерию</h3>
+<div class="formula"><math display="block"><mrow><msub><mi>L</mi><mtext>тр</mtext></msub><mo>=</mo><msub><mi>l</mi><mtext>э</mtext></msub><mo>·</mo><msub><mi>U</mi><mtext>н.р.</mtext></msub><mo>·</mo><mi>k</mi></mrow></math></div>
+<p><var>l<sub>э</sub></var> — удельная эффективная длина, см/кВ. <var>U<sub>н.р.</sub></var> — наибольшее рабочее междуфазное напряжение, кВ. Результат получается в сантиметрах.</p>
+<div class="stats" id="choice-stats"></div><p class="live-note" id="choice-result" role="status"></p>
+<table><caption>ПУЭ, табл. 1.9.1 · см/кВ</caption><thead><tr><th>СЗ</th><th>До 35 кВ включительно</th><th>110–750 кВ</th></tr></thead><tbody id="choice-table"></tbody></table>
+<p class="small">Отдельно проверяют воздушные промежутки и электрическую прочность. Для полимерной изоляции по п. 1.9.7 используют разрядные характеристики при загрязнении и увлажнении.</p>
+<p class="source"><a href="https://files.stroyinf.ru/Data1/7/7177/" target="_blank" rel="noopener">ПУЭ, гл. 1.9</a> · <a href="https://protect.gost.ru/gost/details/fbf27cd2-8975-4532-9997-9390f23c61cf" target="_blank" rel="noopener">ГОСТ 721‑77</a></p>
+</article></div>
+<article class="card calculation-block" id="disc-count">
+<h3>Число тарелок в одной цепи</h3>
+<p>ПУЭ 7, пп. 1.9.9–1.9.13 и 1.9.20. Для ВЛ рассматриваем металлическую или железобетонную опору и одну цепь из однотипных изоляторов. Для ОРУ показываем отдельный расчёт гирлянд 110 и 220 кВ на высоте до 1000 м.</p>
+<div class="two">
+<div class="controls">
+<label>Класс сети, кВ <select id="count-u"></select></label>
+<label>Гирлянда <select id="count-kind"><option value="line-support">ВЛ · поддерживающая</option><option value="line-tension">ВЛ · натяжная</option><option value="yard-support">ОРУ · поддерживающая</option><option value="yard-tension">ОРУ · натяжная</option></select></label>
+<label>Степень загрязнения <select id="count-zone"><option value="0">1-я</option><option value="1">2-я</option><option value="2">3-я</option><option value="3">4-я</option></select></label>
+<label>Высота над уровнем моря <select id="count-alt"><option value="0">До 1000 м включительно</option><option value="1">Свыше 1000 до 2000 м</option><option value="2">Свыше 2000 до 3000 м</option><option value="3">Свыше 3000 до 4000 м</option></select></label>
+<label>Исполнение тарелки <select id="count-profile"><option value="ps120">ПС120Б · обычный профиль</option><option value="psd100">ПСД100В · двукрылая</option></select></label>
+</div>
+<div>
+<div class="formula"><math display="block"><mrow><msub><mi>m</mi><mn>0</mn></msub><mo>=</mo><mo>⌈</mo><mfrac><msub><mi>L</mi><mtext>тр</mtext></msub><msub><mi>L</mi><mtext>и</mtext></msub></mfrac><mo>⌉</mo></mrow></math></div>
+<p class="small"><var>L<sub>и</sub></var> — паспортный путь одной тарелки. Обе длины в сантиметрах. Дробное число округляют вверх. Для одной цепи коэффициент конструкции <var>k<sub>к</sub></var> = 1.</p>
+<div class="stats" id="count-stats"></div>
+<p class="live-note" id="count-summary" role="status"></p>
+<div class="actions"><button type="button" id="count-to-model" class="primary">Перенести число в модель ВЛ</button></div>
+</div>
+</div>
+<table><caption>Обычная одноцепная гирлянда ВЛ 220 кВ до 1000 м</caption><thead><tr><th>СЗ</th><th>ПС120Б</th><th>ПСД100В</th></tr></thead><tbody id="count-reference"></tbody></table>
+<p class="small">Для ПСД100В показаны районы промышленного загрязнения или засолённых почв по табл. 1.9.24. Проверка пути утечки применяется вместе с требованиями к воздушным промежуткам, электрической прочности и механической нагрузке. Особые опоры и большие переходы проверяют отдельно по пп. 1.9.14–1.9.16.</p>
+<p class="source"><a href="https://files.stroyinf.ru/Data1/7/7177/" target="_blank" rel="noopener">ПУЭ, табл. 1.9.20, 1.9.21 и 1.9.24</a> · <a href="https://forenergo.ru/images/Katalog/2024/Malyj-katalog-2024.pdf" target="_blank" rel="noopener">ПС120Б, каталог 2024, с. 156</a> · <a href="https://forenergo.ru/images/Katalog/Katalog-IZOLJaTORY-2018-2019.pdf" target="_blank" rel="noopener">ПСД100В, каталог изоляторов, с. 45</a></p>
+</article>
+</section>
+<section id="practice" role="tabpanel" aria-labelledby="tab-practice" hidden>
+<div class="section-title"><h2>Самостоятельные опыты</h2><p>Откройте установку кнопкой внутри опыта. Она выставляет исходные условия. Снимите данные до изменения и после, затем сформулируйте вывод по указанному признаку.</p></div><div id="practice-list"></div>
+</section>
+<section id="cases" role="tabpanel" aria-labelledby="tab-cases" hidden>
+<div class="section-title"><h2>Реальные кейсы</h2><p>В первых двух карточках разбираются записи из отчёта сетевой компании. Для связи с электроприводом ниже дан отдельный учебный журнал.</p></div>
+<div class="two">
+<article class="card"><p class="meta">21.07.2023 · акт № 752</p><h3>ВЛ 110 кВ Динская — Лорис</h3><p>В отчёте ПАО «Россети Кубань» указано, что пыль осела на гирлянде опоры № 42 в зоне сельхозработ. Поверхность увлажнилась при достижении точки росы. На фазе А зафиксировано перекрытие по наружной поверхности, тарелки остались целы.</p><p><b>Вопрос.</b> Какие факты поддерживают версию поверхностного перекрытия? Что можно наблюдать до него?</p><div class="actions"><button class="primary" type="button" data-preset="dinskaya">Воспроизвести условия в модели</button><button type="button" data-reveal="case1">Сравнить с разбором</button></div><p class="live-note" id="case1" hidden>Отчёт указывает путь разряда по поверхности и отсутствие разрушения тарелок. На модели сравните ток утечки при 0 и 8 с. Числа на осциллографе учебные, фактическая осциллограмма в отчёте отсутствует.</p><p class="source"><a href="https://rosseti-kuban.ru/media/files/2024/02/06/24476/file_65c234865c6c77.86872291.pdf#search=%22Динская%22" target="_blank" rel="noopener">ПАО «Россети Кубань». Отчёт об аварийности за 2023 год, акт № 752</a></p></article>
+<article class="card"><p class="meta">17.03.2023 · акт № 130</p><h3>ПС 110 кВ Шедок</h3><p>В данных расследования указан механический излом опорного изолятора фазы А на ШР‑110 Т‑1. В графе причины отмечены неудовлетворительное состояние изолятора, длительная эксплуатация и износ.</p><p><b>Вопрос.</b> Что удерживает такой изолятор и какой факт отличает этот случай от перекрытия гирлянды в первом кейсе?</p><div class="actions"><button class="primary" type="button" data-preset="shedok">Посмотреть опорный изолятор</button><button type="button" data-reveal="case2">Сравнить с разбором</button></div><p class="live-note" id="case2" hidden>Опорный изолятор держит токоведущую часть относительно заземлённой конструкции. В данном случае подтверждён механический излом. Модель показывает назначение и наружную геометрию класса изоляторов. Конструкция конкретного разъединителя и его повреждение в ней не воспроизводятся.</p><p class="source"><a href="https://rosseti-kuban.ru/media/files/2024/02/06/24476/file_65c234865c6c77.86872291.pdf#search=%22Шедок%22" target="_blank" rel="noopener">ПАО «Россети Кубань». Отчёт об аварийности за 2023 год, акт № 130</a></p></article>
+</div>
+<article class="card guide"><h3>Учебный кейс · питание насосной станции</h3>
+<table><thead><tr><th>Момент</th><th>Питающая линия</th><th>Автоматика привода</th></tr></thead><tbody><tr><td>До отключения</td><td>Напряжение штатное</td><td>Насос работает</td></tr><tr><td>Срабатывание защиты</td><td>Выключатель разомкнут, за ним напряжение отсутствует</td><td>Насос остановился</td></tr><tr><td>Питание восстановлено</td><td>Напряжение на вводе штатное</td><td>Разрешение на пуск отсутствует</td></tr></tbody></table>
+<p>Что следует из журнала и чего недостаточно для диагноза?</p>
+<div class="actions" id="case-actions"><button type="button" data-case="motor">Доказан дефект двигателя</button><button type="button" data-case="blocked">Питание есть, пуск заблокирован</button><button type="button" data-case="fog">Доказано перекрытие изоляции</button></div>
+<p id="case-result" class="live-note" role="status"></p></article>
+</section>
+<section id="tasks" role="tabpanel" aria-labelledby="tab-tasks" hidden>
+<div class="section-title"><h2>Расчётные задачи</h2><p>Запишите формулу и единицу результата, затем введите число. Проверка принимает точку или запятую. Решение можно открыть после самостоятельного расчёта.</p></div><div class="two" id="task-list"></div>
+</section>
+<section id="quiz" role="tabpanel" aria-labelledby="tab-quiz" hidden>
+<div class="section-title"><h2>Проверка знаний</h2><p>В каждом варианте 15 вопросов с одним правильным ответом. После проверки появятся балл и пояснения к ответам.</p></div>
+<article class="card quiz-tools"><label>Вариант <select id="quiz-variant"></select></label><p id="quiz-count"></p><button id="quiz-reset" type="button">Очистить вариант</button></article>
+<form id="quiz-form"><div id="questions"></div><div class="actions quiz-actions"><button class="primary" type="submit">Проверить вариант</button><p id="quiz-result" role="status"></p></div></form>
+</section>
+<footer class="references"><details><summary>Учебные и нормативные источники</summary><ul>
+<li><a href="https://portal.tpu.ru/SHARED/k/KGE/elect/Tab/labtvn1.pdf" target="_blank" rel="noopener">В. Ф. Важов, Г. Е. Куртенков, В. А. Лавринович и др. «Техника высоких напряжений», ТПУ</a>. Лабораторная работа о распределении напряжения по гирлянде и экранном кольце.</li>
+<li><a href="https://dspace.www1.vlsu.ru/bitstream/123456789/7626/1/01788.pdf" target="_blank" rel="noopener">Учебный материал ВлГУ</a>. Изоляторы ВЛ, с. 45 и далее.</li>
+<li><a href="https://base.garant.ru/3923497/5434a9dc4ceb5e696a30fe12e328d51d/" target="_blank" rel="noopener">ПУЭ 7, глава 1.9, утверждена приказом Минэнерго России № 204 от 08.07.2002</a>. Пп. 1.9.7–1.9.11, 1.9.18–1.9.20, 1.9.27 и табл. 1.9.1.</li>
+<li><a href="https://protect.gost.ru/gost/details/3d65c216-f6f2-4455-9425-967e3b1cad19" target="_blank" rel="noopener">ГОСТ 9920‑89</a>. Длина пути утечки внешней изоляции наружных электроустановок в области применения стандарта.</li>
+<li><a href="https://protect.gost.ru/gost/details/88fde0d7-8301-4eff-9f94-55b473349440" target="_blank" rel="noopener">ГОСТ Р 56735‑2015</a>. Загрязнение, терминология и общие принципы выбора.</li>
+<li><a href="https://protect.gost.ru/gost/details/6688e57f-32cd-4833-9866-11cf8c93578b" target="_blank" rel="noopener">ГОСТ 1516.3‑96</a>. Электрическая прочность изоляции электрооборудования и испытательные напряжения.</li>
+</ul></details></footer>
+</main>
+<script>"use strict";
+const FREQUENCY=50;
+const NETWORK={10:12,35:40.5,110:126,220:252};
+const POLLUTION=[[1.90,1.60],[2.35,2.00],[3.00,2.50],[3.50,3.10]];
+const PHASE_WIDTH=.20;
+const DISC_PROFILES={
+  ps120:{name:"ПС120Б",path:33,diameter:25.5,k:1.15,zones:[0,1]},
+  psd100:{name:"ПСД100В",path:42.5,diameter:28,k:1.20,zones:[1,2,3]}
+};
+
+function ringAddition(relativePosition, ringPosition){
+  return .32*(ringPosition*relativePosition**4+(1-ringPosition)*relativePosition**2);
+}
+
+function solveString(n, voltage, tower, line, screen, ringPosition=1){
+  const phase=voltage/Math.sqrt(3);
+  const diagonal=[],rhs=[],wire=[];
+  for(let i=1;i<n;i++){
+    const kLine=line+(screen ? ringAddition(i/n,ringPosition) : 0);
+    wire.push(kLine);
+    diagonal.push(2+tower+kLine);
+    rhs.push(kLine*phase+(i===n-1 ? phase : 0));
+  }
+  for(let i=1;i<n-1;i++){
+    const factor=1/diagonal[i-1];
+    diagonal[i]-=factor;
+    rhs[i]+=factor*rhs[i-1];
+  }
+  const nodes=Array(n+1).fill(0);
+  nodes[n]=phase;
+  for(let i=n-2;i>=0;i--)nodes[i+1]=(rhs[i]+(i===n-2 ? 0 : nodes[i+2]))/diagonal[i];
+  const drops=nodes.slice(1).map((number,i)=>number-nodes[i]);
+  return {phase,nodes,drops,wire};
+}
+
+const EQUIPMENT={
+  post:{height:1.21,radius:.16,ribs:6,note:"Опора шины держит токоведущую часть над заземлённым основанием. Путь по рёбрам проходит от верхнего электрода к нижнему фланцу."},
+  bushing:{height:1.46,radius:.19,ribs:7,note:"Ввод проводит токоведущий стержень через заземлённый бак. Снаружи рассматриваем промежуток от верхнего вывода до фланца, внутренняя часть показана для ориентира."},
+  breaker:{height:1.36,radius:.20,ribs:6,note:"Колонка отделяет верхний токоведущий узел от заземлённой опорной рамы. Контактный промежуток выключателя находится внутри аппарата."}
+};
+
+function profile(type, longRibs){
+  const {height,radius,ribs}=EQUIPMENT[type];
+  const points=[[radius,0]];
+  const depth=longRibs ? .135 : .075;
+  for(let i=0;i<ribs;i++){
+    const center=height*(i+1)/(ribs+1);
+    points.push([radius,center-.047],[radius+depth,center-.019],[radius+depth,center+.005],[radius,center+.048]);
+  }
+  points.push([radius,height]);
+  const length=points.slice(1).reduce((sum,[x,y],i)=>sum+Math.hypot(x-points[i][0],y-points[i][1]),0);
+  return {points,height,radius,depth,length};
+}
+
+function leakage(phase,length,sheetResistance){
+  const resistance=sheetResistance*length/PHASE_WIDTH;
+  return {resistance,current:phase/resistance};
+}
+
+function climate(kind,time,dirt){
+  const unit=x=>Math.max(0,Math.min(1,x));
+  const ice=kind==="ice" ? unit(time/8)*(1-.27*unit((time-9)/7)) : 0;
+  let wet=0,stage="Сухая поверхность";
+  if(kind==="fog"){wet=unit(time/10)*.83;stage=time<.1 ? stage : "Оседают капли тумана";}
+  if(kind==="rain"){wet=unit(time/6);stage=time<.1 ? stage : "Формируется плёнка воды";}
+  if(kind==="ice"){
+    wet=.06*unit(time/8)+.86*unit((time-8)/6);
+    stage=time<.1 ? stage : time<8 ? "Нарастает лёд" : "Оттепель и талая вода";
+  }
+  return {wet,ice,stage,sheetResistance:100/(1+250*dirt*wet+5*wet)};
+}
+
+function creepage(nominal,zone,coefficient){
+  const specific=POLLUTION[zone][nominal>35 ? 1 : 0];
+  const maxVoltage=NETWORK[nominal];
+  return {specific,maxVoltage,length:specific*maxVoltage*coefficient};
+}
+
+function stringCount(nominal,zone,discKey,kind,band=0){
+  const disc=DISC_PROFILES[discKey];
+  const yard=kind.startsWith("yard");
+  const tension=kind.endsWith("tension");
+  const altitude=yard ? 1 : 1+band*.05;
+  const result=creepage(nominal,zone,disc.k);
+  const length=result.length*altitude;
+  const rounded=Math.ceil(length/disc.path-1e-12);
+  const base=nominal===10 ? Math.max(2,rounded) : rounded;
+  const tensionExtra=tension&&nominal>=35&&nominal<=110&&zone<2 ? 1 : 0;
+  const yardExtra=yard ? (nominal===220 ? 2 : nominal===110 ? 1 : 0) : 0;
+  const domain=(!yard||(nominal>=110&&band===0));
+  return {...result,disc,length,base,tensionExtra,yardExtra,altitude,domain,
+    applicable:disc.zones.includes(zone),total:base+tensionExtra+yardExtra};
+}
+
+function sine(t){return Math.sin(2*Math.PI*FREQUENCY*t);}
+
+const $=id=>document.getElementById(id);
+const number=(value,digits=2)=>value.toLocaleString("ru-RU",{minimumFractionDigits:digits,maximumFractionDigits:digits});
+const limit=(value,lo,hi)=>Math.min(hi,Math.max(lo,value));
+const values=Object.keys(NETWORK).map(Number);
+const element=(tag,text,className)=>{
+  const node=document.createElement(tag);
+  if(text!==undefined)node.textContent=text;
+  if(className)node.className=className;
+  return node;
+};
+const stats=(node,items)=>{
+  node.replaceChildren(...items.map(([label,value])=>{
+    const entry=element("span",label+" ");
+    entry.append(element("b",value));
+    return entry;
+  }));
+};
+const labelText=(ctx,text,x,y,opts={})=>{
+  ctx.font=(opts.size??13)+"px system-ui, sans-serif";
+  ctx.fillStyle=opts.color??"#e4f4f7";
+  ctx.textAlign=opts.align??"left";
+  ctx.fillText(text,x,y);
+};
+function stroke(ctx,points,color,width=1,fill=null){
+  ctx.beginPath();
+  points.forEach(([x,y],i)=>i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y));
+  if(fill){ctx.closePath();ctx.fillStyle=fill;ctx.fill();}
+  if(width){ctx.strokeStyle=color;ctx.lineWidth=width;ctx.stroke();}
+}
+function paintCanvas(canvas){
+  const {width:w,height:h}=canvas.getBoundingClientRect();
+  if(!w||!h)return null;
+  const ratio=Math.min(window.devicePixelRatio||1,2);
+  const width=Math.round(w*ratio),height=Math.round(h*ratio);
+  if(canvas.width!==width||canvas.height!==height){canvas.width=width;canvas.height=height;}
+  const ctx=canvas.getContext("2d");
+  ctx.setTransform(ratio,0,0,ratio,0,0);
+  ctx.clearRect(0,0,w,h);
+  ctx.lineCap="round";ctx.lineJoin="round";
+  return {w,h,ctx};
+}
+function halfAxes(highest){
+  if(highest<=1e-9)return 1;
+  const factor=10**Math.floor(Math.log10(highest));
+  return Math.ceil(highest/factor)*factor;
+}
+
+class Oscilloscope{
+  constructor(container,secondUnit){
+    this.root=container;
+    this.units=["кВ",secondUnit];
+    this.channels=["Напряжение","Канал 2"];
+    this.amps=[0,0];this.history=[];
+    this.speed=1;this.window=.08;this.capture=true;
+    this.t=0;this.freeze=false;this.event=null;this.cursor=null;
+    container.innerHTML='<div class="panel-head"><h3>Осциллограф</h3><span class="tag">Модель сигнала · 50 Гц</span></div>'+
+      '<div class="scope-tools"><label>Скорость показа <select><option value="1">1 период/с</option><option value="10">10 периодов/с</option><option value="50">50 периодов/с</option></select></label>'+
+      '<label><input type="checkbox" checked> Автозахват события</label><button type="button" data-scope="pause">Удержать кадр</button><button type="button" data-scope="reset">Начать запись заново</button></div>'+
+      '<canvas aria-label="Осциллограмма двух каналов во времени. Время отображается в миллисекундах"></canvas>'+
+      '<div class="scope-meta"><span class="scope-legend"></span><strong class="scope-status" role="status"></strong></div>'+
+      '<p class="small scope-peaks"></p>'+
+      '<p class="small scope-cursor">Наведите курсор или коснитесь графика, чтобы снять мгновенные значения.</p>';
+    this.canvas=container.querySelector("canvas");
+    this.status=container.querySelector(".scope-status");
+    this.probe=container.querySelector(".scope-cursor");
+    this.legend=container.querySelector(".scope-legend");
+    this.peaks=container.querySelector(".scope-peaks");
+    this.pause=container.querySelector('[data-scope="pause"]');
+    this.titleText="";
+    container.querySelector("select").addEventListener("change",e=>{this.speed=+e.target.value;});
+    container.querySelector("input").addEventListener("change",e=>{this.capture=e.target.checked;});
+    this.pause.addEventListener("click",()=>{
+      this.freeze=!this.freeze;
+      if(!this.freeze&&this.event)this.event.hold=false;
+      this.draw();
+    });
+    container.querySelector('[data-scope="reset"]').addEventListener("click",()=>{this.reset();this.draw();});
+    this.canvas.addEventListener("pointermove",e=>{
+      const {left,width}=this.canvas.getBoundingClientRect();
+      this.cursor=limit((e.clientX-left-53)/(width-77),0,1);
+      this.draw();
+    });
+    this.canvas.addEventListener("pointerdown",e=>{
+      const {left,width}=this.canvas.getBoundingClientRect();
+      this.cursor=limit((e.clientX-left-53)/(width-77),0,1);
+      this.draw();
+    });
+    this.canvas.addEventListener("pointerleave",()=>{this.cursor=null;this.draw();});
+    this.reset();
+  }
+  update(a,b,first,second){
+    this.amps=[a*Math.SQRT2,b*Math.SQRT2];
+    if(!this.freeze){
+      if(this.channels[0]!==first||this.channels[1]!==second){
+        this.channels=[first,second];
+        this.history=[{t:this.t-this.window,amps:this.amps}];
+      }
+      const last=this.history.at(-1);
+      if(last.t===this.t)last.amps=this.amps;
+      else if(last.amps[0]!==this.amps[0]||last.amps[1]!==this.amps[1])this.history.push({t:this.t,amps:this.amps});
+    }
+  }
+  reset(){
+    this.t=0;
+    this.history=[{t:-this.window,amps:this.amps}];
+    this.freeze=false;this.event=null;this.cursor=null;
+  }
+  mark(label){
+    if(this.freeze)this.reset();
+    this.event={t:this.t,label,hold:this.capture};
+  }
+  tick(dt){
+    if(!this.freeze){
+      const next=this.t+dt*this.speed/FREQUENCY;
+      const end=this.event?.hold ? this.event.t+.04 : Infinity;
+      this.t=Math.min(next,end);
+      this.freeze=this.t>=end;
+      while(this.history.length>1&&this.history[1].t<this.t-this.window)this.history.shift();
+    }
+    this.draw();
+  }
+  draw(){
+    const layout=paintCanvas(this.canvas);
+    if(!layout)return;
+    const {w,h,ctx}=layout,t0=this.t-this.window,left=53,right=w-24,top=20,bottom=h-31;
+    const split=(top+bottom)/2;
+    const tracks=[[top,split-5],[split+5,bottom]];
+    const colors=["#75e5d0","#ffc087"];
+    const maxima=[0,0];
+    this.history.forEach(({amps})=>amps.forEach((value,i)=>{maxima[i]=Math.max(maxima[i],Math.abs(value));}));
+    const axes=maxima.map(halfAxes);
+    for(let i=0;i<=8;i++){
+      const x=left+(right-left)*i/8;
+      stroke(ctx,[[x,top],[x,bottom]],"#365260");
+      if(i%2===0)labelText(ctx,number(1000*(t0+i*this.window/8),0),x,h-12,{align:"center",size:11});
+    }
+    axes.forEach((axis,i)=>{
+      const [a,b]=tracks[i],mid=(a+b)/2;
+      for(const [value,y] of [[axis,a],[0,mid],[-axis,b]]){
+        stroke(ctx,[[left,y],[right,y]],value===0 ? "#7596a0" : "#365260");
+        labelText(ctx,number(value,Math.abs(axis)<1 ? 2 : 0),left-6,y+4,{color:colors[i],size:10,align:"right"});
+      }
+      labelText(ctx,this.units[i],24,mid+4,{color:colors[i],size:9,align:"right"});
+    });
+    labelText(ctx,"t, мс",w-9,13,{align:"right",size:10});
+    if(this.event&&this.event.t>=t0&&this.event.t<=this.t){
+      const x=left+(right-left)*(this.event.t-t0)/this.window;
+      ctx.setLineDash([3,4]);stroke(ctx,[[x,top],[x,bottom]],"#eaa781",1.5);ctx.setLineDash([]);
+    }
+    let cursorValues=null,idx=0;
+    const waves=[[],[]],sampleCount=Math.max(220,Math.floor(w*1.3));
+    const cursorIndex=this.cursor===null ? -1 : Math.round(this.cursor*sampleCount);
+    for(let j=0;j<=sampleCount;j++){
+      const t=t0+j*this.window/sampleCount;
+      while(idx+1<this.history.length&&this.history[idx+1].t<=t)idx++;
+      const v=this.history[idx].amps.map(a=>a*sine(t));
+      const x=left+(right-left)*j/sampleCount;
+      for(let i=0;i<2;i++){
+        const [a,b]=tracks[i];
+        waves[i].push([x,(a+b)/2-v[i]*(b-a)/2/axes[i]]);
+      }
+      if(j===cursorIndex){cursorValues={t,v};stroke(ctx,[[x,top],[x,bottom]],"#e6edf0",1.2);}
+    }
+    waves.forEach((wave,i)=>stroke(ctx,wave,colors[i],1.65));
+    const legend=this.channels[0]+" (бирюзовый) · "+this.channels[1]+" (оранжевый)";
+    if(this.legend.textContent!==legend)this.legend.textContent=legend;
+    const peaks="Амплитуда в окне · "+maxima.map((v,i)=>number(v,i===0||this.units[i]==="кВ" ? 2 : 4)+" "+this.units[i]).join(" · ");
+    if(this.peaks.textContent!==peaks)this.peaks.textContent=peaks;
+    const status=this.freeze ? (this.event?.hold ? "Захвачен кадр · "+this.event.label : "Кадр удержан") :
+      this.event?.hold ? "Автозахват · "+this.event.label : "Идёт запись";
+    if(this.status.textContent!==status)this.status.textContent=status;
+    this.pause.textContent=this.freeze ? "Продолжить запись" : "Удержать кадр";
+    const probe=cursorValues ? number(cursorValues.t*1000,1)+" мс · "+this.channels.map((channel,i)=>channel+" "+number(cursorValues.v[i],3)+" "+this.units[i]).join(" · ") :
+      "Наведите курсор или коснитесь графика, чтобы снять мгновенные значения. До начала записи видны предыдущие периоды.";
+    if(this.probe.textContent!==probe)this.probe.textContent=probe;
+  }
+}
+
+const MODEL_TYPES={
+  glass:"Тарелки из закалённого стекла соединены металлической арматурой. Поддерживающая гирлянда несёт провод, натяжная работает на тяжение вдоль линии.",
+  porcelain:"Фарфоровые тарелки с шапкой и стержнем образуют гирлянду. Здесь стеклянная и фарфоровая гирлянды рассчитываются при одинаковых заданных отношениях ёмкостей.",
+  polymer:"Рёбра полимерной оболочки защищают несущий стеклопластиковый стержень. Промежуточных металлических узлов тарельчатой гирлянды здесь нет.",
+  pin:"Изоляционная деталь устанавливается на заземлённый штырь. Провод закреплён сверху. Для примера показано напряжение всего изолятора."
+};
+const palette=weight=>weight>=.9 ? "#ffb477" : weight>=.66 ? "#89e0b2" : "#67bdd3";
+
+function lineScene(result,type,selected,ring,angle,pitch){
+  const box=paintCanvas($("line-scene"));
+  if(!box)return;
+  const {w,h,ctx}=box;
+  const yaw=angle*Math.PI/180,tilt=pitch*Math.PI/180;
+  const s=Math.min(w/5.8,h/2.75);
+  const origin=[w*.5,h*.48];
+  const project=([x,y,z])=>{
+    const xx=x*Math.cos(yaw)-z*Math.sin(yaw),zz=x*Math.sin(yaw)+z*Math.cos(yaw);
+    return [origin[0]+s*xx,origin[1]+s*(y*Math.cos(tilt)-zz*Math.sin(tilt))];
+  };
+  const line=(a,b,color,width)=>stroke(ctx,[project(a),project(b)],color,width);
+  const disk=(y,radius,color,edge,width=1)=>{
+    const rim=Array.from({length:49},(_,i)=>{
+      const phase=i*Math.PI/24;
+      return project([radius*Math.cos(phase),y,radius*Math.sin(phase)]);
+    });
+    stroke(ctx,rim,edge,width,color);
+  };
+  const mark=(text,x,y,z,color)=>{
+    const [a,b]=project([x,y,z]);
+    labelText(ctx,text,limit(a,49,w-49),limit(b,18,h-10),{color,align:"center",size:12});
+  };
+  const ground="#85aab7",hot="#ffd09a";
+  const reversed=type==="pin",base=reversed ? .76 : -.96,end=reversed ? -.56 : .91;
+  line([-2,base,0],[0,base,0],ground,7);
+  line([-1.98,base,0],[-1.98,base+.66,0],ground,5);
+  line([-1.95,base+.51,0],[-.9,base,0],ground,2);
+  line([0,base,0],[0,end,0],type==="polymer" ? "#e7bf91" : "#aec4cf",type==="pin" ? 10 : 6);
+  line([-1.8,end,0],[2.05,end,0],hot,4);
+  disk(base,.18,"#869eae","#cddce3",2);
+  if(type==="glass"||type==="porcelain"){
+    const max=Math.max(...result.drops);
+    const step=(end-base)/result.drops.length;
+    result.drops.forEach((value,i)=>{
+      const y=base+(i+.59)*step;
+      const color=palette(value/max);
+      const body=Math.min(.33,.72/Math.sqrt(result.drops.length));
+      disk(y,body,type==="glass" ? color+"a8" : color,color,result.drops.length>18 ? 1.2 : 2);
+      disk(y+Math.min(.055,step*.18),body*.44,"#b9c7cf","#d5e2e4");
+      if(i===selected)disk(y,body+.062,null,"#fff1d2",2.4);
+      if(result.drops.length<9||i===selected)mark(String(i+1),.59,y+.052,0,color);
+    });
+    if(ring!==null){
+      const y=base+(end-base)*ring;
+      disk(y,.52,null,"#c6fad3",2.7);
+      mark("Кольцо",.74,y+.15,.28,"#c6fad3");
+    }
+  }else{
+    const ribCount=type==="polymer" ? 8 : 4;
+    for(let i=0;i<ribCount;i++){
+      const y=base+(end-base)*(i+.62)/(ribCount+.25);
+      const r=type==="pin" ? .4-(i*.027) : i%2===0 ? .35 : .28;
+      disk(y,r,type==="polymer" ? "#68bfb9" : "#d9bb98",type==="polymer" ? "#a1e7df" : "#ffdfb2",2);
+    }
+    if(type==="polymer")disk(end,.14,"#829fae","#cddce3",2);
+  }
+  mark("Опора · 0 кВ",-1.25,base-.12,0,"#b8d6e0");
+  mark("Провод",1.38,end+.19,0,hot);
+}
+
+function circuit(nodes,tower,result,selected){
+  const n=result.drops.length,width=Math.max(700,72+n*58),left=36,right=width-left;
+  const x=i=>left+(right-left)*i/n;
+  const path=(d,color,width=1.45)=>'<path d="'+d+'" stroke="'+color+'" stroke-width="'+width+'" fill="none"/>';
+  let svg='';
+  for(let i=0;i<n;i++){
+    const a=x(i),b=x(i+1),m=(a+b)/2,color=i===selected ? "#087263" : "#294958";
+    svg+=path("M"+a+" 45H"+(m-3)+"m6 0H"+b,color)+path("M"+(m-3)+" 34v22m6-22v22",color,2);
+    if(i>0){
+      if(tower>0)svg+=path("M"+a+" 45v17m0 6v12m-6-18h12m-12 6h12m-9 12h6m-9 4h12","#648689");
+      if(result.wire[i-1]>0)svg+=path("M"+a+" 45V24m0-5V10m-6 9h12m-12 5h12","#a8794e");
+    }
+  }
+  for(let i=0;i<=n;i++){
+    svg+='<circle cx="'+x(i)+'" cy="45" r="2.5" fill="#254856"/>';
+    svg+='<text x="'+x(i)+'" y="99" text-anchor="middle" fill="#284e59" font-size="10">'+number(nodes[i],1)+'</text>';
+  }
+  if(result.wire.some(v=>v>0))svg+=path("M"+x(1)+" 10H"+right+"V45","#a8794e");
+  return '<svg class="circuit" style="min-width:'+width+'px" role="img" aria-label="Ёмкостная схема гирлянды. Внизу действующие потенциалы узлов в киловольтах." viewBox="0 0 '+width+' 105">'+svg+'</svg>';
+}
+
+function showProfile(canvas,type,shape,options){
+  const box=paintCanvas(canvas);
+  if(!box)return;
+  const {w,h,ctx}=box,{points,height,radius}=shape;
+  const mid=w*(w<440 ? .43 : .48),base=h-43;
+  const scale=Math.min((base-25)/height,w*.36/(radius+.44));
+  const x=r=>mid+r*scale,y=z=>base-z*scale;
+  const right=points.map(([r,z])=>[x(r),y(z)]);
+  const left=points.map(([r,z])=>[x(-r),y(z)]);
+  const teal="#7ce7cf",amber="#ffd09c",hot="#f3b27a",metal="#a2bac5";
+  for(let i=0;i<5;i++){
+    const gy=34+(h-69)*i/4;stroke(ctx,[[15,gy],[w-15,gy]],"#284654",.7);
+  }
+  stroke(ctx,[[mid-w*.28,base+3],[mid+w*.28,base+3]],metal,5);
+  for(let i=0;i<10;i++){
+    const x0=mid-w*.26+i*w*.055;
+    stroke(ctx,[[x0-6,base+13],[x0,base+5]],"#718d9a",1.5);
+  }
+  stroke(ctx,[...right,...left.toReversed()],metal,1.7,type==="breaker" ? "#8ba5b5" : "#c3b4a8");
+  stroke(ctx,[[x(-.47),y(height)],[x(.47),y(height)]],hot,5);
+  if(type==="bushing"){
+    stroke(ctx,[[mid,base+27],[mid,y(height)-14]],hot,5);
+    stroke(ctx,[[mid-w*.27,base+25],[mid-w*.27,base],[mid+w*.27,base],[mid+w*.27,base+25]],metal,2);
+  }
+  if(type==="breaker"){
+    const a=[x(-.09),y(height*.62)],b=[x(.09),y(height*.42)];
+    stroke(ctx,[[mid,y(height*.79)],a,[mid,y(height*.51)]],"#f2dac3",2);
+    stroke(ctx,[b,[mid,y(height*.35)],[mid,y(height*.18)]],"#f2dac3",2);
+  }
+  if(options.air){
+    const airX=x(.47);
+    ctx.setLineDash([5,5]);stroke(ctx,[[airX,y(height)],[airX,base]],amber,1.6);ctx.setLineDash([]);
+    stroke(ctx,[[airX-8,y(height)],[airX+8,y(height)]],amber,1.3);
+    stroke(ctx,[[airX-8,base],[airX+8,base]],amber,1.3);
+    labelText(ctx,"Воздух",limit(airX+9,8,w-61),y(height*.64),{color:amber,size:12});
+  }
+  if(options.path)stroke(ctx,right,teal,2.7);
+  if(options.mode){
+    const {mode,wet,ice,dirt,time,event}=options;
+    if(dirt>0){
+      ctx.fillStyle="#967244";
+      for(let j=0;j<right.length;j++){
+        if((j*17)%29>=dirt*29)continue;
+        const [cx,cy]=right[j];ctx.fillRect(cx-2,cy-1,4,3);
+        const [lx,ly]=left[j];ctx.fillRect(lx-2,ly,4,2);
+      }
+    }
+    if(wet>0){
+      stroke(ctx,right,"rgba(87,210,231,"+(.32+wet*.62)+")",2+wet*4.5);
+      if(mode==="fog")for(let i=0;i<5;i++){
+        const yy=49+i*27,xx=20+(Math.sin(time+i)+1)*18;
+        stroke(ctx,[[xx,yy],[xx+w*.2,yy]],"rgba(186,225,231,"+(.08+wet*.21)+")",9);
+      }
+      if(mode==="rain")for(let i=0;i<24;i++){
+        const tx=(i*71+time*85)%w,ty=(i*37+time*155)%(h-32);
+        stroke(ctx,[[tx,ty],[tx-7,ty+13]],"#68c4de9c",1.4);
+      }
+    }
+    if(ice>0)for(let j=2;j<right.length;j+=4){
+      const [a,b]=right[j];
+      stroke(ctx,[[a-4,b],[a+5,b],[a-1,b+ice*(20+(j%5)*4)]],"#a4d8ed",1,"#a4d8ed");
+    }
+    if(event){
+      stroke(ctx,right.map(([x0,y0],i)=>[x0+5+(i%3-1)*7,y0]),"#ffe8b8",4);
+      labelText(ctx,"Условная дуга",w-11,46,{align:"right",size:12,color:"#ffe8b8"});
+    }
+  }
+  labelText(ctx,type==="post" ? "Шина" : "Вывод",17,24,{color:hot,size:12});
+  labelText(ctx,type==="bushing" ? "Фланец и бак · земля" : "Основание · земля",17,h-10,{color:"#a8cfd9",size:12});
+}
+
+const tabs=[...document.querySelectorAll('[role="tab"]')];
+const panels=tabs.map(tab=>tab.getAttribute("aria-controls"));
+let active="theory";
+let lastFrame=null,lastPaint=0;
+const tabScopes={
+  line:new Oscilloscope($("line-scope"),"кВ"),
+  yard:new Oscilloscope($("yard-scope"),"мА"),
+  weather:new Oscilloscope($("wx-scope"),"мА")
+};
+
+function changeTab(id,focusContent=false){
+  if(!panels.includes(id))return;
+  active=id;
+  tabs.forEach((tab,i)=>{
+    const on=panels[i]===active;
+    tab.setAttribute("aria-selected",on);
+    tab.tabIndex=on ? 0 : -1;
+    $(panels[i]).hidden=!on;
+  });
+  if(focusContent){
+    const title=$(active).querySelector("h2");
+    title.tabIndex=-1;
+    title.focus();
+  }
+  if(id==="line")paintLine();
+  if(id==="yard")paintYard();
+  if(id==="weather")paintWeather();
+  tabScopes[id]?.draw();
+}
+function navigate(id,focusContent=false){
+  if(location.hash!=="#"+id)history.pushState(null,"","#"+id);
+  changeTab(id,focusContent);
+}
+document.querySelector(".nav nav").addEventListener("click",e=>{
+  const tab=e.target.closest("[role=tab]");
+  if(tab)navigate(tab.getAttribute("aria-controls"));
+});
+document.querySelector(".nav nav").addEventListener("keydown",e=>{
+  const offset={ArrowLeft:-1,ArrowRight:1,Home:-Infinity,End:Infinity}[e.key];
+  if(offset===undefined)return;
+  e.preventDefault();
+  const i=offset===Infinity ? tabs.length-1 : offset===-Infinity ? 0 : (panels.indexOf(active)+offset+tabs.length)%tabs.length;
+  navigate(panels[i]);
+  tabs[i].focus();
+});
+function fromHash(){const id=location.hash.slice(1);changeTab(panels.includes(id) ? id : "theory");}
+window.addEventListener("popstate",fromHash);
+window.addEventListener("hashchange",fromHash);
+
+function voltageSelect(id){
+  $(id).replaceChildren(...values.map(v=>{const o=element("option",v);o.value=v;return o;}));
+  $(id).value="110";
+}
+for(const id of ["line-u","yard-u","wx-u","choice-u","count-u"])voltageSelect(id);
+$("count-u").value="220";
+
+const lineModel={type:"glass",n:6,u:110,tower:.10,wire:0,ring:null,index:5,angle:0,pitch:22,result:null,saved:null};
+const lineIds=["line-type","line-u","line-count","line-ground","line-wire","line-screen","line-ring"];
+function lineVars(){
+  return {type:$("line-type").value,u:+$("line-u").value,n:+$("line-count").value,tower:+$("line-ground").value,
+    wire:+$("line-wire").value,ring:$("line-screen").checked ? +$("line-ring").value/100 : null};
+}
+const isString=type=>type==="glass"||type==="porcelain";
+function updateLine(autoIndex=false){
+  Object.assign(lineModel,lineVars());
+  const {n,u,tower,wire,ring,type}=lineModel;
+  const model=isString(type);
+  const result=model ? solveString(n,u,tower,wire,ring!==null,ring??1) : {phase:u/Math.sqrt(3),drops:[u/Math.sqrt(3)]};
+  const peak=Math.max(...result.drops),maxIndex=result.drops.findIndex(v=>Math.abs(v-peak)<1e-8);
+  const uniform=model&&peak-Math.min(...result.drops)<1e-8;
+  lineModel.result=result;
+  lineModel.index=autoIndex ? maxIndex : Math.min(lineModel.index,result.drops.length-1);
+  if(!model)lineModel.saved=null;
+  $("line-count-out").value=n;
+  $("line-basis").textContent=u===220
+    ? "Ориентир для 220 кВ — 15 тарелок ПС120Б при 1-й СЗ и высоте до 1000 м. В модели можно сравнивать и другие конфигурации."
+    : "Число тарелок в этом опыте задано для изучения распределения напряжения.";
+  $("line-ground-out").value=number(tower);
+  $("line-wire-out").value=number(wire);
+  $("line-ring-out").value=$("line-ring").value+" %";
+  $("line-ring").disabled=ring===null;
+  $("line-type-note").textContent=MODEL_TYPES[type];
+  $("string-controls").hidden=!model;
+  $("line-distribution").hidden=!model;
+  $("line-save").hidden=!model;
+  renderLineReadouts(peak,maxIndex,uniform);
+  paintLine();
+}
+function renderLineReadouts(peak,maxIndex,uniform){
+  const {u,result,index,type,saved}=lineModel;
+  const total=result.drops.reduce((sum,v)=>sum+v,0);
+  const phase=number(result.phase)+" кВ";
+  const items=[["Фаза–земля",phase]];
+  if(isString(type)){
+    items.push(["Сумма",number(total)+" кВ"],["Среднее",number(total/result.drops.length)+" кВ"],
+      ["Максимум",number(peak)+" кВ ("+(uniform ? "равномерно" : "элемент "+(maxIndex+1))+")"],
+      ["Выбран элемент "+(index+1),number(result.drops[index])+" кВ · "+number(100*result.drops[index]/result.phase,1)+" %"]);
+    fillLineBars(result,index,peak,saved);
+    $("line-circuit").innerHTML=circuit(result.nodes,lineModel.tower,result,index);
+  }else items.push(["Напряжение на всём изоляторе",phase]);
+  stats($("line-stats"),items);
+  const scope=tabScopes.line;
+  scope.update(result.phase,result.drops[index],"Фаза–земля",isString(type) ? "Тарелка "+(index+1) : "Весь изолятор");
+  if(active==="line")scope.draw();
+}
+function fillLineBars(result,selected,max,saved){
+  const previous=saved?.drops.length===result.drops.length ? saved.drops : null;
+  const scale=previous ? Math.max(max,saved.peak) : max;
+  const chart=$("line-bars"),scroll=chart.scrollTop;
+  chart.classList.toggle("long",result.drops.length>10);
+  chart.replaceChildren(...result.drops.map((v,i)=>{
+    const row=element("button",undefined,"bar-row"),track=element("span",undefined,"track"),fill=element("i");
+    row.type="button";
+    row.setAttribute("aria-pressed",i===selected);
+    row.setAttribute("aria-label","Элемент "+(i+1)+", "+number(v)+" кВ");
+    fill.style.width=(100*v/scale)+"%";
+    fill.style.background=palette(v/max);
+    track.append(fill);
+    if(previous){
+      const mark=element("em");mark.style.left="calc("+100*previous[i]/scale+"% - 1px)";
+      track.append(mark);row.title="До изменения "+number(previous[i])+" кВ";
+    }
+    row.append(element("span","№ "+(i+1)),track,element("span",number(v)+" кВ"));
+    row.addEventListener("click",()=>{
+      lineModel.index=i;
+      updateLine();
+      $("line-bars").children[i].focus({preventScroll:true});
+    });
+    return row;
+  }));
+  chart.scrollTop=scroll;
+  $("line-saved").textContent=saved ? "Запомнено: "+saved.drops.length+" эл., "+saved.u+" кВ, максимум "+number(saved.peak)+" кВ. "+
+    (previous ? "Тёмная риска показывает прежнее значение. " : "")+"Изменение максимума "+number((max/saved.peak-1)*100,1)+" %." : "";
+}
+function paintLine(){
+  if(active!=="line"||!lineModel.result)return;
+  const {result,type,index,ring,angle,pitch}=lineModel;
+  lineScene(result,type,index,ring,angle,pitch);
+}
+function assignInputs(valuesMap){
+  Object.entries(valuesMap).forEach(([id,value])=>{if(typeof value==="boolean")$(id).checked=value;else $(id).value=String(value);});
+}
+const defaultsLine={"line-type":"glass","line-u":110,"line-count":6,"line-ground":.10,"line-wire":0,"line-screen":false,"line-ring":100};
+function resetLine(overrides={}){
+  lineModel.saved=null;
+  assignInputs({...defaultsLine,...overrides});
+  updateLine(true);
+  tabScopes.line.reset();
+}
+function markVoltage(scope){
+  if(!scope.freeze)scope.mark("Изменение линейного напряжения");
+}
+for(const id of lineIds)$(id).addEventListener("input",()=>{
+  const at220=id==="line-u"&&+$("line-u").value===220&&isString($("line-type").value);
+  if(at220)$("line-count").value=stringCount(220,0,"ps120","line-support").total;
+  if(id==="line-u"&&!at220)markVoltage(tabScopes.line);
+  updateLine(at220||id==="line-type"||id==="line-count");
+  if(at220)tabScopes.line.reset();
+});
+$("line-save").addEventListener("click",()=>{
+  const drops=lineModel.result.drops.slice();
+  lineModel.saved={u:lineModel.u,drops,peak:Math.max(...drops)};
+  updateLine();
+});
+$("line-reset").addEventListener("click",()=>resetLine());
+function lineAngle(angle,pitch=lineModel.pitch){
+  lineModel.angle=Math.round(angle);
+  lineModel.pitch=pitch;
+  $("line-angle").value=lineModel.angle;
+  $("line-angle-out").value=lineModel.angle+"°";
+  paintLine();
+}
+$("line-angle").addEventListener("input",e=>lineAngle(+e.target.value));
+$("line-view").addEventListener("click",()=>lineAngle(0,22));
+const lineCanvas=$("line-scene");
+let dragLine=null;
+lineCanvas.addEventListener("pointerdown",e=>{
+  if(e.button!==0)return;
+  lineCanvas.setPointerCapture(e.pointerId);
+  dragLine={x:e.clientX,y:e.clientY,yaw:lineModel.angle,pitch:lineModel.pitch};
+});
+lineCanvas.addEventListener("pointermove",e=>{
+  if(!dragLine)return;
+  const angle=((dragLine.yaw+(e.clientX-dragLine.x)*.7+180)%360+360)%360-180;
+  lineAngle(angle,limit(dragLine.pitch-(e.clientY-dragLine.y)*.38,-52,55));
+});
+for(const type of ["pointerup","pointercancel","lostpointercapture"])lineCanvas.addEventListener(type,()=>{dragLine=null;});
+
+let yardModel=null;
+const defaultsYard={"yard-type":"post","yard-u":110,"yard-ribs":"base","yard-r":2,"yard-path":true,"yard-air":true};
+function updateYard(){
+  const type=$("yard-type").value,shape=profile(type,$("yard-ribs").value==="deep");
+  const sheet=10**+$("yard-r").value,phase=+$("yard-u").value/Math.sqrt(3),results=leakage(phase,shape.length,sheet);
+  yardModel={type,shape,sheet,phase,results};
+  $("yard-r-out").value=number(sheet,sheet<10 ? 1 : 0);
+  $("yard-note").textContent=EQUIPMENT[type].note;
+  stats($("yard-stats"),[["Путь по поверхности",number(shape.length,3)+" м"],["Воздушный путь модели",number(shape.height,2)+" м"],
+    ["Сопротивление дорожки",number(results.resistance,2)+" МОм"],["Действующий ток",number(results.current,4)+" мА"]]);
+  tabScopes.yard.update(phase,results.current,"Фаза–земля","Ток утечки");
+  paintYard();
+}
+function paintYard(){
+  if(active==="yard"&&yardModel)showProfile($("yard-scene"),yardModel.type,yardModel.shape,{path:$("yard-path").checked,air:$("yard-air").checked});
+}
+function resetYard(overrides={}){assignInputs({...defaultsYard,...overrides});updateYard();tabScopes.yard.reset();}
+for(const id of Object.keys(defaultsYard))$(id).addEventListener("input",()=>{
+  if(id==="yard-u")markVoltage(tabScopes.yard);
+  updateYard();
+});
+$("yard-reset").addEventListener("click",()=>resetYard());
+
+const wx={time:0,running:false,source:true,visualUntil:0,data:null};
+const weatherProfile=profile("post",false);
+const defaultsWeather={"wx-mode":"fog","wx-u":110,"wx-dirt":60};
+function updateWeather(){
+  const mode=$("wx-mode").value,dirt=+$("wx-dirt").value/100;
+  const {wet,ice,stage,sheetResistance}=climate(mode,wx.time,dirt);
+  const phase=wx.source ? +$("wx-u").value/Math.sqrt(3) : 0;
+  const {current}=leakage(phase,weatherProfile.length,sheetResistance);
+  wx.data={mode,dirt,wet,ice,stage,current,sheetResistance,time:wx.time,event:performance.now()<wx.visualUntil};
+  $("wx-time").value=wx.time;
+  $("wx-time-out").value=number(wx.time,1)+" с";
+  $("wx-dirt-out").value=number(100*dirt,0)+" %";
+  $("wx-stage").textContent=stage;
+  $("wx-run").textContent=wx.running ? "Остановить опыт" : wx.time>=16 ? "Повторить опыт" : wx.time>0 ? "Продолжить опыт" : "Пуск опыта";
+  stats($("wx-stats"),[["Увлажнение",number(wet*100,0)+" %"],["Слой",number(sheetResistance,2)+" МОм/□"],
+    ["Фаза–земля",number(phase)+" кВ"],["Действующий ток утечки",number(current,4)+" мА"]]);
+  tabScopes.weather.update(phase,current,"Напряжение за выключателем","Ток утечки");
+  paintWeather();
+}
+function paintWeather(){if(active==="weather"&&wx.data)showProfile($("wx-scene"),"post",weatherProfile,{...wx.data,path:true,air:false});}
+function resetWeather(overrides=null){
+  if(overrides)assignInputs({...defaultsWeather,...overrides});
+  Object.assign(wx,{time:0,running:false,source:true,visualUntil:0});
+  $("wx-trip").disabled=false;
+  $("wx-return").hidden=true;
+  $("wx-event").textContent="";
+  updateWeather();
+  tabScopes.weather.reset();
+}
+$("wx-run").addEventListener("click",()=>{
+  if(wx.time>=16)wx.time=0;
+  wx.running=!wx.running;
+  updateWeather();
+});
+$("wx-reset").addEventListener("click",()=>resetWeather());
+$("wx-time").addEventListener("input",()=>{
+  wx.running=false;
+  wx.time=+$("wx-time").value;
+  updateWeather();
+});
+$("wx-mode").addEventListener("input",()=>resetWeather());
+$("wx-dirt").addEventListener("input",updateWeather);
+$("wx-u").addEventListener("input",()=>{
+  if(wx.source)markVoltage(tabScopes.weather);
+  updateWeather();
+});
+$("wx-trip").addEventListener("click",()=>{
+  const scope=tabScopes.weather;
+  scope.mark("Отключение выключателя");
+  wx.visualUntil=performance.now()+1300;
+  wx.source=false;
+  $("wx-return").hidden=false;
+  $("wx-event").textContent="Условное перекрытие и отключение. За выключателем напряжение и ток утечки равны нулю.";
+  $("wx-trip").disabled=true;
+  updateWeather();
+});
+$("wx-return").addEventListener("click",()=>{
+  tabScopes.weather.mark("Питание восстановлено");
+  wx.source=true;
+  wx.visualUntil=0;
+  $("wx-event").textContent="Питание восстановлено. Разрешение на пуск проверяется автоматикой отдельно.";
+  $("wx-trip").disabled=false;
+  $("wx-return").hidden=true;
+  updateWeather();
+});
+function advanceWeather(dt,now){
+  const stage=wx.running||wx.visualUntil!==0;
+  if(wx.running){wx.time=Math.min(wx.time+dt,16);wx.running=wx.time<16;}
+  if(wx.visualUntil&&now>=wx.visualUntil)wx.visualUntil=0;
+  if(stage)updateWeather();
+}
+function updateChoice(){
+  const u=+$("choice-u").value,zone=+$("choice-dirt").value;
+  const coefficient=$("choice-k").valueAsNumber,passport=$("choice-pass").valueAsNumber;
+  const result=creepage(u,zone,coefficient);
+  $("choice-table").replaceChildren(...POLLUTION.map((row,i)=>{
+    const tr=element("tr",undefined,i===zone ? "current" : undefined);
+    tr.append(element("th",i+1),...row.map(v=>element("td",number(v))));
+    return tr;
+  }));
+  const valid=coefficient>=1,passportValid=passport>0;
+  const data=[["Максимум междуфазного напряжения",number(result.maxVoltage,1)+" кВ"],["Удельная длина",number(result.specific)+" см/кВ"]];
+  if(valid)data.push(["Требуемая длина",number(result.length,2)+" см"]);
+  stats($("choice-stats"),data);
+  const good=passport+1e-9>=result.length;
+  $("choice-result").dataset.pass=valid&&passportValid&&good ? "yes" : "no";
+  $("choice-result").textContent=!valid||!passportValid ? "Введите коэффициент не меньше 1 и положительную паспортную длину." :
+    (good ? "Длина достаточна по этому критерию. Запас " : "Длины не хватает. Дефицит ")+number(Math.abs(passport-result.length),2)+" см.";
+  return valid&&passportValid ? result : null;
+}
+for(const id of ["choice-u","choice-dirt","choice-k","choice-pass"])$(id).addEventListener("input",updateChoice);
+
+const countControls=["count-u","count-zone","count-profile","count-kind","count-alt"];
+function countSettings(){
+  return [+$("count-u").value,+$("count-zone").value,$("count-profile").value,$("count-kind").value,+$("count-alt").value];
+}
+function updateDiscCount(){
+  const [u,zone,profileId,kind,band]=countSettings();
+  const r=stringCount(u,zone,profileId,kind,band);
+  const button=$("count-to-model"),summary=$("count-summary");
+  const items=[["Наибольшее рабочее",number(r.maxVoltage,1)+" кВ"],
+    ["lэ по табл. 1.9.1",number(r.specific)+" см/кВ"],
+    ["Паспорт тарелки",number(r.disc.path,1)+" см · D "+number(r.disc.diameter,1)+" см"],
+    ["kи",number(r.disc.k)],["Коэффициент высоты",number(r.altitude)]];
+  if(r.domain)items.push(["Требуемый путь",number(r.length)+" см"],["Базовое число",String(r.base)],
+    ["Добавка для натяжной",String(r.tensionExtra)],["Добавка для ОРУ",String(r.yardExtra)]);
+  stats($("count-stats"),items);
+  button.disabled=!r.domain||!r.applicable||kind.startsWith("yard")||r.total>+$("line-count").max;
+  summary.dataset.pass=r.domain&&r.applicable ? "yes" : "no";
+  summary.textContent=!r.domain ? "В этом примере ОРУ рассчитывается для 110 и 220 кВ на высоте до 1000 м." :
+    r.applicable ? "Итого "+r.total+" тарелок в одной цепи по этому расчёту." :
+    "Табл. 1.9.24 не рекомендует этот профиль для выбранной СЗ. Арифметический результат "+r.total+" не служит основанием для выбора.";
+}
+for(const id of countControls)$(id).addEventListener("change",updateDiscCount);
+$("count-to-model").addEventListener("click",()=>{
+  const args=countSettings();
+  const r=stringCount(...args);
+  resetLine({"line-u":args[0],"line-count":r.total});
+  navigate("line",true);
+});
+function renderCountReference(){
+  $("count-reference").replaceChildren(...POLLUTION.map((_,zone)=>{
+    const tr=element("tr");
+    tr.append(element("th",zone+1),...Object.keys(DISC_PROFILES).map(key=>{
+      const r=stringCount(220,zone,key,"line-support");
+      return element("td",r.applicable ? r.total+" шт." : "—");
+    }));
+    return tr;
+  }));
+}
+
+function animation(now){
+  const dt=lastFrame===null ? 0 : Math.min((now-lastFrame)/1000,.09);
+  const scope=tabScopes[active];
+  if(scope&&now-lastPaint>=30){
+    if(active==="line"){
+      const {result,index,type}=lineModel;
+      scope.update(result.phase,result.drops[index],"Фаза–земля",isString(type) ? "Тарелка "+(index+1) : "Весь изолятор");
+    }
+    if(active==="yard")scope.update(yardModel.phase,yardModel.results.current,"Фаза–земля","Ток утечки");
+    if(active==="weather"){
+      advanceWeather(Math.min((now-(lastPaint||now))/1000,.12),now);
+      const phase=wx.source ? +$("wx-u").value/Math.sqrt(3) : 0;
+      scope.update(phase,wx.data.current,"Напряжение за выключателем","Ток утечки");
+    }
+    scope.tick(Math.min((now-(lastPaint||now))/1000,.12)||dt);
+    lastPaint=now;
+  }
+  lastFrame=now;
+  requestAnimationFrame(animation);
+}
+window.addEventListener("resize",()=>{
+  if(active==="line")paintLine();
+  if(active==="yard")paintYard();
+  if(active==="weather")paintWeather();
+  tabScopes[active]?.draw();
+});
+
+const setups={
+  equal:["line",{"line-ground":0}],
+  tower:["line",{"line-ground":0}],
+  count:["line",{}],
+  wire:["line",{}],
+  screen:["line",{}],
+  profile:["yard",{"yard-r":1}],
+  sheet:["yard",{}],
+  lowVoltage:["yard",{"yard-u":35,"yard-r":1}],
+  bushing:["yard",{"yard-type":"bushing","yard-r":1}],
+  cabinet:["yard",{"yard-r":1}],
+  fog:["weather",{}],
+  dirty:["weather",{"wx-dirt":0}],
+  rain:["weather",{"wx-mode":"rain"}],
+  ice:["weather",{"wx-mode":"ice"}],
+  trip:["weather",{}],
+  dinskaya:["weather",{"wx-dirt":80}],
+  shedok:["yard",{}],
+  zone:["choice",{"choice-kind":0,"choice-u":110,"choice-dirt":1,"choice-k":1.15,"choice-pass":355}],
+  discs220:["choice",{"count-u":220,"count-zone":0,"count-profile":"ps120","count-kind":"line-support","count-alt":0}],
+  shortPath:["choice",{"choice-kind":1,"choice-u":35,"choice-dirt":2,"choice-k":1.20,"choice-pass":142}]
+};
+function setPreset(key){
+  const [tab,options]=setups[key];
+  if(tab==="line")resetLine(options);
+  if(tab==="yard")resetYard(options);
+  if(tab==="weather")resetWeather(options);
+  if(tab==="choice"){
+    const {"choice-kind":kind,...fields}=options;
+    if(kind!==undefined)$("choice-kind").selectedIndex=kind;
+    assignInputs(fields);
+    updateChoice();
+    updateDiscCount();
+  }
+  navigate(tab,true);
+}
+const experiments=[
+ ["Воздушные линии",[
+  ["equal","Равномерное распределение","При 110 кВ и шести элементах оставьте обе связи снаружи равными нулю.","Снимите напряжения на элементах № 1 и № 6 и сумму. Сравните каждое с фазным, делённым на шесть.","Для одинаковых последовательных ёмкостей напряжения равны. На каждый элемент приходится около 10,58 кВ."],
+  ["tower","Связь с опорой","В исходной точке нажмите «Запомнить опыт». Установите связь с опорой 0,10.","Запишите номер элемента с максимумом и его напряжение до и после. Откройте схему замещения и объясните направление смещения.","При шести элементах максимум появляется на № 6 у провода и достигает 18,11 кВ."],
+  ["count","Шесть и восемь тарелок","Запомните опыт с шестью тарелками. Добавьте две при тех же 110 кВ и ёмкостных связях.","Сравните среднее и максимальное напряжения в обоих опытах. Проверьте, изменилась ли их сумма.","Сумма остаётся 63,51 кВ. Среднее снижается с 10,58 до 7,94 кВ, а максимум меняется слабее."],
+  ["wire","Связь с проводом","Запомните исходные показания. При связи с опорой 0,10 увеличьте связь с проводом от 0 до 0,10.","Снимите значения на № 1 и № 6. Сравните их между собой в обоих опытах и найдите положение наименее нагруженных элементов.","При одинаковых связях с обеими границами крайние тарелки нагружены одинаково. Нагрузка в центре ниже."],
+  ["screen","Положение экранного кольца","Запомните конфигурацию без кольца. Включите кольцо, сравните положения 100 % и 84 % от опоры. Оставьте выбранной последнюю тарелку.","Запишите изменения максимума в процентах и амплитуду оранжевого канала в обоих положениях. Сравните с исходным максимумом.","При 100 % в этой модели максимальное действующее значение меняется с 18,11 до 15,24 кВ. При другом положении измерьте его по диаграмме. Амплитуда канала равна действующему значению выбранной тарелки, умноженному на √2."]
+ ]],
+ ["Подстанции",[
+  ["profile","Два профиля при одной высоте","У опорного изолятора с обычными рёбрами запишите обе длины. Выберите развитый профиль, остальные настройки оставьте.","Сравните путь по поверхности, воздушный путь и действующий ток утечки. Объясните, какой из путей изменился.","В развитом профиле растёт длина линии по поверхности. Расстояние по воздуху в геометрии опыта остаётся тем же. При постоянном сопротивлении слоя на квадрат ток уменьшается."],
+  ["sheet","Проводимость поверхности","У опорного изолятора при 110 кВ переместите сопротивление слоя со 100 до 10 МОм/□.","Запишите сопротивление дорожки и ток до и после. Проверьте отношение токов. Сопоставьте каналы осциллографа.","Сопротивление дорожки уменьшается в десять раз, ток возрастает в десять раз. Амплитуда напряжения прежняя."],
+  ["lowVoltage","Напряжение и амплитуда","При неизменной геометрии и сопротивлении установите сначала 35 кВ, затем 110 кВ.","Сравните фазное напряжение, действующий ток и пик бирюзовой кривой. Проверьте отношения фазных напряжений и токов.","В этой линейной ветви отношения токов и напряжений одинаковы. Пик фазной синусоиды составляет примерно 28,58 кВ при 35 кВ между фазами и 89,81 кВ при 110 кВ."],
+  ["bushing","Границы наружной изоляции ввода","Выключите и снова включите показ пути по поверхности. Найдите, где он начинается и заканчивается. Повторите для опорного изолятора.","Запишите обе пары электродов и обе длины пути утечки. Объясните, что делает стержень ввода ниже фланца.","Наружный путь ввода заканчивается на заземлённом фланце. Токоведущий стержень проходит дальше внутрь бака и отделён от него внутренней изоляцией."],
+  ["cabinet","Опора шины и колонка выключателя","Снимите длины опорного изолятора. Выберите колонку выключателя с тем же линейным напряжением и сопротивлением слоя.","Сравните ток утечки и фазное напряжение. Покажите на разрезе, где находится внутренний контактный промежуток.","Фазное напряжение не меняется. Различие тока связано с длиной проводящей дорожки. Контактный промежуток показан внутри колонки."]
+ ]],
+ ["Загрязнение и климат",[
+  ["fog","Пыль и туман","При загрязнении 60 % запустите опыт. Остановите его или установите время 4, 8 и 12 с по очереди.","В каждой точке запишите увлажнение, сопротивление слоя и ток. Найдите, на каком участке рост затухает.","По условиям модели увлажнение увеличивается до 10 с, затем удерживается. Увеличение тока соответствует уменьшению сопротивления слоя."],
+  ["dirty","Чистая и загрязнённая поверхности","При тумане установите время 8 с и загрязнение 0 %. Запишите данные. Установите 80 % загрязнения при том же времени.","Сравните сопротивление и ток, сохранив напряжение. Сформулируйте, почему одинаковый туман даёт разные показания.","При большей доле загрязнения та же влажность даёт более проводящий слой. Оба значения получены из выбранной учебной функции."],
+  ["rain","Дождь и туман","В режиме дождя поставьте время 4 с и запишите данные. Выберите туман, снова выставьте 4 с при тех же 60 %.","Сравните увлажнение, ток и две амплитуды. Укажите, какой вывод относится только к этому опыту.","Заданная функция быстрее наращивает увлажнение в режиме дождя. В натуре дождь также может смыть часть отложений."],
+  ["ice","Лёд и оттепель","Выставьте 6 с. Найдите сосульки. Затем выставьте 14 с и отметьте состояние поверхности.","Запишите слой в обоих состояниях и ток. Объясните роль талой воды и влияние ледяных перемычек на промежутки между рёбрами.","После начала оттепели влажность и ток в модели растут. Перемычки изменяют геометрию воздушных промежутков и требуют отдельного рассмотрения."],
+  ["trip","Захват отключения","При тумане поставьте 8 с, включите автозахват и 10 периодов/с. Нажмите «Воспроизвести отключение». Измерьте курсором до и после метки.","Отметьте, что произошло с обоими каналами. Верните питание и снимите кадр повторно. Сравните с журналом насосной из вкладки «Реальные кейсы».","При снятии источника за выключателем исчезают обе синусоиды. Напряжение восстанавливается после команды в модели. Условия разрешения пуска показаны отдельно в журнале."]
+ ]],
+ ["Выбор изоляции",[
+  ["zone","Две степени загрязнения","При 110 кВ, коэффициенте 1,15 и паспортном пути 355 см сравните 2-ю и 3-ю СЗ.","Запишите требуемый путь и запас или дефицит. Каким должно быть значение напряжения в подстановке?","СЗ 2 требует 289,80 см, СЗ 3 — 362,25 см. Междуфазная база расчёта составляет 126 кВ."],
+  ["discs220","Тарелки для ВЛ 220 кВ","В блоке «Число тарелок в одной цепи» сравните 1-ю и 2-ю СЗ для ПС120Б. Для 3-й СЗ при промышленном загрязнении установите ПСД100В.","Зафиксируйте паспортный путь, коэффициент, расчётную длину и число тарелок. Для 2-й СЗ перенесите результат в модель ВЛ. Сравните с поддерживающей гирляндой ОРУ в тех же исходных условиях.","ПС120Б даёт 15 и 18 тарелок. Для 3-й СЗ расчёт с ПСД100В даёт 18. В показанном расчёте для гирлянды ОРУ класса 220 кВ добавляют две тарелки по п. 1.9.20."],
+  ["shortPath","Выбор наружной изоляции ОРУ","На ОРУ 35 кВ оставьте 3-ю СЗ, k = 1,20 и 142 см. Проверьте критерий, затем выставьте изделие с паспортным путём 150 см.","Запишите дефицит для первого и запас для второго. Укажите, какие характеристики ещё проверяются перед выбором изделия.","Требуется 145,80 см. Для 142 см не хватает 3,80 см, для 150 см запас 4,20 см. Дополнительно оценивают воздушные промежутки и электрическую прочность."]
+ ]]
+];
+
+function renderExperiments(){
+  const list=$("practice-list");
+  for(const [group,items] of experiments){
+    const section=element("section",undefined,"practice-group");
+    section.append(element("h3",group));
+    const cards=element("div",undefined,"two");
+    items.forEach(([key,title,a,b,answer],i)=>{
+      const card=element("article",undefined,"card");
+      const steps=element("ol");
+      steps.append(element("li",a),element("li",b));
+      const button=element("button","Открыть установку","primary");
+      button.type="button";button.dataset.preset=key;
+      const details=element("details");
+      details.append(element("summary","Проверить вывод"),element("p",answer));
+      card.append(element("h4",(i+1)+". "+title),steps,button,details);
+      cards.append(card);
+    });
+    section.append(cards);list.append(section);
+  }
+}
+
+const taskData=[
+ ["Напряжение элемента","В симметричной сети 110 кВ шесть одинаковых последовательных элементов без паразитных ветвей. Найдите действующее напряжение на одном элементе, кВ.",110/Math.sqrt(3)/6,.015,"Разделите 110 кВ на √3, затем поделите напряжение фаза–земля на шесть. Получится 10,58 кВ."],
+ ["Пик осциллограммы","В модели напряжение последней тарелки составляет 18,11 кВ действующего значения. Найдите положительную амплитуду синусоиды, кВ.",18.11*Math.SQRT2,.02,"Умножьте действующее напряжение 18,11 кВ на √2. Амплитуда около 25,61 кВ."],
+ ["Эффект кольца","Максимум напряжения на элементе уменьшился с 18,11 до 15,24 кВ. Найдите снижение относительно исходного значения, %.",100*(18.11-15.24)/18.11,.08,"Вычтите 15,24 из 18,11, поделите на исходные 18,11 и умножьте на 100 %. Получится примерно 15,85 %."],
+ ["Путь утечки ВЛ","Для ВЛ 110 кВ до 1000 м задана 3-я СЗ. Для стеклянной поддерживающей гирлянды k = 1,15. Найдите требуемый паспортный путь по ПУЭ, см.",creepage(110,2,1.15).length,.025,"Возьмите 2,50 см/кВ из табл. 1.9.1 и 126 кВ по ГОСТ 721‑77. Перемножьте их с 1,15. Получится 362,25 см."],
+ ["Ток утечки","На полосе длиной 2 м и шириной 0,20 м сопротивление слоя 20 МОм/□. Приложено 60 кВ действующего напряжения. Найдите ток утечки, мА.",leakage(60,2,20).current,.004,"Сопротивление дорожки 20 × (2 / 0,20) = 200 МОм. Ток равен 60 / 200 = 0,30 мА."],
+ ["Запас для ОРУ","Фарфоровая опорная изоляция ОРУ 35 кВ на высоте 300 м. Для 3-й СЗ задан k = 1,20. Паспортная длина 150 см. Найдите запас по длине пути утечки, см.",150-creepage(35,2,1.2).length,.025,"Требуемая длина 3,00 × 40,5 × 1,20 = 145,80 см. Вычтите её из 150 см. Запас 4,20 см."]
+ ,["Тарелки для ВЛ 220 кВ","Одноцепная поддерживающая гирлянда ВЛ 220 кВ на металлической опоре, высота 400 м, 2-я СЗ. Тарелка ПС120Б с путём 33 см и k = 1,15. Найдите минимальное целое по этому расчёту.",stringCount(220,1,"ps120","line-support").total,.0001,"Требуемая длина 2,00 × 252 × 1,15 = 579,60 см. Делим на 33 см, получаем 17,56. ПУЭ 1.9.12 требует округления вверх, результат — 18 тарелок."]
+];
+function renderTasks(){
+  const list=$("task-list");
+  for(const [i,[title,question,correct,tolerance,solution]] of taskData.entries()){
+    const card=element("article",undefined,"card"),form=element("form",undefined,"task-form");
+    const input=element("input"),label=element("label","Ваше число"),button=element("button","Проверить","primary"),feedback=element("p","","live-note task-result");
+    input.type="text";input.inputMode="decimal";input.autocomplete="off";
+    label.append(input);
+    button.type="submit";form.append(label,button);
+    feedback.setAttribute("role","status");
+    const details=element("details");details.append(element("summary","Решение"),element("p",solution));
+    form.addEventListener("submit",e=>{
+      e.preventDefault();
+      const value=input.value.trim().replace(",",".");
+      const valid=/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)$/.test(value);
+      const right=valid&&Math.abs(Number(value)-correct)<=tolerance;
+      feedback.dataset.pass=right ? "yes" : "no";
+      feedback.textContent=!valid ? "Введите числовой ответ." : right ? "Верно." : "Проверьте подстановку, единицы и округление.";
+    });
+    card.append(element("h3",(i+1)+". "+title),element("p",question),form,feedback,details);list.append(card);
+  }
+}
+document.addEventListener("click",e=>{
+  const target=e.target.closest("button");
+  if(!target)return;
+  if(target.dataset.tab)navigate(target.dataset.tab,true);
+  if(target.dataset.preset)setPreset(target.dataset.preset);
+  if(target.dataset.reveal){
+    const p=$(target.dataset.reveal);
+    p.hidden=!p.hidden;
+    target.setAttribute("aria-expanded",String(!p.hidden));
+    target.textContent=p.hidden ? "Сравнить с разбором" : "Свернуть разбор";
+  }
+});
+$("case-actions").addEventListener("click",e=>{
+  const key=e.target.dataset.case;
+  if(!key)return;
+  const messages={
+    motor:"Отключение питания объясняет остановку. Для вывода о двигателе нужны его собственные диагностические данные.",
+    blocked:"Верно. Напряжение восстановилось, однако сигнал разрешения отсутствует. Причину срабатывания защиты выясняют по данным РЗА и осмотра.",
+    fog:"В журнале есть факт отключения. Причину уточняют по данным РЗА, осциллограммам и состоянию изоляции."
+  };
+  $("case-result").dataset.pass=key==="blocked" ? "yes" : "no";
+  $("case-result").textContent=messages[key];
+});
+
+const theoryQuestions=[
+ ["Что входит во внешнюю изоляцию?","Воздушные промежутки и открытые поверхности твёрдых диэлектриков","Масло внутри герметичного бака","Межвитковая изоляция обмотки","Внешняя изоляция работает в контакте с окружающей средой."],
+ ["Что измеряет длина пути утечки?","Кратчайшую линию по изоляционной поверхности","Расстояние по прямой через воздух","Глубину изоляционной детали","Путь утечки измеряют вдоль поверхности между металлическими частями разных потенциалов."],
+ ["Где проходит канал при пробое твёрдой изоляции?","Через материал","Только по воздуху вдоль поверхности","Только через токоведущую арматуру","При пробое изоляционная деталь теряет электрическую прочность в объёме."],
+ ["Какая деталь несёт основную механическую нагрузку в композитном стержневом изоляторе?","Стеклопластиковый стержень","Мягкая наружная оболочка","Воздушный промежуток между рёбрами","Стержень воспринимает нагрузку, полимерная оболочка защищает его."],
+ ["Зачем нужен проходной ввод трансформатора?","Провести токоведущую часть через заземлённый бак с изоляцией","Удержать провод в середине пролёта","Заменить воздушный промежуток между фазами","Фланец соединяют с баком, токоведущий стержень изолируют от него."],
+ ["Где расположен контактный промежуток колонкового выключателя?","Внутри аппарата","Между наружными рёбрами колонки","Между шиной и заземлённой опорой","Поверхность наружной изоляции колонки и внутренние контакты относятся к разным частям аппарата."],
+ ["Что обычно нагружено сильнее в подвеске при связи с опорой и без связи с проводом в модели?","Тарелка со стороны провода","Тарелка со стороны опоры","Средняя тарелка","Ёмкостная связь с землёй искажает распределение к линейному концу."],
+ ["Для чего используют экранное кольцо у линейного конца гирлянды?","Для изменения поля и распределения напряжения","Для увеличения номинальной частоты","Для уменьшения числа фаз","Эффект кольца зависит от его размеров и положения."],
+ ["Почему при равных паразитных связях с опорой и проводом крайние элементы в модели равно нагружены?","Ёмкостная схема зеркально симметрична","Напряжение на гирлянде равно нулю","Любая паразитная связь делает распределение равномерным","Симметрия создаёт равенство пар на одинаковом расстоянии от противоположных концов."],
+ ["Ток утечки вырос, а напряжение сохранилось. Какой параметр в омической модели уменьшился?","Сопротивление проводящей дорожки","Частота источника","Длина окна осциллографа","При постоянном напряжении ток обратнопропорционален сопротивлению."],
+ ["Что может произойти с осевыми промежутками между рёбрами при обледенении?","Ледяные перемычки сокращают открытые промежутки","Промежутки всегда удваиваются","Геометрия поверхности всегда остаётся прежней","Сосульки и наледь способны перекрыть часть промежутков между рёбрами."],
+ ["Какое напряжение подставляют в формулу ПУЭ 1.9.9?","Наибольшее рабочее междуфазное","Амплитуду фаза–земля","Номинальное фазное","Этот множитель берут по ГОСТ 721 для соответствующего класса."],
+ ["Как в ПУЭ 1.9.7 выбирают полимерную изоляцию в загрязнённых условиях?","По разрядным характеристикам в загрязнённом и увлажнённом состоянии","По одному размеру рёбер","По формуле для стекла с k = 1 при любых условиях","Пункт 1.9.7 задаёт для полимерных конструкций критерий по разрядным характеристикам."],
+ ["Длина пути утечки удовлетворяет расчёту. Что ещё нужно проверить на ОРУ?","Воздушные расстояния и электрическую прочность","Только высоту ребра","Только цвет наружной оболочки","Проверка длины пути утечки покрывает один критерий. Промежутки и электрическая прочность оцениваются отдельно."],
+ ["На осциллографе скорость показа уменьшилась с 50 до 1 периода в секунду. Что стало с модельной частотой?","Она осталась 50 Гц","Она стала равна 1 Гц","Она стала равна 10 Гц","Режим показа растягивает время просмотра. По шкале осциллограммы один период по-прежнему занимает 20 мс."],
+ ["Ввод насосной снова под напряжением, насос стоит и разрешение на пуск отсутствует. Что следует из журнала?","Питание восстановилось, автоматикой пуск ещё не разрешён","Двигатель обязательно пробит","Известна степень загрязнения опоры","Сигнал питания и сигнал разрешения на пуск проверяют раздельно."],
+ ["Что подтверждено в отчёте по ВЛ Динская — Лорис?","Перекрытие по наружной поверхности загрязнённых увлажнённых изоляторов","Пробой изоляции обмотки двигателя","Механическое разрушение всех тарелок","В отчёте указано перекрытие фазы А на опоре № 42 без разрушения элементов гирлянды."],
+ ["Что в отчёте по ПС Шедок отличает её случай от случая ВЛ Динская — Лорис?","Зафиксирован излом опорного изолятора","Зафиксировано увлажнение пыли росой","Зафиксировано перекрытие целой гирлянды по поверхности","В акте № 130 для ПС Шедок указан механический излом."],
+ ["При какой влажности в тренажёре автоматически прогнозируется перекрытие?","Универсального порога в модели нет","При 50 % для любого профиля","При 100 % для любого напряжения","Омическая модель рассчитывает ток утечки, а включаемое событие предназначено для разбора записи."],
+ ["Что происходит с путём утечки, если увеличить вылет рёбер в показанном сечении при той же высоте?","Путь по поверхности увеличивается","Оба пути сокращаются","Оба пути совпадают","Геометрическая длина по контуру рёбер растёт. Воздушный промежуток в этой схеме задан высотой."],
+ ["Где электрическая изоляция соседних фаз проверяется отдельно от изоляции фаза–земля?","В том числе в открытом распределительном устройстве","Только в коллекторных машинах","Только внутри реле","Расстояния до соседней фазы и до земли проверяют отдельно."],
+ ["Какие данные нужны, чтобы выбрать ячейку таблицы ПУЭ 1.9.1?","Номинальный класс напряжения и степень загрязнения","Пиковое фазное напряжение и цвет изолятора","Амплитуда тока двигателя и число фаз","Столбец определяется номинальным классом, строка — степенью загрязнения."],
+ ["Где заканчивается наружный путь утечки ввода трансформатора в модели?","На заземлённом фланце","В середине токоведущего стержня","На внутреннем выводе обмотки под маслом","Путь наружной изоляции рассматривают от верхнего вывода до фланца снаружи бака."],
+ ["Какой вывод следует по одному высокому пику тока утечки в реальной записи?","Нужны другие каналы и данные осмотра для вывода о причине","Однозначно установлен пробой изоляции","Состояние изоляции заведомо штатное","Интерпретация записи зависит от режима, используемого датчика и других признаков."],
+ ["Почему сумма напряжений на тарелках в расчёте равна фазному напряжению?","Сумма последовательных разностей узловых потенциалов даёт разность между проводом и опорой","Все тарелки всегда имеют одинаковое напряжение","Напряжение на каждой тарелке равно напряжению между фазами","В модели ёмкости не индуцируют отдельные фазовые сдвиги между узловыми напряжениями, потенциалы упорядочены."],
+ ["В учебной омической ветви ток и напряжение синфазны. Почему?","Ветвь задана активным сопротивлением","В ветви преобладает индуктивность","Частота меняется со временем","Модель омической ветви использует мгновенный закон Ома."],
+ ["По какой трассе измеряют длину пути утечки у опорного изолятора с рёбрами?","Вдоль поверхности с обходом рёбер","По вертикальной оси внутри изолятора","По проводу до соседней опоры","Геометрия рёбер входит в длину поверхностного пути."],
+ ["При тумане поверхность увлажняется. Как влияет растворимая часть загрязнений?","Может увеличить проводимость плёнки","Всегда восстанавливает сухую поверхность","Переводит сеть с 50 Гц на постоянный ток","Растворённые примеси повышают проводимость воды. Состав отложений имеет значение."],
+ ["Какая деталь соединяет наружную изоляцию ввода с заземлённой конструкцией?","Фланец","Центральный токоведущий стержень","Высоковольтная шина","Фланец опирается на бак, а стержень проводит высокое напряжение через ввод."],
+ ["Что показывает тёмная риска поверх полосы диаграммы после сохранения опыта?","Прежнее напряжение на этой тарелке","Точку нулевого потенциала на опоре","Время полного отключения","Диаграмма сохраняет прежние значения для того же числа элементов."]
+];
+function numericQuestion(stem,options,explanation,digits=2,unit="кВ"){
+  return [stem,...options.map(n=>number(n,digits)+" "+unit),explanation];
+}
+function numericQuestions(version){
+  const v=[35,110,220,10,110][version], n=[4,6,8,3,5][version],phase=v/Math.sqrt(3);
+  const rms=[12,15,8,10.5,21][version];
+  const k=[1.15,1.10,1.20,1.25,1.18][version], zone=[2,1,3,0,2][version];
+  const norm=creepage(v,zone,k);
+  const r=[10,20,30,40,50][version], L=2+version/2, testU=[30,60,75,84,100][version];
+  const i=leakage(testU,L,r).current;
+  const fraction=[10,20,12,24,15][version];
+  return [
+    numericQuestion("В симметричной сети "+v+" кВ на "+n+" одинаковых элементах без внешних связей распределяется фазное напряжение. Чему равно действующее напряжение на одном?",
+      [phase/n,v/n,phase],"Переведите линейное напряжение в фазное, затем поделите на число элементов."),
+    numericQuestion("Действующее значение синусоиды равно "+number(rms,1)+" кВ. Чему равен её положительный пик?",
+      [rms*Math.SQRT2,rms,rms/Math.SQRT2],"Амплитуда синусоиды больше действующего значения в √2 раза."),
+    numericQuestion("Для фарфоровой опорной изоляции ОРУ "+v+" кВ на высоте до 1000 м задана "+(zone+1)+"-я СЗ, k = "+number(k)+". Какой путь утечки нужен по ПУЭ?",
+      [norm.length,norm.specific*v*k,norm.length/Math.sqrt(3)],"Возьмите "+number(norm.specific)+" см/кВ и междуфазные "+number(norm.maxVoltage,1)+" кВ. Перемножьте с k.",2,"см"),
+    numericQuestion("При "+testU+" кВ по дорожке длиной "+number(L,1)+" м и шириной 0,20 м течёт ток. Сопротивление слоя "+r+" МОм/□. Чему равен действующий ток?",
+      [i,i*10,i*2],"Сопротивление на квадрат умножают на L/b. Ток в мА равен напряжению в кВ, делённому на сопротивление дорожки в МОм.",3,"мА"),
+    numericQuestion("На изоляторе измерено "+fraction+" кВ, при этом на всей гирлянде "+fraction*4+" кВ. Какова доля напряжения этого элемента?",
+      [25,20,75],"Разделите напряжение элемента на напряжение всей гирлянды и умножьте на 100 %.",0,"%")
+  ];
+}
+function variantQuestions(variant){
+  const concept=Array.from({length:10},(_,i)=>theoryQuestions[(7*variant+3*i+i%3)%theoryQuestions.length]);
+  return [...concept,...numericQuestions(variant)].map(([stem,answer,b,c,explanation],i)=>{
+    const index=(variant+2*i)%3,options=[b,c];options.splice(index,0,answer);
+    return {stem,options,index,explanation};
+  });
+}
+const quizSaved=Array.from({length:5},()=>Array(15).fill(null));
+let quiz=0;
+function renderQuiz(){
+  const list=$("questions");
+  const questions=variantQuestions(quiz);
+  list.replaceChildren(...questions.map(({stem,options},i)=>{
+    const group=element("fieldset",undefined,"card question");
+    const title=element("h3",(i+1)+". "+stem),titleId="question-"+i;
+    title.id=titleId;group.setAttribute("aria-labelledby",titleId);group.append(title);
+    options.forEach((choice,j)=>{
+      const label=element("label"),input=element("input");
+      input.type="radio";input.name="q"+i;input.value=j;
+      input.checked=quizSaved[quiz][i]===j;
+      input.addEventListener("change",()=>{quizSaved[quiz][i]=j;clearQuizReview();updateQuizCount();});
+      label.append(input,element("span",choice));group.append(label);
+    });
+    const feedback=element("p");feedback.hidden=true;group.append(feedback);
+    return group;
+  }));
+  $("quiz-result").textContent="";
+  updateQuizCount();
+}
+function clearQuizReview(){
+  if(!$("quiz-result").textContent)return;
+  $("quiz-result").textContent="";
+  [...$("questions").children].forEach(q=>{delete q.dataset.status;q.lastChild.hidden=true;});
+}
+function updateQuizCount(){
+  $("quiz-count").textContent="Заполнено "+quizSaved[quiz].filter(v=>v!==null).length+" из 15";
+}
+function initQuiz(){
+  $("quiz-variant").replaceChildren(...quizSaved.map((_,i)=>{
+    const o=element("option","Вариант "+(i+1));o.value=i;return o;
+  }));
+  $("quiz-variant").addEventListener("change",e=>{quiz=+e.target.value;renderQuiz();});
+  $("quiz-reset").addEventListener("click",()=>{quizSaved[quiz].fill(null);renderQuiz();});
+  $("quiz-form").addEventListener("submit",e=>{
+    e.preventDefault();
+    const selected=quizSaved[quiz];
+    if(selected.includes(null)){
+      $("quiz-result").textContent="Выберите ответ в каждом вопросе.";
+      $("questions").children[selected.indexOf(null)].querySelector("input").focus();
+      return;
+    }
+    let score=0;
+    variantQuestions(quiz).forEach(({index,options,explanation},i)=>{
+      const right=selected[i]===index,card=$("questions").children[i];
+      score+=Number(right);
+      card.dataset.status=right ? "right" : "wrong";
+      card.lastChild.textContent=(right ? "Верно. " : "Ответ: "+options[index]+". ")+explanation;
+      card.lastChild.hidden=false;
+    });
+    $("quiz-result").textContent="Результат "+score+" из 15.";
+  });
+  renderQuiz();
+}
+
+resetLine();
+resetYard();
+resetWeather(defaultsWeather);
+updateChoice();
+updateDiscCount();
+renderCountReference();
+renderExperiments();
+renderTasks();
+initQuiz();
+fromHash();
+requestAnimationFrame(animation);
+</script></body></html>

@@ -1,0 +1,1514 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ТВН 15 — ПЧ, кабель и двигатель</title>
+<meta name="description" content="Учебный тренажёр по волновым процессам, перенапряжениям и защите электропривода.">
+<style>:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.45;color:#18313e;background:#eaf0f3;--acc:#087267;--ink:#18313e;--muted:#4b626d;--border:#d2dfe4;--paper:#fff;--panel:#132d3d;--light:#e3f4f3;--teal:#60dbbd;--orange:#ffb685;--purple:#c8b7ff}
+*{box-sizing:border-box}body{margin:0}[hidden]{display:none!important}.wrap{width:min(1260px,calc(100% - 42px));margin-inline:auto}.skip{position:absolute;left:8px;top:-80px;background:#fff;padding:8px;z-index:5}.skip:focus{top:8px}
+.hero{background:linear-gradient(108deg,#112b3a 7%,#15545b);border-bottom:3px solid #70d5ba;color:#f2fbfd}
+.hero-grid{display:grid;grid-template-columns:1fr minmax(160px,34%);gap:25px;align-items:center;padding:25px 0 27px}.hero p{margin:0;color:#d1e8ea}.hero .eyebrow{color:#a9e1dc;font-size:13px;letter-spacing:.05em;font-weight:740;margin-bottom:6px}h1{font-size:clamp(28px,5vw,55px);line-height:1.1;margin:0 0 9px;letter-spacing:-.032em}.hero-wave canvas{height:112px;background:transparent}
+.nav-wrap{background:#fff;border-bottom:1px solid var(--border)}nav{display:flex;gap:4px 8px;flex-wrap:wrap}nav button{border:0;border-bottom:3px solid transparent;border-radius:0;padding:10px 9px 8px;background:none;color:#365365;white-space:nowrap}nav button[aria-selected=true]{background:#e9f7f3;border-bottom-color:var(--acc);color:#075c52}
+main{padding:21px 0 26px;min-height:62vh}.section-title{display:flex;align-items:flex-start;justify-content:space-between;gap:12px 20px;margin:0 0 14px}.section-title h2{margin:0 0 5px;font-size:clamp(22px,3vw,32px);line-height:1.16;letter-spacing:-.02em}.section-title p{margin:0;color:var(--muted);max-width:880px}.section-title button{flex-shrink:0}.lab-grid{display:grid;grid-template-columns:minmax(229px,23%) minmax(0,1fr);gap:12px;align-items:start}.lab-body{display:grid;gap:11px;min-width:0}.plots,.content-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;align-items:start}.card{background:var(--paper);min-width:0;border:1px solid var(--border);border-radius:11px;padding:13px 14px;box-shadow:0 1px 4px #132d3d10}.card h3{margin:0 0 8px;font-size:17px;line-height:1.25}.card h4{margin:4px 0 5px;font-size:14px}.card p{margin:8px 0 0}.card p:first-of-type{margin-top:0}.panel{display:flex;justify-content:space-between;align-items:center;gap:7px;margin-bottom:7px}.panel h3{margin:0}.panel button{flex-shrink:0}
+button,select,input[type=text]{font:inherit;color:var(--ink);border:1px solid #a5bac2;border-radius:6px;background:#fff;padding:5px 8px}button{font-size:13px;font-weight:680;cursor:pointer}button:hover{background:#edf7f4}button:focus-visible,select:focus-visible,input:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid #297a77;outline-offset:3px}select{max-width:100%;font-size:13px}button.primary{background:var(--acc);border-color:var(--acc);color:white}button.primary:hover{background:#095a52}.help{border-radius:50%;width:26px;height:26px;padding:0;color:var(--acc);font-size:15px}.compact{padding:3px 6px}.term{font-size:inherit;padding:0;background:none;border:0;border-bottom:1px dotted var(--acc);border-radius:0;color:#065c53}
+.actions,.toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:5px 8px;margin-top:8px}.toolbar label{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:4px}.range-row{display:flex;justify-content:space-between;gap:8px;align-items:baseline;font-size:13px;font-weight:650;margin-top:6px}.range-row output,.control output{color:var(--acc);font-variant-numeric:tabular-nums;white-space:nowrap}
+.control{margin:8px 0}.control .range-row{margin:0}.control>label{display:block;font-size:13px;font-weight:650}.control>select{display:block;width:100%;margin:3px 0}input[type=range]{width:100%;margin:3px 0 0;accent-color:var(--acc);cursor:pointer}input[type=checkbox],input[type=radio]{accent-color:var(--acc)}details{margin-top:9px}summary{cursor:pointer;color:#095b52;font-weight:680;font-size:14px}details p,details li{font-size:14px}.controls details{padding-top:7px;border-top:1px solid var(--border)}.controls .note{margin-top:9px}
+canvas{display:block;width:100%;border-radius:7px;background:var(--panel)}.scheme{height:180px;cursor:crosshair;touch-action:pan-y}.plot{height:192px}.wide-plot{height:290px}.clickable{cursor:crosshair;touch-action:pan-y}.legend{display:flex;flex-wrap:wrap;column-gap:12px;row-gap:3px;margin:5px 0;color:#465f6b;font-size:12px}.legend span::before{content:"";width:10px;height:3px;margin-right:4px;background:#69859a;display:inline-block;vertical-align:middle}.legend .c-teal::before{background:#087c6b}.legend .c-orange::before{background:#ae592b}.legend .c-violet::before{background:#7652b3}.legend .c-white::before{background:#657784}.reading,.hint{padding:6px 9px;background:#eef6f7;border-radius:5px;color:#254856;font-size:13px;font-variant-numeric:tabular-nums;margin:6px 0 0}.hint{border-left:3px solid #4b9d93;margin-bottom:6px}.note,.source{color:var(--muted);font-size:13px}.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(116px,1fr));gap:6px;margin-top:7px}.metric{background:#eff6f7;padding:6px 8px;border-radius:5px;color:#44606c;font-size:12px}.metric strong{display:block;font-size:15px;color:#144d4e;font-variant-numeric:tabular-nums}.formula{padding:8px;background:#edf5f6;border-left:3px solid #389589;margin:8px 0;overflow:auto}math{font-size:1.1em}a{color:#075f74;text-underline-offset:2px}
+ol,ul{margin:8px 0;padding-left:22px}.card li+li{margin-top:4px}.card li{padding-inline-start:2px}.question{margin:0;min-inline-size:0}.question legend{font-weight:690;padding:0 3px;max-width:100%}.question label{display:flex;align-items:flex-start;gap:8px;margin:6px 0;cursor:pointer}.question input{margin-top:.35em}.question[data-correct=true]{border-color:#4ea998}.question[data-correct=false]{border-color:#c27e60}.question p{color:var(--muted);font-size:13px}.quiz-top{display:flex;gap:15px;align-items:center;flex-wrap:wrap;margin-bottom:12px}.task-form{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:9px}.task-form input{width:124px;padding:4px 7px}.task-form output{font-size:13px;font-weight:650}.small-cap{font-size:12px;font-weight:700;color:var(--acc);margin-bottom:4px}.mine-case{grid-column:1/-1}.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;margin:8px 0;font-size:14px}th,td{border:1px solid var(--border);padding:5px 8px;text-align:left}th{background:#edf5f6}footer{color:var(--muted);font-size:13px;padding:7px 0 20px}
+@media(max-width:890px){.wrap{width:calc(100% - 26px)}.lab-grid{grid-template-columns:minmax(188px,25%) minmax(0,1fr)}nav{gap:0 5px}nav button{padding-inline:7px}.plot{height:175px}}
+@media(max-width:680px){.hero-grid{grid-template-columns:1fr;padding:21px 0}.hero-wave{display:none}.lab-grid,.plots,.content-grid{grid-template-columns:minmax(0,1fr)}.section-title{flex-wrap:wrap}.controls .control{margin:5px 0}.controls .range-row{margin:0}.wide-plot{height:228px}.scheme{height:154px}.mine-case{grid-column:auto}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important}}
+.control>.range-row{display:flex}
+.precision{display:grid;grid-template-columns:minmax(0,1fr) 62px;align-items:center;gap:8px;margin-top:3px}
+.precision input[type=number]{min-width:0;width:100%;font:12px system-ui;color:var(--ink);border:1px solid #b9cbd0;border-radius:5px;padding:3px 4px;background:#f8fbfc}
+.practice-menu{margin:0 0 12px}.practice-menu button[aria-pressed=true]{background:var(--acc);color:#fff;border-color:var(--acc)}
+.practice-head{margin:12px 0 8px;font-size:19px}.work-measure{padding:6px 9px;background:#eff6f6;border-radius:5px;font-size:13px}.work-measure strong{color:#135851}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Перейти к содержанию</a>
+<header class="hero"><div class="wrap hero-grid"><div>
+<p class="eyebrow">Техника высоких напряжений · Тема 15</p>
+<h1>ПЧ, кабель и двигатель</h1>
+<p>Волновые процессы и перенапряжения в электроприводе</p>
+</div><div class="hero-wave" aria-hidden="true"><canvas id="hero-wave"></canvas></div></div></header>
+<div class="nav-wrap"><div class="wrap"><nav role="tablist" aria-label="Разделы тренажёра" id="nav">
+<button role="tab" id="tab-theory" aria-controls="theory">Теория</button>
+<button role="tab" id="tab-lab" aria-controls="lab">Стенд</button>
+<button role="tab" id="tab-filters" aria-controls="filters">Фильтры</button>
+<button role="tab" id="tab-turns" aria-controls="turns">Обмотка</button>
+<button role="tab" id="tab-common" aria-controls="common">Общий режим</button>
+<button role="tab" id="tab-practice" aria-controls="practice">Практика</button>
+<button role="tab" id="tab-cases" aria-controls="cases">Кейсы</button>
+<button role="tab" id="tab-tasks" aria-controls="tasks">Задачи</button>
+<button role="tab" id="tab-quiz" aria-controls="quiz">Тест</button>
+</nav></div></div>
+<main class="wrap" id="main">
+<section role="tabpanel" id="lab" aria-labelledby="tab-lab" hidden>
+<div class="section-title"><div><h2>Откуда берётся пик на двигателе</h2>
+<p>Нажмите «Пуск». Линии под кабелем показывают, куда движутся волны. На осциллографе видно, когда фронт дошёл до двигателя и когда отражение вернулось к ПЧ.</p></div>
+<button class="secondary jump-theory" data-open="theory">Термины и формулы</button></div>
+<div class="lab-grid">
+<aside class="card controls">
+<h3>Условия опыта</h3>
+<div id="line-controls"></div>
+<details><summary>Сопротивления, затухание и импульс</summary><div id="line-extra"></div></details>
+<div class="actions"><button id="reset-settings">Исходные условия</button></div>
+</aside>
+<div class="lab-body">
+<article class="card model-card">
+<div class="panel"><h3>Преобразователь, моторный кабель, двигатель</h3><button type="button" id="help-wave" class="help" aria-expanded="false" aria-controls="hint-wave" aria-label="Подсказка к схеме">?</button></div>
+<p class="hint" id="hint-wave" hidden>Бирюзовая стрелка показывает движение фронта от ПЧ, оранжевая — первое отражение от двигателя. Белая метка — пробник. Щёлкните вдоль кабеля, чтобы выбрать его координату. Знак отражённой волны виден на профиле около нагрузки.</p>
+<canvas id="scene" class="scheme" aria-label="Анимированная схема электропривода с падающей и отражённой волнами"></canvas>
+<div class="legend"><span class="c-teal">Падающая</span><span class="c-orange">Отражённая</span><span class="c-white">Сумма / пробник</span></div>
+<div class="toolbar transport">
+<button class="primary" id="play">Пуск</button><button id="next">Шаг</button><button id="reset-time">Сброс времени</button>
+<label>Скорость показа <select id="rate"><option value=".25">×0,25</option><option value=".5">×0,5</option><option value="1" selected>×1</option><option value="2">×2</option></select></label>
+<label>Развёртка <select id="span"><option value="auto">По параметрам</option><option value="2">2 мкс</option><option value="5">5 мкс</option><option value="12">12 мкс</option><option value="35">35 мкс</option><option value="120">120 мкс</option></select></label>
+</div>
+<label class="range-row" for="clock">Общий курсор времени <output id="clock-value"></output></label><div class="precision"><input id="clock" type="range" min="0" value="0" step="0.001"><input id="clock-exact" type="number" min="0" step="0.001" aria-label="Общий курсор — точный ввод, мкс"></div>
+<div class="reading" id="wave-status"></div>
+</article>
+<div class="plots">
+<article class="card"><div class="panel"><h3>Два канала осциллографа</h3><button id="peak-find" class="compact">К пику</button></div>
+<div class="legend"><span class="c-teal">У ПЧ</span><span class="c-orange">У нагрузки</span><span class="c-violet" id="base-legend" hidden>Сохранённый опыт</span></div>
+<canvas id="scope" class="plot clickable" aria-label="Осциллограммы у ПЧ и у нагрузки с общим курсором"></canvas>
+<div class="reading" id="scope-read"></div>
+<div class="actions"><button id="mark-time">Зафиксировать курсор A</button><button id="clear-time" hidden>Убрать A</button><button id="save-base">Сохранить осциллограмму</button><button id="clear-base" hidden>Убрать сравнение</button></div>
+<div class="reading" id="delta-read" hidden></div>
+<details><summary>Подсказка для измерения задержки</summary><p>На возрастающем фронте найдите примерно одинаковую долю от первой ступени на обоих каналах. Отметьте время у ПЧ курсором A, затем измерьте время у двигателя. В согласованном режиме это можно сделать при одном и том же уровне, например 0,310 кВ.</p></details>
+</article>
+<article class="card"><h3>Напряжение вдоль кабеля</h3>
+<div class="legend"><span class="c-teal">Вперёд</span><span class="c-orange">Назад</span><span class="c-white">Сумма</span></div>
+<canvas id="profile" class="plot clickable" aria-label="Профиль падающей, отражённой и суммарной волны вдоль кабеля"></canvas>
+<label class="range-row" for="probe">Положение пробника <output id="probe-value"></output></label><input id="probe" type="range" min="0" max="100" value="75" step=".5">
+<div class="reading" id="probe-read"></div></article>
+</div>
+<article class="card readings"><h3>Измерения и расчёт</h3><div class="metrics" id="metrics"></div>
+<p class="note" id="baseline"></p>
+<details><summary>Что относится к показаниям модели</summary>
+<p>Осциллограф показывает добавку линейного напряжения относительно исходного уровня перед фронтом. Поле «ЭДС ступени» относится к эквивалентному источнику. При ненулевом сопротивлении ПЧ начальная падающая волна меньше этой ЭДС.</p>
+<p>Пик — наибольшее положительное значение на выбранном временном окне. Максимальная крутизна — наибольшая положительная разность соседних отсчётов, делённая на интервал. Для сравнения осциллограмм сохраните режим и используйте одинаковую развёртку.</p></details>
+</article>
+</div></div>
+</section>
+<section role="tabpanel" id="theory" aria-labelledby="tab-theory">
+<div class="section-title"><div><h2>Как возникает перенапряжение</h2><p>ШИМ меняет напряжение ступенями. При быстром переключении кабель ведёт себя как линия с распределёнными параметрами. На нагрузке с другим импедансом часть волны возвращается в кабель.</p></div><button data-open="lab" class="primary">Открыть стенд</button></div>
+<div class="content-grid">
+<article class="card"><h3>Номинал, ступень и пик</h3><p><button class="term" aria-expanded="false" data-term="pwm-hint">ШИМ</button> формирует последовательность импульсов с меняющейся длительностью. Микросекундный фронт задают силовые ключи и выходная цепь, а период основной гармоники двигателя лежит в масштабе миллисекунд.</p><p class="hint" id="pwm-hint" hidden>Широтно-импульсная модуляция. В примере во вкладке «Фильтры» длительность импульсов меняется при сравнении синусоидальной команды с треугольной несущей.</p>
+<p>Перенапряжением называют напряжение выше принятого опорного или допустимого уровня. Для отражённой волны в этом стенде сравниваем переходный пик с напряжением ступени. Для двигателя предел берут из документации для нужной формы импульса, повторяемости и схемы измерения. Номинальное действующее значение, амплитуда основной гармоники, размах и пик импульса — разные величины.</p>
+<p>У многоуровневого преобразователя величина отдельной ступени зависит от топологии и состояния ключей. В кейсе подъёма 6 кВ ступень задаётся как отдельное учебное условие.</p></article>
+<article class="card"><h3>Волновое сопротивление и задержка</h3><p>У однородной линии с малыми потерями параметры на единицу длины <i>L′</i> и <i>C′</i> определяют <i>Z</i>₀ и скорость фронта. Оценка <i>c</i>/√εᵣ подходит для однородного немагнитного диэлектрика в TEM-приближении.</p>
+<div class="formula"><math display="block"><mrow><msub><mi>Z</mi><mn>0</mn></msub><mo>=</mo><msqrt><mfrac><msup><mi>L</mi><mo>′</mo></msup><msup><mi>C</mi><mo>′</mo></msup></mfrac></msqrt><mspace width="1.3em"/><mi>v</mi><mo>=</mo><mfrac><mn>1</mn><msqrt><msup><mi>L</mi><mo>′</mo></msup><msup><mi>C</mi><mo>′</mo></msup></msqrt></mfrac><mspace width="1.3em"/><mi>τ</mi><mo>=</mo><mfrac><mi>ℓ</mi><mi>v</mi></mfrac></mrow></math></div>
+<p>У двигателя первая реакция возникает через τ, а на входе отражение можно увидеть после 2τ, если его там не компенсирует источник. Рефлектометр связывает эхо и расстояние формулой ℓ = vΔt/2. Для реального кабеля скорость можно взять из паспорта или оценить по измеренной задержке.</p></article>
+<article class="card"><h3>Отражение и правило Петерсена</h3><p>В узле нагрузки <i>U</i> = <i>U</i>⁺ + <i>U</i>⁻, а <i>I</i> = (<i>U</i>⁺ − <i>U</i>⁻)/<i>Z</i>₀. Из <i>U</i> = <i>Z</i>н<i>I</i> получаем коэффициент отражения по напряжению.</p>
+<div class="formula"><math display="block"><mrow><msub><mi>Γ</mi><mi>н</mi></msub><mo>=</mo><mfrac><mrow><msub><mi>Z</mi><mi>н</mi></msub><mo>−</mo><msub><mi>Z</mi><mn>0</mn></msub></mrow><mrow><msub><mi>Z</mi><mi>н</mi></msub><mo>+</mo><msub><mi>Z</mi><mn>0</mn></msub></mrow></mfrac><mspace width="1em"/><msub><mi>U</mi><mi>н</mi></msub><mo>=</mo><mo>(</mo><mn>1</mn><mo>+</mo><msub><mi>Γ</mi><mi>н</mi></msub><mo>)</mo><msup><mi>U</mi><mo>+</mo></msup></mrow></math></div>
+<p>По правилу Петерсена приходящую волну можно представить источником <b>2U⁺</b> с последовательным <b>Z₀</b>. При переходе на вторую длинную линию на первом приходе роль Zн выполняет её волновое сопротивление. Для согласования Γн = 0, для холостого конца +1, для короткого замыкания −1. На коротком конце суммарное напряжение равно нулю.</p>
+<p>После отражения на источнике новая волна снова идёт к двигателю. Γ<sub>ист</sub> вычисляется с импедансом источника. Идеальный источник напряжения удерживает своё напряжение, поэтому вернувшаяся волна может проявиться у него в токе при отсутствии скачка напряжения.</p></article>
+<article class="card"><h3>Когда пик становится близок к удвоению</h3><p>До прихода первого повторного отражения от источника к нагрузке проходит окно между τ и 3τ. Если входной фронт успел вырасти внутри этого окна, на высокоомной нагрузке при малых потерях напряжение может приблизиться к 2U⁺.</p>
+<div class="formula"><math display="block"><mrow><mn>2</mn><mi>τ</mi><mo>≥</mo><msub><mi>t</mi><mi>ф</mi></msub><mspace width="1em"/><msub><mi>ℓ</mi><mtext>кр</mtext></msub><mo>≈</mo><mfrac><mrow><mi>v</mi><msub><mi>t</mi><mi>ф</mi></msub></mrow><mn>2</mn></mfrac></mrow></math></div>
+<p>Это ориентир для одиночного фронта без фильтра. В стенде t<sub>ф</sub> — полная длительность линейного нарастания 0–100 %. Если изготовитель задаёт 10–90 %, сначала согласуйте определение и уровни измерения. Высокочастотный импеданс машины зависит от частоты. Наложение импульсов и звон могут изменить пик.</p>
+<p class="source"><a href="https://portal.tpu.ru/SHARED/y/YNP2/academics/Tab2/TVN_lek.pdf" target="_blank" rel="noopener">Важов и Лавринович · курс ТВН</a> · <a href="https://web.mit.edu/6.013_book/www/chapter14/14.4.html" target="_blank" rel="noopener">MIT · линия с нагрузкой, § 14.4</a> · <a href="https://library.e.abb.com/public/5df66cce8dd649689ab7c2c66abd52db/voltstress.pdf" target="_blank" rel="noopener">ABB Technical Guide 102</a></p></article>
+<article class="card"><h3>Как читать осциллограмму</h3><ol><li>Зафиксируйте U у ПЧ и у двигателя в одной схеме измерения.</li><li>Для задержки поставьте курсор на начало фронта у ПЧ и нажмите «Зафиксировать курсор A». Переставьте подвижный курсор на начало фронта у двигателя. Считайте Δt.</li><li>Нажмите «К пику», чтобы снять максимум. Для средней крутизны отметьте двумя курсорами начало и конец выбранного участка одного канала и считайте ΔU/Δt в кВ/мкс.</li><li>Сохраните запись, меняйте по одному параметру. Сравните пики и крутизны в одинаковом временном окне.</li></ol><p>В модели затухание каждого прохода равно exp(−αs), где s — длина пройденного пути. Здесь α одинаково для всех частот. Состояние экрана и частотные потери для реального кабеля требуют дополнительных параметров.</p></article>
+<article class="card"><h3>Что сверяют по документам</h3><p><a href="https://protect.gost.ru/gost/details/0abb7313-e61c-4692-8323-fc5fb419526a" target="_blank" rel="noopener">ГОСТ IEC/TS 60034‑18‑41‑2014</a> — методы оценки изоляционных систем типа I при питании от преобразователя. <a href="https://protect.gost.ru/gost/details/6f8655c5-4aed-4b9d-b66d-6fb843e81c67" target="_blank" rel="noopener">ГОСТ IEC/TS 60034‑18‑42‑2014</a> — испытания систем типа II, стойких к частичным разрядам.</p>
+<p><a href="https://webstore.iec.ch/en/publication/66456" target="_blank" rel="noopener">IEC TS 60034‑25:2022</a> — руководство по двигателю в системе электропривода. <a href="https://webstore.iec.ch/en/publication/5948" target="_blank" rel="noopener">IEC TS 61800‑8:2010</a> — определение напряжения на силовом интерфейсе. Для приёмки действуют соответствующие требования к объекту, в том числе <a href="https://www.consultant.ru/document/cons_doc_LAW_91515/d0508bb060cdb762b612baf4bb3b79a68e71a2c3/" target="_blank" rel="noopener">ПУЭ 7, гл. 1.8</a> в её области применения.</p>
+<p>Для оценки конкретного привода нужны паспортные кривые стойкости, топология преобразователя и сведения о кабеле. Числа в тренажёре иллюстрируют физику. Нормы не представлены универсальной границей добавки, кратности или dU/dt.</p></article>
+</div>
+</section>
+<section role="tabpanel" id="filters" aria-labelledby="tab-filters" hidden>
+<div class="section-title"><div><h2>Как меняется сигнал после фильтра</h2><p>В масштабе периода видно, какие составляющие ШИМ проходят через фильтр. На стенде отдельно сравниваются фронты на зажимах двигателя.</p></div><button data-preset="filter" class="primary">Опыт с dU/dt-фильтром</button></div>
+<div class="lab-grid">
+<aside class="card controls"><h3>Условия сравнения</h3><div id="filter-controls"></div>
+<p class="note">Источник с биполярной ШИМ. Постоянные времени фильтров заданы для учебного сравнения.</p></aside>
+<div class="lab-body">
+<article class="card"><h3>Дифференциальный сигнал на выходе</h3>
+<div class="legend"><span class="c-teal">Без фильтра</span><span class="c-orange">dU/dt</span><span class="c-violet">Синус-фильтр</span><span class="c-white">Команда</span></div>
+<canvas id="filter-plot" class="wide-plot clickable" aria-label="Сравнение ШИМ, dU/dt-фильтра и синус-фильтра"></canvas>
+<div class="actions"><label>Развёртка ШИМ <select id="f-span"><option value="period">Период основной</option><option value="2">Первые 2 мс</option><option value=".5">Первые 0,5 мс</option></select></label></div>
+<label class="range-row" for="f-time">Курсор времени <output id="f-time-value"></output></label><input id="f-time" type="range" min="0" max="1000" value="270" step="1">
+<p class="reading" id="f-read"></p><div class="metrics" id="f-metrics"></div><details><summary>Подсказка для сравнения фильтров</summary><p>На развёртке 0,5 мс рассмотрите края импульсов. На развёртке «Период основной» проследите основную гармонику. Процент передачи несущей относится к отдельной синусоидальной составляющей с частотой ШИМ.</p></details></article>
+<div class="content-grid">
+<article class="card"><h3>dU/dt-фильтр</h3><p>Передаточная функция учебной модели H(s) = 1/(1 + sτ). Она сглаживает фронт и сохраняет низкочастотную составляющую. На стенде этот же фильтр установлен перед кабелем в эквиваленте источника.</p></article>
+<article class="card"><h3>Синус-фильтр и терминатор</h3><p>Для сравнения показаны два апериодических звена H(s) = 1/(1 + sτ)². Они подавляют несущую сильнее и оставляют сигнал близким к основной гармонике. Промышленный синус-фильтр обычно реализуют выходной LC-цепью с предусмотренным демпфированием.</p><p>Терминатор ставят у двигателя для уменьшения отражения высокочастотной составляющей. Согласованная нагрузка на стенде демонстрирует этот принцип. Реальная RC-цепь имеет частотно-зависимый импеданс.</p></article>
+</div></div></div>
+</section>
+<section role="tabpanel" id="turns" aria-labelledby="tab-turns" hidden>
+<div class="section-title"><div><h2>Что получает первый виток</h2><p>Модель связывает локальную амплитуду ступени на входе участка обмотки с начальным распределением между витками.</p></div><button id="motor-import" class="primary">Взять пик со стенда</button></div>
+<div class="lab-grid">
+<aside class="card controls"><h3>Модель обмотки</h3><div id="motor-controls"></div><p class="note" id="motor-note">Амплитуда задана для учебного участка. При переносе используется пик добавки на зажимах как условная входная ступень.</p></aside>
+<div class="lab-body"><article class="card"><h3>Пары витков и начальное напряжение</h3><canvas id="motor-plot" class="wide-plot clickable" aria-label="Распределение падений напряжения между витками"></canvas>
+<div class="legend"><span class="c-teal">Ёмкостная цепочка</span><span class="c-white">Равномерный ориентир</span></div>
+<label class="range-row" for="turn-probe">Выбранная пара <output id="turn-value"></output></label><input id="turn-probe" type="range" min="1" max="8" value="1" step="1">
+<p class="reading" id="motor-read"></p></article>
+<article class="card"><h3>Вход участка и падение на выбранной паре</h3><div class="legend"><span class="c-teal">Вход участка</span><span class="c-orange">Пара витков</span></div>
+<canvas id="turn-scope" class="plot clickable" aria-label="Осциллограммы на входе участка обмотки и между выбранными витками"></canvas>
+<label class="range-row" for="turn-time">Курсор времени <output id="turn-time-value"></output></label><input id="turn-time" type="range" min="0" max="1000" value="520" step="1"><p class="reading" id="turn-scope-read"></p><details><summary>Подсказка о форме сигнала</summary><p>На выбранной паре показана начальная ёмкостная доля входного сигнала. После переноса со стенда используется форма записи нагрузки. Реальные доли могут меняться по мере развития переходного процесса в обмотке.</p></details></article>
+<article class="card"><h3>Почему максимум у начала</h3><p>В цепочке соседние узлы соединены одинаковыми C<sub>в</sub>, внутренние узлы связаны с корпусом через C<sub>з</sub>. Края имеют потенциалы U и 0. Баланс зарядов для быстрого начального момента даёт (2 + k)φᵢ = φᵢ₋₁ + φᵢ₊₁, где k = C<sub>з</sub>/C<sub>в</sub>. Падение на паре равно φᵢ − φᵢ₊₁.</p><p>Равномерный ориентир U/N показан для сравнения. В реальной обмотке ранние пики, поле в пазу и повторные фронты зависят от геометрии и высокочастотных параметров.</p><a href="https://serev-lab.github.io/tvn/#l14" target="_blank" rel="noopener">Тема 14 · изоляция электрических машин</a></article></div></div>
+</section>
+<section role="tabpanel" id="common" aria-labelledby="tab-common" hidden>
+<div class="section-title"><div><h2>Общий режим и токи через подшипники</h2><p>Переключения меняют общий потенциал трёх фаз относительно опорной точки. Через паразитные ёмкости часть высокочастотного тока возвращается к преобразователю.</p></div></div>
+<div class="lab-grid">
+<aside class="card controls"><h3>Ёмкостное приближение</h3><div id="cm-controls"></div>
+<p class="note">Ёмкость задана для показанной ветви. Расчёт даёт ток в ёмкости, а не величину разрядного тока в подшипнике.</p></aside>
+<div class="lab-body">
+<article class="card"><h3>Цепь возврата тока</h3><canvas id="common-scene" class="wide-plot clickable" aria-label="Путь ёмкостного тока через корпус и через вал"></canvas>
+<label class="range-row" for="cm-path">Выбранная ветвь</label><select id="cm-path"><option value="frame">Обмотка — корпус — ПЧ</option><option value="shaft">Обмотка — вал — подшипник — корпус — ПЧ</option></select>
+<div class="metrics" id="cm-metrics"></div><p class="reading" id="cm-read"></p></article>
+<article class="card"><h3>Ступень общего режима и ток ветви</h3><div class="plots"><div><h4>Напряжение общего режима</h4><canvas id="cm-voltage" class="plot clickable" aria-label="Осциллограмма напряжения общего режима"></canvas></div><div><h4>Ток выбранной ёмкости</h4><canvas id="cm-current" class="plot clickable" aria-label="Осциллограмма ёмкостного тока выбранной ветви"></canvas></div></div>
+<label class="range-row" for="cm-time">Общий курсор времени <output id="cm-time-value"></output></label><input id="cm-time" type="range" min="0" max="1000" value="430" step="1"><p class="reading" id="cm-scope-read"></p><details><summary>Подсказка о длительности тока</summary><p>В идеальном конденсаторе ток ненулевой, пока меняется напряжение. При постоянном напряжении ток ёмкостной ветви обращается в ноль.</p></details></article>
+<article class="card"><h3>Две схемы измерения</h3><p>Дифференциальное напряжение, например U<sub>AB</sub> = U<sub>A</sub> − U<sub>B</sub>, измеряют между двумя фазами. Напряжение общего режима U<sub>cm</sub> = (U<sub>A</sub> + U<sub>B</sub> + U<sub>C</sub>)/3 считают относительно общей опоры. В ёмкостной ветви i = C · dU/dt. При 1 нФ и 1 кВ/мкс получается 1 А.</p><p>Ёмкостная связь с ротором может приводить к напряжению на валу. Возможны разные механизмы подшипниковых токов. Схема выделяет ёмкостный путь. Для подбора мер защиты учитывают схему возврата ВЧ-тока и указания изготовителя.</p><a href="https://library.e.abb.com/public/8c253c2417ed0238c125788f003cca8e/ABB_Technical_guide_No5_RevC.pdf" target="_blank" rel="noopener">ABB Technical Guide 5 · токи в подшипниках</a></article>
+</div></div></section>
+<section role="tabpanel" id="practice" aria-labelledby="tab-practice" hidden><div class="section-title"><div><h2>Практика с измерениями</h2><p>Сначала сделайте прогноз. Затем откройте исходный режим, проведите замеры по шагам и проверьте вывод по осциллограмме или расчёту.</p></div></div><div class="toolbar practice-menu" role="group" aria-label="Разделы практики" id="practice-menu"></div><div id="practices"></div></section>
+<section role="tabpanel" id="cases" aria-labelledby="tab-cases" hidden><div class="section-title"><div><h2>Кейсы электропривода</h2><p>Исходные данные публикаций и параметры учебного стенда подписаны отдельно.</p></div></div><div id="case-grid" class="content-grid"></div></section>
+<section role="tabpanel" id="tasks" aria-labelledby="tab-tasks" hidden><div class="section-title"><div><h2>Расчётные задачи</h2><p>Вводите число с точкой или запятой. Сверьте решение и единицы.</p></div></div><div id="task-grid" class="content-grid"></div></section>
+<section role="tabpanel" id="quiz" aria-labelledby="tab-quiz" hidden><div class="section-title"><div><h2>Проверка знаний</h2><p>Пять вариантов по 15 вопросов. После проверки появятся объяснения.</p></div></div><div class="card quiz-top"><label>Вариант <select id="variant"></select></label><span id="count" aria-live="polite"></span><button id="clear-quiz">Очистить ответы</button></div><form id="quiz-form"><div id="questions" class="content-grid"></div><div class="actions"><button class="primary" type="submit">Проверить тест</button><strong id="quiz-result" role="status"></strong></div></form></section>
+</main>
+<footer class="wrap"><p>Тема 15 · Учебные модели электропривода</p></footer>
+<script>const activityGroups = [
+  {
+    "group": "lab",
+    "title": "Стенд",
+    "items": [
+      {
+        "id": "lab-1",
+        "name": "Скорость волны по осциллограммам",
+        "tab": "lab",
+        "preset": "flight",
+        "setting": {},
+        "select": {},
+        "span": "5",
+        "steps": [
+          "В согласованном режиме оставьте 180 м, ступень 0,80 кВ и фронт 0,40 мкс. Включите развёртку 5 мкс. Найдите момент, когда канал у ПЧ впервые достигает 0,400 кВ.",
+          "Поставьте здесь курсор A. Передвиньте общий курсор до 0,400 кВ на канале нагрузки. Запишите оба времени, Δt и вычислите v = ℓ/Δt.",
+          "Увеличьте длину до 360 м при прежних настройках. Снова измерьте оба времени и скорость."
+        ],
+        "record": "tПЧ · tн · Δt · v для двух длин",
+        "question": "Как изменилась задержка, когда длина удвоилась?",
+        "answer": "При 180 м ожидаются 0,200 и 1,200 мкс, v ≈ 180 м/мкс. При 360 м второе время 2,200 мкс. Сравнивайте одинаковые уровни 0,400 кВ."
+      },
+      {
+        "id": "lab-2",
+        "name": "Три граничных условия",
+        "tab": "lab",
+        "preset": "ends",
+        "setting": {},
+        "select": {},
+        "span": "5",
+        "steps": [
+          "При 150 м и v = 200 м/мкс поставьте курсор на 1,00 мкс. Пробник установите на 100 % длины.",
+          "Снимите U⁺, U⁻, напряжение и ток нагрузки в согласованном режиме. Повторите в режиме холостого хода и в режиме короткого замыкания.",
+          "Найдите Γн по U⁻/U⁺. Проверьте U⁺ + U⁻ и ток из разности волн."
+        ],
+        "record": "Γн · U⁺ · U⁻ · Uн · Iн для трёх концов",
+        "question": "Где складываются напряжения и где складываются токи?",
+        "answer": "Для согласования, ХХ и КЗ соответственно Γ = 0, +1, −1. При U⁺ = 0,60 кВ напряжения 0,60, 1,20 и 0 кВ. Токи около 13,33, 0 и 26,67 А."
+      },
+      {
+        "id": "lab-3",
+        "name": "Отражение на стороне источника",
+        "tab": "lab",
+        "preset": "echo",
+        "setting": {},
+        "select": {},
+        "span": "5",
+        "steps": [
+          "При холостом конце оставьте источник с Zист = Z₀/2 и фронт 0,15 мкс. Найдите на канале ПЧ начало изменения после первого плато.",
+          "Сравните время изменения с 2ℓ/v. Поставьте курсор на t = 1,50 мкс. Запишите U и I у ПЧ.",
+          "Выберите «0 Ом · жёсткий источник» и снимите U и I на том же времени. Проверьте, как изменились Γист и начальная падающая ступень."
+        ],
+        "record": "время эха · Γист · UПЧ · IПЧ в двух режимах",
+        "question": "Почему на жёстком источнике эхо заметно по току?",
+        "answer": "Эхо возвращается около 1,212 мкс. Γист = −1/3 и −1 соответственно. У идеального источника внешнее напряжение повторяет ЭДС, хотя ток меняется."
+      },
+      {
+        "id": "lab-4",
+        "name": "Длина и критический ориентир",
+        "tab": "lab",
+        "preset": "length",
+        "setting": {},
+        "select": {},
+        "span": "12",
+        "steps": [
+          "При 20 м, фронте 0,90 мкс и ступени 1 кВ сохраните осциллограмму. Снимите пик кнопкой «К пику». Запишите τ.",
+          "Измените длину на 200 м, сохраняя остальные параметры. Снимите пик и τ. Сравните его с сохранённой кривой.",
+          "Вычислите ℓкр = v·tф/2. Сопоставьте 2τ с tф для двух длин."
+        ],
+        "record": "ℓ · τ · 2τ · Uмакс · ℓкр",
+        "question": "Почему оценка полностью нарастающего первого фронта применима к длинному кабелю?",
+        "answer": "Ориентир 89,1 м. Для 20 м время 2τ ≈ 0,202 мкс, для 200 м ≈ 2,020 мкс. Окно до повторного прихода у короткого кабеля меньше длительности фронта."
+      },
+      {
+        "id": "lab-5",
+        "name": "Крутизна по двум курсорам",
+        "tab": "lab",
+        "preset": "front",
+        "setting": {},
+        "select": {},
+        "span": "5",
+        "steps": [
+          "При 100 м и 0,15 мкс найдите на первом росте у двигателя две точки с заметно разными напряжениями. Зафиксируйте точку A. Снимите ΔU/Δt.",
+          "Сохраните осциллограмму и увеличьте фронт до 1,80 мкс. Найдите две точки в начале первого монотонного роста и снова снимите среднюю крутизну.",
+          "Сравните среднюю крутизну и «Макс. рост U». Проверьте, изменилось ли время прихода волны."
+        ],
+        "record": "tA · tB · U(A) · U(B) · ΔU/Δt · τ",
+        "question": "Чем средняя крутизна выбранного участка отличается от максимума по окну?",
+        "answer": "Задержка около 0,505 мкс в обоих режимах. На первом линейном участке рост для короткого фронта выше. Записывайте выбранный интервал, чтобы объяснить расхождение с максимумом."
+      },
+      {
+        "id": "lab-6",
+        "name": "Затухание в согласованной линии",
+        "tab": "lab",
+        "preset": "damping",
+        "setting": {},
+        "select": {},
+        "span": "5",
+        "steps": [
+          "При длине 200 м, Zн = Z₀ и ступени 1,00 кВ снимите пик без затухания.",
+          "Установите α = 2,0 Нп/км в дополнительных настройках. Снимите пик и сравните с exp(−α·0,200).",
+          "Повторите при 400 м. Сохраните α и сравните задержку, пик и Γн."
+        ],
+        "record": "ℓ · α · τ · пик · exp(−αℓ)",
+        "question": "Почему ослабление видно даже при Γн = 0?",
+        "answer": "Ожидаемые пики 1,000; 0,670; 0,449 кВ. Компонента отражения отсутствует при согласовании."
+      },
+      {
+        "id": "lab-7",
+        "name": "Конечная длительность импульса",
+        "tab": "lab",
+        "preset": "pulse",
+        "setting": {},
+        "select": {},
+        "span": "12",
+        "steps": [
+          "При длительности между фронтами 6 мкс снимите времена пересечения половины уровня на переднем и заднем фронтах у ПЧ.",
+          "Повторите у нагрузки. Сравните длительность и разность времён между каналами. Пробником проверьте форму сигнала в середине кабеля.",
+          "Установите длительность 9 мкс и повторите. Скорость и длину сохраните."
+        ],
+        "record": "передний и задний фронты обоих каналов · ширина · задержка",
+        "question": "Что меняется при изменении расстояния между фронтами одного импульса?",
+        "answer": "Для согласованной линии задержка 0,750 мкс у обоих фронтов. Ширина на половине одинакова на входе и выходе, около 6 либо 9 мкс."
+      }
+    ]
+  },
+  {
+    "group": "filters",
+    "title": "Фильтры",
+    "items": [
+      {
+        "id": "filters-1",
+        "name": "dU/dt-фильтр на моторном кабеле",
+        "tab": "lab",
+        "preset": "filter",
+        "setting": {},
+        "select": {},
+        "span": "35",
+        "steps": [
+          "На стенде сохраните осциллограмму без фильтра. Запишите пик у двигателя и максимальный рост U.",
+          "Выберите dU/dt. Проверьте постоянную времени 2,0 мкс и прежнюю развёртку 35 мкс. Снимите новые значения.",
+          "По фиолетовой базовой и оранжевой новой трассам покажите, на каких участках различие наиболее заметно. Вычислите снижение пика и крутизны в процентах."
+        ],
+        "record": "Uмакс и (dU/dt)макс до и после · процент снижения",
+        "question": "Какой измеряемый показатель изменился сильнее?",
+        "answer": "При стандартном пресете около 1,174 → 0,688 кВ и 4,696 → 0,545 кВ/мкс. Число крутизны зависит от частоты отсчётов."
+      },
+      {
+        "id": "filters-2",
+        "name": "Постоянная времени на стенде",
+        "tab": "lab",
+        "preset": "filterWeak",
+        "setting": {},
+        "select": {},
+        "span": "35",
+        "steps": [
+          "При τф = 1,0 мкс сохраните трассу и снимите пик и крутизну.",
+          "Установите τф = 3,0 мкс. Измерьте те же величины, оставив длину и развёртку прежними.",
+          "Зафиксируйте курсор A на районе 10 % первого пика и перенесите общий курсор к 90 % первого пика на каждой кривой отдельно."
+        ],
+        "record": "τф · Uмакс · максимальный рост · t10–90",
+        "question": "Что происходит с длительностью фронта при увеличении τф?",
+        "answer": "Бо́льшая τф дает более плавный фронт. Убедитесь, что сравниваются пересечения до первого максимума."
+      },
+      {
+        "id": "filters-3",
+        "name": "Сигнал ШИМ в двух масштабах",
+        "tab": "filters",
+        "preset": "",
+        "setting": {},
+        "select": {
+          "span": ".5"
+        },
+        "steps": [
+          "На развёртке 0,5 мс найдите одно переключение ШИМ. Щёлкните непосредственно до и после него.",
+          "На тех же временах запишите значения выходов dU/dt и синус-фильтра. Держите f = 50 Гц и fШИМ = 3000 Гц.",
+          "Переключитесь на «Период основной» и покажите, где проходит основная гармоника."
+        ],
+        "record": "два времени · три напряжения · период основной",
+        "question": "Почему форма зависит от выбранной развёртки?",
+        "answer": "У ШИМ в модели уровни ±0,62 кВ. Основная гармоника при 50 Гц имеет период 20 мс. После dU/dt переход сохраняется, после синус-фильтра ВЧ-составляющая выражена слабее."
+      },
+      {
+        "id": "filters-4",
+        "name": "Передача несущей и основной",
+        "tab": "filters",
+        "preset": "",
+        "setting": {},
+        "select": {},
+        "steps": [
+          "При 50 Гц и 3000 Гц запишите коэффициенты передачи синус-фильтра для обеих частот.",
+          "Увеличьте постоянную времени каждого звена с 200 до 300 мкс. Перепишите показатели и снимите напряжение при одном времени.",
+          "Пересчитайте коэффициенты по формуле двух звеньев."
+        ],
+        "record": "τ · |H(50 Гц)| · |H(3000 Гц)| · U в контрольной точке",
+        "question": "Как выбирают разницу полосы между основной гармоникой и несущей?",
+        "answer": "При 200 мкс ≈ 99,6 % и 6,6 %. При 300 мкс ≈ 99,1 % и 3,0 %. Это амплитудная передача каждой гармоники, не доля энергии."
+      },
+      {
+        "id": "filters-5",
+        "name": "Частота переключения при одной основной",
+        "tab": "filters",
+        "preset": "",
+        "setting": {},
+        "select": {
+          "span": "2"
+        },
+        "steps": [
+          "Откройте развёртку 2 мс. При 3000 Гц запишите число периодов несущей в окне по частоте и значения передачи фильтров.",
+          "Установите 6000 Гц, сохраните основную 50 Гц. Пересчитайте число периодов и сравните графики.",
+          "Отметьте, что именно изменилось в ШИМ и что сохранилось у сигнала команды."
+        ],
+        "record": "частота · N за 2 мс · передача несущей · период основной",
+        "question": "Почему несущая ослабляется сильнее при более высокой частоте?",
+        "answer": "В окне укладывается 6 или 12 периодов несущей. Период основной остаётся 20 мс, передача несущей убывает с ростом частоты."
+      },
+      {
+        "id": "filters-6",
+        "name": "Фильтр у ПЧ и согласование у двигателя",
+        "tab": "lab",
+        "preset": "filter",
+        "setting": {},
+        "select": {},
+        "span": "35",
+        "steps": [
+          "Снимите пик и Γн без защиты. Сохраните исходную запись. Включите dU/dt и измерьте изменившиеся показатели.",
+          "Верните вариант без фильтра. Выберите согласованную нагрузку. Снова снимите пик, Γн и фронт.",
+          "Сравните, на какой стороне цепи изменилось граничное условие и где изменился сам фронт."
+        ],
+        "record": "режим · пик · крутизна · Γн в трёх режимах",
+        "question": "Почему согласованный резистивный режим служит лишь ориентиром для реального RC-терминатора?",
+        "answer": "Выходное звено меняет возбуждение, Γн в модели остаётся тем же. Согласование меняет Γн на ноль. В реальном RC-терминаторе импеданс зависит от частоты."
+      }
+    ]
+  },
+  {
+    "group": "turns",
+    "title": "Обмотка",
+    "items": [
+      {
+        "id": "turns-1",
+        "name": "Равномерное распределение",
+        "tab": "turns",
+        "preset": "",
+        "setting": {
+          "k": 0,
+          "amp": 1.6
+        },
+        "select": {
+          "pair": 1
+        },
+        "steps": [
+          "Оставьте восемь пар и k = 0. Запишите ΔU первой, четвёртой и восьмой пар по щелчку на столбцах.",
+          "Снимите показания у двух выбранных пар при том же времени на осциллограмме.",
+          "Умножьте падение одной пары на восемь и сравните со входной ступенью."
+        ],
+        "record": "номер пары · φначала · ΔU · сумма",
+        "question": "Почему при нулевых связях на корпус доли одинаковы?",
+        "answer": "Каждая доля 1/8, то есть 12,5 %. При 1,6 кВ падение равно 0,200 кВ."
+      },
+      {
+        "id": "turns-2",
+        "name": "Влияние ёмкостей на первых витках",
+        "tab": "turns",
+        "preset": "",
+        "setting": {},
+        "select": {},
+        "steps": [
+          "При k = 0,28 сравните пары 1, 2 и 8. Снимите падения и долю первой пары.",
+          "Увеличьте k до 0,50 и повторите для тех же пар.",
+          "На осциллографе сравните обе настройки при одном времени и на первой паре."
+        ],
+        "record": "k · ΔU₁ · ΔU₂ · ΔU₈ · доля ΔU₁",
+        "question": "Почему крутой фронт сильнее нагружает начало участка?",
+        "answer": "При восьми парах и k = 0,28 первая доля ≈ 40,8 %. При k = 0,50 первая доля около 50 %. Связи на корпус меняют профиль начальных потенциалов."
+      },
+      {
+        "id": "turns-3",
+        "name": "Изменение числа пар",
+        "tab": "turns",
+        "preset": "",
+        "setting": {
+          "k": 0,
+          "amp": 2.4
+        },
+        "select": {
+          "pair": 1
+        },
+        "steps": [
+          "При k = 0 и N = 8 измерьте ΔU первой пары. Установите N = 12 и повторите при прежнем U.",
+          "Верните N = 8, установите k = 0,28. Повторите для N = 12.",
+          "Сравните долю первой пары при изменении N в обоих режимах."
+        ],
+        "record": "N · k · ΔU₁ · доля для четырёх случаев",
+        "question": "Всегда ли увеличение числа пар пропорционально уменьшает падение на первой паре?",
+        "answer": "При k = 0 доли 12,5 % и 8,3 %. При k = 0,28 изменение первой доли заметно слабее. Граничное условие действует через всю цепочку."
+      },
+      {
+        "id": "turns-4",
+        "name": "Потенциал узла и межвитковое напряжение",
+        "tab": "turns",
+        "preset": "",
+        "setting": {
+          "amp": 2
+        },
+        "select": {
+          "pair": 2
+        },
+        "steps": [
+          "В парах 2 и 3 запишите потенциалы начальных узлов. Вычислите их разность.",
+          "Вернитесь к паре 2. Сравните разность с ΔU выбранной пары с учётом округления.",
+          "Снимите на осциллограмме её временное напряжение при поданном фронте."
+        ],
+        "record": "φ₂ · φ₃ · ΔU₂ · t и ΔU(t)",
+        "question": "Почему потенциал относительно корпуса и падение между двумя витками различаются?",
+        "answer": "Потенциалы имеют общую опору, межвитковое напряжение — их разность. При U = 2 кВ и k = 0,28 ΔU второй пары около 0,483 кВ."
+      },
+      {
+        "id": "turns-5",
+        "name": "Перенос пика шахтного подъёма",
+        "tab": "turns",
+        "preset": "mine",
+        "setting": {},
+        "select": {},
+        "span": "12",
+        "steps": [
+          "Нажмите «Взять пик со стенда». Прочитайте значение входной ступени. Поставьте курсор на первый максимум.",
+          "При k = 0,28 снимите ΔU пары 1. Выберите последнюю пару, сохраняя то же время. Запишите разницу.",
+          "Сравните результат первой пары с равномерным ориентиром. Сформулируйте, что сделано с исходной трассой при переносе."
+        ],
+        "record": "пик на входе · t · ΔU₁ · ΔU последней · U/N",
+        "question": "Почему эта оценка относится к начальному распределению?",
+        "answer": "Пик входа около 3,787 кВ. Первая пара ≈ 1,544 кВ, равномерный ориентир ≈ 0,473 кВ. Осциллограмма умножена на долю начальной ёмкостной схемы."
+      },
+      {
+        "id": "turns-6",
+        "name": "Пропорциональность входной ступени",
+        "tab": "turns",
+        "preset": "",
+        "setting": {
+          "amp": 1
+        },
+        "select": {
+          "pair": 1
+        },
+        "steps": [
+          "При U = 1,00 кВ снимите первую долю и падение. Поставьте курсор после окончания нарастания.",
+          "Установите U = 2,00 кВ при тех же k и N. Повторите измерение.",
+          "Сравните отношения двух падений и двух входных ступеней."
+        ],
+        "record": "два входных U · два ΔU · доля",
+        "question": "Какая величина сохраняется при удвоении входа?",
+        "answer": "Абсолютное ΔU удваивается, доля остаётся около 40,8 %."
+      }
+    ]
+  },
+  {
+    "group": "common",
+    "title": "Общий режим",
+    "items": [
+      {
+        "id": "common-1",
+        "name": "Ток до и после окончания фронта",
+        "tab": "common",
+        "preset": "",
+        "setting": {},
+        "select": {},
+        "steps": [
+          "Выберите ветвь обмотка–корпус. Поставьте общий курсор примерно на t = 0,15 мкс.",
+          "Считайте Ucm и I. Перенесите курсор на t = 0,45 мкс и повторите измерение.",
+          "Сравните показания с i = C·dU/dt на нарастании и на плато."
+        ],
+        "record": "t · Ucm · I в двух точках",
+        "question": "Почему при постоянном U ёмкостный ток обращается в ноль?",
+        "answer": "При первом отсчёте Ucm около 0,15 кВ и I около 2 А. На плато 0,30 кВ и 0 А."
+      },
+      {
+        "id": "common-2",
+        "name": "Участие двух ёмкостных ветвей",
+        "tab": "common",
+        "preset": "",
+        "setting": {},
+        "select": {
+          "time": 250
+        },
+        "steps": [
+          "При одном времени на фронте снимите ток в ветви обмотка–корпус.",
+          "Выберите путь через вал и подшипник. Повторите измерение в тот же момент.",
+          "Сравните результаты с отношением ёмкостей. На схеме покажите общий участок возврата к ПЧ."
+        ],
+        "record": "ветвь · C · Ucm · I · отношение",
+        "question": "Какие данные ещё нужны для оценки реального разряда в подшипнике?",
+        "answer": "При исходных параметрах 2,00 и 0,20 А. Прогноз разряда требует параметров подшипника, смазки и внешней цепи."
+      },
+      {
+        "id": "common-3",
+        "name": "Изменение крутизны общего режима",
+        "tab": "common",
+        "preset": "",
+        "setting": {},
+        "select": {
+          "time": 250
+        },
+        "steps": [
+          "Оставьте 0,30 кВ и фронт 0,30 мкс. В середине фронта снимите токи по двум ветвям.",
+          "Увеличьте время нарастания до 0,60 мкс. Поставьте курсор на соответствующую относительную точку фронта.",
+          "Снова сравните оба тока и напряжение в момент измерения."
+        ],
+        "record": "длительность фронта · крутизна · токи двух ветвей",
+        "question": "Как зависят токи от времени нарастания при фиксированных амплитуде и ёмкостях?",
+        "answer": "Крутизна 1,00 → 0,50 кВ/мкс. Оба тока уменьшаются вдвое."
+      },
+      {
+        "id": "common-4",
+        "name": "Влияние паразитной ёмкости",
+        "tab": "common",
+        "preset": "",
+        "setting": {},
+        "select": {
+          "time": 250
+        },
+        "steps": [
+          "При исходной ступени запишите I ветви обмотка–корпус для C = 2,0 нФ.",
+          "Установите C = 4,0 нФ. На том же фронте и времени повторите измерение.",
+          "Проверьте, изменился ли ток условной ветви вала. Сравните оба канала."
+        ],
+        "record": "C · i обмотка–корпус · i ветви вала · Ucm",
+        "question": "Почему в модели одна ветвь меняется независимо от другой?",
+        "answer": "Ток корпуса 2 → 4 А, ток ветви вала 0,20 А. Обе ветви возбуждаются идеальной заданной ступенью."
+      },
+      {
+        "id": "common-5",
+        "name": "Перенос заряда за фронт",
+        "tab": "common",
+        "preset": "",
+        "setting": {},
+        "select": {
+          "time": 250
+        },
+        "steps": [
+          "Для ветви обмотка–корпус снимите высоту токового импульса и ширину по графику. Найдите Q = I·tф.",
+          "Удлините фронт до 0,60 мкс и вновь найдите Q. Сохраните C и амплитуду.",
+          "Сравните с Q = C·ΔU. При токе в А и времени в мкс результат в мкКл."
+        ],
+        "record": "I · tф · Q для двух фронтов · C·ΔU",
+        "question": "Почему уменьшение пика тока не изменило заряд?",
+        "answer": "Для 2 нФ и 0,30 кВ Q = 0,60 мкКл. Высота вдвое меньше, ширина вдвое больше."
+      },
+      {
+        "id": "common-6",
+        "name": "Дифференциальное и общее напряжения",
+        "tab": "common",
+        "preset": "",
+        "setting": {},
+        "select": {
+          "time": 250
+        },
+        "steps": [
+          "На бумаге сравните наборы (0,30; 0; 0) и (0,50; 0,20; 0,20) кВ относительно одной опоры. Рассчитайте UAB и Ucm.",
+          "Перенесите по очереди значения Ucm как амплитуды ступени в тренажёр. Оставьте 0,30 мкс и C = 2,0 нФ. Снимите ток во время фронта.",
+          "В отчёте сопоставьте одинаковое UAB и разные показания ёмкостной ветви."
+        ],
+        "record": "UAB · Ucm · iC для двух наборов",
+        "question": "Почему измерение только между фазами не показывает весь общий режим?",
+        "answer": "UAB = 0,30 кВ в обоих случаях. Ucm = 0,10 и 0,30 кВ. Ток выбранной ветви около 0,67 и 2,00 А."
+      }
+    ]
+  }
+]
+;
+const workPlan = activityGroups.flatMap(g=>g.items);
+"use strict";
+
+const C_M_US=299.792458;
+const LINE_DEFAULT={length:120,velocity:198,z0:45,zLoad:400,load:"motor",source:"ideal",voltage:0.62,rise:0.3,loss:0,shape:"step",width:6,filter:"none",filterTau:1.6};
+const MINE={length:350,velocity:198,z0:45,zLoad:800,load:"motor",source:"ideal",voltage:2,rise:0.25,loss:0,shape:"step",filter:"none"};
+const limit=(x,lo,hi)=>Math.min(hi,Math.max(lo,x));
+function reflection(z,z0){
+  return z===Infinity ? 1 : (z-z0)/(z+z0);
+}
+
+function risingRamp(t,rise,filterTau=0){
+  if(t<=0)return 0;
+  if(!filterTau)return Math.min(1,t/rise);
+  // Difference of the integrated step responses over a ramp of duration rise.
+  if(t<rise)return (t+filterTau*Math.expm1(-t/filterTau))/rise;
+  return 1+filterTau/rise*Math.exp(-(t-rise)/filterTau)*Math.expm1(-rise/filterTau);
+}
+
+function makeLine(p){
+  const zL={motor:p.zLoad,match:p.z0,open:Infinity,short:0}[p.load];
+  const zS={ideal:0,half:p.z0/2,match:p.z0}[p.source];
+  const a=p.loss/1000, tau=p.length/p.velocity;
+  const gl=reflection(zL,p.z0), gs=reflection(zS,p.z0);
+  const launched=p.voltage*p.z0/(zS+p.z0);
+  const filterTau=p.filter==="dv" ? p.filterTau : 0;
+  const sourceAt=t=>{
+    const up=risingRamp(t,p.rise,filterTau);
+    return p.shape==="pulse" ? up-risingRamp(t-p.width,p.rise,filterTau) : up;
+  };
+  const round=gl*gs*Math.exp(-2*a*p.length);
+  function at(x,t){
+    let forward=0,reverse=0;
+    const toX=x/p.velocity,toBack=2*tau-toX;
+    const af=launched*Math.exp(-a*x),ar=launched*gl*Math.exp(-a*(2*p.length-x));
+    for(let i=0,delay=0,gain=1;t>toX+delay&&Math.abs(gain)>1e-10;i++,delay=2*tau*i,gain*=round){
+      forward+=gain*af*sourceAt(t-toX-delay);
+      if(ar&&t>toBack+delay)reverse+=gain*ar*sourceAt(t-toBack-delay);
+    }
+    return {forward,reverse,u:forward+reverse,i:(forward-reverse)/p.z0*1000};
+  }
+  const waveFull=launched*Math.exp(-a*p.length)*(1+gl);
+  const critical=p.velocity*p.rise/2;
+  return {at,sourceAt,tau,gl,gs,zL,zS,launched,critical,waveFull,filterTau};
+}
+
+function buildTrace(line,p,end,points=580){
+  // At propagation events include the corners of the linear source and its return.
+  const set=new Set(Array.from({length:points+1},(_,i)=>i*end/points));
+  const edges=p.shape==="pulse" ? [0,p.rise,p.width,p.width+p.rise] : [0,p.rise];
+  for(let k=0; k*line.tau<=end; k++){
+    for(const e of edges){
+      const t=k*line.tau+e;
+      if(t<=end)set.add(t);
+    }
+  }
+  return [...set].sort((a,b)=>a-b).map(t=>({t,send:line.at(0,t).u,motor:line.at(p.length,t).u}));
+}
+
+function meters(trace){
+  const max=(key)=>trace.reduce((best,d)=>d[key]>best[key] ? d : best,trace[0]);
+  let dmax=0;
+  for(let i=1;i<trace.length;i++){
+    const a=trace[i-1],b=trace[i],dt=b.t-a.t;
+    if(dt>1e-8)dmax=Math.max(dmax,(b.motor-a.motor)/dt);
+  }
+  return {peak:max("motor"),sourcePeak:max("send"),dmax};
+}
+
+function turns(n,k){
+  const d=Array(n-1).fill(2+k), rhs=Array(n-1).fill(0);
+  rhs[0]=1;
+  for(let j=1;j<d.length;j++){
+    const x=1/d[j-1];
+    d[j]-=x;rhs[j]+=x*rhs[j-1];
+  }
+  const u=[1,...Array(n).fill(0)];
+  for(let i=n-2;i>=0;i--)u[i+1]=(rhs[i]+u[i+2])/d[i];
+  return {u,du:u.slice(1).map((q,i)=>u[i]-q)};
+}
+
+function filterTransfer(f,tau,order){
+  return (1+(2*Math.PI*f*tau)**2)**(-order/2);
+}
+
+function pwmComparison({hz,carrier,depth,step,tauDv,tauSine}){
+  const dt=1/Math.max(240000,carrier*120),width=1/hz;
+  let dv=0,s1=0,s2=0;
+  const output=[];
+  const dGain=-Math.expm1(-dt/tauDv),sGain=-Math.expm1(-dt/tauSine);
+  const sinError=dt/tauSine,ds=Math.exp(-sinError);
+  for(let i=-Math.ceil(2*width/dt);i<=Math.ceil(width/dt);i++){
+    const t=i*dt,phase=(t*carrier%1+1)%1,tri=4*Math.abs(phase-.5)-1;
+    const ref=depth*Math.sin(2*Math.PI*hz*t);
+    const raw=(ref>=tri?1:-1)*step;
+    const oldS1=s1;
+    dv+=(raw-dv)*dGain;s1+=(raw-s1)*sGain;
+    s2=raw+(s2-raw+(oldS1-raw)*sinError)*ds;
+    if(t>=0&&t<=width)output.push({t:t*1000,raw,dv,sine:s2,ref:ref*step});
+  }
+  return output;
+}
+
+
+const $=id=>document.getElementById(id);
+const fmt=(x,n=2)=>Number.isFinite(x)?new Intl.NumberFormat("ru-RU",{minimumFractionDigits:n,maximumFractionDigits:n}).format(Math.abs(x)<0.5*10**(-n)?0:x):"∞";
+const palette={mint:"#6fe4c9",orange:"#ffc394",violet:"#cfbdff",white:"#e5f5f6",muted:"#a9c2cc",grid:"#355566",dark:"#132d3d"};
+function hp(canvas){
+  const {width:w,height:h}=canvas.getBoundingClientRect();
+  if(!w||!h)return null;
+  const d=Math.min(window.devicePixelRatio||1,2),x=Math.round(w*d),y=Math.round(h*d);
+  if(canvas.width!==x||canvas.height!==y){canvas.width=x;canvas.height=y;}
+  const c=canvas.getContext("2d");c.setTransform(d,0,0,d,0,0);c.clearRect(0,0,w,h);
+  c.lineJoin="round";c.lineCap="round";return {c,w,h};
+}
+function line(c,pts,color,width=1,dash=[]){
+  c.beginPath();c.setLineDash(dash);
+  pts.forEach(([x,y],i)=>i===0?c.moveTo(x,y):c.lineTo(x,y));
+  c.strokeStyle=color;c.lineWidth=width;c.stroke();c.setLineDash([]);
+}
+function label(c,s,x,y,{color=palette.white,align="left",size=12,bold=false}={}){
+  c.font=(bold?"700 ":"")+size+"px system-ui, sans-serif";c.fillStyle=color;c.textAlign=align;c.fillText(s,x,y);
+}
+function fill(c,x,y,w,h,color,outline){
+  c.fillStyle=color;c.fillRect(x,y,w,h);
+  if(outline){c.strokeStyle=outline;c.lineWidth=1;c.strokeRect(x+.5,y+.5,w-1,h-1);}
+}
+function dot(c,x,y,color,r=4){
+  c.beginPath();c.arc(x,y,r,0,Math.PI*2);c.fillStyle=color;c.fill();
+}
+function arrow(c,x,y,d,color){
+  line(c,[[x-d*18,y],[x,y]],color,2.4);
+  line(c,[[x-d*8,y-5],[x,y],[x-d*8,y+5]],color,2.3);
+}
+const graphMargins={left:47,right:14,top:18,bottom:30};
+function plot(canvas,cfg){
+  const o=hp(canvas);if(!o)return;
+  const {c,w,h}=o, {left,right:r,top,bottom:b}=graphMargins;
+  const right=w-r,bottom=h-b;
+  const {xmin=0,xmax,ymin=0,ymax,xunit,yunit,series=[],cursor=null,guides=[]}=cfg;
+  const X=v=>left+(right-left)*(v-xmin)/(xmax-xmin);
+  const Y=v=>bottom-(bottom-top)*(v-ymin)/(ymax-ymin);
+  const baselines=4;
+  for(let j=0;j<=baselines;j++){
+    const u=ymin+(ymax-ymin)*j/baselines,y=Y(u);
+    line(c,[[left,y],[right,y]],Math.abs(u)<1e-7?"#668590":palette.grid);
+    label(c,fmt(u,ymax-ymin>8?1:2),left-5,y+3,{align:"right",size:10,color:palette.muted});
+  }
+  for(let j=0;j<=4;j++){
+    const t=xmin+(xmax-xmin)*j/4,x=X(t);
+    line(c,[[x,top],[x,bottom]],palette.grid);
+    label(c,fmt(t,xmax-xmin<=12?2:xmax-xmin<=50?1:0),x,bottom+14,{align:"center",size:10,color:palette.muted});
+  }
+  c.save();c.beginPath();c.rect(left,top,right-left,bottom-top);c.clip();
+  for(const g of guides)if(g.x>=xmin&&g.x<=xmax)line(c,[[X(g.x),top],[X(g.x),bottom]],g.color??"#74939e",1,[4,4]);
+  for(const s of series){
+    line(c,s.points.map(([x,y])=>[X(x),Y(y)]),s.color,s.width??1.8,s.dash);
+  }
+  if(cursor!==null)line(c,[[X(cursor),top],[X(cursor),bottom]],"#f8ebd1",1.2);
+  for(const s of series)if(s.mark)dot(c,X(s.mark[0]),Y(s.mark[1]),s.color,3.5);
+  c.restore();
+  label(c,yunit,6,11,{size:10,color:palette.muted});
+  label(c,xunit,right,h-3,{align:"right",size:10,color:palette.muted});
+}
+function graphFraction(event,canvas,left=graphMargins.left,right=graphMargins.right){
+  const r=canvas.getBoundingClientRect();
+  return limit((event.clientX-r.left-left)/(r.width-left-right),0,1);
+}
+function paintHero(){
+  const a=hp($("hero-wave"));if(!a)return;
+  const {c,w,h}=a;
+  for(let x=20;x<w;x+=w/9)line(c,[[x,10],[x,h-10]],"#76adaa38");
+  for(let y=14;y<h;y+=21)line(c,[[7,y],[w-10,y]],"#76adaa38");
+  const p=[[.02,.73],[.21,.73],[.29,.37],[.53,.37],[.62,.29],[.68,.47],[.74,.39],[.98,.39]];
+  const q=[[.02,.82],[.34,.82],[.44,.77],[.51,.22],[.57,.31],[.63,.48],[.70,.41],[.98,.41]];
+  line(c,p.map(([x,y])=>[w*x,h*y]),palette.mint,2.3);line(c,q.map(([x,y])=>[w*x,h*y]),palette.orange,2.2);
+}
+const schemeInset=w=>Math.min(145,w*.24);
+function paintScene(state,model,clock,probe){
+  const a=hp($("scene"));if(!a)return;
+  const {c,w,h}=a, left=schemeInset(w),right=w-left,d=right-left,mid=h*.47;
+  const deviceWidth=Math.min(110,left-20),low=h<160;
+  fill(c,left-deviceWidth-8,mid-30,deviceWidth,60,"#254859","#668b9b");
+  fill(c,right+8,mid-30,deviceWidth,60,"#254859","#668b9b");
+  label(c,"ПЧ",left-deviceWidth/2-8,mid-8,{align:"center",bold:true,size:low?13:15});
+  const motorLabel={motor:"Двигатель",match:"Согласовано",open:"Холостой",short:"КЗ"}[state.load];
+  label(c,motorLabel,right+8+deviceWidth/2,mid-8,{align:"center",bold:true,size:low?9:13});
+  label(c,state.filter==="dv"?"с dU/dt":"ШИМ",left-deviceWidth/2-8,mid+12,{align:"center",size:low?9:11,color:palette.muted});
+  label(c,state.load==="open"?"Zн = ∞":"Zн "+fmt(model.zL,0)+" Ом",right+8+deviceWidth/2,mid+12,{align:"center",size:low?9:11,color:palette.muted});
+  fill(c,left-7,mid-10,d+14,20,"#273e4e","#658593");
+  fill(c,left-7,mid-4,d+14,8,"#183136");
+  const arriving=limit(clock/model.tau,0,1),returned=limit((clock-model.tau)/model.tau,0,1);
+  if(clock>0){
+    line(c,[[left,mid-16],[left+d*arriving,mid-16]],palette.mint,3);
+    if(arriving>.025)arrow(c,left+d*arriving,mid-16,1,palette.mint);
+  }
+  if(returned>0&&model.gl!==0){
+    line(c,[[right,mid+16],[right-d*returned,mid+16]],palette.orange,3);
+    arrow(c,right-d*returned,mid+16,-1,palette.orange);
+  }
+  const x=left+d*probe;
+  line(c,[[x,mid-36],[x,mid+36]],palette.white,1.3,[3,3]);dot(c,x,mid,palette.white,4);
+  label(c,fmt(state.length,0)+" м",w/2,20,{align:"center",bold:true,color:palette.muted});
+  label(c,"x = "+fmt(state.length*probe,1)+" м",limit(x,43,w-43),h-14,{align:"center",color:palette.white,size:low?10:12});
+}
+function paintMotor(r,amp,index){
+  const p=hp($("motor-plot"));if(!p)return;
+  const {c,w,h}=p,n=r.du.length,x0=43,x1=w-18,top=24,bottom=h-47,d=(x1-x0)/n;
+  const max=Math.max(1/n,...r.du)*1.18;
+  for(let j=0;j<5;j++){
+    const value=max*j/4,y=bottom-(bottom-top)*j/4;
+    line(c,[[x0,y],[x1,y]],palette.grid);
+    label(c,fmt(value*amp,2),x0-5,y+3,{size:9,align:"right",color:palette.muted});
+  }
+  for(let j=0;j<n;j++){
+    const x=x0+(j+.18)*d,b=(bottom-top)*r.du[j]/max;
+    fill(c,x,bottom-b,.64*d,b,j+1===index?palette.orange:"#3aac9c");
+    label(c,String(j+1),x+.32*d,h-22,{align:"center",size:d<26?9:12});
+  }
+  const y=bottom-(bottom-top)/n/max;
+  line(c,[[x0,y],[x1,y]],palette.white,1.5,[6,4]);
+  label(c,"кВ",9,14,{color:palette.muted});
+  label(c,"№ пары",x1,h-6,{align:"right",size:10,color:palette.muted});
+}
+function paintCommon(path){
+  const a=hp($("common-scene"));if(!a)return;
+  const {c,w,h}=a,k=w<450?10:13;
+  const X=[.11,.38,.64,.87].map(t=>w*t), y=h*.29,low=h*.66;
+  const centers=[[X[0],y,"ПЧ"],[X[1],y,"Обмотка"],[X[2],y,"Вал"],[X[3],y,"Подшипник"],[X[3],low,"Корпус"]],bw=Math.min(100,w*.19), bh=36;
+  const aPath=path==="shaft"?palette.muted:palette.mint,bPath=path==="shaft"?palette.orange:palette.muted;
+  line(c,[[X[0],y],[X[1],y]],palette.mint,3);
+  line(c,[[X[1],y],[X[1],low],[X[3],low]],aPath,3);
+  line(c,[[X[1],y],[X[3],y],[X[3],low]],bPath,3);
+  line(c,[[X[0],y],[X[0],h*.85],[X[3],h*.85],[X[3],low]],palette.mint,3);
+  for(const [x,Y,t] of centers){
+    fill(c,x-bw/2,Y-bh/2,bw,bh,"#244653","#608995");
+    label(c,t,x,Y+4,{align:"center",bold:true,size:k});
+  }
+  label(c,"C обмотка–корпус",X[1]+6,h*.57,{color:aPath,size:k});
+  label(c,"С ёмкостной связи",w*.52,y-27,{align:"center",color:bPath,size:k});
+  label(c,"Экран и цепь возврата",w/2,h*.85+18,{align:"center",color:palette.muted,size:k});
+  arrow(c,w*.47,h*.85,-1,palette.mint);
+}
+function metrics(host,items){
+  host.replaceChildren(...items.map(([name,value])=>{
+    const div=document.createElement("div");div.className="metric";div.textContent=name;
+    const strong=document.createElement("strong");strong.textContent=value;div.append(strong);return div;
+  }));
+}
+
+
+const lineControls=[
+ ["length","Длина кабеля",20,500,1,"м",0],
+ ["rise","Фронт источника",.05,6,.05,"мкс",2],
+ ["voltage","ЭДС ступени",.2,8,.01,"кВ",2],
+ ["load","Нагрузка",[["motor","Двигатель · эквивалент"],["match","Согласованная"],["open","Холостой ход"],["short","Короткое замыкание (модель)"]]],
+ ["filter","Фильтр перед кабелем",[["none","Без фильтра"],["dv","dU/dt · апериодическое звено"]]],
+ ["filterTau","Постоянная времени τф",.2,6,.1,"мкс",1]
+];
+const extraControls=[
+ ["velocity","Скорость волны",120,240,1,"м/мкс",0],
+ ["z0","Волновое сопротивление Z₀",25,100,1,"Ом",0],
+ ["zLoad","Входной импеданс двигателя",20,1200,5,"Ом",0],
+ ["source","Сопротивление со стороны ПЧ",[["ideal","0 Ом · жёсткий источник"],["half","Половина Z₀"],["match","Z₀ · согласование"]]],
+ ["loss","Затухание α",0,8,.1,"Нп/км",1],
+ ["shape","Сигнал источника",[["step","Одиночный фронт"],["pulse","Прямоугольный импульс"]]],
+ ["width","Интервал между фронтами",6,20,.2,"мкс",1]
+];
+const PRESETS={
+ matched:{load:"match",length:120},
+ open:{load:"open",length:120,source:"ideal"},
+ short:{load:"short",length:120},
+ length:{load:"motor",length:20,rise:.9,zLoad:800,voltage:1},
+ front:{load:"motor",length:100,rise:.15,zLoad:800,voltage:1},
+ filter:{load:"motor",length:120,rise:.25,zLoad:800,voltage:.62,filterTau:2},
+ echo:{load:"open",length:120,source:"half",voltage:1,rise:.15},
+ mine:MINE,
+ rockwell:{length:90,zLoad:800,rise:.25,voltage:.64},
+ guap:{length:25,zLoad:500,rise:.35,voltage:.65},
+ flight:{load:"match",length:180,velocity:180,rise:.4,voltage:.8},
+ ends:{load:"match",length:150,velocity:200,rise:.2,voltage:.6},
+ pulse:{load:"match",length:150,velocity:200,rise:.25,voltage:.6,shape:"pulse",width:6},
+ damping:{load:"match",length:200,velocity:200,rise:.25,voltage:1},
+ filterWeak:{load:"motor",length:120,velocity:198,zLoad:800,rise:.25,voltage:.62,filter:"dv",filterTau:1}
+};
+const controlSpecs=new Map();
+function mountControls(root,specs,state,onChange){
+  for(const [key,name,arg,max,step,unit,decimals] of specs){
+    const group=document.createElement("div");group.className="control";group.dataset.key=key;
+    const l=document.createElement("label"), id=root.id+"-"+key; l.htmlFor=id;l.textContent=name;
+    let ctrl,out,num;
+    if(Array.isArray(arg)){
+      ctrl=document.createElement("select");
+      for(const [code,text] of arg)ctrl.add(new Option(text,code));
+    }else{
+      l.className="range-row";
+      out=document.createElement("output");out.htmlFor=id;l.append(out);
+      ctrl=document.createElement("input");ctrl.type="range";ctrl.min=arg;ctrl.max=max;ctrl.step=step;
+      num=document.createElement("input");num.type="number";num.min=arg;num.max=max;num.step=step;
+      num.setAttribute("aria-label",name+" — точный ввод"+(unit?", "+unit:""));num.value=state[key];
+    }
+    ctrl.id=id;ctrl.value=state[key];group.append(l);
+    if(num){const row=document.createElement("div");row.className="precision";row.append(ctrl,num);group.append(row);}
+    else group.append(ctrl);
+    root.append(group);
+    const display=(keepTyped=false)=>{if(out){out.value=fmt(Number(ctrl.value),decimals)+(unit?" "+unit:"");if(!keepTyped)num.value=ctrl.value;}};
+    ctrl.addEventListener("input",()=>{state[key]=out?Number(ctrl.value):ctrl.value;display();onChange();});
+    if(num){
+      const update=keepTyped=>{
+        if(num.value!==""&&Number.isFinite(num.valueAsNumber))ctrl.value=limit(num.valueAsNumber,arg,max);
+        if(state[key]!==Number(ctrl.value)){state[key]=Number(ctrl.value);onChange();}
+        display(keepTyped);
+      };
+      num.addEventListener("input",()=>{if(num.valueAsNumber>=arg&&num.valueAsNumber<=max)update(true);});
+      num.addEventListener("change",()=>update(false));
+      num.addEventListener("blur",()=>update(false));
+      num.addEventListener("keydown",e=>{if(e.key==="Enter")update(false);});
+    }
+    controlSpecs.set(ctrl,{display,state,key});
+    display();
+  }
+}
+function syncControlGroup(root,state){
+  for(const group of root.querySelectorAll(".control")){
+    const input=group.querySelector("input,select");
+    input.value=state[group.dataset.key];controlSpecs.get(input)?.display();
+  }
+}
+const tabs=[...$("nav").querySelectorAll("[role=tab]")];
+let current="theory";
+function openTab(id,focus=false){
+  current=$(id)?.getAttribute("role")==="tabpanel"?id:"theory";
+  for(const t of tabs){
+    const panel=t.getAttribute("aria-controls"),active=panel===current;
+    t.setAttribute("aria-selected",active?"true":"false");t.tabIndex=active?0:-1;$(panel).hidden=!active;
+  }
+  if(current!=="lab"&&playing){playing=false;syncPlay();}
+  if(focus){const h=$(current).querySelector("h2");h.tabIndex=-1;h.focus();}
+  redraw();
+}
+function navigate(id,focus=false){
+  if(location.hash!=="#"+id)history.pushState(null,"","#"+id);
+  openTab(id,focus);
+}
+$("nav").addEventListener("click",e=>{const b=e.target.closest("[role=tab]");if(b)navigate(b.getAttribute("aria-controls"));});
+$("nav").addEventListener("keydown",e=>{
+  const p=tabs.findIndex(t=>t.getAttribute("aria-selected")==="true");
+  const dest={ArrowLeft:(p-1+tabs.length)%tabs.length,ArrowRight:(p+1)%tabs.length,Home:0,End:tabs.length-1}[e.key];
+  if(dest===undefined)return;
+  e.preventDefault();navigate(tabs[dest].getAttribute("aria-controls"));tabs[dest].focus();
+});
+function replayHint(button){
+  const target=$(button.dataset.term??button.getAttribute("aria-controls"));if(!target)return;
+  target.hidden=!target.hidden;button.setAttribute("aria-expanded",String(!target.hidden));
+}
+document.addEventListener("click",e=>{
+  const tab=e.target.closest("[data-open]");
+  const preset=e.target.closest("[data-preset]");
+  const experience=e.target.closest("[data-experiment]");
+  const hint=e.target.closest("[data-term],#help-wave");
+  if(tab)navigate(tab.dataset.open,true);
+  if(preset){
+    applyPreset(preset.dataset.preset);
+    navigate("lab",true);
+  }
+  if(experience)openExperience(experience.dataset.experiment);
+  if(hint)replayHint(hint);
+});
+const state={...LINE_DEFAULT};
+let lineModel,trace,meter,scopeBound,range=12,clock=0,probe=.75,playing=false,saved=null,cursorA=null;
+function rangeEnd(m){
+  const selected=$("span").value;
+  if(selected!=="auto")return Number(selected);
+  return Math.ceil(Math.max(3,5.8*m.tau+state.rise+5*m.filterTau+(state.shape==="pulse"?state.width:0)));
+}
+function syncLineControls(){
+  const selectVisible=(name,visible)=>{
+    document.querySelector('[data-key="'+name+'"]').hidden=!visible;
+  };
+  selectVisible("width",state.shape==="pulse");
+  selectVisible("filterTau",state.filter==="dv");
+  selectVisible("zLoad",state.load==="motor");
+}
+function refreshLine(){
+  syncLineControls();
+  lineModel=makeLine(state);range=rangeEnd(lineModel);
+  clock=limit(clock,0,range);
+  if(cursorA!==null&&cursorA>range)cursorA=null;
+  trace=buildTrace(lineModel,state,range);meter=meters(trace);
+  const y=[...trace.flatMap(d=>[d.send,d.motor])];
+  if(saved){
+    y.push(...saved.trace.filter(d=>d.t<=range).map(d=>d.motor));
+    const edge=pointAt(saved.trace,range,"motor");if(edge!==null)y.push(edge);
+  }
+  scopeBound=limits(y,.2);
+  $("clock").max=range;$("clock").step=range/2000;
+  staticMetrics();
+  if(current==="lab")paintLine();
+}
+function applyPreset(key,changes={},span="auto"){
+  Object.assign(state,LINE_DEFAULT,PRESETS[key]??{},changes);
+  for(const id of ["line-controls","line-extra"])syncControlGroup($(id),state);
+  clock=0;probe=.75;playing=false;saved=null;cursorA=null;
+  $("span").value=span;$("clear-base").hidden=true;$("base-legend").hidden=true;
+  refreshLine();
+}
+function limits(values,minRange){
+  const mx=Math.max(0,...values),mn=Math.min(0,...values),d=Math.max(minRange,mx-mn);
+  return {ymax:Math.max(mx+d*.10,minRange),ymin:mn-d*.07};
+}
+function pointAt(points,t,key){
+  if(t>points.at(-1).t)return null;
+  let lo=0,hi=points.length-1;
+  while(hi-lo>1){const j=(lo+hi)>>1;if(points[j].t<=t)lo=j;else hi=j;}
+  const a=points[lo],b=points[hi];
+  return a[key]+(b[key]-a[key])*(t-a.t)/(b.t-a.t||1);
+}
+function subset(points,end,key){
+  const pairs=points.filter(x=>x.t<=end).map(d=>[d.t,d[key]]);
+  if(pairs.at(-1)[0]<end&&end<points.at(-1).t)pairs.push([end,pointAt(points,end,key)]);
+  return pairs;
+}
+function signed(v,n){return (v>0?"+":"")+fmt(v,n);}
+function stageText(){
+  if(clock===0)return "Готово к пуску. Начальная добавка напряжения равна нулю.";
+  if(clock<lineModel.tau)return "Падающий фронт идёт по кабелю. На нагрузке добавка пока равна нулю.";
+  if(lineModel.gl===0)return "Фронт достиг согласованной нагрузки. Отражённая волна отсутствует.";
+  if(clock<2*lineModel.tau)return (lineModel.gl>0?"Отражение того же знака.":"Отражение противоположного знака.")+" Волна возвращается к ПЧ.";
+  if(lineModel.gs===0)return "Первое отражение дошло до согласованного источника. Повторного отражения нет.";
+  return "Первая отражённая волна дошла до ПЧ. Осциллограмма учитывает последующие проходы.";
+}
+function syncPlay(){$("play").textContent=playing?"Пауза":clock>=range||clock===0?"Пуск":"Продолжить";}
+function staticMetrics(){
+  const m=lineModel;
+  metrics($("metrics"),[
+    ["Приход к нагрузке",fmt(m.tau,3)+" мкс"],
+    ["Возврат к ПЧ",fmt(2*m.tau,3)+" мкс"],
+    ["Γ нагрузки / ПЧ",signed(m.gl,3)+" / "+signed(m.gs,3)],
+    ["Падающая ступень",fmt(m.launched,3)+" кВ"],
+    ["Пик у нагрузки",fmt(meter.peak.motor,3)+" кВ"],
+    ["Макс. рост U",fmt(meter.dmax,3)+" кВ/мкс"],
+    ["Ориентир ℓкр без фильтра",fmt(m.critical,1)+" м"],
+    ["Оценка первого фронта*",fmt(m.waveFull,3)+" кВ"]
+  ]);
+  const p=saved?" Сохранено: пик "+fmt(saved.peak,3)+" кВ, максимальный рост "+fmt(saved.dv,3)+" кВ/мкс, окно "+fmt(saved.end,1)+" мкс.":"";
+  $("baseline").textContent="*Оценка при полном нарастании падающей волны до прихода повторного отражения. Пик и крутизна измерены в текущем окне."+p;
+}
+function paintLine(){
+  const m=lineModel;
+  paintScene(state,m,clock,probe);
+  $("clock").value=clock;$("clock-value").value=fmt(clock,3)+" мкс";
+  if(document.activeElement!==$("clock-exact"))$("clock-exact").value=clock.toFixed(3);
+  syncPlay();
+  $("wave-status").textContent=stageText();
+  const left=m.at(0,clock),right=m.at(state.length,clock);
+  const series=[
+    {points:trace.map(d=>[d.t,d.send]),color:palette.mint,mark:[clock,left.u]},
+    {points:trace.map(d=>[d.t,d.motor]),color:palette.orange,mark:[clock,right.u]}
+  ];
+  if(saved)series.unshift({points:subset(saved.trace,range,"motor"),color:palette.violet,dash:[5,4]});
+  const guides=[{x:m.tau},{x:2*m.tau}];
+  if(cursorA!==null)guides.push({x:cursorA,color:palette.violet});
+  plot($("scope"),{xmax:range,xunit:"мкс",yunit:"кВ",series,cursor:clock,...scopeBound,guides});
+  const iSend=fmt(left.i,2),iMotor=fmt(right.i,2);
+  $("scope-read").textContent="t = "+fmt(clock,3)+" мкс  ·  у ПЧ "+fmt(left.u,3)+" кВ  ·  у нагрузки "+fmt(right.u,3)+" кВ  ·  ток "+iSend+" / "+iMotor+" А";
+  $("clear-time").hidden=cursorA===null;$("delta-read").hidden=cursorA===null;
+  if(cursorA!==null){
+    const dt=clock-cursorA,du=right.u-m.at(state.length,cursorA).u;
+    const slope=Math.abs(dt)>1e-8?"  ·  ΔU/Δt "+fmt(du/dt,3)+" кВ/мкс":"";
+    $("delta-read").textContent="A = "+fmt(cursorA,3)+" мкс  ·  Δt "+fmt(dt,3)+" мкс  ·  ΔU у нагрузки "+fmt(du,3)+" кВ"+slope;
+  }
+  const pnts=Array.from({length:151},(_,i)=>i*state.length/150);
+  const profile=pnts.map(x=>({x,...m.at(x,clock)}));
+  const pointX=probe*state.length,p=m.at(pointX,clock);
+  const d=limits(profile.flatMap(d=>[d.forward,d.reverse,d.u]),Math.max(.5,m.launched*.4));
+  const lines=[["forward",palette.mint],["reverse",palette.orange],["u",palette.white]].map(([key,c])=>({points:profile.map(d=>[d.x,d[key]]),color:c,mark:[pointX,p[key]]}));
+  plot($("profile"),{xmax:state.length,xunit:"м",yunit:"кВ",series:lines,cursor:pointX,...d});
+  $("probe").value=100*probe;$("probe-value").value=fmt(pointX,1)+" м";
+  $("probe-read").textContent="U⁺ "+fmt(p.forward,3)+" кВ  ·  U⁻ "+fmt(p.reverse,3)+" кВ  ·  сумма "+fmt(p.u,3)+" кВ";
+}
+function setClock(value){
+  clock=limit(value,0,range);playing=false;paintLine();
+}
+function setProbe(value){probe=limit(value,0,1);paintLine();}
+$("play").addEventListener("click",()=>{if(clock>=range)clock=0;playing=!playing;paintLine();});
+$("next").addEventListener("click",()=>setClock(clock+range/100));
+$("reset-time").addEventListener("click",()=>setClock(0));
+$("peak-find").addEventListener("click",()=>{setClock(meter.peak.t);$("clock").focus();});
+$("clock").addEventListener("input",e=>setClock(+e.target.value));
+const commitClock=e=>{
+  const exact=e.currentTarget;
+  if(Number.isFinite(exact.valueAsNumber))setClock(exact.valueAsNumber);
+  exact.value=clock.toFixed(3);
+};
+$("clock-exact").addEventListener("blur",commitClock);
+$("clock-exact").addEventListener("keydown",e=>{if(e.key==="Enter")commitClock(e);});
+$("scope").addEventListener("pointerdown",e=>setClock(graphFraction(e,$("scope"))*range));
+$("scene").addEventListener("pointerdown",e=>{const m=schemeInset($("scene").getBoundingClientRect().width);setProbe(graphFraction(e,$("scene"),m,m));});
+$("profile").addEventListener("pointerdown",e=>setProbe(graphFraction(e,$("profile"))));
+$("probe").addEventListener("input",e=>setProbe(+e.target.value/100));
+$("span").addEventListener("change",refreshLine);
+$("mark-time").addEventListener("click",()=>{cursorA=clock;paintLine();});
+$("clear-time").addEventListener("click",()=>{cursorA=null;paintLine();});
+$("reset-settings").addEventListener("click",()=>applyPreset(""));
+$("save-base").addEventListener("click",()=>{
+  saved={trace,end:range,peak:meter.peak.motor,dv:meter.dmax};
+  $("clear-base").hidden=false;$("base-legend").hidden=false;refreshLine();
+});
+$("clear-base").addEventListener("click",()=>{
+  saved=null;$("clear-base").hidden=true;$("base-legend").hidden=true;refreshLine();
+});
+mountControls($("line-controls"),lineControls,state,refreshLine);
+mountControls($("line-extra"),extraControls,state,refreshLine);
+
+const FILTER_DEFAULT={hz:50,carrier:3000,tauDv:4,tauSine:200,depth:.8,step:.62};
+const filter={...FILTER_DEFAULT};
+let fTrace;
+function filterPoints(){fTrace=pwmComparison({...filter,tauDv:filter.tauDv*1e-6,tauSine:filter.tauSine*1e-6});paintFilters();}
+function paintFilters(){
+  const span=$("f-span").value,xmax=span==="period"?fTrace.at(-1).t:Number(span);
+  const time=xmax*Number($("f-time").value)/1000;
+  const data=[["raw",palette.mint],["dv",palette.orange],["sine",palette.violet],["ref",palette.white]];
+  plot($("filter-plot"),{
+    xmax,ymin:-filter.step*1.12,ymax:filter.step*1.12,xunit:"мс",yunit:"кВ",cursor:time,
+    series:data.map(([key,color])=>({points:subset(fTrace,xmax,key),color,mark:[time,pointAt(fTrace,time,key)],width:key==="raw"?1:key==="sine"?2.8:1.6,dash:key==="ref"?[5,4]:[]}))
+  });
+  $("f-time-value").value=fmt(time,2)+" мс";
+  $("f-read").textContent=data.map(([k],i)=>["ШИМ","dU/dt","Синус-фильтр","Команда"][i]+" "+fmt(pointAt(fTrace,time,k),3)+" кВ").join("  ·  ");
+  const f=filter;
+  metrics($("f-metrics"),[
+    ["dU/dt · передача несущей",fmt(100*filterTransfer(f.carrier,f.tauDv*1e-6,1),1)+" %"],
+    ["Синус-фильтр · несущая",fmt(100*filterTransfer(f.carrier,f.tauSine*1e-6,2),1)+" %"],
+    ["Синус-фильтр · основная",fmt(100*filterTransfer(f.hz,f.tauSine*1e-6,2),1)+" %"]
+  ]);
+}
+mountControls($("filter-controls"),[
+  ["hz","Основная частота",20,100,1,"Гц",0],["carrier","Частота ШИМ",1000,6000,100,"Гц",0],
+  ["tauDv","τ звена dU/dt",1,14,.5,"мкс",1],["tauSine","τ каждого из двух звеньев",80,360,10,"мкс",0]
+],filter,filterPoints);
+$("f-time").addEventListener("input",paintFilters);
+$("f-span").addEventListener("change",paintFilters);
+$("filter-plot").addEventListener("pointerdown",e=>{$("f-time").value=Math.round(1000*graphFraction(e,$("filter-plot")));paintFilters();});
+
+const MOTOR_DEFAULT={n:8,k:.28,amp:1};
+const motor={...MOTOR_DEFAULT};
+let motorIncoming=null;
+function paintTurns(){
+  const {n,k,amp}=motor,r=turns(n,k),s=$("turn-probe");
+  s.max=n;const idx=Math.min(n,Number(s.value));s.value=idx;$("turn-value").value=String(idx);
+  paintMotor(r,amp,idx);
+  $("motor-read").textContent="Пара "+idx+" · потенциал начала "+fmt(amp*r.u[idx-1],3)+" кВ · падение "+fmt(amp*r.du[idx-1],3)+" кВ ("+fmt(100*r.du[idx-1],1)+" %) · равномерно "+fmt(amp/n,3)+" кВ";
+  const xmax=motorIncoming?.at(-1).t??2;
+  const time=xmax*Number($("turn-time").value)/1000;
+  const points=motorIncoming??[0,.2,.5,2].map((t,i)=>({t,unit:i<2?0:1}));
+  const fraction=r.du[idx-1];
+  const u=amp*pointAt(points,time,"unit"),d=u*fraction;
+  const axis=limits(points.map(p=>p.unit*amp),Math.max(.15,amp*.2));
+  plot($("turn-scope"),{xmax,xunit:"мкс",yunit:"кВ",cursor:time,...axis,series:[
+    {points:points.map(p=>[p.t,p.unit*amp]),color:palette.mint,mark:[time,u]},
+    {points:points.map(p=>[p.t,p.unit*amp*fraction]),color:palette.orange,mark:[time,d]}
+  ]});
+  $("turn-time-value").value=fmt(time,3)+" мкс";
+  $("turn-scope-read").textContent="t = "+fmt(time,3)+" мкс · вход "+fmt(u,3)+" кВ · пара "+idx+" · ΔU "+fmt(d,3)+" кВ";
+}
+mountControls($("motor-controls"),[["n","Число пар",3,14,1,"",0],["k","Ёмкостное отношение k",0,.8,.01,"",2],["amp","Входная ступень участка",0,20,.001,"кВ",3]],motor,paintTurns);
+$("turn-probe").addEventListener("input",paintTurns);
+$("motor-plot").addEventListener("pointerdown",e=>{
+  $("turn-probe").value=Math.min(motor.n,Math.floor(graphFraction(e,$("motor-plot"),43,18)*motor.n)+1);paintTurns();
+});
+$("motor-import").addEventListener("click",()=>{
+  motorIncoming=meter.peak.motor>0 ? trace.map(p=>({t:p.t,unit:p.motor/meter.peak.motor})) : null;
+  const input=$("motor-controls-amp");input.value=limit(meter.peak.motor,0,20).toFixed(3);input.dispatchEvent(new Event("input",{bubbles:true}));
+  $("motor-note").textContent="Перенесён положительный пик добавки "+fmt(meter.peak.motor,3)+" кВ. Он принят входной ступенью участка. Это оценка начальной нагрузки первых витков.";
+});
+$("turn-time").addEventListener("input",paintTurns);
+$("turn-scope").addEventListener("pointerdown",e=>{
+  $("turn-time").value=Math.round(1000*graphFraction(e,$("turn-scope")));paintTurns();
+});
+const CM_DEFAULT={step:.30,rise:.30,cFrame:2,cBearing:.20};
+const cm={...CM_DEFAULT};
+function paintCm(){
+  const path=$("cm-path").value,i=cm.step/cm.rise;
+  paintCommon(path);
+  metrics($("cm-metrics"),[
+    ["Крутизна Ucm",fmt(i,2)+" кВ/мкс"],["Ток обмотка–корпус",fmt(i*cm.cFrame,2)+" А"],
+    ["Ток в условной ветви вала",fmt(i*cm.cBearing,2)+" А"]
+  ]);
+  $("cm-read").textContent=path==="shaft"?"Выбран путь через вал. Его показание относится к эквивалентной ёмкости ветви.":"Выбран путь через ёмкость обмотка–корпус и цепь возврата к ПЧ.";
+  const amp=i*(path==="shaft"?cm.cBearing:cm.cFrame),end=2*cm.rise;
+  const t=end*Number($("cm-time").value)/1000;
+  const value=cm.step*Math.min(1,t/cm.rise),current=t<cm.rise?amp:0;
+  const axes={xmax:end,xunit:"мкс",ymin:0,cursor:t};
+  plot($("cm-voltage"),{...axes,ymax:cm.step*1.2,yunit:"кВ",series:[{points:[[0,0],[cm.rise,cm.step],[end,cm.step]],color:palette.mint,mark:[t,value]}]});
+  plot($("cm-current"),{...axes,ymax:amp*1.2,yunit:"А",series:[{points:[[0,amp],[cm.rise,amp],[cm.rise,0],[end,0]],color:palette.orange,mark:[t,current]}]});
+  $("cm-time-value").value=fmt(t,3)+" мкс";
+  $("cm-scope-read").textContent="t = "+fmt(t,3)+" мкс · Ucm = "+fmt(value,3)+" кВ · ток выбранной ветви "+fmt(current,3)+" А";
+}
+mountControls($("cm-controls"),[["step","Ступень общего режима",.1,1.2,.05,"кВ",2],["rise","Нарастание",.05,2,.05,"мкс",2],["cFrame","C обмотка–корпус",.2,8,.1,"нФ",1],["cBearing","Эквивалент C ветви вала",.05,1,.05,"нФ",2]],cm,paintCm);
+$("cm-path").addEventListener("change",paintCm);
+$("cm-time").addEventListener("input",paintCm);
+for(const id of ["cm-voltage","cm-current"])$(id).addEventListener("pointerdown",e=>{
+  $("cm-time").value=Math.round(1000*graphFraction(e,$(id)));paintCm();
+});
+$("common-scene").addEventListener("pointerdown",e=>{
+  const r=$("common-scene").getBoundingClientRect();
+  $("cm-path").value=e.clientY-r.top<r.height*.47?"shaft":"frame";paintCm();
+});
+function redraw(){
+  paintHero();
+  if(current==="lab")paintLine();
+  if(current==="filters")paintFilters();
+  if(current==="turns")paintTurns();
+  if(current==="common")paintCm();
+}
+function openExperience(key){
+  const task=workPlan.find(item=>item.id===key);
+  if(!task)return;
+  const {tab,setting={},select={},preset,span}=task;
+  if(tab==="lab")applyPreset(preset,setting,span);
+  else if(tab==="filters"){
+    Object.assign(filter,FILTER_DEFAULT,setting);syncControlGroup($("filter-controls"),filter);
+    $("f-span").value=select.span??"period";$("f-time").value=select.time??270;filterPoints();
+  }else if(tab==="turns"){
+    if(preset)applyPreset(preset,{},span);
+    Object.assign(motor,MOTOR_DEFAULT,setting);syncControlGroup($("motor-controls"),motor);
+    motorIncoming=null;$("turn-probe").max=motor.n;$("turn-probe").value=select.pair??1;$("turn-time").value=select.time??520;
+    $("motor-note").textContent=preset?"На стенде подготовлен исходный режим. Перенесите пик кнопкой над графиком.":"Амплитуда задана для учебного участка. При переносе используется пик добавки на зажимах как условная входная ступень.";
+  }else{
+    Object.assign(cm,CM_DEFAULT,setting);syncControlGroup($("cm-controls"),cm);
+    $("cm-path").value=select.path??"frame";$("cm-time").value=select.time??430;
+  }
+  navigate(tab,true);
+}
+let previous=0;
+function animate(now){
+  if(playing&&current==="lab"&&previous){
+    const dt=Math.min(50,now-previous);
+    clock=Math.min(range,clock+dt*range*Number($("rate").value)/8200);
+    if(clock>=range)playing=false;
+    paintLine();
+  }
+  previous=now;requestAnimationFrame(animate);
+}
+window.addEventListener("resize",redraw);
+window.addEventListener("hashchange",()=>openTab(location.hash.slice(1)));
+window.addEventListener("popstate",()=>openTab(location.hash.slice(1)));
+refreshLine();
+filterPoints();
+openTab(location.hash.slice(1));
+requestAnimationFrame(animate);
+
+
+const sources={
+ rockwell:"https://literature.rockwellautomation.com/idc/groups/literature/documents/at/drive-at001_-en-p.pdf#page=129",
+ guap:"https://guap.ru/content/fmath/2024/sbor_2024_1.pdf#page=224",
+ tamu:"https://scholars.library.tamu.edu/vivo/display/n212554SE",
+ hoist:"https://serev-lab.github.io/tvn/m/hoist-guide.html",
+ abb:"https://library.e.abb.com/public/5df66cce8dd649689ab7c2c66abd52db/voltstress.pdf",
+ mit:"https://web.mit.edu/6.013_book/www/chapter14/14.4.html"
+};
+function el(tag,t,cl){
+  const n=document.createElement(tag);if(t!==undefined)n.textContent=t;if(cl)n.className=cl;return n;
+}
+function action(t,key,type="preset"){
+  const b=el("button",t,"primary");b.type="button";b.dataset[type]=key;return b;
+}
+function disclosure(label,text){
+  const d=el("details");d.append(el("summary",label),el("p",text));return d;
+}
+function cited(t,url){
+  const a=el("a",t);a.href=url;a.target="_blank";a.rel="noopener";return a;
+}
+function createPractice(){
+  const host=$("practices"),menu=$("practice-menu");
+  let order=0;
+  for(const [i,g] of activityGroups.entries()){
+    const section=el("section");section.id="work-"+g.group;section.hidden=i!==0;
+    const head=el("h3",g.title,"practice-head"),cards=el("div",undefined,"content-grid");
+    const button=el("button",g.title+" · "+g.items.length);button.type="button";
+    button.setAttribute("aria-pressed",String(i===0));button.setAttribute("aria-controls",section.id);
+    button.addEventListener("click",()=>{
+      for(const child of host.children)child.hidden=child!==section;
+      for(const child of menu.children)child.setAttribute("aria-pressed",String(child===button));
+    });
+    menu.append(button);
+    for(const task of g.items){
+      const card=el("article",undefined,"card"),list=el("ol");
+      for(const step of task.steps)list.append(el("li",step));
+      const record=el("p","","work-measure");record.append(el("strong","Запишите. "),task.record);
+      card.append(el("h3",(++order)+". "+task.name),list,record,el("p",task.question),
+        action("Открыть исходный режим",task.id,"experiment"),disclosure("Разбор опыта",task.answer));
+      cards.append(card);
+    }
+    section.append(head,cards);host.append(section);
+  }
+}
+
+const cases=[
+ {title:"Три осциллограммы на зажимах двигателя",tag:"Rockwell Automation · опубликованные осциллограммы",
+ text:"В разделе Reflected Wave Phenomenon сравниваются три записи линейного напряжения для привода класса 450 В AC. Вольты ниже — пиковые значения на двигателе для показанного сравнения.",
+ rows:[["Без терминатора","1264 В"],["Реактор у ПЧ","1032 В"],["Терминатор у двигателя","888 В"]],
+ question:"Насколько, в процентах, терминатор уменьшил показанный пик относительно исходного режима?",
+ answer:"(1264 − 888)/1264 ≈ 29,7 %. Для реактора получается 18,4 %. На стенде можно сравнить несогласованный и согласованный концы в учебной постановке. Для пересчёта исходного стенда нужны параметры линии и фильтров.",
+ preset:"rockwell",label:"Rockwell · Engineering Handbook, с. 129",url:sources.rockwell},
+ {title:"Длина кабеля в исследовании ГУАП",tag:"Государственный университет аэрокосмического приборостроения · опубликованная модель",
+ text:"Н. В. Решетникова и И. Д. Васютин сравнили осциллограммы модели электропривода для нескольких длин и двух состояний экрана. Выдержка из таблицы 1 для режима, у которого авторы указали незаземлённый экран.",
+ rows:[["25 м · динамический режим","839,85 В"],["100 м · динамический режим","1445,05 В"],["200 м · динамический режим","1627,535 В"]],
+ question:"Как отличается пик при 25 и 200 м? Что потребуется для переноса результата на другой привод?",
+ answer:"Отношение около 1,94 в конкретной модели. Нужно знать источник, нагрузку, кабель и путь возврата тока. Состояние экрана этим одномодовым стендом не рассчитывается. Рабочую схему экрана выбирают по документации оборудования.",
+ preset:"guap",label:"ГУАП · сборник 2024, с. 222–225, табл. 1–2",url:sources.guap},
+ {title:"Дифференциальный и общий режим в лаборатории",tag:"Texas A&M University · эксперимент 480 В",
+ text:"D. A. Rendusara и P. N. Enjeti испытали выходной фильтр на ШИМ-приводе 480 В, 20 hp. В результатах рассматриваются уменьшение пиков на клеммах и снижение высокочастотной утечки на землю и наведённого напряжения на валу.",
+ question:"Почему измерения между A и B и между валом и корпусом дают ответы на разные инженерные вопросы?",
+ answer:"Первый канал показывает дифференциальное напряжение и воздействие на обмотку. Второе измерение связано с общим режимом и путями тока через корпус и вал. Паспортные измерения выбирают для оценённого механизма.",
+ tab:"common",label:"IEEE Transactions on Power Electronics · DOI 10.1109/63.728340",url:sources.tamu}
+];
+function caseTable(rows){
+  const wrap=el("div",undefined,"table-wrap"),table=el("table"),head=el("tr");
+  for(const v of ["Условие","Пик из источника"])head.append(el("th",v));
+  table.createTHead().append(head);
+  const body=table.createTBody();
+  for(const row of rows){const t=body.insertRow();for(const v of row)t.append(el("td",v));}
+  wrap.append(table);return wrap;
+}
+function createCases(){
+  for(const c of cases){
+    const card=el("article",undefined,"card");
+    card.append(el("div",c.tag,"small-cap"),el("h3",c.title),el("p",c.text));
+    if(c.rows)card.append(caseTable(c.rows));
+    card.append(el("p",c.question),disclosure("Сверить вывод",c.answer));
+    const actions=el("div",undefined,"actions");
+    actions.append(action(c.tab?"Открыть общий режим":"Проверить эффект на учебной модели",c.tab??c.preset,c.tab?"open":"preset"),cited(c.label,c.url));
+    card.append(actions);$("case-grid").append(card);
+  }
+  const m=el("article",undefined,"card mine-case");
+  m.append(el("div","Итоговый учебный кейс","small-cap"),el("h3","Шахтный подъём 6 кВ · диагностика по осциллограммам"),
+    el("p","Из сквозного задания взяты кабель 350 м, Z₀ = 45 Ом, Zн = 800 Ом и оценка v = 198 м/мкс. Здесь единичная ЭДС ступени 2,00 кВ и фронт 0,25 мкс заданы условием. Номинальные 6 кВ характеризуют привод."),
+    el("p","Сначала введите прогнозы. Затем загрузите режим, проверьте числа на осциллографе и запомните запись. При той же длине включите dU/dt-фильтр, сравните измерения на развёртке 35 мкс. После этого передайте пик в расчёт обмотки."),
+    action("Загрузить режим подъёма","mine"));
+  const body=el("div",undefined,"content-grid");
+  const simulation=makeLine({...LINE_DEFAULT,...MINE});
+  const d=[
+   ["Когда фронт достигнет двигателя?", "мкс",simulation.tau,.02,"350/198 ≈ 1,768 мкс."],
+   ["Какой Γ у двигателя?", "безразм.",simulation.gl,.01,"(800 − 45)/(800 + 45) ≈ 0,8935."],
+   ["Каков первый полный пик добавки без потерь?", "кВ",simulation.waveFull,.025,"2,00·(1 + 0,8935) ≈ 3,787 кВ. Фронт успевает нарасти до прихода повторного отражения."]
+  ];
+  for(const [title,unit,value,tol,why] of d){
+    const n=el("div");n.append(el("h4",title),answerForm(unit,value,tol),disclosure("Расчёт",why));body.append(n);
+  }
+  m.append(body,disclosure("Что защищать и чем проверять","Сопоставьте пик и скорость изменения напряжения у двигателя до и после фильтра. Оценка первой пары использует условный входной импульс. Для выбора защиты конкретного подъёма требуются топология преобразователя, документация двигателя, параметры моторного кабеля и осциллограмма с заданной схемой измерения."),cited("Методическое пособие сквозного задания · этапы 1–3 и 7–9",sources.hoist));
+  $("case-grid").append(m);
+}
+
+const tasks=[
+ ["Задержка для подъёма","Кабель 350 м, v = 198 м/мкс. Найдите время прихода к двигателю.","мкс",350/198,.015,"τ = ℓ/v → 1,768 мкс.",["Сквозное задание, этап 1",sources.hoist]],
+ ["Рефлектометр","Эхо от конца пришло через 3,54 мкс. Скорость 198 м/мкс. Найдите расстояние до конца.","м",198*3.54/2,1,"Волна прошла путь дважды. ℓ = 198·3,54/2 ≈ 350,46 м.",["Сквозное задание, этап 1",sources.hoist]],
+ ["Отражение на двигателе","Z₀ = 45 Ом, Zн = 800 Ом. Найдите коэффициент отражения по напряжению.","безразм.",755/845,.006,"Γн = (800 − 45)/(800 + 45) ≈ 0,894.",["Сквозное задание, этап 2",sources.hoist]],
+ ["Первый пик","На высокоомный мотор с Γн = 0,9 приходит полная волна добавки 0,63 кВ. Первое отражение от источника ещё не вернулось на мотор. Найдите суммарное напряжение первой ступени.","кВ",1.197,.012,"Uн = 0,63·(1 + 0,9) = 1,197 кВ.",["MIT, расчёт завершения линии",sources.mit]],
+ ["Ориентир критической длины","Скорость 180 м/мкс, фронт 0–100 % равен 0,80 мкс. Найдите ℓкр для одиночной ступени без фильтра.","м",72,.5,"ℓкр = vtф/2 = 72 м.",["ABB Technical Guide 102",sources.abb]],
+ ["Средняя крутизна с курсоров","На одном участке фронта 0,20 кВ при 1,10 мкс и 1,00 кВ при 1,50 мкс. Найдите среднюю крутизну.","кВ/мкс",2,.02,"(1,00 − 0,20)/(1,50 − 1,10) = 2,0 кВ/мкс."],
+ ["Короткозамкнутая нагрузка","В первом приходе U⁺ = 0,60 кВ, Z₀ = 50 Ом. Найдите ток нагрузки при КЗ.","А",24,.2,"Отражённое напряжение равно −0,60 кВ. I = (600 − (−600))/50 = 24 А.",["MIT, граничное условие нагрузки",sources.mit]],
+ ["Снижение пика в опыте Rockwell","Без терминатора 1264 В, с терминатором 888 В. На сколько процентов снизился пик?","%",100*(1264-888)/1264,.3,"100·(1264 − 888)/1264 ≈ 29,7 %.",["Rockwell Handbook, с. 129",sources.rockwell]],
+ ["Ёмкостный ток","При C = 2,5 нФ крутизна общего режима равна 1,2 кВ/мкс. Найдите ток в ветви.","А",3,.04,"2,5 нФ · 1,2 кВ/мкс = 3,0 А."],
+ ["Доля первой пары","При начальной доле первой пары 40,8 % входная ступень участка составляет 2,4 кВ. Найдите ΔU первой пары.","кВ",.9792,.012,"ΔU = 0,408·2,4 ≈ 0,979 кВ."]
+];
+function answerForm(unit,value,tol){
+  const form=el("form",undefined,"task-form"),label=el("label","Ответ, "+unit),input=el("input");
+  input.type="text";input.inputMode="decimal";input.required=true;input.autocomplete="off";
+  const b=el("button","Проверить");b.type="submit";
+  const result=el("output");result.setAttribute("role","status");
+  label.append(" ",input);
+  form.append(label,b,result);
+  form.addEventListener("submit",e=>{
+    e.preventDefault();
+    const raw=input.value.trim().replace(",",".");
+    const n=/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)$/.test(raw)?Number(raw):NaN;
+    result.value=Number.isFinite(n)?(Math.abs(n-value)<=tol?"Верно.":"Проверьте расчёт и единицы."):"Введите числовой ответ.";
+  });
+  input.addEventListener("input",()=>{result.value="";});
+  return form;
+}
+function createTasks(){
+  tasks.forEach(([title,text,unit,value,tol,answer,source],i)=>{
+    const card=el("article",undefined,"card");card.append(el("h3",(i+1)+". "+title),el("p",text),answerForm(unit,value,tol),disclosure("Решение",answer));
+    if(source){const s=el("p",undefined,"source");s.append(cited(...source));card.append(s);}
+    $("task-grid").append(card);
+  });
+}
+createPractice();createCases();createTasks();
+
+
+const conceptual=[
+ ["Почему ступень ШИМ отражается у двигателя?","Импеданс нагрузки отличается от волнового сопротивления кабеля.","Поменялось только действующее напряжение сети.","Основная частота равна частоте ШИМ.","Отражение определяется граничным условием и рассогласованием."],
+ ["Что измеряет первый канал стенда?","Добавку линейного напряжения у входа кабеля.","Действующее фазное напряжение сети.","Ток двигателя относительно корпуса.","На графике показывается мгновенная добавка от переключения."],
+ ["Что происходит до времени ℓ/v у нагрузки?","Добавка напряжения остаётся нулевой.","Сразу возникает максимальный пик.","Виден только отражённый фронт.","Фронту нужно время, чтобы пройти кабель."],
+ ["Что показывает Γ = 0?","Отсутствие отражения на данной границе.","Удвоение напряжения в конце.","Нулевое напряжение на нагрузке.","Это условие согласования."],
+ ["Каков знак отражённой волны напряжения на холостом конце?","Положительный относительно падающей.","Противоположный падающей.","Знак случайный.","При Zн → ∞ коэффициент Γн → +1."],
+ ["Какое граничное условие при коротком замыкании?","Напряжение нагрузки равно нулю.","Ток нагрузки равен нулю.","Γн = +1.","Падающее и отражённое напряжения равны по модулю и противоположны."],
+ ["Когда первое отражение от нагрузки вернётся к источнику?","При t = 2ℓ/v.","При t = ℓ/v.","При t = ℓ/(2v).","Нужно пройти весь кабель в обоих направлениях."],
+ ["Что означает правило Петерсена для первого прихода?","Эквивалент 2U⁺ последовательно с Z₀.","Удвоение волнового сопротивления нагрузки.","Обязательный коэффициент 2 при любом Zн.","Суммарное напряжение определяет делитель между Z₀ и нагрузкой."],
+ ["Чему равно U у конца при первом приходе?","Сумме падающего и отражённого напряжений.","Только отражённому напряжению.","Разности падающего и отражённого напряжений.","Для напряжения компоненты складываются с их знаками."],
+ ["Почему при жёстком источнике не видно добавки от эха на его напряжении?","Источник удерживает своё напряжение, меняется ток.","Эхо не идёт обратно по кабелю.","Нагрузка всегда согласована.","Γист = −1 при Zист = 0. Новая волна компенсирует добавку в напряжении на входе."],
+ ["У какого сигнала меняется ширина при ШИМ?","У импульсов выходного напряжения.","У фронта каждого импульса по одному правилу.","У самого кабеля.","Сравнение команды с несущей определяет моменты переключения."],
+ ["Что означает указание 6 кВ в паспорте двигателя?","Номинальное линейное напряжение привода.","Амплитуду каждой ступени ШИМ.","Допустимый пик любого кратковременного импульса.","Параметры ступени зависят от схемы преобразователя. Допуски на импульсы имеют отдельные условия."],
+ ["Зачем нужен dU/dt-фильтр?","Уменьшить скорость изменения напряжения и изменить переходный пик.","Увеличить скорость электромагнитной волны.","Установить равные падения на всех витках.","Сглаживание фронта уменьшает содержание быстрых составляющих."],
+ ["Чем характеризуется синус-фильтр в модели?","Он пропускает основную гармонику и сильнее подавляет несущую.","Он повышает амплитуду несущей.","Он увеличивает напряжение общего режима по определению.","Сравниваются полосы пропускания двух учебных фильтров."],
+ ["Где находится показанный терминатор?","У двигателя, на конце кабеля.","На валу двигателя.","В звене постоянного тока.","Терминатор уменьшает рассогласование на высоких частотах."],
+ ["Каким напряжением определяется межвитковая нагрузка?","Разностью потенциалов соседних витков.","Потенциалом корпуса.","Одним номинальным током.","Напряжение межвитковой изоляции — разность между проводниками."],
+ ["Что меняется при увеличении k = Cз/Cв в начальной цепочке?","Обычно растёт доля на первых парах данной модели.","Все падения становятся одинаковыми.","Сумма падений убывает при постоянной входной ступени.","Связи на корпус меняют начальное распределение потенциалов."],
+ ["Как определить Ucm для трёх фаз?","Как среднее трёх фазных напряжений относительно общей опоры.","Как UА − UВ.","Как максимум двух линейных напряжений.","Общий режим привязан к опорному потенциалу, дифференциальный — к разности фаз."],
+ ["Что следует сравнивать при оценке влияния одного фильтра?","Осциллограммы с одинаковыми исходными условиями и временным окном.","Любые два наибольших пика из разных случаев.","Только номинальные токи.","Сопоставимый опыт изолирует действие фильтра."],
+ ["Почему нельзя брать 2U⁺ за универсальный предел любого процесса?","Повторные отражения, импульсы и звон могут изменить пик.","Пик никогда не превышает U⁺.","Скорость волны равна скорости света в вакууме для всех кабелей.","Удвоение описывает первый полный приход в конкретном предельном случае."],
+ ["Какие сведения нужны для оценки пригодности конкретного двигателя?","Форма импульсов, измерение на зажимах и паспортная стойкость.","Только коэффициент отражения.","Только мощность двигателя.","Технические решения зависят от формы фронта, повторяемости, подключения и конструкции."],
+ ["Как влияет заданное затухание на следующий проход?","Амплитуда уменьшается с длиной пройденного пути.","Вырастает коэффициент отражения нагрузки.","Волна бесконечно ускоряется.","Экспоненциальное ослабление учитывается вдоль пути."],
+ ["Какая величина нужна вместе с двумя курсорами для средней крутизны?","Разность напряжений между курсорами.","Число витков.","Критическая длина из паспорта.","Средняя крутизна равна ΔU/Δt на выбранном участке."],
+ ["Что показывают 18‑41 и 18‑42?","Области оценки систем изоляции типов I и II для машин с преобразовательным питанием.","Единую норму амплитуды каждой ступени ШИМ.","Норму затухания кабеля в Нп/км.","Тип изоляционной системы и условия применимости определяют по стандарту и изготовителю."],
+ ["При каких условиях изменится задержка фронта?","При изменении длины кабеля или скорости волны.","При изменении только ЭДС ступени.","При изменении только уровня курсора по напряжению.","Время пробега задаётся ℓ/v."],
+ ["Что обозначает Z₀ кабеля в линии без потерь?","Отношение напряжения и тока одной бегущей волны.","Сопротивление изоляции по постоянному току.","Сопротивление медной жилы по паспорту.","Для одной волны U⁺/I⁺ = Z₀."],
+ ["Что показано в расчёте общего режима?","Ёмкостный ток при заданном C и фронте.","Точное значение тока пробоя смазки.","Оставшийся ресурс подшипника.","Расчёт i = C·dU/dt относится к выбранной ёмкостной ветви."],
+ ["Как уменьшить учебный отражённый пик при высоком Zн?","Сгладить фронт либо приблизить высокочастотную нагрузку к Z₀.","Увеличить скорость фронта без других изменений.","Удлинить кабель при прежнем быстром фронте.","В опыте различаются сглаживание источника и уменьшение отражения на нагрузке."]
+];
+function variantQuestions(v){
+  const length=100+40*v,vel=200,front=.4+.1*v,z=40,load=120+40*v;
+  const e=0.6+.1*v,g=reflection(load,z),rise=(1+v)*.2;
+  const numeric=[
+   ["Длина "+length+" м, скорость "+vel+" м/мкс. Каково время одного пробега?",fmt(length/vel,2)+" мкс",fmt(length/vel*2,2)+" мкс",fmt(length/vel/2,2)+" мкс","Однократное время равно ℓ/v."],
+   ["При Z₀ = "+z+" Ом и Zн = "+load+" Ом чему равен Γн?",fmt(g,3),fmt(-g,3),fmt(1+g,3),"Γн = (Zн − Z₀)/(Zн + Z₀)."],
+   ["Скорость 200 м/мкс, фронт "+fmt(front,2)+" мкс. Каков ориентир критической длины?",fmt(vel*front/2,0)+" м",fmt(vel*front,0)+" м",fmt(vel*front*2,0)+" м","Принятый критерий соответствует 2ℓ/v = tф."],
+   ["Падающая волна "+fmt(e,2)+" кВ, Γн = +0,5. Какой полный уровень первого прихода?",fmt(e*1.5,2)+" кВ",fmt(e*.5,2)+" кВ",fmt(2*e,2)+" кВ","Напряжение на конце равно (1+Γн)U⁺."],
+   ["За "+fmt(rise,2)+" мкс напряжение выросло на 1 кВ. Какова средняя крутизна?",fmt(1/rise,2)+" кВ/мкс",fmt(.5/rise,2)+" кВ/мкс",fmt(2/rise,2)+" кВ/мкс","ΔU делят на длительность выбранного интервала."]
+  ];
+  const pool=Array.from({length:10},(_,i)=>conceptual[(v*5+3*i)%conceptual.length]);
+  return [...pool,...numeric].map(([stem,correct,b,c,why],i)=>{
+    const key=(v+2*i+Math.floor(i/3))%3,options=[b,c];options.splice(key,0,correct);
+    return {stem,options,key,why};
+  });
+}
+let selectedVariant=0;
+const results=Array.from({length:5},()=>Array(15).fill(null));
+function clearMarks(){
+  $("quiz-result").textContent="";
+  for(const card of $("questions").children){
+    delete card.dataset.correct;card.querySelector("p").hidden=true;
+  }
+}
+function quizProgress(){$("count").textContent="Заполнено "+results[selectedVariant].filter(v=>v!==null).length+" из 15";}
+function paintQuiz(){
+  const host=$("questions");host.replaceChildren();
+  variantQuestions(selectedVariant).forEach((q,i)=>{
+    const group=el("fieldset",undefined,"card question");
+    group.append(el("legend",(i+1)+". "+q.stem));
+    q.options.forEach((answer,n)=>{
+      const l=el("label"),radio=el("input");radio.type="radio";radio.name="q"+i;radio.checked=results[selectedVariant][i]===n;
+      radio.addEventListener("change",()=>{results[selectedVariant][i]=n;clearMarks();quizProgress();});
+      l.append(radio,el("span",answer));group.append(l);
+    });
+    const p=el("p",q.why);p.hidden=true;group.append(p);host.append(group);
+  });
+  clearMarks();quizProgress();
+}
+for(let i=0;i<5;i++)$("variant").add(new Option("Вариант "+(i+1),i));
+$("variant").addEventListener("change",e=>{selectedVariant=Number(e.target.value);paintQuiz();});
+$("clear-quiz").addEventListener("click",()=>{results[selectedVariant].fill(null);paintQuiz();});
+$("quiz-form").addEventListener("submit",e=>{
+  e.preventDefault();const ans=results[selectedVariant],miss=ans.indexOf(null);
+  if(miss!==-1){$("quiz-result").textContent="Ответьте на вопрос "+(miss+1)+".";return;}
+  let score=0;
+  variantQuestions(selectedVariant).forEach((q,i)=>{
+    const ok=q.key===ans[i];if(ok)score++;
+    const card=$("questions").children[i];card.dataset.correct=String(ok);
+    const p=card.querySelector("p");p.hidden=false;p.textContent=(ok?"Верно. ":"Верный ответ: "+q.options[q.key]+" ")+q.why;
+  });
+  $("quiz-result").textContent="Результат: "+score+" из 15.";
+});
+paintQuiz();
+</script>
+</body></html>

@@ -1,0 +1,860 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Интерактивная лаборатория по внутренним коммутационным перенапряжениям"><title>ТВН 16 — Коммутационные перенапряжения</title><style>:root{--ink:#172f3a;--muted:#4c6671;--line:#cedde0;--paper:#fff;--bg:#eaf2f3;--teal:#0e685d;--teal2:#084e49;--scope:#122e39;--deep:#0c2531;--light:#e9f5f5;font-family:"Segoe UI",system-ui,sans-serif;color:var(--ink);background:var(--bg)}
+*{box-sizing:border-box}body{margin:0}button,input,select{font:inherit}button,select,input[type=number]{border:1px solid #aabfc4;border-radius:6px;background:white;color:var(--ink);padding:.42rem .65rem}button{cursor:pointer;font-weight:650}button:hover{border-color:var(--teal);color:var(--teal)}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid #259c98;outline-offset:2px}button.primary{background:var(--teal);color:white;border-color:var(--teal)}button.primary:hover{background:var(--teal2)}a{color:var(--teal2)}h1,h2,h3,h4,p{margin:0}h3{font-size:1.06rem}p{line-height:1.52}ol,ul{padding-left:1.4rem}li+li{margin-top:.34rem}[hidden]{display:none!important}.wrap{width:min(1370px,calc(100% - 48px));margin-inline:auto}.skip{position:fixed;top:-100px;left:20px;padding:.5rem;z-index:20;background:white}.skip:focus{top:0}
+.hero{background:linear-gradient(112deg,#0d2936 5%,#164653 68%,#14776c);color:white}.mast{display:grid;grid-template-columns:1fr .55fr;align-items:center;gap:1.2rem;min-height:185px;padding:18px 0}.hero h1{font-size:clamp(2.1rem,5.1vw,4.05rem);line-height:.99;letter-spacing:-.041em;margin:.29rem 0 .72rem}.eyebrow{font-weight:700;font-size:.81rem;letter-spacing:.06em;color:#b6e5df}.hero canvas{width:100%;max-height:145px;height:auto}.navBar{background:white;border-bottom:1px solid var(--line)}.tabs{display:flex;overflow:auto;gap:.1rem;padding:.3rem 0 .04rem}.tabs button{white-space:nowrap;border:0;border-bottom:3px solid transparent;border-radius:4px 4px 0 0;background:white;padding:.68rem .9rem;font-size:.88rem;color:#283f49}.tabs button[aria-selected=true]{border-bottom-color:var(--teal);background:#e2f2ef;color:#075747}
+main{padding:22px 0 28px;min-height:60vh}.sectionHead{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;margin-bottom:15px}.sectionHead h2{font-size:clamp(1.45rem,3.1vw,2.35rem);line-height:1.08;letter-spacing:-.03em;margin-bottom:.55rem}.sectionHead p{color:var(--muted);max-width:83ch}.sectionHead button{white-space:nowrap}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}.card{background:white;border:1px solid var(--line);border-radius:10px;padding:13px 15px;min-width:0}.card p,.card details,.card .row{margin-top:.55rem}.card p{font-size:.94rem}.card ol,.card ul{line-height:1.45;font-size:.91rem;margin:.55rem 0}.formula{font-size:1.16rem;background:#e9f5f3;padding:9px 11px;border-left:3px solid var(--teal);margin:.53rem 0;color:#143c40;overflow:auto}.machine{display:grid;grid-template-columns:minmax(238px,285px) minmax(0,1fr);gap:12px;align-items:start}.controls #fields{display:grid;gap:.68rem;margin:.7rem 0 .9rem}.field{display:grid;gap:.24rem}.field label{font-size:.82rem;font-weight:650}.field .entry{display:grid;grid-template-columns:minmax(0,1fr) 81px;gap:.45rem;align-items:center}.field input[type=number],.cursor input[type=number]{min-width:0;width:100%;padding:.2rem .25rem;text-align:right}.field input[type=range],.cursor input[type=range]{width:100%;min-width:0;accent-color:var(--teal)}.field small{color:var(--muted);font-weight:400}.field select{width:100%}.board{display:grid;gap:10px}.instrument{background:#fff;border:1px solid var(--line);border-radius:9px;padding:8px 10px;color:var(--ink);overflow:hidden}.captionRow{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:.4rem}.captionRow span{color:var(--muted);font-size:.78rem;text-align:right}.captionRow .live{color:var(--teal);font-weight:700}.instrument canvas{display:block;width:100%;background:var(--deep);border-radius:6px}.instrument #scheme{height:126px}.instrument #scope{height:254px;touch-action:none;cursor:crosshair}.row{display:flex;gap:.42rem .54rem;align-items:center;flex-wrap:wrap}.buttons{margin:.38rem 0}.buttons button,.buttons select{font-size:.82rem;padding:.28rem .52rem}.buttons label{font-size:.78rem}.legend{margin:2px 0 5px;gap:.18rem .57rem}.legend label{font-size:.75rem;color:#304e58;display:inline-flex;align-items:center;gap:.22rem}.legend input{accent-color:var(--teal);margin:0}.legend i{height:8px;width:8px;display:inline-block;border-radius:50%;border:1px solid #657d88}.cursor{display:grid;grid-template-columns:auto minmax(0,1fr) 81px auto;gap:.45rem;align-items:center;font-size:.8rem;margin:.35rem 0}.reading{font-size:.8rem;background:#eaf3f4;border-radius:5px;padding:.35rem .45rem;color:#264957;margin-top:.3rem;line-height:1.46}.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:6px}.metric{background:white;border:1px solid var(--line);min-width:0;padding:.45rem .60rem;border-radius:6px}.metric span{display:block;color:var(--muted);font-size:.73rem}.metric b{display:block;font-variant-numeric:tabular-nums;margin-top:.13rem}.sub{margin-top:12px}.sub details,.card details{color:#294f5a}summary{cursor:pointer;font-weight:650}#events{max-height:225px;overflow:auto;display:grid;gap:.27rem;margin-top:.5rem}#events button{text-align:left;font-weight:550;font-size:.82rem}.filterBar{margin:0 0 13px}.filterBar button[aria-pressed=true]{background:var(--teal);color:white}.listLabel,.sourceNote{color:var(--muted);font-size:.84rem}.card .evidence{border-left:3px solid var(--teal);padding-left:.65rem}.question{margin:.7rem 0;padding:.7rem .85rem;border:1px solid var(--line);border-radius:8px;background:white}.question legend{font-weight:650}.question label{display:block;padding:.28rem 0;font-size:.94rem}.feedback{color:#183d45;background:#e1f2ee;padding:.4rem;margin-top:.33rem}.feedback.bad{background:#faeee3}.quizWrap{max-width:900px}footer{border-top:1px solid var(--line);padding:16px 0;color:var(--muted);font-size:.8rem}
+@media(max-width:815px){.wrap{width:calc(100% - 24px)}.machine{grid-template-columns:1fr}.controls #fields{grid-template-columns:repeat(2,minmax(0,1fr))}.grid.three{grid-template-columns:1fr 1fr}.mast{min-height:140px}.sectionHead{flex-wrap:wrap}}
+@media(max-width:520px){.grid,.grid.three{grid-template-columns:1fr}.mast{display:block}.mast canvas{display:none}.sectionHead button{white-space:normal}.field .entry{grid-template-columns:minmax(0,1fr) 58px}.instrument #scheme{height:112px}}
+.instrument #deviceCanvas{height:268px;cursor:grab;touch-action:none;background:linear-gradient(147deg,#0c2631,#143d45)}
+.instrument #deviceCanvas:active{cursor:grabbing}
+#deviceModel>.sourceNote{font-size:.79rem}
+@media(max-width:520px){.instrument #deviceCanvas{height:220px}}
+</style></head>
+<body><a class="skip" href="#main">К содержанию</a>
+<header class="hero"><div class="wrap mast"><div><p class="eyebrow">Техника высоких напряжений · Тема 16</p><h1>Коммутационные<br>перенапряжения</h1><p>Вакуумный выключатель, двигатель и сеть 6–10 кВ</p></div><canvas width="480" height="160" id="heroPlot" aria-hidden="true"></canvas></div></header>
+<div class="navBar"><nav id="nav" class="wrap tabs" role="tablist" aria-label="Разделы тренажёра"></nav></div>
+<main id="main" class="wrap">
+<section id="theory" role="tabpanel"></section>
+<section id="sim" role="tabpanel" hidden>
+  <div class="sectionHead"><div><h2 id="simTitle"></h2><p id="simIntro"></p></div><button type="button" id="goPractice">Опыты этой вкладки</button></div>
+  <div class="machine">
+    <aside class="card controls"><h3>Параметры опыта</h3><div id="fields"></div><button type="button" id="defaults">Исходные параметры</button></aside>
+    <div class="board">
+      <div class="instrument">
+        <div class="captionRow"><h3 id="schemeTitle">Схема замещения</h3><span id="stateText" class="live">Готов к запуску</span></div>
+        <div class="row buttons" id="deviceSwitch" hidden><button type="button" id="deviceToggle" aria-pressed="false">Показать 3D-разрез</button></div>
+        <canvas id="scheme" role="img" aria-label="Схема замещения с текущим состоянием контактов и направлением тока"></canvas>
+        <div id="deviceModel" hidden>
+          <canvas id="deviceCanvas" tabindex="0" role="img" aria-label="Вращаемый разрез вакуумной камеры. Перетаскивайте мышью или касанием, либо поворачивайте стрелками."></canvas>
+          <div class="row buttons"><button type="button" id="deviceHome">Исходный ракурс</button><button type="button" id="deviceCover" aria-pressed="false">Закрыть разрез</button><button type="button" class="primary" id="deviceWave">Проследить фронт</button><span id="deviceRange" class="sourceNote"></span></div>
+          <p class="sourceNote">Разрез по схеме полюса ABB VD4. Перемещайте модель мышью или стрелками. Показ фронта синхронизирован с курсором B. Отдельная учебная линия 120 м, скорость 180 м/мкс. <a href="https://library.e.abb.com/public/5340ff5e4956c17ec1257b13005732d3/VD4_E_.pdf" target="_blank" rel="noopener">Схема ABB</a></p>
+        </div>
+      </div>
+      <div class="instrument scope">
+        <div class="captionRow"><h3>Осциллограф</h3><span id="screenInfo"></span></div>
+        <div class="row buttons"><button type="button" class="primary" id="start">Пуск</button><button type="button" id="reset">Сброс времени</button><button type="button" id="step">Шаг</button>
+          <label>Скорость <select id="speed"><option value=".25">×0,25</option><option value=".5">×0,5</option><option value="1" selected>×1</option><option value="2">×2</option></select></label>
+          <label>Развёртка <select id="span"><option value="all">Вся запись</option><option value="3">3 периода</option><option value="1">1 период</option><option value=".25">¼ периода</option></select></label>
+        </div>
+        <div id="legend" class="row legend" aria-label="Каналы"></div>
+        <canvas id="scope" aria-label="Осциллограммы, щелчок или перетаскивание перемещают курсор" role="img"></canvas>
+        <div class="cursor"><label for="time">Курсор B</label><input id="time" type="range" min="0" max="1" step=".001" value="0"><input id="timeExact" aria-label="Точное время курсора B" type="number" min="0" step=".001"><span id="timeUnit"></span></div>
+        <div class="row buttons"><button type="button" id="mark">Зафиксировать A</button><button type="button" id="peak">К пику |U|</button><button type="button" id="save">Сохранить запись</button><button type="button" id="export">Скачать CSV</button></div>
+        <div id="read" class="reading"></div><div id="frozen" class="reading" hidden></div>
+      </div>
+      <div id="metrics" class="metrics"></div>
+    </div>
+  </div>
+  <div class="grid sub"><article id="modelHelp" class="card"></article><article class="card"><h3>События</h3><div id="events"></div></article></div>
+</section>
+<section id="practice" role="tabpanel" hidden></section><section id="cases" role="tabpanel" hidden></section><section id="problems" role="tabpanel" hidden></section><section id="quiz" role="tabpanel" hidden></section>
+</main><footer class="wrap">ТВН · Тема 16 · Учебные модели переходных процессов</footer>
+<script>"use strict";
+const clamp=(x,lo,hi)=>Math.min(hi,Math.max(lo,x));
+const tau=2*Math.PI;
+const round=(n,d=2)=>Number(n).toLocaleString('ru-RU',{minimumFractionDigits:d,maximumFractionDigits:d});
+function integrate(y,t,dt,fn){
+  const step=(base,k,h)=>base.map((v,i)=>v+h*k[i]);
+  const a=fn(t,y),b=fn(t+dt/2,step(y,a,dt/2)),c=fn(t+dt/2,step(y,b,dt/2)),d=fn(t+dt,step(y,c,dt));
+  return y.map((v,i)=>v+dt*(a[i]+2*b[i]+2*c[i]+d[i])/6);
+}
+const definitions={
+ chop:{title:'Отключение двигателя и срез тока',label:'Срез тока',intro:'После обрыва индуктивного тока энергия двигателя переходит в электрическое поле кабеля и выводов. Схема показывает одну отключённую фазу.',scale:1000,unit:'мс',fields:[
+   ['i','Остаточный ток Iₛ',0,12,.5,5,'А'],['l','Эквивалент L',8,100,1,40,'мГн'],['c','Ёмкость кабеля и выводов C',.05,1.25,.01,.25,'мкФ'],['u','Напряжение при срезе U₀',0,9,.1,4,'кВ'],['r','Параллельное сопротивление потерь R',.5,100,.5,20,'кОм'],['loss','Учитывать потери',[['on','Да'],['off','Идеальная LC-цепь']],'on']]},
+ re:{title:'Повторные пробои вакуумного промежутка',label:'Повторные пробои',intro:'Пробой возможен при пересечении модуля напряжения на промежутке с восстанавливающейся электрической прочностью. После высокочастотного нуля тока промежуток снова открыт.',scale:1e6,unit:'мкс',fields:[
+   ['i','Остаточный ток Iₛ',1,12,.5,7,'А'],['l','Индуктивность двигателя L',15,80,1,35,'мГн'],['c','Ёмкость кабеля C',.08,.6,.01,.16,'мкФ'],['u','Мгновенное напряжение источника',2,8,.1,5,'кВ'],['d','Прочность при открытии',.1,6,.05,.35,'кВ'],['s','Темп восстановления прочности',3,200,1,13,'кВ/мс'],['h','Индуктивность ВЧ-контура',12,140,2,32,'мкГн']]},
+ ground:{title:'Дуговое замыкание фазы на землю',label:'Дуговое замыкание',intro:'Напряжения фаз отсчитываются от земли. При замыкании фазы A смещается нейтраль, а на здоровых фазах меняются напряжения относительно земли.',scale:1000,unit:'мс',fields:[
+   ['u','Линейное напряжение сети, действующее',6,10,.5,10,'кВ'],['f','Частота сети',[['50','50 Гц'],['60','60 Гц']],'50'],['c','Суммарная ёмкость одной фазы на землю',.15,2,.05,.65,'мкФ'],['angle','Фаза A в начальный момент',0,180,5,75,'°'],['neutral','Режим нейтрали',[['iso','Изолированная'],['res','Резистивная']],'iso'],['r','Сопротивление резистора нейтрали',20,1200,10,260,'Ом'],['arc','Режим ветви замыкания',[['arc','Перемежающаяся дуга'],['metal','Проводящее замыкание']],'arc'],['hold','Порог повторного зажигания (доля Uфм)',.4,1.45,.05,.85,'о.е.']]},
+ ferro:{title:'Феррорезонанс и насыщение сердечника',label:'Феррорезонанс',intro:'Источник, последовательная ёмкость и нелинейная намагничивающая ветвь могут давать разные режимы при одинаковых номинальных параметрах. Сравнивайте последние периоды после переходного участка.',scale:1000,unit:'мс',fields:[
+   ['f','Частота источника',[['50','50 Гц'],['60','60 Гц']],'50'],['e','Амплитуда источника',.1,1.1,.05,.7,'о.е.'],['c','Параметр последовательной C',.15,2,.05,.6,'о.е.'],['b','Коэффициент насыщения b',0,1.6,.05,.45,'о.е.'],['g','Проводимость потерь g',.015,.65,.005,.075,'о.е.'],['phi','Начальное потокосцепление ψ₀',-1.5,1.5,.05,.7,'о.е.'],['charge','Начальное напряжение C',-1.5,1.5,.05,0,'о.е.']]},
+ rc:{title:'RC-цепь на выводах двигателя',label:'RC-защита',intro:'Серия Rₛ–Cₛ подключена параллельно входной ёмкости двигателя. Контрольная запись без RC рассчитывается при тех же условиях и показывается пунктиром.',scale:1000,unit:'мс',fields:[
+   ['i','Остаточный ток Iₛ',0,12,.5,5,'А'],['l','Индуктивность двигателя L',8,100,1,40,'мГн'],['c','Ёмкость кабеля и выводов C',.12,1.25,.01,.25,'мкФ'],['u','Напряжение при срезе U₀',0,9,.1,4,'кВ'],['r','Сопротивление Rₛ',80,800,10,180,'Ом'],['cs','Ёмкость Cₛ',.12,1.25,.01,.45,'мкФ'],['mode','Подключение ветви',[['on','RC подключена'],['off','Без RC']],'on']]}
+};
+function defaults(key){
+  return Object.fromEntries(definitions[key].fields.map(x=>[x[0],Array.isArray(x[2])?x[3]:x[5]]));
+}
+function series(ch,id,label,unit,color,group='u',dash=false){
+  ch.push({id,label,unit,color,group,dash,values:[]});
+}
+const green='#65e0b6', orange='#ffb075', violet='#c0aaff', blue='#73caff', white='#f2f8fb', red='#ff8193';
+function result(key,p){
+  const channels=[], times=[], events=[], states=[];
+  const add=(...a)=>series(channels,...a);
+  const push=(t,y,closed=false)=>{times.push(t);states.push(closed);for(let j=0;j<channels.length;j++)channels[j].values.push(y[j]);};
+  const record=(t,label)=>events.push({t,label});
+  const circuit=(p,R,dt,rc=null)=>{
+    const L=p.l*1e-3,C=p.c*1e-6,U=p.u*1000;
+    const field=(_,[u,i,w])=>{
+      const j=rc?(u-w)/rc.R:0;
+      return [(i-u/R-j)/C,-u/L,rc?j/rc.C:0];
+    };
+    const e=([u,i,w])=>.5*L*i*i+.5*C*u*u+(rc?.C??0)*w*w/2;
+    return {start:[U,p.i,U],next:(y,t)=>integrate(y,t,dt,field),e,L,C};
+  };
+  if(key==='chop'||key==='rc'){
+    const L=p.l/1000,C=p.c/1e6,T=tau*Math.sqrt(L*C),end=3.4*T;
+    const N=5600, dt=end/N;
+    const resistor=key==='chop'&&p.loss==='on'?p.r*1000:Infinity;
+    const rc=key==='rc'&&p.mode==='on'?{R:p.r,C:p.cs*1e-6}:null;
+    const a=circuit(p,resistor,dt,rc), ref=circuit(p,Infinity,dt);
+    add('motor','U двигателя','кВ',green);
+    if(key==='rc')add('base','U без RC','кВ',white,'u',true);
+    add('current','Ток L','А',orange,'i');
+    if(key==='rc')add('branch','Ток RC','А',violet,'i');
+    add('energy','Запас энергии','Дж',blue,'e');
+    let y=a.start, z=ref.start;record(0,'Срез тока · контакты открыты');
+    for(let n=0;n<=N;n++){
+      const t=n*dt, [u,i,w]=y;
+      push(t,key==='rc'?[u/1000,z[0]/1000,i,rc?(u-w)/rc.R:0,a.e(y)]:[u/1000,i,a.e(y)]);
+      y=a.next(y,t);if(key==='rc')z=ref.next(z,t);
+    }
+    const ideal=Math.hypot(p.u,p.i*Math.sqrt(L/C)/1000);
+    return {channels,times,states,events,period:T, notes:[['Оценка |U|max без потерь',round(ideal,3)+' кВ'],['Период LC',round(T*1000,3)+' мс']]};
+  }
+  if(key==='re'){
+    add('motor','U двигателя','кВ',green);
+    add('gap','|U промежутка|','кВ',orange);
+    add('strength','Электрическая прочность','кВ',violet,'u',true);
+    add('motor_i','Ток двигателя','А',blue,'i');
+    add('hf','Ток пробоя ВЧ','А',red,'i');
+    const L=p.l/1000,C=p.c/1e6,Lh=p.h*1e-6,Rh=4,Us=p.u*1000;
+    const N=12500,end=500e-6,dt=end/N;
+    const field=(closed)=>(_t,[u,i,h])=>[(i+(closed?h:0))/C,-u/L,closed?(Us-u-Rh*h)/Lh:0];
+    let y=[Us,p.i,0],closed=false,openedAt=0,fire=0,lastSign=0,breaks=0;
+    record(0,'Размыкание и срез тока');
+    for(let n=0;n<=N;n++){
+      const t=n*dt,[u,i,h]=y;
+      const strength=p.d*1000+p.s*1e6*t;
+      if(!closed&&t-openedAt>=2e-6&&Math.abs(Us-u)>=strength){
+        closed=true;fire=t;lastSign=Math.sign(Us-u);breaks++;record(t,'Повторный пробой '+breaks);
+      }else if(closed&&t-fire>4*dt&&h*lastSign<=0){
+        closed=false;openedAt=t;y=[u,i,0];record(t,'Высокочастотный нуль · разрыв');
+      }
+      push(t,[u/1000,Math.abs(Us-u)/1000,strength/1000,i,closed?h:0],closed);
+      y=integrate(y,t,dt,field(closed));
+    }
+    return {channels,times,events,states,period:tau*Math.sqrt(Lh*C),notes:[['Пробои за 500 мкс',String(breaks)],['R ВЧ-контура','4 Ом']]};
+  }
+  if(key==='ground'){
+    add('a','U A–земля','кВ',green);add('b','U B–земля','кВ',blue);add('c','U C–земля','кВ',violet);add('n','Смещение нейтрали','кВ',white,'u',true);
+    add('arc_i','Ток ветви A–земля','А',red,'i');add('n_i','Ток резистора нейтрали','А',orange,'i');
+    const T=1/p.f,U=p.u*1000*Math.sqrt(2/3), cap=3*p.c*1e-6, G=p.neutral==='res'?1/p.r:0;
+    const N=10500,dt=4*T/N,angle=p.angle*Math.PI/180,Rarc=35;
+    let un=0,closed=true,openedAt=0,fired=0,count=0;
+    const f=(t,offset=0)=>U*Math.sin(t*tau/T+angle+offset);
+    record(0,p.arc==='arc'?'Возникла дуга A–земля':'Замыкание A–земля');
+    for(let n=0;n<=N;n++){
+      const t=n*dt, A=f(t)+un;
+      if(p.arc==='arc'){
+        if(closed&&t-fired>=.38e-3){closed=false;openedAt=t;record(t,'Погасание по сценарию');}
+        else if(!closed&&t-openedAt>=1.2e-3&&Math.abs(A)>p.hold*U){
+          closed=true;fired=t;record(t,'Повторное зажигание '+(++count));
+        }
+      }
+      push(t,[A/1000,(f(t,-tau/3)+un)/1000,(f(t,tau/3)+un)/1000,un/1000,closed?A/Rarc:0,G?-un*G:0],closed);
+      const arcG=closed?1/Rarc:0,sum=arcG+G;
+      if(sum>0){
+        const eq=-arcG*f(t+dt/2)/sum;
+        un=eq+(un-eq)*Math.exp(-dt*sum/cap);
+      }
+    }
+    return {channels,times,events,states,period:T,notes:[['Фазная амплитуда до замыкания',round(U/1000,3)+' кВ'],['Ёмкостный ток 3ωCUф (действ.)',round(3*tau*p.f*p.c*1e-6*p.u*1000/Math.sqrt(3),2)+' А']]};
+  }
+  add('vL','U ТН','о.е.',green);add('src','U источника','о.е.',white,'u',true);add('vc','U ёмкости','о.е.',violet);
+  add('phi','Потокосцепление ψ','о.е.',orange,'m');add('mag','Ток намагничивания','о.е.',blue,'m');
+  const T=1/p.f, N=16800, dt=14*T/N, w=tau*p.f, a=.40;
+  const current=phi=>a*phi+p.b*phi**3, v=t=>p.e*Math.sin(w*t);
+  const field=(t,[phi,uc])=>{const ul=v(t)-uc;return [w*ul,w*(current(phi)+p.g*ul)/p.c];};
+  let y=[p.phi,p.charge];record(0,'Подключение нелинейной схемы');
+  for(let n=0;n<=N;n++){
+    const t=n*dt,[phi,uc]=y;
+    push(t,[v(t)-uc,v(t),uc,phi,current(phi)],true);
+    y=integrate(y,t,dt,field);
+  }
+  const from=Math.floor(N*11/14), last=channels[0].values.slice(from);
+  return {channels,times,events,states,period:T,notes:[['Пик |U ТН| за последние 3 периода',round(Math.max(...last.map(Math.abs)),3)+' о.е.'],['Линейный коэффициент a','0,40 о.е.']]};
+}
+
+const sources={
+ course:['План темы 16','https://docs.google.com/document/d/1zkPXEIP0w9pW8PbRo5tPyhf_oPDYmdgS1MDGlCpc7OY/edit'],
+ book:['Важов, Лавринович. Техника высоких напряжений, § 4.7 и 4.8','https://portal.tpu.ru/SHARED/y/YNP2/academics/Tab2/TVN_lek.pdf'],
+ vod:['Сквозное задание «Главный водоотлив», неделя 5','https://serev-lab.github.io/tvn/m/vod-task.html'],
+ vd:['Тренажёр ВД-6300 из курса','https://serev-lab.github.io/tvn/i/vd6300.html'],
+ pue:['ПУЭ, изд. 7, п. 1.2.16','https://upr-proektom.ru/ssl/u/26/37a55c791011e8a17098ad4d39450d/-/%D0%9F%D0%A3%D0%AD-7.pdf'],
+ iec110:['IEC 62271-110:2023, коммутация индуктивных нагрузок','https://webstore.iec.ch/en/publication/74947'],
+ gost:['ГОСТ Р 52565-2006, общие технические условия для выключателей','https://protect.gost.ru/gost/details/f755676b-042c-4c3f-a81e-ef742ee49b61'],
+ iec71:['IEC 60071-2:2023, координация изоляции','https://webstore.iec.ch/en/publication/64145'],
+ motor:['Vollet, de Metz-Noblat. IPST 2007, коммутация двигателей СН','https://www.ipstconf.org/papers/Proc_IPST2007/07IPST106.pdf'],
+ penkov:['Penkov и соавт. PCIC Europe 2008, DOI 10.1109/PCICEUROPE.2008.4563537','https://doi.org/10.1109/pciceurope.2008.4563537'],
+ data:['Shipp и соавт. IEEE, пример 26 кВ, раздел II.A','https://ewh.ieee.org/r3/nashville/events/2012/IEEE_Transactions_-_Transformer_Failures_due_to_Breaker_Switching_Transients_%5B1%5D.pdf'],
+ ferro:['P. Ferracci. Ferroresonance, Cahier technique № 190','https://electrical-engineering-portal.com/res/Ferroresonance.pdf'],
+};
+const theory={
+ chop:{heading:'Срез тока и энергия',formula:'½CUₘ² = ½CU₀² + ½LIₛ²  Uₘ = √(U₀² + Iₛ²L/C)',body:'Вакуумная дуга иногда гаснет при ненулевом малом токе. После разрыва ток индуктивности заряжает эффективную ёмкость. Формула относится к идеальному отключённому LC-контуру. Iₛ√(L/C) — частный случай при U₀ = 0. Напряжения здесь амплитудные, ток Iₛ — ток в момент среза.',more:'Знак Iₛ принят положительным при заряде C. После среза ток выключателя равен нулю, а ток ветви L продолжает течь по местному контуру. Параллельное сопротивление моделирует потери, dW/dt = −U²/R. Период идеального LC равен 2π√(LC). При наличии потерь развёртка по-прежнему привязана к этому опорному периоду.',refs:['book','vod','iec110']},
+ re:{heading:'Повторный пробой промежутка',formula:'Uпром = |Uшин − Uдв|  условие пробоя Uпром ≥ Uпроч(t)',body:'После разрыва сравнивают напряжение между контактами и прочность раскрывающегося промежутка. При пробое ВЧ-контур включает индуктивность соединений и ёмкость кабеля. На ВЧ-нуле тока дуга снова гаснет по принятому правилу модели.',more:'Источник в окне 500 мкс представлен постоянным мгновенным напряжением. Прочность D₀ + kt, R контура 4 Ом и пауза повторного включения 2 мкс — учебные параметры. Разброс пробоев, межфазная связь и виртуальный срез тока в соседних фазах требуют другой модели. Развёртка привязана к периоду 2π√(LвчC).',refs:['book','motor','iec110']},
+ ground:{heading:'Дуговое замыкание и нейтраль',formula:'Uₖ–зем = eₖ + Uₙ  Iᶜ ≈ 3ωCфUф при изолированной нейтрали',body:'При устойчивом замыкании фазы A на землю в симметричной сети с изолированной нейтралью здоровые фазные напряжения приближаются к линейному. При перемежающейся дуге заряд ёмкостей сохраняется между зажиганиями и влияет на следующий переходный процесс.',more:'В модели Cф — ёмкость одной фазы на землю. Межфазная симметрия и жёсткий источник позволяют описать общий сдвиг одним уравнением. Включённая ветвь A–земля имеет 35 Ом. В режиме дуги погасание назначено через 0,38 мс, повторное зажигание определяется порогом и паузой не менее 1,20 мс. ПУЭ 7, п. 1.2.16 рассматривает сети 2–35 кВ с изолированной нейтралью или нейтралью через реактор либо резистор. Необходимость компенсации по условиям пункта проверяют по данным реальной сети. Реактор в модели отсутствует.',refs:['book','pue']},
+ ferro:{heading:'Феррорезонанс',formula:'iₘ(ψ) = aψ + bψ³  dψ/dτ = uL  C·duC/dτ = iₘ + g·uL',body:'В схеме источник питает последовательную ёмкость и нелинейную индуктивность, параллельно которой включена проводимость потерь. При насыщении дифференциальная индуктивность падает. На результат влияют параметры и начальное состояние.',more:'Относительные величины показывают форму процесса. Безразмерное время τ = 2πft, a = 0,40, uL = e − uC. Параметр b = 0 задаёт линейную ветвь. Окно 14 периодов позволяет сравнить последние три периода и начальный участок. Точный тип режима для реальной сети определяют по схеме, характеристике намагничивания и более длительной записи.',refs:['book','ferro']},
+ rc:{heading:'RC-защита и координация изоляции',formula:'iRC = (Uдв − UCs)/Rₛ  dW/dt = −Rₛ·iRC²',body:'В этой учебной схеме RC-ветвь ставят на выводах двигателя. Конденсатор меняет распределение энергии, резистор рассеивает энергию. Начальные напряжения обеих ёмкостей равны U₀. Сравнивайте пик, крутизну и затухание.',more:'ОПН действует через нелинейную вольт-амперную характеристику и рассматривается в следующей теме. Номинал RC на объекте выбирают с учётом повторных коммутаций, уровня изоляции, допустимой энергии, импедансов кабеля и оборудования. IEC 60071-2 посвящён координации изоляции. Формулы тренажёра служат учебной моделью.',refs:['data','motor','iec71']},
+};
+const experiments={
+ chop:[
+ ['Ток среза',{u:0,loss:'off',i:3},'Измерьте |U|пик при Iₛ = 3 А. Увеличьте Iₛ до 6 А, оставив L и C прежними.','Оба пика, их отношение и время первого пика.','Пик удвоится с 1,20 до 2,40 кВ. Время первого пика остаётся примерно 0,157 мс.'],
+ ['Ёмкость кабеля',{u:0,loss:'off',c:.25},'Измерьте пик и отметьте два положительных максимума курсорами A и B. Повторите при C = 1,00 мкФ.','Пики, Δt между максимумами.','Рост C в 4 раза делит идеальный амплитудный вклад тока пополам и удваивает период.'],
+ ['Роль начального напряжения',{i:5,u:0,loss:'off'},'Снимите пик. Установите U₀ = 4 кВ и повторите. Проверьте расчёт через квадраты амплитуд.','U₀, пик, разность квадратов Uₘ² − U₀².','Пики 2,000 и 4,472 кВ. Энергетические вклады складываются, амплитуды складываются квадратически.'],
+ ['Изменение индуктивности',{u:0,loss:'off',l:20},'Сравните L = 20 и 80 мГн при прежних Iₛ и C.','Два пика и два периода.','Идеальные пик и период возрастают вдвое.'],
+ ['Затухание',{u:3,i:6,r:20,loss:'off'},'Сохраните запись без потерь. Включите потери, затем уменьшите R с 20 до 2 кОм. Найдите энергию в начале и после двух периодов.','Пики, W(0), W(2T).','При меньшем параллельном R потери U²/R возрастают. Энергия LC с потерями убывает.']
+ ],
+ re:[
+ ['Первое пересечение',{},'Выберите первый пробой в списке событий. Поставьте A чуть раньше, B — в момент пробоя. Проверьте показания |U промежутка| и прочности.','Время, два напряжения и изменения ВЧ-тока. В 3D при B = 14,85 мкс прочитайте положение фронта.','При исходных значениях первое пересечение около 14,6 мкс. В момент пробоя ток ВЧ начинается с нуля. На учебной линии длиной 120 м через 0,25 мкс фронт достигает 45 м.'],
+ ['Восстановление прочности',{s:13},'Сравните 13, 35 и 100 кВ/мс. На каждом режиме откройте первый пробой или отметьте, что его нет.','Число пробоев за 500 мкс, первый момент.','В данной модели получается 10, 3 и 0 пробоев.'],
+ ['ВЧ-индуктивность',{h:32},'Снимите время между первым пробоем и следующим разрывом. Повторите при Lвч = 128 мкГн.','Интервалы и расчётный опорный период ВЧ-контура.','Ориентир 2π√(LвчC) удваивается. Измеренный интервал зависит и от смещения тока, потерь и напряжения.'],
+ ['Ток среза и условие пробоя',{i:7},'Сравните Iₛ = 7 и 2 А. Максимум |U| двигателя найдите отдельно от момента первого пробоя.','Пик двигателя, время и число пробоев.','Ток среза возбуждает переходный процесс. Пик двигателя и момент пересечения порога — разные измерения.'],
+ ['Момент гашения',{},'Сначала откройте первый пробой. При развёртке 1 период нажмите на следующее событие ВЧ-нуля. Прочитайте значения тока вблизи события.','Δt и знак iВЧ до гашения.','ВЧ-ток прекращается около нуля ветви. Ток индуктивности двигателя может оставаться ненулевым.']
+ ],
+ ground:[
+ ['Фазы после замыкания',{arc:'metal',neutral:'iso'},'Выберите последнюю часть записи. На участке одного периода сравните A–земля и две здоровые фазы.','Пик каждой фазы относительно земли и Uл действующее.','В пределе малого сопротивления замыкания здоровые фазы дают около √2·Uл по пику, приблизительно 14,14 кВ при 10 кВ.'],
+ ['Режим нейтрали',{arc:'arc',neutral:'iso'},'Сохраните запись с изолированной нейтралью. Переключитесь на резистивную, R = 260 Ом.','Сдвиг нейтрали на паузе дуги, число зажиганий, ток через R.','При резисторе запас заряда может спадать между зажиганиями. Результат связан с постоянной времени 3CфR.'],
+ ['Ёмкостный ток сети',{c:.65,neutral:'iso'},'Зафиксируйте оценку ёмкостного тока. Увеличьте Cф до 1,30 мкФ. Сравните с током короткой дуги в первые отсчёты.','Расчёт 3ωCфUф и мгновенные отсчёты дуги.','Оценка установившегося ёмкостного тока удваивается. Импульсный ток дуги включает переходный разряд ёмкостей.'],
+ ['Момент возникновения',{angle:0},'Сравните угол 0° и 90°. Отметьте первый отсчёт и первое погасание.','Напряжение A и ток дуги при t = 0.','При нулевом начальном заряде и угле 0° начальный ток равен нулю, при 90° ток ограничен 35 Ом.'],
+ ['Частота и развёртка',{f:'50',arc:'metal'},'В конце записи выберите 1 период. Отметьте одинаковые фазы волны B и повторите при 60 Гц.','Δt между максимумами, расчёт 1/f.','Период 20,00 и 16,67 мс. Это изменение частоты источника, в отличие от изменения развёртки.']
+ ],
+ ferro:[
+ ['Линейная ветвь',{b:0,g:.18},'Сохраните запись при b = 0. Установите b = 0,45. Сравните форму iₘ и U ТН после 11 периодов.','Осциллограммы и поздние пики.','Нелинейная ветвь искажает ток намагничивания. При сравнении нужно учитывать параметры возбуждения.'],
+ ['Два начальных состояния',{e:.35,c:1.5,b:.25,g:.08,phi:0},'Оставьте исходные параметры, снимите поздний пик. Измените только ψ₀ на 1,45. Сравните последние три периода.','ψ₀, пиковые значения и форма поздней записи.','Ориентиры 0,525 и 2,430 о.е. за последние три периода. Различие относится к принятому окну моделирования.'],
+ ['Демпфирование',{e:.35,c:1.5,b:.25,g:.08,phi:1.45},'Сравните g = 0,08 и 0,40. Прочитайте поздний пик и найдите отличие раннего участка от позднего.','Оба поздних пика и сравнительная запись.','Проводимость увеличивает потери g·uL², однако форму нужно сравнивать по рассчитанной записи.'],
+ ['Последовательная ёмкость',{c:.6},'Сравните C = 0,60 и 1,30 о.е. при прочих неизменных.','Поздние пики U ТН и максимумы тока намагничивания.','Изменение C меняет взаимодействие с нелинейной индуктивностью. Монотонное правило для пика в общем случае отсутствует.'],
+ ['Заряд перед коммутацией',{e:.35,c:1.5,b:.25,g:.08,phi:0,charge:0},'Сравните uC(0) = 0 и 1,0 о.е. Снимите U ТН в нулевой момент и на последнем периоде.','U ТН(0), поздний пик, форма.','При e(0) = 0 первый отсчёт равен −uC(0). Поздний режим исследуйте отдельно.']
+ ],
+ rc:[
+ ['Базовая запись',{mode:'off'},'Нажмите «Сохранить запись». Подключите RC-ветвь. Сравните встроенный пунктир U без RC с текущей осциллограммой.','Два пика, их моменты и запасы энергии через два LC-периода.','Для исходного режима ориентиры 4,472 и 4,306 кВ. В последующем затухание связано с потерями в резисторе.'],
+ ['Крутизна фронта',{u:0},'Установите A на 0, B — на 0,04 мс. Запишите ΔU/Δt для U двигателя. Повторите без RC.','Две средние крутизны на одном участке, кВ/мкс после пересчёта.','При равном начальном напряжении конденсаторов iRC(0) = 0, поэтому мгновенные производные в нуле совпадают. Средние крутизны отличаются.'],
+ ['Увеличение Cₛ',{u:0,cs:.25},'Сохраните запись при Cₛ = 0,25 мкФ. Увеличьте Cₛ до 0,75 мкФ.','Пик, время пика, максимальный |iRC|.','Показатели меняются вместе. Практический выбор ограничивают пиковые токи, энергия и эксплуатационные параметры.'],
+ ['Роль Rₛ',{r:80},'Сравните Rₛ = 80, 300 и 800 Ом. Для каждого режима снимите W через три опорных периода.','W(0), W(3T), пик и ток ветви.','При изменении R меняется ток ветви. Затухание зависит от всей цепи, а не только от значения R.'],
+ ['Энергия и начальный заряд',{u:4},'Снимите W(0) с подключённой ветвью и без неё. Сравните W(0) − W(2T).','Начальная и остаточная энергия в обоих случаях.','Подключённая заранее Cₛ имеет собственный начальный запас ½CₛU₀². В идеальной цепи без RC энергия сохраняется.']
+ ],
+};
+const cases=[
+ {name:'Электродвигатели среднего напряжения',tag:'Опубликованное инженерное исследование · IPST',text:'Vollet и de Metz-Noblat рассматривают схемы коммутации двигателей вакуумными выключателями и сценарии, при которых повторные пробои дают крутые фронты. Расчётные варианты из статьи позволяют обсуждать влияние конфигурации цепи и защиты.',task:'На стенде сравните восстановление прочности 13 и 100 кВ/мс. Определите, какая величина на контактах решает, возникнет ли пробой.',answer:'В исходном режиме |Uпром| пересекает Uпроч. При 100 кВ/мс за 500 мкс пересечений нет. Учебные параметры стенда отдельно заданы для демонстрации, а не взяты из испытаний.',key:'re',preset:{},refs:['motor','penkov']},
+ {name:'Повреждение сухого трансформатора в центре обработки данных',tag:'Опубликованный разбор повреждения · IEEE',text:'В работе Shipp и соавторов описана установка с вакуумным выключателем и сухими трансформаторами 26/0,48 кВ мощностью 3000 кВА AA. На первичной стороне были ОПН. Авторы отдельно исследовали крутые коммутационные фронты и способы их ограничения.',task:'Сравните на учебной RC-цепи пик и среднюю крутизну первых 40 мкс. Какой показатель понадобится дополнительно к амплитуде для оценки воздействия на витковую изоляцию?',answer:'Понадобятся длительность фронта и распределение напряжения между витками. Параметры учебного стенда относятся к эквиваленту двигателя и иллюстрируют механизм.',key:'rc',preset:{u:0,mode:'off'},refs:['data','iec71']},
+ {name:'Разрушение трансформаторов напряжения в сети 21 кВ',tag:'Разбор эксплуатации · Schneider Electric, § 5.1',text:'Ferracci описывает повреждения ТН в шкафах дистанционного управления сельской сетью. Опасный режим возникал при пофазном подключении линии. Для анализа использовались ёмкость кабелей и измеренная характеристика намагничивания ТН.',task:'Сравните поздний пик при ψ₀ = 0 и 1,45 о.е. в учебном стенде. Объясните, зачем при проверке объекта знать состояние цепи до коммутации.',answer:'При одной схеме начальный запас энергии меняет траекторию. В реальном случае дополнительно учитываются топология полной сети и параметры ТН.',key:'ferro',preset:{e:.35,c:1.5,b:.25,g:.08,phi:0},refs:['ferro']},
+ {name:'Главный водоотлив · СДН 10 кВ',tag:'Учебный сквозной кейс курса',text:'В курсе задан двигатель 4 МВт, выключатель ВВ-10, Iₛ = 4,5 А и эквивалент √(L/C) = 1200 Ом. На стенде этому отношению соответствует L = 72 мГн и C = 0,05 мкФ. Линейные 10 кВ — номинал сети.',task:'Оцените амплитудный вклад тока при U₀ = 0. Повторите с U₀ = 8,2 кВ как округлённой фазной амплитудой и объясните разницу.',answer:'5,40 кВ при U₀ = 0. При заданном U₀ = 8,2 кВ идеальный пик около 9,82 кВ. Фактическое U₀ определяется моментом отключения и режимом сети.',key:'chop',preset:{i:4.5,l:72,c:.05,u:0,loss:'off'},refs:['vod','vd','book']},
+];
+const tasks=[
+ ['Амплитуда при срезе','L = 40 мГн, C = 0,25 мкФ, Iₛ = 5 А, U₀ = 4 кВ. Найдите идеальные пик и период.', '√(L/C) = 400 Ом. Iₛ√(L/C) = 2 кВ. Пик √(4² + 2²) = 4,472 кВ, T ≈ 0,628 мс.','chop',{loss:'off'}],
+ ['Энергия перед отключением','Для предыдущих данных найдите энергию в ёмкости и индуктивности в момент среза.', 'Wₗ = 0,500 Дж, W꜀ = 2,000 Дж. Сумма 2,500 Дж.','chop',{}],
+ ['Порог на контактах','На шинах 5,0 кВ, на двигателе 8,1 кВ, прочность 3,0 кВ. Возможен ли пробой по модели?', '|5,0 − 8,1| = 3,1 кВ. Модель прогнозирует пересечение.','re',{}],
+ ['Период высокочастотного контура','Lвч = 32 мкГн, C = 0,16 мкФ. Оцените опорный ВЧ-период.','T ≈ 14,22 мкс. Полупериод ≈ 7,11 мкс, фактический нуль зависит от начальных условий и потерь.','re',{}],
+ ['Изолированная нейтраль','Uл = 10 кВ, f = 50 Гц, Cф = 0,65 мкФ. Оцените действующий ёмкостный ток в установившемся замыкании.','Uф = 10/√3 кВ, I ≈ 3·2π·50·0,65·10⁻⁶·5773,5 ≈ 3,54 А.','ground',{arc:'metal'}],
+ ['Длительность периода','Какой интервал между одноимёнными максимумами при 60 Гц?','1/60 с = 16,67 мс.','ground',{f:'60',arc:'metal'}],
+ ['Ток намагничивания','При a = 0,4 и b = 0,25 вычислите iₘ для ψ = 1 и 1,5 о.е.','iₘ(1) = 0,65 о.е., iₘ(1,5) = 1,44375 о.е.','ferro',{b:.25}],
+ ['Линейный предел','Что изменится при b = 0? Найдите iₘ при ψ = 1,5 о.е.','Получается линейная ветвь iₘ = 0,4ψ; iₘ = 0,60 о.е. Линейный резонанс возможен, насыщение отсутствует.','ferro',{b:0}],
+ ['Начальное состояние RC','При U₀ = 4 кВ и Cₛ = 0,45 мкФ оцените добавленную начальную энергию при подключённой ветви.', '½CₛU₀² = 3,60 Дж. При равных напряжениях C и Cₛ ток резистора в нуле равен нулю.','rc',{}],
+ ['Потери на резисторе','При Rₛ = 180 Ом разность напряжений на Rₛ равна 360 В. Найдите ток и мгновенную мощность потерь.', 'i = 2 А, P = i²Rₛ = 720 Вт. Это мгновенная мощность, энергия определяется интегралом по времени.','rc',{}],
+];
+const quizBank=[
+ ['Где продолжает течь ток индуктивности сразу после среза?',['По оставшемуся местному LC-контуру','Через идеальный разомкнутый контакт','Только в ветви источника'],'Ток L непрерывен, а путь через выключатель разомкнут.'],
+ ['При каком условии Uₘ равно Iₛ√(L/C)?',['При U₀ = 0 в идеальной LC-цепи','При любом U₀ и любых потерях','Лишь при металлическом замыкании фазы'],'В полной формуле учитывается начальный запас энергии C.'],
+ ['Что сравнить для повторного пробоя?',['Модуль напряжения между контактами и их прочность','Напряжение между фазами и ток Rₛ','Действующее напряжение сети и сопротивление земли'],'Пробой связан с межконтактным промежутком.'],
+ ['Что можно определить по ВЧ-нулю?',['Момент прерывания ВЧ-ветви в принятой модели','Ток резистора нейтрали','Запас энергии всей установки'],'В модели ВЧ-дуга может погаснуть у нуля тока в промежутке.'],
+ ['Как меняется напряжение здоровой фазы при проводящем замыкании в изолированной сети?',['Приближается по действующему значению к линейному','Всегда падает почти до нуля','Всегда остаётся прежним'],'Общая нейтраль смещается.'],
+ ['Что означает Cф в формуле 3ωCфUф?',['Суммарная ёмкость одной фазы на землю','Сумма ёмкостей трёх фаз','Ёмкость только межконтактного промежутка'],'Тройка в формуле учитывает три одинаковые фазные ёмкости.'],
+ ['Какой элемент нужен для феррорезонанса?',['Нелинейная индуктивность вместе с ёмкостью','Один линейный резистор','Высокочастотный генератор без ёмкости'],'Насыщение меняет дифференциальную индуктивность.'],
+ ['Что даёт b = 0 в учебной модели ТН?',['Линейную зависимость тока от потокосцепления','Нулевой ток при любом ψ','Разрыв последовательной ёмкости'],'Остаётся слагаемое aψ.'],
+ ['Как резистор RC-ветви влияет на энергию пассивной цепи?',['Рассеивает её с мощностью i²R','Непрерывно добавляет энергию','Устанавливает сетевую частоту'],'Энергия убывает на мощность активных потерь.'],
+ ['Что меняет кнопка развёртки?',['Длительность видимого участка','Частоту сети','Параметры эквивалентной индуктивности'],'Это настройка представления записи.'],
+ ['Зачем фиксировать A и выбирать B на одном канале?',['Для общей разности времени и расчёта средней крутизны','Для выбора режима нейтрали','Чтобы изменить ёмкость кабеля'],'Два курсора дают ΔU и Δt.'],
+ ['Чем данные учебного стенда отличаются от выбора реальной защиты?',['Для объекта нужны параметры сети, аппарат и данные изоляции','Любой пик на экране является нормой ПУЭ','Достаточно знать только мощность двигателя'],'Учебный пример иллюстрирует зависимость, нормативный выбор проверяют отдельно.'],
+ ['Какую величину вводят как U₀?',['Мгновенное напряжение на ёмкости в момент среза','Номинальную мощность двигателя','Действующее линейное напряжение независимо от угла'],'U₀ — начальное условие контура.'],
+ ['Что делает резистор нейтрали после погасания дуги?',['Даёт путь стекания заряда с ёмкостей','Повышает частоту сети','Фиксирует ток среза двигателя'],'Напряжение нейтрали в паузе спадает с постоянной времени 3CфR.'],
+ ['Что проверить, кроме пика, при оценке крутой волны для обмотки?',['Время нарастания и распределение напряжения по виткам','Только частоту сети','Только емкость резистора нейтрали'],'Импульсный фронт влияет на напряжение первых витков.'],
+];
+
+function canvasFrame(canvas){
+  const d=Math.min(devicePixelRatio||1,2), w=canvas.clientWidth||canvas.width/d, h=canvas.clientHeight||canvas.height/d;
+  if(canvas.width!==Math.round(w*d)||canvas.height!==Math.round(h*d)){canvas.width=Math.round(w*d);canvas.height=Math.round(h*d);}
+  const c=canvas.getContext('2d');c.setTransform(d,0,0,d,0,0);c.clearRect(0,0,w,h);return {c,w,h};
+}
+function stroke(c,pts,color,width=1.7,dash=[]){
+  if(!pts.length)return;
+  c.strokeStyle=color;c.lineWidth=width;c.setLineDash(dash);c.beginPath();
+  c.moveTo(...pts[0]);for(let i=1;i<pts.length;i++)c.lineTo(...pts[i]);c.stroke();c.setLineDash([]);
+}
+function textOn(c,s,x,y,color='#cfedf1',size=13,align='center'){c.fillStyle=color;c.font=size+'px system-ui, sans-serif';c.textAlign=align;c.fillText(s,x,y);}
+function dot(c,x,y,r,color){c.beginPath();c.fillStyle=color;c.arc(x,y,r,0,tau);c.fill();}
+function symbol(c,type,x,y,color){
+  const p=(entries)=>stroke(c,entries.map(([a,b])=>[a+x,b+y]),color,1.8);
+  if(type==='c'){p([[0,-16],[0,-4]]);p([[-10,-4],[10,-4]]);p([[-10,4],[10,4]]);p([[0,4],[0,16]]);}
+  if(type==='r'){p([[0,-17],[0,-12],[-5,-9],[5,-5],[-5,-1],[5,3],[-5,7],[0,12],[0,17]]);}
+  if(type==='l'){const points=[];for(let k=0;k<=48;k++)points.push([5*Math.abs(Math.sin(Math.PI*k/12)),k/1.5-16]);p(points);}
+  if(type==='earth'){for(let i=0;i<3;i++)p([[-9+i*3,-3+i*4],[9-i*3,-3+i*4]]);}
+  if(type==='ac'){c.beginPath();c.strokeStyle=color;c.lineWidth=1.6;c.arc(x,y,15,0,tau);c.stroke();const points=[];for(let k=0;k<=32;k++)points.push([k/2-8,4*Math.sin(k/32*tau)]);p(points);}
+}
+function schematic(canvas,key,active,y,t,pre,p){
+  const {c,w,h}=canvasFrame(canvas), sx=w/810, sy=h/126;
+  c.scale(sx,sy);
+  const gray='#739ba8', light='#c4e2e8', path=active?green:gray;
+  const line=(pts,color=gray)=>stroke(c,pts,color,2);
+  const label=(s,x,Y,col=light)=>textOn(c,s,x,Y,col,Math.min(25,Math.max(13,11/sx)));
+  const vert=(type,x,top,end,col=gray)=>{const y=(top+end)/2;line([[x,top],[x,y-16]],col);symbol(c,type,x,y,col);line([[x,y+16],[x,end]],col);};
+  const marker=(a,b,Y,color,sign=1)=>{const f=(t*157000%1+1)%1, x=a+(b-a)*(sign>=0?f:1-f);dot(c,x,Y,3.4,color);};
+  if(key==='ground'){
+    const y0=[24,51,78], col=[green,blue,violet];
+    for(let j=0;j<3;j++){
+      const x=580+j*62;
+      line([[81,y0[j]],[121,y0[j]]],gray);symbol(c,'ac',136,y0[j],col[j]);
+      line([[151,y0[j]],[x,y0[j]]],col[j]);
+      label(['A','B','C'][j],178,y0[j]-5,col[j]);
+      vert('c',x,y0[j],112,col[j]);dot(c,x,y0[j],3,col[j]);
+    }
+    line([[74,112],[747,112]]);symbol(c,'earth',745,115,gray);
+    line([[81,24],[81,78]]);label('N',63,57);
+    if(p.neutral==='res'){vert('r',81,78,112,orange);label('R нейтрали',164,106);}
+    else label('Изолированная N',178,106);
+    line([[416,24],[416,42]],green);dot(c,416,24,3,green);
+    line([[416,68],[416,112]],path);
+    line(active?[[416,42],[408,52],[421,56],[416,68]]:[[416,42],[407,56]],active?orange:gray);
+    label('A — земля',459,103,active?orange:light);label('C на землю',699,21);
+    if(active)marker(192,410,24,orange,Math.sign(y.arc_i));
+    return;
+  }
+  if(key==='ferro'){
+    const col=p.b*y.phi**2>=.4?orange:green;
+    line([[104,61],[104,29],[365,29]],green);line([[445,29],[670,29],[670,102],[104,102],[104,76]],green);
+    symbol(c,'ac',104,61,green);label('Источник',104,120);
+    line([[384,17],[384,41]],violet);line([[425,17],[425,41]],violet);
+    line([[365,29],[384,29]],green);line([[425,29],[445,29]],green);
+    label('Последовательная ёмкость',407,61,violet);
+    vert('l',564,29,102,col);label('L(ψ)',566,120,col);
+    vert('r',670,29,102,blue);label('Потери',673,120,blue);
+    marker(110,365,29,col,Math.sign(y.mag));return;
+  }
+  line([[81,62],[81,30],[216,30]],pre?green:gray);
+  symbol(c,'ac',81,62,light);label('Шины',81,119);
+  line([[81,77],[81,101],[732,101]],gray);
+  dot(c,216,30,3,light);dot(c,280,30,3,light);
+  line([[216,30],[278,pre?30:10]],light);
+  if(active&&!pre)line([[238,23],[253,22],[250,29],[266,24],[280,30]],orange);
+  label('Вакуумный выключатель',248,58,active?orange:light);
+  line([[280,30],[733,30]],green);label('Моторный кабель',398,21);
+  vert('c',479,30,101,violet);label('C кабеля',479,120,violet);
+  vert('l',732,30,101,green);label('L двигателя',730,120,green);
+  if(key==='rc'&&p.mode==='on'){
+      line([[602,30],[602,38]],orange);
+      symbol(c,'r',602,53,orange);symbol(c,'c',602,83,violet);
+      line([[602,99],[602,101]],orange);
+      label('Rₛ–Cₛ',601,120,orange);
+  }
+  if(key==='re'&&active)marker(220,474,30,orange,Math.sign(y.hf));
+  if(!pre)marker(507,730,30,green,Math.sign(y.current??y.motor_i));
+}
+function closest(times,x){
+  let a=0,b=times.length-1;
+  while(a<b){const m=(a+b)>>1;if(times[m]<x)a=m+1;else b=m;}
+  return a&&x-times[a-1]<times[a]-x?a-1:a;
+}
+function plotScope(canvas,run,now,a,opts){
+  const {c,w,h}=canvasFrame(canvas), x0=w>500?55:44,x1=w-13;
+  const view=Number(opts.periods)*run.period;
+  const end=run.times.at(-1), extent=Number.isFinite(view)?Math.min(end,view):end;
+  const left=clamp(now-extent/2,0,Math.max(0,end-extent)), right=left+extent;
+  const X=t=>x0+(x1-x0)*(t-left)/extent;
+  const groups=[...new Set(run.channels.filter(x=>!opts.hidden.has(x.id)).map(x=>x.group))];
+  const rows=Math.max(groups.length,1), top=8, bottom=h-22,gap=6,height=(bottom-top-(rows-1)*gap)/rows;
+  const first=Math.max(0,closest(run.times,left)-1), last=Math.min(run.times.length-1,closest(run.times,right)+1);
+  groups.forEach((group,j)=>{
+    const y0=top+j*(height+gap),y1=y0+height;
+    const ch=run.channels.filter(q=>q.group===group&&!opts.hidden.has(q.id));
+    let lo=0,hi=0;
+    for(const x of ch){
+      for(let k=first;k<=last;k++){lo=Math.min(lo,x.values[k]);hi=Math.max(hi,x.values[k]);}
+      const old=opts.saved?.channels.find(a=>a.id===x.id);
+      if(old)for(let k=0;k<old.values.length;k++){if(opts.saved.times[k]>=left&&opts.saved.times[k]<=right){lo=Math.min(lo,old.values[k]);hi=Math.max(hi,old.values[k]);}}
+    }
+    if(hi-lo<1e-9){hi=1;lo=-1;}
+    const pad=(hi-lo)*.09;
+    lo-=pad;hi+=pad;
+    const Y=y=>y1-(y1-y0)*(y-lo)/(hi-lo);
+    c.fillStyle='#122e39';c.fillRect(x0,y0,x1-x0,height);
+    for(let k=0;k<=5;k++){const x=x0+(x1-x0)*k/5;stroke(c,[[x,y0],[x,y1]],'#284755',1);}
+    for(let k=0;k<3;k++){const v=lo+(hi-lo)*k/2,y=Y(v);stroke(c,[[x0,y],[x1,y]],'#284755',1);textOn(c,round(v,1),x0-5,clamp(y+3,y0+10,y1), '#a8c8d1',10,'right');}
+    textOn(c,ch[0]?.unit??'',6,y0+12,'#a8c8d1',10,'left');
+    c.save();c.beginPath();c.rect(x0,y0,x1-x0,height);c.clip();
+    for(const e of run.events){if(e.t>=left&&e.t<=right)stroke(c,[[X(e.t),y0],[X(e.t),y1]],'#b67858',.8,[3,4]);}
+    const plot=(xs,ys,color,dash,from,to)=>{
+      const points=[], stride=Math.max(1,Math.floor((to-from)/(x1-x0)));
+      if(stride===1){
+        for(let k=from;k<=to;k++)points.push([X(xs[k]),Y(ys[k])]);
+      }else{
+        for(let k=from;k<=to;k+=stride){
+          let lo=k,hi=k;
+          for(let z=k+1;z<Math.min(k+stride,to+1);z++){if(ys[z]<ys[lo])lo=z;if(ys[z]>ys[hi])hi=z;}
+          for(const z of lo<hi?[lo,hi]:lo===hi?[lo]:[hi,lo])points.push([X(xs[z]),Y(ys[z])]);
+        }
+      }
+      stroke(c,points,color,1.5,dash);
+    };
+    for(const x of ch){
+      const old=opts.saved?.channels.find(q=>q.id===x.id);
+      if(old&&x.group==='u'&&x.id!=='base'){
+        const xs=opts.saved.times;plot(xs,old.values,'#ffccee',[3,4],Math.max(0,closest(xs,left)-1),Math.min(xs.length-1,closest(xs,right)+1));
+      }
+      plot(run.times,x.values,x.color,x.dash?[5,3]:[],first,last);
+      if(!opts.pre)dot(c,X(now),Y(x.values[closest(run.times,now)]),2.6,x.color);
+    }
+    if(a!==null){stroke(c,[[X(a),y0],[X(a),y1]],violet,1,[4,3]);textOn(c,'A',X(a)-5,y0+11,violet,11,'right');}
+    stroke(c,[[X(now),y0],[X(now),y1]],white,1);
+    textOn(c,'B',Math.min(x1-2,X(now)+4),y0+11,white,11,X(now)+11>x1?'right':'left');
+    c.restore();
+  });
+  for(let k=0;k<=5;k++){const t=left+extent*k/5;textOn(c,round(t*opts.scale,opts.unit==='мкс'?1:2),X(t),h-6,'#b8d5dc',10,k===5?'right':k===0?'left':'center');}
+  if(!groups.length)textOn(c,'Включите канал для просмотра',w/2,h/2);
+  return {left,extent,x0,x1};
+}
+function magnetPlot(canvas,b,phi){
+  const {c,w,h}=canvasFrame(canvas), x=w/2, y=h/2, limit=Math.max(2,1.1*Math.abs(phi));
+  const I=t=>.40*t+b*t**3, xs=(w/2-28)/limit, ys=(h/2-19)/I(limit);
+  c.fillStyle='#122e39';c.fillRect(0,0,w,h);
+  stroke(c,[[18,y],[w-18,y]],'#456678',1);stroke(c,[[x,9],[x,h-12]],'#456678',1);
+  const pts=Array.from({length:161},(_,i)=>{const q=(i/80-1)*limit;return [x+xs*q,y-ys*I(q)];});
+  stroke(c,pts,green,2);
+  dot(c,x+xs*phi,y-ys*I(phi),4,orange);
+  textOn(c,'iₘ, о.е.',x+34,14,white,10);textOn(c,'ψ, о.е.',w-20,y-5,white,10,'right');
+}
+function heroWave(){
+ const {c,w,h}=canvasFrame(document.querySelector('#heroPlot'));
+ for(let k=1;k<10;k++){const x=k*w/10;stroke(c,[[x,.13*h],[x,h*.9]],'#3c7b83',.55);}
+ for(let j=1;j<6;j++){const y=j*h/6;stroke(c,[[0,y],[w,y]],'#3c7b83',.55);}
+ for(let l=0;l<2;l++){const pts=[];for(let i=0;i<=240;i++){const t=i/240,u=t<.17?.0:Math.exp(-(t-.17)*(l?6:3))*Math.sin((t-.17)*(l?23:32));pts.push([w*t,h*.51+(l?-.18:-.30)*h*u+12*l]);}stroke(c,pts,l?orange:green,2);}
+}
+
+const poleTabs=new Set(['chop','re','rc']);
+const waveLength=120,waveVelocity=180e6,waveDuration=waveLength/waveVelocity;
+const deviceView={yaw:.46,pitch:.14,section:true,drag:null,display:false,framed:null};
+function launchedFront(key,run,t){
+  let time=null;
+  for(const e of run.events){
+    if(e.t>t)break;
+    if(key!=='re'||e.label.startsWith('Повторный пробой'))time=e.t;
+  }
+  if(time===null)return null;
+  const x=(t-time)*waveVelocity;
+  return x<=waveLength+1e-6?clamp(x,0,waveLength):null;
+}
+function renderPole(canvas,nearClosed,arc,front){
+  const {c,w,h}=canvasFrame(canvas);
+  const a=deviceView.yaw,b=deviceView.pitch,s=Math.min(h/3.85,w/5.55);
+  const cos=Math.cos,sin=Math.sin,faces=[];
+  const view=([x,y,z])=>{
+    x-=.76;
+    const X=x*cos(a)+z*sin(a),Z=-x*sin(a)+z*cos(a);
+    return [w*.49+s*X,h*.50-s*(y*cos(b)-Z*sin(b)),y*sin(b)+Z*cos(b)];
+  };
+  function face(points,color){
+    const xy=points.map(view);
+    faces.push({xy,color,z:xy.reduce((v,p)=>v+p[2],0)/xy.length});
+  }
+  function tube(y0,y1,r,color,{outer=false,cap=true}={}){
+    const cut=outer&&deviceView.section;
+    const start=cut?2.60:0,end=cut?6.82:tau;
+    const n=outer?28:20;
+    const at=(q,y)=>[r*cos(q),y,r*sin(q)];
+    for(let i=0;i<n;i++){
+      const q=start+(end-start)*i/n,k=start+(end-start)*(i+1)/n;
+      const l=.72+.24*(1+cos(q-a+.4))/2;
+      const rgb=color.map(v=>Math.round(v*l));
+      const shade='rgb('+rgb.join(',')+')';
+      face([at(q,y0),at(k,y0),at(k,y1),at(q,y1)],shade);
+      if(cap){
+        face([[0,y0,0],at(q,y0),at(k,y0)],shade);
+        face([[0,y1,0],at(q,y1),at(k,y1)],shade);
+      }
+    }
+  }
+  const copper=[255,151,79],steel=[156,196,207],body=[54,124,133], ceramic=[209,219,203];
+  tube(-1.74,-1.47,.39,steel);
+  tube(-1.48,-1.11,.12,copper);
+  tube(-1.38,1.27,.54,body,{outer:true,cap:false});
+  for(let i=0;i<9;i++){const y=-1.17+i*.265;tube(y,y+.055,.62,body,{outer:true,cap:false});}
+  tube(-.84,.79,.36,ceramic,{outer:true,cap:false});
+  tube(-.83,-.75,.36,steel,{outer:true,cap:!deviceView.section});
+  tube(.72,.79,.36,steel,{outer:true,cap:!deviceView.section});
+  tube(.04,1.49,.096,copper);
+  tube(.04,.12,.17,copper);
+  const end=nearClosed ? .04 : -.235;
+  tube(-1.27,end,.083,copper);tube(end-.08,end,.17,copper);
+  for(let i=0;i<7;i++){const y=-.93+i*.06;tube(y,y+.023,.16,steel);}
+  tube(1.28,1.62,.20,copper);
+  const cableY=-1.23,cableZ=.06;
+  for(let i=0;i<30;i++){
+    const x=.05+i*.11,x2=x+.11;
+    const color=i%4===0?'#537981':'#315e68';
+    face([[x,cableY-.06,cableZ],[x2,cableY-.06,cableZ],[x2,cableY+.06,cableZ],[x,cableY+.06,cableZ]],color);
+    face([[x,cableY-.06,cableZ],[x2,cableY-.06,cableZ],[x2,cableY-.06,cableZ-.095],[x,cableY-.06,cableZ-.095]],'#274954');
+  }
+  faces.sort((p,q)=>p.z-q.z);
+  for(const f of faces){
+    c.beginPath();c.moveTo(f.xy[0][0],f.xy[0][1]);
+    for(const q of f.xy.slice(1))c.lineTo(q[0],q[1]);
+    c.closePath();c.fillStyle=f.color;c.fill();
+  }
+  if(arc&&deviceView.section){
+    const route=[[0,.04,.065],[-.05,-.036,.088],[.04,-.11,.083],[0,-.235,.065]].map(p=>view(p).slice(0,2));
+    c.save();c.shadowColor='#ff853a';c.shadowBlur=14;stroke(c,route,'#ffd790',3);c.restore();
+  }
+  const path=x=>view([x,cableY,cableZ+.012]);
+  const wire=[[0,cableY,cableZ],[3.36,cableY,cableZ]].map(q=>view(q).slice(0,2));
+  stroke(c,wire,'#74acba',1.2);
+  const motor=path(3.36);
+  dot(c,motor[0],motor[1],4,'#a9d9dd');
+  textOn(c,'К двигателю',clamp(motor[0],48,w-48),clamp(motor[1]+17,14,h-6),'#c1e2e6',11);
+  if(front!==null){
+    const d=front/waveLength*3.34;
+    const p=path(d),q=path(Math.max(0,d-.55));
+    c.save();c.shadowColor='#55e8dd';c.shadowBlur=17;stroke(c,[q.slice(0,2),p.slice(0,2)],'#65e0cf',3);dot(c,p[0],p[1],4.4,'#bbfff1');c.restore();
+  }
+  if(deviceView.section&&w>440){
+    const labels=[['Неподвижный контакт',[0,.13,.17],14,23],['Подвижный контакт',[0,end-.06,.14],14,h-45],['Керамическая оболочка',[.34,.57,.11],w-16,23],['Сильфон',[.15,-.73,.07],w-16,h-15]];
+    for(const [label,v,x,y] of labels){
+      const q=view(v),near=x<w/2;
+      stroke(c,[[q[0],q[1]],[near?Math.min(q[0]-12,132):Math.max(q[0]+12,w-154),y+4],[x,y+4]],'#739ba8',.75);
+      dot(c,q[0],q[1],2,'#c6e2e1');textOn(c,label,x,y,'#d5edf0',11,near?'left':'right');
+    }
+  }
+  if(deviceView.section&&w<=440)textOn(c,'Медь — контакты · светлая керамика — камера',w/2,14,'#d5edf0',10);
+}
+
+const $=id=>document.getElementById(id);
+function el(tag,content,cls){const n=document.createElement(tag);if(content!==undefined)n.textContent=content;if(cls)n.className=cls;return n;}
+function btn(name,fn,cls){const b=el('button',name,cls);b.type='button';b.onclick=fn;return b;}
+function links(refs){const p=el('p',undefined,'row');for(const id of refs){const data=sources[id];const a=el('a',data[0]);a.href=data[1];a.target='_blank';a.rel='noopener';p.append(a);}return p;}
+function detail(title,answer){const d=el('details');d.append(el('summary',title),el('p',answer));return d;}
+function title(head,body){const s=el('div',undefined,'sectionHead'),g=el('div');g.append(el('h2',head),el('p',body));s.append(g);return s;}
+const models=Object.keys(definitions);
+const tabs=[['theory','Теория'],...models.map(k=>[k,definitions[k].label]),['practice','Практика'],['cases','Кейсы'],['problems','Задачи'],['quiz','Тест']];
+const panels=['theory','sim','practice','cases','problems','quiz'];
+let current='theory', active=null, playing=false, previous=0, plotView=null, practiceGroup='chop';
+const cache=Object.fromEntries(models.map(k=>[k,{p:defaults(k),t:0,a:null,run:null,base:null,rec:null,started:false,hidden:new Set(),periods:'all',speed:'1'}]));
+const refKey=k=>'tvn16-snapshot-'+k;
+function setAll(k,preset={}){
+  const s=cache[k];
+  Object.assign(s,{p:{...defaults(k),...preset},t:0,a:null,run:null,base:null,rec:null,started:false});
+  s.hidden.clear();s.periods='all';
+  try{localStorage.removeItem(refKey(k));}catch{}
+}
+function panelKey(k){return models.includes(k)?'sim':k;}
+function navigate(k,focus=false,changeUrl=true){
+  if(!tabs.some(x=>x[0]===k))k='theory';
+  if(changeUrl&&location.hash!=='#'+k)history.replaceState(null,'','#'+k);
+  playing=false;previous=0;deviceView.framed=null;current=k;
+  for(const p of panels){$(p).hidden=p!==panelKey(k);if(p===panelKey(k))$(p).setAttribute('aria-labelledby','tab-'+k);}
+  for(const [key] of tabs){const b=$('tab-'+key);b.tabIndex=key===k?0:-1;b.setAttribute('aria-selected',String(key===k));}
+  if(models.includes(k)){active=cache[k];mountModel(k);}
+  if(k==='practice')drawPractice();
+  if(focus)$(panelKey(k)).querySelector('h2')?.focus({preventScroll:true});
+}
+const go=(k,p)=>{setAll(k,p);navigate(k,true);window.scrollTo({top:0,behavior:'instant'});};
+for(const [i,[k,name]] of tabs.entries()){
+  const b=btn(name,()=>navigate(k));b.id='tab-'+k;b.setAttribute('role','tab');b.setAttribute('aria-controls',panelKey(k));
+  b.addEventListener('keydown',e=>{
+    const move={ArrowLeft:(i+tabs.length-1)%tabs.length,ArrowRight:(i+1)%tabs.length,Home:0,End:tabs.length-1}[e.key];
+    if(move!==undefined){e.preventDefault();navigate(tabs[move][0]);$('tab-'+tabs[move][0]).focus();}
+  });
+  $('nav').append(b);
+}
+for(const p of panels)$(p).setAttribute('tabindex','0');
+function mountModel(k){
+  const m=definitions[k], s=cache[k], h=theory[k];$('simTitle').textContent=m.title;$('simTitle').tabIndex=-1;$('simIntro').textContent=m.intro;
+  $('timeUnit').textContent=m.unit;$('span').value=s.periods;$('speed').value=s.speed;
+  const labels=[['all','Вся запись'],['3','3 периода'],['1','1 период'],['.25','¼ периода']];
+  for(let i=0;i<labels.length;i++)$('span').options[i].textContent=labels[i][1];
+  $('fields').replaceChildren();
+  for(const item of m.fields){
+    const [id,name,lo,hi,step,_d,unit]=item, row=el('div',undefined,'field'),lab=el('label',name);
+    lab.htmlFor='parameter-'+id;row.append(lab);
+    if(Array.isArray(lo)){
+      const input=el('select');input.id=lab.htmlFor;
+      for(const [value,txt] of lo)input.add(new Option(txt,value));
+      input.value=s.p[id];input.onchange=()=>{s.p[id]=input.value;recalculate(k);};row.append(input);
+    }else{
+      lab.append(el('small',' · '+unit));
+      const pair=el('div',undefined,'entry'),range=el('input'),value=el('input');
+      range.id=lab.htmlFor;range.type='range';value.type='number';value.setAttribute('aria-label',name+' — точное значение, '+unit);
+      for(const x of [range,value]){x.min=String(lo);x.max=String(hi);x.step=String(step);x.value=String(s.p[id]);}
+      range.oninput=()=>{s.p[id]=Number(range.value);value.value=range.value;recalculate(k);};
+      const commit=()=>{
+        if(Number.isFinite(value.valueAsNumber))range.value=String(clamp(value.valueAsNumber,lo,hi));
+        value.value=range.value;
+        if(Number(range.value)!==s.p[id]){s.p[id]=Number(range.value);recalculate(k);}
+      };
+      value.onchange=commit;value.onblur=commit;value.onkeydown=e=>{if(e.key==='Enter')commit();};
+      pair.append(range,value);row.append(pair);
+    }
+    $('fields').append(row);
+  }
+  $('modelHelp').replaceChildren(el('h3',h.heading),el('div',h.formula,'formula'),el('p',h.body),detail('Допущения и применение',h.more),links(h.refs));
+  if(k==='ferro'){
+    const plot=el('canvas');plot.id='magnetPlot';plot.style.cssText='width:100%;height:140px;border-radius:6px;margin-top:9px';
+    plot.setAttribute('role','img');plot.setAttribute('aria-label','Характеристика намагничивания и текущая точка');
+    $('modelHelp').append(plot);
+  }
+  if(!s.run){
+    s.run=result(k,s.p);
+    try{
+      const b=JSON.parse(localStorage.getItem(refKey(k))??'null');
+      if(b?.p&&Number.isFinite(b.t)){s.base=result(k,b.p);s.rec=b;}
+    }catch{}
+  }
+  refreshInstruments();
+}
+function recalculate(k){
+  playing=false;previous=0;deviceView.framed=null;
+  active.run=result(k,active.p);
+  const end=active.run.times.at(-1);
+  active.t=clamp(active.t,0,end);
+  active.a=active.a===null?null:clamp(active.a,0,end);
+  refreshInstruments();
+}
+function peakIndex(ch){
+ let best=0;for(let i=1;i<ch.values.length;i++)if(Math.abs(ch.values[i])>Math.abs(ch.values[best]))best=i;
+ return best;
+}
+function refreshInstruments(){
+  const d=definitions[current], r=active.run, main=r.channels[0];
+  const max=peakIndex(main), st=$('time'), ex=$('timeExact');
+  st.max=ex.max=String(r.times.at(-1)*d.scale);st.step=ex.step=d.unit==='мкс'?'.01':'.001';
+  $('peak').textContent='К пику |'+main.label+'|';
+  $('legend').replaceChildren();
+  for(const x of r.channels){
+    const l=el('label'), cb=el('input'), sw=el('i');
+    cb.type='checkbox';cb.checked=!active.hidden.has(x.id);sw.style.background=x.color;
+    cb.onchange=()=>{if(cb.checked)active.hidden.delete(x.id);else active.hidden.add(x.id);paint();};
+    l.append(cb,sw,document.createTextNode(x.label));$('legend').append(l);
+  }
+  $('metrics').replaceChildren();
+  for(const [label,v] of [['Пик |'+main.label+'| за запись',round(Math.abs(main.values[max]),3)+' '+main.unit],['Время этого пика',round(r.times[max]*d.scale,3)+' '+d.unit],...r.notes]){
+    const m=el('div',undefined,'metric');m.append(el('span',label),el('b',v));$('metrics').append(m);
+  }
+  $('events').replaceChildren(...r.events.map(e=>btn(round(e.t*d.scale,2)+' '+d.unit+' · '+e.label,()=>seek(e.t))));
+  paint();
+}
+function timeInfo(d,t){return round(t*d.scale,d.unit==='мкс'?2:3)+' '+d.unit;}
+function paint(){
+  if(!models.includes(current)||!active?.run)return;
+  const d=definitions[current],s=active,r=s.run,idx=closest(r.times,s.t),v=Object.fromEntries(r.channels.map(c=>[c.id,c.values[idx]]));
+  const pre=!s.started&&['chop','re','rc'].includes(current);
+  const supportsPole=poleTabs.has(current), usePole=supportsPole&&deviceView.display;
+  $('deviceSwitch').hidden=!supportsPole;
+  $('scheme').hidden=usePole;$('deviceModel').hidden=!usePole;
+  $('schemeTitle').textContent=usePole?'Вакуумный выключатель · 3D-разрез':'Схема замещения';
+  $('deviceToggle').textContent=usePole?'Вернуться к схеме':'Показать 3D-разрез';
+  $('deviceToggle').setAttribute('aria-pressed',String(usePole));
+  if(usePole){
+    const front=pre?null:launchedFront(current,r,s.t);
+    renderPole($('deviceCanvas'),pre,current==='re'&&r.states[idx],front);
+    $('deviceRange').textContent=front===null?'Пробег 0,667 мкс':'Фронт '+round(front,1)+' / 120 м';
+    $('deviceWave').disabled=current==='re'&&!r.events.some(e=>e.label.startsWith('Повторный пробой'));
+  }else schematic($('scheme'),current,r.states[idx],v,s.t,pre,s.p);
+  const status={chop:pre?'Контакты замкнуты · до среза':'Контакты открыты · свободные колебания',
+    re:pre?'Контакты замкнуты · до среза':r.states[idx]?'Промежуток проводит · ВЧ-ток':'Контакты открыты · прочность восстанавливается',
+    ground:r.states[idx]?'Ветвь A–земля проводит':'Дуга погасла · ёмкости сохраняют заряд',
+    ferro:s.p.b*v.phi**2>=.4?'Нелинейный вклад в ток сопоставим с линейным':'ТН под напряжением',
+    rc:pre?'Контакты замкнуты · до среза':s.p.mode==='on'?'Контакты открыты · RC подключена':'Контакты открыты · без RC'};
+  $('stateText').textContent=status[current];
+  if(current==='ferro')magnetPlot($('magnetPlot'),s.p.b,v.phi);
+  plotView=plotScope($('scope'),r,s.t,s.a,{hidden:s.hidden,periods:s.periods,saved:s.base,pre,scale:d.scale,unit:d.unit});
+  const {left,extent}=plotView;
+  $('screenInfo').textContent=timeInfo(d,left)+' … '+timeInfo(d,left+extent);
+  const numeric=s.t*d.scale;
+  $('time').value=String(numeric);
+  if(document.activeElement!==$('timeExact'))$('timeExact').value=numeric.toFixed(d.unit==='мкс'?2:3);
+  $('start').textContent=playing?'Пауза':s.t>0&&s.t<r.times.at(-1)?'Продолжить':'Пуск';
+  $('mark').textContent=s.a===null?'Зафиксировать A':'Убрать A';
+  const visible=r.channels.filter(c=>!s.hidden.has(c.id));
+  let info='B '+timeInfo(d,s.t)+' · '+visible.map(c=>c.label+' '+round(c.values[idx],3)+' '+c.unit).join(' · ');
+  if(s.a!==null){
+    const raw=s.t-s.a, ai=closest(r.times,s.a), m=r.channels[0],dv=m.values[idx]-m.values[ai];
+    info+=' | A '+timeInfo(d,s.a)+' · Δt '+timeInfo(d,raw)+' · ΔU '+round(dv,3)+' '+m.unit;
+    if(Math.abs(raw)>1e-10)info+=' · ΔU/Δt '+round(dv/(raw*d.scale),3)+' '+m.unit+'/'+d.unit;
+  }
+  $('read').textContent=info;
+  $('frozen').hidden=!s.rec;
+  if(s.rec){
+    const j=closest(s.base.times,s.rec.t);
+    const captured=s.base.channels.map(c=>c.label+' '+round(c.values[j],3)+' '+c.unit).join(' · ');
+    const mark=s.rec.a===null?'':' · A '+timeInfo(d,s.rec.a);
+    $('frozen').textContent='Сохранённая запись · B '+timeInfo(d,s.rec.t)+mark+' · '+captured+' · сохранённые напряжения показаны розовым пунктиром';
+  }
+}
+function seek(t){playing=false;previous=0;deviceView.framed=null;active.started=true;active.t=clamp(t,0,active.run.times.at(-1));paint();}
+$('time').oninput=e=>seek(+e.target.value/definitions[current].scale);
+const commitTime=()=>{const v=$('timeExact').valueAsNumber;if(Number.isFinite(v))seek(v/definitions[current].scale);$('timeExact').value=(active.t*definitions[current].scale).toFixed(definitions[current].unit==='мкс'?2:3);};
+$('timeExact').onblur=commitTime;$('timeExact').onkeydown=e=>{if(e.key==='Enter')commitTime();};
+$('start').onclick=()=>{
+  const end=active.run.times.at(-1);
+  if(active.t>=end)active.t=0;
+  active.started=true;playing=!playing;previous=0;paint();
+};
+$('reset').onclick=()=>{playing=false;previous=0;deviceView.framed=null;active.t=0;active.a=null;active.started=false;paint();};
+$('defaults').onclick=()=>{setAll(current);navigate(current);};
+$('step').onclick=()=>seek(active.t+(plotView?.extent??active.run.times.at(-1))/160);
+$('mark').onclick=()=>{playing=false;previous=0;active.a=active.a===null?active.t:null;paint();};
+$('peak').onclick=()=>seek(active.run.times[peakIndex(active.run.channels[0])]);
+$('speed').onchange=e=>{active.speed=e.target.value;};
+$('span').onchange=e=>{active.periods=e.target.value;paint();};
+$('save').onclick=()=>{
+  active.base=active.run;active.rec={t:active.t,a:active.a,p:{...active.p}};
+  try{localStorage.setItem(refKey(current),JSON.stringify(active.rec));}catch{}
+  paint();
+};
+$('export').onclick=()=>{
+  const s=active,d=definitions[current],r=s.run;
+  const rows=[['t_'+(d.unit==='мкс'?'us':'ms'),'Курсоры','Событие',...r.channels.map(c=>c.label+' ['+c.unit+']')]];
+  const ai=s.a===null?-1:closest(r.times,s.a),bi=closest(r.times,s.t);
+  const eventBySample=new Map(r.events.map(e=>[closest(r.times,e.t),e.label]));
+  for(let i=0;i<r.times.length;i++)rows.push([(r.times[i]*d.scale).toFixed(7),[i===ai?'A':'',i===bi?'B':''].filter(Boolean).join('+'),eventBySample.get(i)??'',...r.channels.map(c=>c.values[i].toFixed(7))]);
+  rows.push([],['Параметр','Значение','Единица']);
+  for(const [id,label,lo,,,,unit] of d.fields)rows.push([label,Array.isArray(lo)?lo.find(x=>x[0]===s.p[id])?.[1]??s.p[id]:s.p[id],unit??'']);
+  const a=el('a'), b=new Blob(['\ufeff'+rows.map(row=>row.join(';')).join('\n')],{type:'text/csv;charset=utf-8'});
+  a.href=URL.createObjectURL(b);a.download='tvn16-'+current+'.csv';a.click();const href=a.href;setTimeout(()=>URL.revokeObjectURL(href),3000);
+};
+function scopeSeek(e,view){
+  const rect=$('scope').getBoundingClientRect(),x=e.clientX-rect.left;
+  seek(view.left+clamp((x-view.x0)/(view.x1-view.x0),0,1)*view.extent);
+}
+let drag=null;
+$('scope').onpointerdown=e=>{if(plotView){drag=plotView;$('scope').setPointerCapture(e.pointerId);scopeSeek(e,drag);}};
+$('scope').onpointermove=e=>{if(drag)scopeSeek(e,drag);};$('scope').onpointerup=$('scope').onpointercancel=()=>{drag=null;};
+$('goPractice').onclick=()=>{practiceGroup=current;navigate('practice',true);};
+$('deviceToggle').onclick=()=>{deviceView.display=!deviceView.display;paint();};
+$('deviceHome').onclick=()=>{deviceView.yaw=.46;deviceView.pitch=.14;paint();};
+$('deviceCover').onclick=()=>{
+  deviceView.section=!deviceView.section;
+  $('deviceCover').textContent=deviceView.section?'Закрыть разрез':'Показать разрез';
+  $('deviceCover').setAttribute('aria-pressed',String(!deviceView.section));paint();
+};
+$('deviceWave').onclick=()=>{
+  const r=active.run,events=r.events.filter(e=>current!=='re'||e.label.startsWith('Повторный пробой'));
+  const event=events.find(e=>e.t>=active.t-1e-9)??events[0];
+  if(!event)return;
+  seek(event.t);
+  deviceView.framed={start:event.t,end:Math.min(r.times.at(-1),event.t+waveDuration)};
+  previous=0;playing=true;paint();
+};
+const poleCanvas=$('deviceCanvas');
+function rotatePole(yaw,pitch){deviceView.yaw=(deviceView.yaw+yaw)%tau;deviceView.pitch=clamp(deviceView.pitch+pitch,-1.25,1.25);paint();}
+poleCanvas.onpointerdown=e=>{deviceView.drag=[e.clientX,e.clientY];poleCanvas.setPointerCapture(e.pointerId);};
+poleCanvas.onpointermove=e=>{
+  if(!deviceView.drag)return;
+  const [x,y]=deviceView.drag;deviceView.drag=[e.clientX,e.clientY];rotatePole((e.clientX-x)*.012,(e.clientY-y)*.012);
+};
+poleCanvas.onpointerup=poleCanvas.onpointercancel=()=>{deviceView.drag=null;};
+poleCanvas.onkeydown=e=>{
+  const vectors={ArrowRight:[.18,0],ArrowLeft:[-.18,0],ArrowUp:[0,-.14],ArrowDown:[0,.14]};
+  if(vectors[e.key]){e.preventDefault();rotatePole(...vectors[e.key]);}
+};
+function animate(stamp){
+  if(playing&&active?.run){
+    if(previous){
+      const top=active.run.times.at(-1), slow=deviceView.framed;
+      const end=slow?.end??top, speed=Number(active.speed);
+      const rate=slow?(slow.end-slow.start)/3200:top/10500;
+      active.t=Math.min(end,active.t+Math.min(90,stamp-previous)*rate*speed);
+      if(active.t>=end){playing=false;deviceView.framed=null;}
+    }
+    previous=stamp;paint();
+  }
+  requestAnimationFrame(animate);
+}
+function drawTheory(){
+  const head=title('Что происходит после коммутации','Отключение двигателя, повторный пробой межконтактного промежутка и дуга на землю возбуждают разные схемы. В каждом опыте проследите, где хранится энергия и какой канал показывает воздействие на изоляцию.');
+  head.append(btn('Открыть стенд среза тока',()=>navigate('chop',true),'primary'));head.querySelector('h2').tabIndex=-1;
+  const g=el('div',undefined,'grid');
+  for(const k of models){
+    const h=theory[k], card=el('article',undefined,'card');
+    card.append(el('h3',h.heading),el('p',h.body),el('div',h.formula,'formula'),detail('Точнее о модели',h.more),links(h.refs),
+      btn('К опыту · '+definitions[k].label,()=>navigate(k,true)));
+    g.append(card);
+  }
+  const help=el('article',undefined,'card');
+  help.append(el('h3','Как снять показания'),el('p','Щелчок по осциллограмме ставит курсор B. Кнопка фиксирует положение A. Меняйте развёртку для просмотра части записи, частоту сети — в параметрах соответствующего опыта. Розовый пунктир означает сохранённое напряжение предыдущего режима.'),el('p','Сравнивайте напряжения в одних и тех же точках и единицах. Клавиша Enter применяет точный ввод. В CSV сохраняются отсчёты, параметры, события и отметки A и B. Скорость воспроизведения влияет только на показ анимации.'),links(['course','vod','vd']),el('h3','Где проверять требования к оборудованию'),el('p','ГОСТ Р 52565-2006 содержит общие технические условия для выключателей 3–750 кВ. Для коммутации индуктивной нагрузки см. IEC 62271-110. При проектной проверке также нужны данные изготовителя, испытательные характеристики аппарата и уровни изоляции оборудования.'),links(['gost','iec110','iec71']));
+  g.append(help);$('theory').append(head,g);
+}
+function drawPractice(){
+  const head=title('Практика на осциллографе','Выберите исходный режим. Снимите показания, измените один параметр и запишите вывод. Сохранённую запись можно наложить на новую.');head.querySelector('h2').tabIndex=-1;
+  const row=el('div',undefined,'row filterBar');
+  for(const k of models){const b=btn(definitions[k].label,()=>{practiceGroup=k;drawPractice();$('exp-'+k)?.focus();});b.id='exp-'+k;b.setAttribute('aria-pressed',String(k===practiceGroup));row.append(b);}
+  const grid=el('div',undefined,'grid');
+  const base=models.indexOf(practiceGroup)*5;
+  for(const [i,[name,preset,doit,record,answer]] of experiments[practiceGroup].entries()){
+    const c=el('article',undefined,'card');c.append(el('h3',(base+i+1)+'. '+name),el('p',doit),el('p','Запишите. '+record,'evidence'),btn('Открыть исходный режим',()=>go(practiceGroup,preset),'primary'),detail('Разбор опыта',answer));grid.append(c);
+  }
+  $('practice').replaceChildren(head,row,grid);
+}
+function drawCases(){
+  $('cases').append(title('Инженерные случаи','Исходные публикации доступны из карточек. Учебные пресеты воспроизводят механизм в упрощённой схеме.'));
+  const g=el('div',undefined,'grid');
+  for(const a of cases){
+    const c=el('article',undefined,'card');c.append(el('h3',a.name),el('p',a.tag,'sourceNote'),el('p',a.text),el('p',a.task,'evidence'),links(a.refs),btn('Открыть режим на стенде',()=>go(a.key,a.preset),'primary'),detail('Сравнить с разбором',a.answer));g.append(c);
+  }
+  $('cases').append(g);
+}
+function drawProblems(){
+  const g=el('div',undefined,'grid');
+  for(const [i,[name,question,answer,key,preset]] of tasks.entries()){
+    const c=el('article',undefined,'card');
+    c.append(el('h3',(i+1)+'. '+name),el('p',question),btn('Проверить на стенде',()=>go(key,preset)),detail('Показать решение',answer));
+    g.append(c);
+  }
+  $('problems').append(title('Расчётные задачи','Решите на бумаге, затем сравните с расчётом и соответствующим режимом стенда.'),g);
+}
+function makeTest(variant){
+  const i=variant-1, calc=(prompt,vals,unit,why)=>[prompt,vals.map(x=>round(x,2)+' '+unit),why];
+  const v=6+i, f=i%2?60:50, I=3+i, R=80+40*i, U=R*2;
+  const nums=[
+    calc('Iₛ = '+I+' А, √(L/C) = 400 Ом, U₀ = 0. Чему равен пик?',[I*.4,I*.2,I*.8],'кВ','Перемножьте Iₛ и 400 Ом, результат переведите в кВ.'),
+    calc('Шины 5 кВ, двигатель '+v+' кВ. Чему равен модуль напряжения на промежутке?',[v-5,v+5,v],'кВ','Вычислите разность потенциалов контактов.'),
+    calc('Чему равен фазный пик при линейном действующем напряжении '+v+' кВ?', [v*Math.sqrt(2/3),v*Math.sqrt(2),v/Math.sqrt(3)],'кВ','Для симметричной сети используйте Uл√(2/3).'),
+    calc('Каков период источника при '+f+' Гц?', [1000/f,500/f,1/f],'мс','Период равен 1/f секундам.'),
+    calc('При Rₛ = '+R+' Ом на резисторе '+U+' В. Чему равна мгновенная мощность потерь?', [4*R,R,2*R],'Вт','Ток 2 А; P = i²R.')
+  ];
+  const q=Array.from({length:10},(_,j)=>quizBank[(3*i+j)%quizBank.length]).concat(nums);
+  return q.map(([prompt,opts,why],k)=>({prompt,why,options:opts.map((a,j)=>({a,right:j===0})).map((_,j,all)=>all[(j+k+i)%all.length])}));
+}
+function drawQuiz(){
+  const host=$('quiz'), header=title('Проверка знаний','Пять вариантов по 15 вопросов. После проверки появится объяснение к каждому ответу.');
+  const top=el('div',undefined,'row filterBar'), name=el('label','Вариант');name.htmlFor='variant';
+  const choice=el('select');choice.id='variant';for(let i=1;i<=5;i++)choice.add(new Option(String(i),String(i)));
+  const area=el('div',undefined,'quizWrap');top.append(name,choice);host.append(header,top,area);
+  const form=()=>{
+    const test=makeTest(Number(choice.value)), nodes=[], quizzes=el('div');
+    for(const [i,x] of test.entries()){
+      const f=el('fieldset',undefined,'question'), message=el('p',undefined,'feedback');
+      message.hidden=true;f.append(el('legend',(i+1)+'. '+x.prompt));
+      for(const [j,o] of x.options.entries()){
+        const label=el('label'), inp=el('input');inp.type='radio';inp.name='q'+i;inp.value=String(j);
+        label.append(inp,document.createTextNode(' '+o.a));f.append(label);
+      }
+      f.append(message);nodes.push({f,message});quizzes.append(f);
+    }
+    const summary=el('p',undefined,'feedback');summary.setAttribute('aria-live','polite');summary.hidden=true;
+    const check=btn('Проверить тест',()=>{
+      let points=0, answered=0;
+      for(const [i,x] of test.entries()){
+        const {f,message}=nodes[i], option=f.querySelector('input:checked');
+        const hit=option&&x.options[+option.value].right;
+        if(option)answered++;if(hit)points++;
+        message.hidden=false;message.classList.toggle('bad',!hit);
+        message.textContent=(hit?'Верно. ':option?'Проверьте ответ. ':'Ответ пропущен. ')+x.why;
+      }
+      summary.hidden=false;summary.textContent='Результат '+points+' из 15. Отмечено '+answered+' ответов.';
+    },'primary');
+    area.replaceChildren(quizzes,check,summary);
+  };
+  choice.onchange=form;form();
+}
+drawTheory();drawPractice();drawCases();drawProblems();drawQuiz();
+for(const x of document.querySelectorAll('main h2'))x.tabIndex=-1;
+navigate(location.hash.slice(1)||'theory',false,false);
+window.addEventListener('hashchange',()=>navigate(location.hash.slice(1),false,false));
+window.addEventListener('resize',()=>{heroWave();paint();});
+heroWave();requestAnimationFrame(animate);
+</script></body></html>

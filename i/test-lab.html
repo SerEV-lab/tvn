@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ТВН · Тема 18 · Испытательные установки и измерения</title>
+<style>
+:root{color-scheme:light;--ink:#102a40;--soft:#496174;--line:#d3e3eb;--blue:#075f91;--teal:#00786e;--paper:#fff;--wash:#edf5f9;--navy:#0b263d}
+*{box-sizing:border-box}body{margin:0;background:var(--wash);color:var(--ink);font:16px/1.55 system-ui,sans-serif}button,input,select{font:inherit}button,select{cursor:pointer}button:disabled{cursor:default;opacity:.6}a{color:var(--blue)}:focus-visible{outline:3px solid #027f94;outline-offset:3px}
+.wrap{width:min(1380px,calc(100% - 48px));margin:auto}.hero{background:var(--navy);color:white;border-bottom:5px solid #36c9bc;padding:24px 0 27px}.hero p{margin:.35rem 0 0;color:#c9e2ee}.hero .course{font-size:.87rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase}.hero h1{font-size:clamp(1.8rem,3.4vw,2.75rem);line-height:1.15;margin:.3rem 0 .5rem}
+nav{display:flex;gap:8px;flex-wrap:wrap;padding:19px 0 14px}button,.button{border:1px solid var(--line);border-radius:8px;padding:8px 14px;background:#fff;color:var(--ink);font-weight:650}button:hover{border-color:#07849a}nav button[aria-pressed="true"],.primary{color:#fff;background:var(--blue);border-color:var(--blue)}
+.panel{background:white;border:1px solid var(--line);border-radius:13px;padding:17px 20px}.intro{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}h2,h3{line-height:1.25;margin:0 0 .45em}h2{font-size:1.45rem}h3{font-size:1.15rem}p{margin:.35em 0 .65em}.intro p{color:var(--soft);margin:0}.tag{white-space:nowrap;color:#004d6c;background:#e3f4fa;border-radius:6px;padding:6px 11px;font-weight:700;font-size:.9rem}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;align-items:start}.grid .panel{min-width:0}.scope canvas,.schematic canvas{display:block;width:100%;aspect-ratio:680/310;border-radius:9px}.schematic canvas{background:#eaf4f9}.scope canvas{background:#102a40;touch-action:pan-y}.linekey{font-size:.84rem;color:var(--soft);margin:8px 0}.linekey b{color:var(--blue)}.linekey .measure{color:var(--teal)}
+.controls,.parts,.modes{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:10px 0}.controls label{display:flex;align-items:center;gap:6px;margin-left:auto;color:var(--soft);font-size:.89rem}select{padding:5px 7px;border:1px solid var(--line);border-radius:6px;background:white;color:var(--ink)}.parts button,.modes button{padding:4px 9px;font-size:.83rem}.parts button[aria-pressed="true"],.modes button[aria-pressed="true"]{background:#dff4f2;border-color:#74b7b1}.note{min-height:3.25rem;color:var(--soft);font-size:.9rem;margin-bottom:0}.stage{min-height:4.7rem;border-left:4px solid #0a9b89;background:#f0f9f8;padding:6px 10px;margin:5px 0}.stage p{margin:2px 0;color:#305365;font-size:.91rem}.stage strong{font-size:.95rem}
+.axis-controls{display:flex;gap:12px;align-items:center;margin:8px 0}.axis-controls label{display:flex;gap:7px;align-items:center;flex:1}.axis-controls input{flex:1;min-width:20px;accent-color:#077c82}.axis-controls output{font-variant-numeric:tabular-nums;min-width:5em;text-align:right}.reading{display:flex;gap:.4rem 1.2rem;flex-wrap:wrap;min-height:2.1rem;font-size:.89rem;color:var(--soft)}.reading b{color:var(--ink);white-space:nowrap}
+.lower{margin:14px 0 22px}.lower p{color:var(--soft)}details{padding:8px 0;border-top:1px solid var(--line)}summary{cursor:pointer;font-weight:650}.lower details p{padding-left:12px}.selfcheck{margin-top:13px}.selfcheck fieldset{border:0;margin:0;padding:0}.selfcheck legend{font-weight:700}.selfcheck label{display:block;margin:4px 0}.selfcheck input{accent-color:var(--blue)}.selfcheck button{margin-top:5px}.answer{color:#00544e;font-weight:650;min-height:1.45em}.source-links{display:flex;gap:8px 18px;flex-wrap:wrap;margin:9px 0;font-size:.92rem}footer{padding-bottom:20px;color:var(--soft);font-size:.89rem}
+[hidden]{display:none!important}
+@media(max-width:920px){.grid{grid-template-columns:1fr}}@media(max-width:520px){.wrap{width:calc(100% - 20px)}.intro{display:block}.tag{display:inline-block;margin-top:8px}.panel{padding:13px}.controls label{margin-left:0}.controls button{padding:6px 8px}nav button{flex:1 1 44%;padding:6px}.scope canvas,.schematic canvas{aspect-ratio:680/360}}
+</style>
+</head>
+<body>
+<header class="hero"><div class="wrap"><div class="course">Техника высоких напряжений · Тема 18</div><h1>Испытательные установки и измерения</h1><p>Проследите путь напряжения от установки к образцу и от делителя к измерительному прибору.</p></div></header>
+<main class="wrap">
+<nav aria-label="Испытательные установки" id="tabs"></nav>
+<section class="panel intro" aria-labelledby="name"><div><h2 id="name"></h2><p id="description"></p></div><span class="tag" id="badge"></span></section>
+<div class="grid">
+<section class="panel schematic"><h3>Установка и образец</h3>
+<canvas id="diagram" width="680" height="310" role="img" aria-label="Функциональная схема испытательного стенда. Пояснения к узлам расположены под схемой."></canvas>
+<div class="linekey"><b>Синий</b> — испытательное напряжение · <b class="measure">Бирюзовый</b> — сигнал измерения</div>
+<div id="parts" class="parts" aria-label="Пояснения к узлам"></div><p class="note" id="partNote" aria-live="polite"></p>
+<div id="options" class="modes" aria-label="Варианты установки"></div>
+<div class="controls"><button class="primary" id="play">Пуск</button><button id="step">Следующий этап</button><button id="reset">Сброс</button><label>Темп показа <select id="speed"><option value="1">1×</option><option value=".5">0,5×</option><option value="2">2×</option></select></label></div>
+<div class="stage" aria-live="polite"><strong id="stageName"></strong><p id="stageText"></p></div>
+</section>
+<section class="panel scope"><h3>Осциллограмма напряжения</h3>
+<canvas id="scope" width="680" height="310" role="img" aria-label="График напряжения от времени. Значения доступны через ползунок измерительного курсора."></canvas>
+<div class="modes" id="scopeModes"><button id="front" aria-pressed="false">Увеличить фронт</button><button id="marks" aria-pressed="false">Показать отметки</button></div>
+<div class="axis-controls"><label>Курсор <input id="cursor" type="range" min="0" max="1000" value="0"></label><output id="time" for="cursor"></output></div>
+<div class="reading" id="reading"></div><p class="note" id="scopeNote"></p>
+</section>
+</div>
+<section class="panel lower">
+<h3>Что сравнить</h3><p id="tasks"></p><details><summary>Сверить наблюдение</summary><p id="comparison"></p></details>
+<div class="selfcheck"><form id="quiz"><fieldset id="answers"></fieldset><button type="submit">Проверить ответ</button><p id="feedback" class="answer" aria-live="polite"></p></form></div>
+<details><summary>Как читать показания и где посмотреть подробнее</summary>
+<p>Высоковольтный делитель подаёт на прибор уменьшенный сигнал. По коэффициенту деления прибор восстанавливает напряжение на объекте. Здесь ось напряжения нормирована по амплитуде и выражена в процентах. Время анимации этапов отличается от времени на осциллограмме. Схемы функциональные.</p>
+<p>Испытания также проводят постоянным напряжением, когда это предусмотрено методикой. После заряда образца прибор позволяет наблюдать установившееся напряжение и ток утечки.</p>
+<p>На реальном испытании форму сигнала, уровень напряжения, длительность и критерии оценки выбирают по документам для конкретного оборудования. Стенд показывает принцип работы установок и форму напряжения в учебном режиме.</p>
+<div class="source-links"><a href="https://webstore.iec.ch/en/publication/65088" target="_blank" rel="noopener">IEC 60060‑1 · виды испытаний</a><a href="https://webstore.iec.ch/en/publication/65089" target="_blank" rel="noopener">IEC 60060‑2 · измерительные системы</a><a href="https://lepton.ru/GOST/Data1/6/6381/index.htm" target="_blank" rel="noopener">ГОСТ 1516.2‑97 · грозовой импульс, п. 5.2.1</a><a href="https://www.highvolt.com/en/productdetail/ac-test-systems/wrv-t" target="_blank" rel="noopener">HIGHVOLT · резонансная установка</a><a href="https://www.megger.com/en-ca/et-online/march-2021/Excitation-voltage-options-or-PD-investigations-on-MV-cables" target="_blank" rel="noopener">Megger · сравнение режимов для кабелей</a><a href="https://web.mit.edu/22.09/ClassHandouts/Charged%20Particle%20Accel/CHAP09.PDF" target="_blank" rel="noopener">MIT · принцип генератора Маркса, § 9.7</a></div>
+</details>
+</section>
+</main>
+<footer class="wrap">Учебная демонстрация · Сигналы рассчитываются в браузере.</footer>
+<script>
+'use strict';
+const rigs = {
+  ac:{tab:'Трансформатор 50 Гц',title:'Испытательный трансформатор',badge:'50 Гц · обмотка',
+    description:'Подаёт повышенное переменное напряжение. На стенде показано испытание изоляции обмотки относительно заземлённого корпуса.',
+    parts:[['Трансформатор','Вторичная обмотка создаёт высокое переменное напряжение той же частоты, что и на входе.'],['Обмотка','Испытательное напряжение приложено между проводником обмотки и заземлённым корпусом.'],['Делитель','Делитель передаёт на прибор уменьшенную копию напряжения.']],
+    stages:[['Готовность','Образец подключён. Напряжения на нём ещё нет.'],['Подъём напряжения','Выходное напряжение возрастает, частота остаётся 50 Гц.'],['Регистрация','На приборе видна синусоида с периодом 20 мс.'],['Снятие напряжения','Источник отключён. Осциллограмма сохраняется для просмотра.']],
+    task:'Запустите стенд и найдите по курсору два соседних положительных максимума. Затем выберите «Каскад» и повторите наблюдение.',
+    result:'Между соседними максимумами около 20 мс в обоих режимах. В каскаде складываются выходные напряжения ступеней, а частота остаётся 50 Гц. Обе записи показаны в процентах от своей амплитуды.',
+    q:['Что происходит с частотой в каскаде?', ['Остаётся 50 Гц','Удваивается','Снижается до 0,1 Гц'],0,'Ступени увеличивают доступное напряжение. Частота питания сохраняется.']},
+  resonant:{tab:'Резонансная установка',title:'Резонансная установка переменного напряжения',badge:'Переменная частота · кабель',
+    description:'Длинный кабель ведёт себя как ёмкостная нагрузка. Реактор и ёмкость кабеля образуют колебательный контур.',
+    parts:[['Реактор','Индуктивность реактора вместе с ёмкостью кабеля определяет резонансную частоту.'],['Кабель','Жила и экран, разделённые изоляцией, образуют электрическую ёмкость.'],['Делитель','Прибор регистрирует напряжение на испытательном объекте, пока источник поддерживает колебания.']],
+    stages:[['Готовность','Реактор и кабель соединены в испытательный контур.'],['Поиск режима','Источник изменяет частоту. При приближении к резонансу напряжение на кабеле растёт.'],['Регистрация','Установился резонансный режим. В учебном примере частота 40 Гц, период 25 мс.'],['Снятие напряжения','Источник отключён. Осталась запись установившегося режима.']],
+    task:'Дойдите пошагово до поиска режима. Сопоставьте строку осциллографа на этом этапе и после настройки.',
+    result:'В учебной модели частота приближается к 40 Гц, а колебания напряжения становятся заметнее. В резонансном режиме источник в основном восполняет потери контура.',
+    q:['Что вместе с реактором образует контур?', ['Экран осциллографа','Ёмкость кабеля','Делитель как источник напряжения'],1,'Резонанс определяют индуктивность реактора и ёмкость кабеля.']},
+  vlf:{tab:'Сверхнизкая частота',title:'Установка сверхнизкой частоты (VLF)',badge:'0,1 Гц · кабель',
+    description:'Плавно меняет полярность приложенного напряжения. Здесь показан синусоидальный режим для кабеля.',
+    parts:[['Источник СНЧ','СНЧ означает «сверхнизкая частота». В примере выбран режим 0,1 Гц.'],['Кабель','При такой частоте кабель медленнее заряжается и перезаряжается при смене полярности. При равных амплитуде и ёмкости зарядный ток у синусоиды меньше.'],['Делитель','На длинной развёртке прибор позволяет увидеть смену полярности и полный период.']],
+    stages:[['Готовность','Кабель подключён к выходу источника.'],['Подъём напряжения','Кабель начинает заряжаться. Напряжение меняется медленно.'],['Регистрация','Полярность меняется каждые полпериода, то есть каждые 5 с.'],['Снятие напряжения','Выход отключён. На графике сохраняется запись полного периода.']],
+    task:'Найдите положительный и следующий отрицательный максимумы. Сравните единицы времени с режимом 50 Гц.',
+    result:'Положительный максимум находится около 2,5 с, отрицательный — около 7,5 с. Полный период занимает 10 с. В режиме 50 Гц период равен 20 мс.',
+    q:['Сколько длится полный период при 0,1 Гц?', ['20 мс','5 с','10 с'],2,'Знак меняется каждые 5 с, а полный цикл занимает 10 с.']},
+  marx:{tab:'Импульсный генератор',title:'Генератор Аркадьева–Маркса',badge:'1,2/50 мкс · изоляция',
+    description:'Создаёт короткий импульс для испытания изоляции. На стенде показаны три условные ступени.',
+    parts:[['Ступени генератора','Пока разрядники разомкнуты, конденсаторы ступеней заряжаются параллельно через зарядные сопротивления. После срабатывания разрядников ступени оказываются соединены последовательно.'],['Образец','После срабатывания генератора к объекту приложен короткий импульс.'],['Делитель','Делитель передаёт уменьшенную копию быстро меняющегося импульса на регистратор.']],
+    stages:[['Готовность','Разрядники разомкнуты, конденсаторы разряжены.'],['Параллельный заряд','Конденсаторы заряжаются, на образце импульса ещё нет.'],['Последовательный разряд','Разрядники срабатывают. Напряжения ступеней складываются, регистратор записывает импульс.'],['Запись сохранена','Напряжение на образце вернулось к нулю. Можно рассмотреть фронт и спад.']],
+    task:'На этапе заряда посмотрите, есть ли импульс на образце. Перейдите к разряду. Включите отметки и увеличьте фронт.',
+    result:'Импульс возникает после срабатывания разрядников. 1,2 мкс — условное время фронта по точкам 30 и 90% амплитуды. 50 мкс — время от условного начала до половины амплитуды на спаде.',
+    q:['Когда импульс появляется на образце?', ['Когда ступени только заряжаются','При срабатывании разрядников','При подключении осциллографа'],1,'При срабатывании разрядников напряжения заряженных ступеней складываются.']}
+};
+const $ = id => document.getElementById(id);
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const nf = (n,d=1) => n.toLocaleString('ru-RU',{minimumFractionDigits:d,maximumFractionDigits:d});
+let key='ac', stage=0, progress=0, playing=false, stamp=0, cascade=false, zoom=false, marks=false, selectedPart=0, tick=0, frame=0;
+const durations=[650,3000,2500,0];
+const diagram=$('diagram').getContext('2d');
+const scope=$('scope').getContext('2d');
+const navy='#173a50', blue='#1175a8', teal='#008479';
+const rawPulse=t=>Math.exp(-.01465*t)-Math.exp(-2.47*t);
+const tp=Math.log(2.47/.01465)/(2.47-.01465);
+const pulse=t=>t>=0?rawPulse(t)/rawPulse(tp):0;
+function crossing(level,left,right,rising){
+  for(let i=0;i<36;i++){
+    const mid=(left+right)/2;
+    if((pulse(mid)<level)===rising) left=mid; else right=mid;
+  }
+  return (left+right)/2;
+}
+const t30=crossing(.3,0,tp,true),t90=crossing(.9,0,tp,true),half=crossing(.5,tp,100,false);
+const origin=t30-.5*(t90-t30);
+const isPulse=()=>key==='marx';
+function freq(){return key==='vlf'?.1:key==='resonant'?(stage===1?20+20*progress:40):50;}
+function domain(){
+  if(isPulse()) return zoom?{low:-.45,high:4,unit:'мкс',ticks:[0,1,2,3,4]}:{low:0,high:90,unit:'мкс',ticks:[0,15,30,45,60,75,90]};
+  if(key==='vlf') return {low:0,high:20,unit:'с',ticks:[0,5,10,15,20]};
+  return {low:0,high:60,unit:'мс',ticks:[0,10,20,30,40,50,60]};
+}
+function signal(t){
+  if(stage<1 || (isPulse()&&stage<2)) return 0;
+  if(isPulse()) return 100*pulse(t);
+  const gain=stage===1?(key==='resonant'?.15+.85*progress**2:progress):1;
+  return 100*gain*Math.sin(2*Math.PI*freq()*t/(key==='vlf'?1:1000));
+}
+function path(ctx,coords,color,width=2,dash=[]){
+  ctx.beginPath(); ctx.setLineDash(dash); ctx.strokeStyle=color;ctx.lineWidth=width;
+  coords.forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y));ctx.stroke();ctx.setLineDash([]);
+}
+function rect(ctx,x,y,w,h,r,fill,stroke){
+  ctx.beginPath();ctx.roundRect(x,y,w,h,r);if(fill){ctx.fillStyle=fill;ctx.fill();}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=1.6;ctx.stroke();}
+}
+function text(ctx,s,x,y,size=18,color=navy,align='center',bold=true){
+  ctx.font=(bold?'650 ':'400 ')+size+'px system-ui, sans-serif';ctx.fillStyle=color;
+  ctx.textAlign=align;ctx.textBaseline='middle';ctx.fillText(s,x,y);
+}
+function ground(ctx,x,y,color=navy){
+  path(ctx,[[x,y],[x,y+10]],color);for(let i=0;i<3;i++)path(ctx,[[x-11+i*4,y+10+5*i],[x+11-i*4,y+10+5*i]],color);
+}
+function winding(ctx,x,y,h,color){
+  ctx.beginPath();ctx.moveTo(x,y);
+  for(let j=0;j<4;j++)ctx.quadraticCurveTo(x+18,y+(j+.5)*h/4,x,y+(j+1)*h/4);
+  ctx.strokeStyle=color;ctx.lineWidth=2.6;ctx.stroke();
+}
+function drawDiagram(){
+  const ctx=diagram;
+  ctx.clearRect(0,0,680,310);
+  const energized=stage>0&&stage<3&&(!isPulse()||stage===2);
+  const route=energized?blue:'#8095a1', sense=energized?teal:'#8095a1';
+  const phase=reduced?0:tick;
+  [28,95,162,229,296].forEach(y=>path(ctx,[[0,y],[680,y]],'#d9eaf2',1));
+  const source=rigs[key].parts[0][0];
+  rect(ctx,18,58,181,174,14,'#fff','#90b2c4');
+  text(ctx,source,108,207,16);
+  path(ctx,[[199,100],[421,100],[421,166]],route,3);
+  path(ctx,[[292,100],[292,128]],route,3);
+  if(energized&&!reduced){
+    const direction=key==='vlf'&&stage===2&&signal(progress*20)<0?-1:1;
+    const offset=(phase*1.45)%218;
+    const x=direction>0?200+offset:418-offset;
+    ctx.beginPath();ctx.arc(x,100,4,0,Math.PI*2);ctx.fillStyle='#40c9ed';ctx.fill();
+  }
+  if(isPulse()){
+    const charged=stage===1?progress:stage===2?1-progress:0;
+    const series=stage===2;
+    const start=38, top=98;
+    for(let i=0;i<3;i++){
+      const x=start+46*i;
+      rect(ctx,x,84,34,58,6,'#eef6fa','#9ab6c8');
+      rect(ctx,x+2,140-53*charged,30,53*charged,4,series?'#ffdaa5':'#a3dcee');
+      path(ctx,[[x+6,top+10],[x+28,top+10]],navy);
+      path(ctx,[[x+6,top+16],[x+28,top+16]],navy);
+      if(i<2 && series)path(ctx,[[x+34,112],[x+46,112]],'#b34400',3);
+      if(!series&&stage===1)path(ctx,[[x+17,142],[x+17,159]],blue);
+    }
+    if(!series&&stage===1)path(ctx,[[55,159],[147,159]],blue);
+    text(ctx,series?'Последовательно':stage===1?'Параллельно':'Разрядники разомкнуты',108,178,12);
+  } else if(key==='ac') {
+    const columns=cascade?[70,137]:[104];
+    for(const x of columns){
+      winding(ctx,x-15,89,68,blue);winding(ctx,x+7,89,68,blue);
+      path(ctx,[[x,85],[x,161]],'#8ca9b8',2);
+    }
+    text(ctx,cascade?'Две ступени':'Одна ступень',108,180,13);
+  } else if(key==='resonant'){
+    winding(ctx,98,88,67,blue);
+    path(ctx,[[98,83],[98,88]],blue,2);
+    path(ctx,[[98,155],[98,161]],blue,2);
+    text(ctx,stage===1?nf(freq())+' Гц':stage===2?'40 Гц':'Настройка частоты',108,177,13);
+  } else {
+    path(ctx,Array.from({length:107},(_,i)=>[43+i,121+20*Math.sin(i/(key==='vlf'?17:6))]),blue,3);
+    text(ctx,'0,1 Гц',108,177,13);
+  }
+  rect(ctx,377,166,150,89,10,'#fff','#90b2c4');
+  if(key==='vlf'||key==='resonant'){
+    rect(ctx,391,182,119,25,12,'#173a50');
+    rect(ctx,396,186,105,17,8,energized?'#93d6ed':'#c8dbe5');
+    path(ctx,[[391,195],[470,195]],energized?'#bd4e14':'#8c5942',4);
+    if(key==='vlf'&&stage===2){
+      const voltage=signal(progress*20);
+      text(ctx,Math.abs(voltage)<1?'0':voltage>0?'+':'−',489,195,16,navy);
+    }
+  }else if(key==='ac'){
+    winding(ctx,431,179,35,energized?blue:'#8299a6');
+    winding(ctx,453,179,35,energized?blue:'#8299a6');
+    path(ctx,[[481,178],[490,178],[490,215],[481,215]],navy);
+  }else{
+    path(ctx,[[454,176],[454,187]],route,3);
+    rect(ctx,443,187,22,30,5,energized?'#abdfed':'#d6e6ed','#8299a6');
+    path(ctx,[[439,214],[469,214]],navy,3);
+  }
+  text(ctx,key==='ac'?'Обмотка с изоляцией':key==='marx'?'Образец изоляции':'Кабель с изоляцией',452,237,14);
+  ground(ctx,452,255);
+  rect(ctx,241,128,102,91,10,'#fff','#90b2c4');
+  path(ctx,[[270,145],[280,145],[280,137],[289,137],[289,155],[298,155],[298,137],[307,137],[307,145],[315,145]],sense);
+  path(ctx,[[292,167],[292,181]],sense);ground(ctx,292,220);
+  text(ctx,'Делитель',292,201,15);
+  path(ctx,[[343,152],[609,152],[609,174]],sense,2,[6,5]);
+  rect(ctx,550,172,115,83,9,'#fff','#90b2c4');
+  rect(ctx,562,182,91,42,6,'#16364d');
+  if(energized||stage===3){
+    path(ctx,Array.from({length:78},(_,i)=>[568+i,205-(isPulse()?13*pulse(i/1.4):7*Math.sin(i/7))]),'#67dfce',2);
+  }else path(ctx,[[568,205],[645,205]],'#67dfce');
+  text(ctx,'Прибор',608,238,15);
+  if(energized){
+    ctx.beginPath();ctx.arc(292,100,4,0,2*Math.PI);ctx.fillStyle=blue;ctx.fill();
+    text(ctx,isPulse()?'Импульс на образце':'Напряжение на образце',433,71,16,blue);
+  }
+}
+function drawScope(){
+  const ctx=scope, {low,high,unit,ticks}=domain();ctx.clearRect(0,0,680,310);
+  const x0=59,x1=650,y0=34,y1=268, bottom=isPulse()?-8:-117, top=118;
+  const x=t=>x0+(t-low)*(x1-x0)/(high-low), y=u=>y1-(u-bottom)*(y1-y0)/(top-bottom);
+  text(ctx,'U, % амплитуды',x0,16,14,'#d5edf5','left');
+  for(const t of ticks){path(ctx,[[x(t),y0],[x(t),y1]],'#2d4a5d',1);text(ctx,String(t),x(t),283,14,'#c6dce9');}
+  for(const u of (isPulse()?[0,25,50,75,100]:[-100,-50,0,50,100])){
+    path(ctx,[[x0,y(u)],[x1,y(u)]],u===0?'#5f8598':'#2d4a5d',1);text(ctx,String(u),x0-8,y(u),14,'#c6dce9','right');
+  }
+  text(ctx,'t, '+unit,x1,300,13,'#d5edf5','right');
+  const portion=stage===2?(reduced?1:progress):1;
+  if(!isPulse()||stage!==2||progress>0||reduced){
+    const graph=Array.from({length:Math.floor(450*portion)+1},(_,i)=>{
+      const t=low+(high-low)*i/450;return [x(t),y(signal(t))];
+    });
+    path(ctx,graph,'#58e6d3',2.4);
+  }
+  if(isPulse()&&marks&&stage>=2){
+    const guides=zoom?[[t30,30,'30%'],[t90,90,'90%'],[origin,0,'O₁']]:[[half,50,'0,5 амплитуды']];
+    for(const [t,u,caption] of guides){
+      path(ctx,[[x(t),y1],[x(t),y(u)]],'#ffce83',1.3,[4,3]);
+      path(ctx,[[x0,y(u)],[x(t),y(u)]],'#ffce83',1,[4,3]);
+      if(u===0) text(ctx,caption,x(t),y(u)-12,13,'#ffce83');
+      else text(ctx,caption,x(t)+8,y(u)-11,13,'#ffce83','left');
+    }
+  }
+  const cursorT=low+(high-low)*Number($('cursor').value)/1000;
+  const hasPoint=stage===1?(!isPulse()&&progress>0):stage===3||(stage===2&&(reduced||Number($('cursor').value)/1000<=progress));
+  const u=signal(cursorT);
+  path(ctx,[[x(cursorT),y0],[x(cursorT),y1]],'#f5fafb',1,[4,4]);
+  if(hasPoint){
+    ctx.beginPath();ctx.arc(x(cursorT),y(u),4,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();
+  }
+  $('time').textContent=nf(cursorT,isPulse()&&zoom?2:1)+' '+unit;
+  $('reading').innerHTML='<b>'+(hasPoint?'U = '+nf(u)+' %':'Нет отсчёта')+'</b>'+
+    (isPulse()?(stage>=2&&marks?'<span>T₁ ≈ '+nf((t90-t30)*1.67,2)+' мкс · T₂ ≈ '+nf(half-origin,1)+' мкс</span>':''):
+    '<span>'+ (stage===0?'Частота режима':stage===3?'Частота записи':'Частота')+' · '+nf(freq(),key==='vlf'||key==='resonant'&&stage===1?1:0)+' Гц</span>');
+}
+function draw(){drawDiagram();drawScope();}
+function addButton(parent,label,handler){
+  const b=document.createElement('button');b.type='button';b.textContent=label;
+  b.addEventListener('click',handler);parent.append(b);return b;
+}
+function updateStage(){
+  const [name,description]=rigs[key].stages[stage];
+  $('stageName').textContent=name;
+  $('stageText').textContent=description;
+  $('play').textContent=playing?'Пауза':stage===3?'Повторить':stage===0&&progress===0?'Пуск':'Продолжить';
+  $('step').disabled=stage===3;
+  $('scopeNote').textContent=isPulse()?
+    (zoom?'Увеличен передний фронт. O₁ — условное начало импульса.':'Полная запись импульса. Для точек 30 и 90% увеличьте фронт.'):
+    'Горизонтальная ось показывает время на образце. Перемещайте курсор, чтобы прочитать напряжение в выбранной точке.';
+}
+function openPart(i){
+  selectedPart=i;
+  [...$('parts').children].forEach((b,j)=>b.setAttribute('aria-pressed',j===i));
+  const label=rigs[key].parts[i][1];
+  $('partNote').textContent=key==='ac'&&cascade&&i===0?
+    'Высоковольтные выходы ступеней включены последовательно. Их напряжения складываются, частота сохраняется.':label;
+}
+function drawOptions(){
+  const opts=$('options');opts.replaceChildren();opts.hidden=key!=='ac';
+  if(key!=='ac') return;
+  ['Одна ступень','Каскад'].forEach((label,i)=>{
+    const b=addButton(opts,label,()=>{
+      cascade=Boolean(i);openPart(selectedPart);draw();
+      [...opts.children].forEach((item,j)=>item.setAttribute('aria-pressed',i===j));
+    });
+    b.setAttribute('aria-pressed',Boolean(i)===cascade);
+  });
+}
+function stop(){
+  playing=false;stamp=0;
+  cancelAnimationFrame(frame);
+}
+function setExperiment(next){
+  stop();key=next;stage=0;progress=0;tick=0;zoom=false;marks=false;
+  $('cursor').value=0;
+  const rig=rigs[key];
+  $('name').textContent=rig.title;$('badge').textContent=rig.badge;$('description').textContent=rig.description;
+  $('tasks').textContent=rig.task;$('comparison').textContent=rig.result;
+  $('scopeModes').hidden=!isPulse();
+  $('front').textContent='Увеличить фронт';
+  $('front').setAttribute('aria-pressed','false');$('marks').setAttribute('aria-pressed','false');
+  [...$('tabs').children].forEach(b=>b.setAttribute('aria-pressed',b.dataset.mode===key));
+  $('parts').replaceChildren();
+  rig.parts.forEach(([label],i)=>addButton($('parts'),label,()=>openPart(i)));
+  openPart(0);drawOptions();
+  const box=$('answers');
+  const legend=document.createElement('legend');legend.textContent=rig.q[0];box.replaceChildren(legend);
+  rig.q[1].forEach((label,i)=>{
+    const line=document.createElement('label');
+    const radio=document.createElement('input');
+    radio.type='radio';radio.name='option';radio.value=i;
+    line.append(radio,' '+label);box.append(line);
+  });
+  $('feedback').textContent='';
+  updateStage();draw();
+}
+function reset(){
+  stop();stage=0;progress=0;tick=0;$('cursor').value=0;
+  updateStage();draw();
+}
+function animation(now){
+  if(!playing) return;
+  const dt=stamp?Math.min(now-stamp,48)*Number($('speed').value):0;
+  stamp=now;tick+=dt/17;
+  progress+=dt/durations[stage];
+  if(progress>=1){
+    stage+=1;progress=0;
+    if(stage===3) stop();
+    updateStage();
+  }
+  draw();
+  if(playing) frame=requestAnimationFrame(animation);
+}
+Object.entries(rigs).forEach(([mode,rig])=>{
+  addButton($('tabs'),rig.tab,()=>setExperiment(mode)).dataset.mode=mode;
+});
+$('play').addEventListener('click',()=>{
+  if(playing) stop();
+  else {
+    if(stage===3) reset();
+    if(stage===0){stage=1;progress=0;}
+    playing=true;frame=requestAnimationFrame(animation);
+  }
+  updateStage();draw();
+});
+$('step').addEventListener('click',()=>{
+  stop();stage=Math.min(stage+1,3);progress=stage===1?.54:1;
+  updateStage();draw();
+});
+$('reset').addEventListener('click',reset);
+$('front').addEventListener('click',()=>{
+  const previous=domain(),time=previous.low+(previous.high-previous.low)*Number($('cursor').value)/1000;
+  zoom=!zoom;$('front').setAttribute('aria-pressed',zoom);
+  $('front').textContent=zoom?'Показать весь импульс':'Увеличить фронт';
+  const range=domain();
+  $('cursor').value=Math.max(0,Math.min(1000,Math.round(1000*(time-range.low)/(range.high-range.low))));
+  updateStage();drawScope();
+});
+$('marks').addEventListener('click',()=>{
+  marks=!marks;$('marks').setAttribute('aria-pressed',marks);drawScope();
+});
+$('cursor').addEventListener('input',drawScope);
+$('scope').addEventListener('pointerdown',event=>{
+  const bounds=$('scope').getBoundingClientRect();
+  const px=680*(event.clientX-bounds.left)/bounds.width;
+  $('cursor').value=Math.max(0,Math.min(1000,Math.round(1000*(px-59)/(650-59))));
+  drawScope();
+});
+$('quiz').addEventListener('submit',event=>{
+  event.preventDefault();
+  const answer=new FormData(event.currentTarget).get('option');
+  $('feedback').textContent=answer===null?'Выберите один вариант.':Number(answer)===rigs[key].q[2]?
+    'Верно. '+rigs[key].q[3]:'Попробуйте ещё раз. Сравните этапы и показания стенда.';
+});
+setExperiment('ac');
+</script>
+</body>
+</html>

@@ -1,0 +1,1012 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Интерактивный стенд по грозовым перенапряжениям и координации изоляции для курса «Техника высоких напряжений».">
+<title>Тема 17 · Грозовые перенапряжения</title>
+<style>:root{color-scheme:dark;--bg:#101525;--surface:#181f33;--inset:#101729;--edge:#303951;--ink:#f0f3ff;--mute:#abb6d2;--purple:#bcadff;--violet:#8d71f9;--cyan:#64e4ef;--amber:#ffcc83;--mint:#8ff3b8;--rose:#ff97a1;--dim:#717d9d;--round:16px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 85% 0%,#211c39 0%,transparent 48rem),var(--bg);color:var(--ink);font:16px/1.53 'Segoe UI',system-ui,sans-serif}button,select,input{font:inherit}button,select,input[type=number]{color:inherit;background:#222a42;border:1px solid #3a4764;border-radius:8px}button{min-height:35px;padding:5px 11px;cursor:pointer;transition:background .16s,border-color .16s}button:hover,select:hover{background:#303959;border-color:#70688d}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,canvas:focus-visible,summary:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}button.primary{background:#ad98ff;color:#140d2b;border-color:#ad98ff;font-weight:740}button.primary:hover{background:#c3b3ff}button[aria-pressed=true]{border-color:var(--purple);background:#423562;color:#f4efff}a{color:#d2c6ff;text-underline-offset:3px}input[type=range],input[type=checkbox],input[type=radio]{accent-color:var(--purple)}input[type=range]{width:100%;cursor:pointer;margin:4px 0}select{padding:6px 10px}select option{background:#222a42}p{margin:0 0 .75rem}h1,h2,h3{line-height:1.18;margin:0}small{font-size:.83rem}.quiet{font-size:.84rem;color:var(--mute);margin:4px 0 0}button,.compact,.legend{font-size:.88rem}fieldset{min-width:0}[hidden]{display:none!important}
+.mast{border-bottom:1px solid #313044;background:#13182a}.mast-inner{max-width:1450px;margin:auto;padding:12px 32px;display:flex;justify-content:space-between;align-items:center}.wordmark{font-size:1rem;text-decoration:none;font-weight:750;letter-spacing:.025em;color:var(--ink);display:flex;gap:9px;align-items:center}.mark{display:grid;place-items:center;background:#33274e;color:#d8c7ff;border-radius:8px;width:29px;height:29px;font-size:1.3rem;line-height:1}.mast-sep{margin:0 2px;width:1px;height:16px;background:#494157}.course,.theme{font-size:.81rem;color:var(--mute);font-weight:540}.theme{font-variant-numeric:tabular-nums;color:#d8c8ff}
+main{max-width:1450px;margin:auto;padding:25px 32px 0}.intro{display:flex;align-items:end;justify-content:space-between;gap:15px;margin:1px 0 23px}.intro h1{font-size:clamp(1.85rem,4vw,3rem);letter-spacing:-.046em;font-weight:750}.intro p{margin:5px 0 0;color:#bbc4df}.intro-link{white-space:nowrap;font-size:.88rem;margin-bottom:4px}
+.tabs{display:flex;gap:5px;padding:5px;border:1px solid var(--edge);background:#141a2b;border-radius:12px;overflow-x:auto;margin-bottom:16px}.tabs a{font-size:.91rem;flex:1;text-align:center;border-radius:8px;padding:8px 12px;text-decoration:none;color:var(--mute);white-space:nowrap}.tabs a:hover{background:#262e46;color:var(--ink)}.tabs a[aria-current=page]{background:#382c57;color:#ede6ff;font-weight:720}
+.lab{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,324px);gap:15px;align-items:start}.workbench,.settings{display:grid;gap:13px;min-width:0}.panel{min-width:0;background:linear-gradient(145deg,#1d2438,#171d30);border:1px solid var(--edge);border-radius:var(--round);overflow:hidden}.panel-head{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:13px 15px 10px}.panel-head h2{font-size:1.09rem;letter-spacing:-.014em}.panel-head button{white-space:nowrap}.scene-wrap{position:relative;padding:0 10px}.scene-wrap canvas{display:block;width:100%;height:clamp(185px,24vw,275px);border:1px solid #303c58;border-radius:11px;background:#10192b}.scene-wrap canvas[data-rotate=true]{cursor:grab;touch-action:pan-y}.scene-wrap canvas[data-rotate=true]:active{cursor:grabbing}.scene-tip{position:absolute;bottom:8px;left:20px;right:20px;font-size:.79rem;color:#d6dff7;pointer-events:none;line-height:1.18;display:inline}.events{display:flex;gap:5px;padding:8px 10px 10px;flex-wrap:wrap}.events button{font-size:.81rem;min-height:31px;color:#e1d9f7}
+.osc-switches,.legend,.transport,.cursor-tools,.cursor-read{display:flex;align-items:center;gap:9px;padding:0 12px}.osc-switches{flex-wrap:wrap;justify-content:space-between}.seg{display:flex;gap:3px}.seg button{font-size:.83rem;min-height:30px}.compact,.check{display:inline-flex;align-items:center;gap:5px;color:#d1daf2}.compact select{padding:4px 5px}.legend{padding-top:7px;font-size:.76rem;min-height:29px;gap:10px;flex-wrap:wrap;color:var(--mute)}.legend span{display:inline-flex;align-items:center;gap:4px}.legend b{display:inline-block;width:13px;border-top:2px solid currentColor}.legend .dash{border-top-style:dashed}
+#scope{display:block;width:calc(100% - 16px);margin:0 8px;height:clamp(172px,19vw,220px);border-radius:10px;background:#0e1527;cursor:crosshair;touch-action:pan-y}.transport{padding-top:8px;flex-wrap:wrap}.transport #csv{margin-left:auto}.cursor-tools{flex-wrap:wrap;padding-top:6px;font-size:.82rem}.cursor-tools>input{flex:1;min-width:80px}.cursor-values{display:flex;gap:7px;align-items:center;flex-wrap:wrap}.cursor-values label{display:flex;gap:3px;align-items:center}.cursor-values input{font-size:.8rem;width:68px;padding:3px 4px;text-align:right}.cursor-read{padding:7px 12px 12px;font-size:.81rem;min-height:35px;gap:8px 15px;flex-wrap:wrap;color:#c3ceed}.cursor-read strong{color:var(--ink);font-variant-numeric:tabular-nums}
+.settings-panel .panel-head,.results .panel-head{border-bottom:1px solid var(--edge)}.settings-panel .panel-head button{font-size:.75rem;padding-inline:8px}.form-part{padding:10px 13px;border-bottom:1px solid #2a344e}.form-part:last-child{border-bottom:0}.form-part>label:not(.check){display:block;font-size:.85rem;color:#dce4fb;font-weight:650;margin-bottom:3px}.form-part>select{display:block;width:100%;font-size:.89rem}.range{display:flex;flex-direction:column;margin-top:5px}.range label{display:flex;gap:5px;justify-content:space-between;align-items:center;font-size:.82rem;color:#d2dcf1}.range output{white-space:nowrap;font-weight:720;color:var(--purple);font-variant-numeric:tabular-nums}.range input{height:16px}.hint{color:var(--mute);font-size:.77rem;margin-top:4px;line-height:1.35}.warn{color:var(--amber)}summary{cursor:pointer;color:#ddd1ff;font-size:.86rem}.form-part details[open]{padding-bottom:6px}.check{margin:7px 0 2px;font-size:.83rem}.form-part .range+label{margin-top:7px}
+#metrics{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#31394f}.metric{background:#1a2135;padding:8px 10px}.metric span{display:block;color:#b4c0db;font-size:.75rem;line-height:1.25}.metric strong{font-variant-numeric:tabular-nums;font-size:1.16rem;line-height:1.25}.metric .sub{font-size:.69rem;margin-top:2px}.good{color:var(--mint)}.bad{color:var(--rose)}#verdict{padding:8px 10px;margin:0;font-size:.78rem;color:#c1cce8}.current-exp{padding:13px 14px}.current-exp h3{font-size:1rem}.current-exp p,.current-exp summary{font-size:.85rem;margin:5px 0}
+.reading{padding:12px 0 0}.reading-head{margin:4px 0 18px}.reading-head h2{font-size:clamp(1.4rem,2.5vw,2rem)}.reading-head p{color:var(--mute);margin-top:5px}.card-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.card{border:1px solid var(--edge);border-radius:13px;background:#192136;padding:14px 16px;min-width:0}.card h3{font-size:1.05rem;margin-bottom:8px}.card p{color:#d2dcf0;margin:7px 0}.card details{margin-top:8px}.card ul,.card ol{padding-left:22px}.card a{overflow-wrap:anywhere}.formula{display:block;border-left:2px solid var(--violet);border-radius:6px;background:#11192b;color:#f2ecff;padding:8px 9px;font:1.06rem/1.35 'Cambria Math','Georgia',serif;overflow-x:auto;margin:7px 0}.formula sub{font-size:.72em}.read-section{margin:20px 0 9px}.note{padding:10px 12px;border:1px solid #50466b;border-radius:9px;color:#d9caed;background:#231d38;font-size:.88rem}.prompt-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.prompt-list .card p{font-size:.92rem}.reference-list{padding-left:22px}.reference-list li{padding-bottom:4px}.quiz-list{display:grid;gap:8px}.quiz-list fieldset{border:1px solid var(--edge);border-radius:9px;padding:8px 12px;background:#192136}.quiz-list legend{padding:0 5px;font-weight:630}.quiz-list label{display:block;padding:3px 0}.quiz-list .qfeedback{display:block;margin:3px 0;color:var(--amber);font-size:.85rem}.quiz-tools{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:0 0 15px}.quiz-footer{padding:12px 0;display:flex;gap:10px;align-items:center}.term{background:transparent;color:#d2c6ff;padding:0 1px;min-height:0;display:inline;border:0;border-radius:0;border-bottom:1px dotted currentColor;font-weight:650}.term:hover{background:#34294f}
+footer{border-top:1px solid #2b3450;margin-top:20px;padding:13px 0 24px;color:var(--mute);font-size:.79rem;display:flex;justify-content:space-between;gap:8px}.term-dialog{max-width:min(95vw,460px);color:var(--ink);background:#202940;border:1px solid var(--edge);border-radius:13px}.term-dialog::backdrop{background:#0a1020bb}.term-dialog button{display:block;margin-top:10px}
+@media(max-width:960px){main{padding-inline:20px}.mast-inner{padding-inline:20px}.lab{grid-template-columns:minmax(0,1fr) minmax(248px,278px)}.cursor-values input{width:61px}.intro h1{font-size:clamp(1.75rem,4vw,2.8rem)}}
+@media(max-width:730px){main{padding:15px 12px 0}.mast-inner{padding:9px 12px}.intro{margin-bottom:12px}.intro p{font-size:.87rem}.intro-link,.mast-sep,.course{display:none}.tabs{margin-bottom:11px}.tabs a{font-size:.83rem;padding:7px 10px}.lab{grid-template-columns:minmax(0,1fr)}.settings{grid-template-columns:minmax(0,1fr)}.card-grid,.prompt-list{grid-template-columns:minmax(0,1fr)}.intro h1{font-size:1.72rem}.scene-tip{left:16px;right:14px;font-size:.75rem}.panel-head{padding-inline:10px}.compact{font-size:.81rem}.panel-head h2{font-size:1rem}.osc-switches,.legend{padding-inline:8px}.cursor-values{gap:5px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+
+.ground-timing{border-top:1px solid var(--edge);padding:9px 13px;display:flex;gap:6px 12px;align-items:center;justify-content:space-between;flex-wrap:wrap}.ground-timing strong{font-size:.91rem;color:#f5c590}.ground-timing p{font-size:.81rem}.ground-timing .events{padding:0}button:disabled{opacity:.55;cursor:default}
+#scope-ground-i{display:block;width:calc(100% - 16px);margin:5px 8px 0;height:110px;border-radius:10px;background:#0e1527;cursor:crosshair;touch-action:pan-y}
+.apparatus{display:grid;grid-template-columns:minmax(145px,.75fr) minmax(220px,1.25fr);gap:18px;padding:15px}
+.apparatus figure{min-width:0;margin:0}.apparatus img{display:block;object-fit:contain;width:100%;height:225px;background:#10192c;border-radius:8px}.apparatus figcaption{color:var(--mute);font-size:.84rem;margin-top:7px}
+@media(max-width:550px){.apparatus{grid-template-columns:minmax(0,1fr)}.apparatus img{height:205px}}
+
+.learning-pad{padding:0 14px 16px}.lesson-panel .formula,.wave-grid .formula{font-size:clamp(1.05rem,2vw,1.38rem);padding:.7rem .85rem;line-height:1.28}.learning-chart{display:block;width:100%;height:235px;border-radius:10px;background:#0e1527;max-width:100%;margin:0 0 10px}.chart-key{display:flex;flex-wrap:wrap;gap:.5rem 1rem;margin:12px 5px;color:var(--mute);font-size:.82rem}.swatch::before{content:'';display:inline-block;width:14px;height:3px;vertical-align:middle;margin-right:6px;background:#c5adff}.swatch.passport::before,.swatch.pick::before{width:8px;height:8px;border-radius:50%;background:#62e4ef}.swatch.pick::before{background:#ffce84}.read-value{color:#eedcff;font-weight:700;font-variant-numeric:tabular-nums}.vah-events{padding-left:0}.rc-card{grid-column:1/-1}.rc-card .events{padding-left:0}.rc-controls{display:grid;grid-template-columns:1fr 1fr;gap:12px}.wave-grid select{max-width:100%}
+@media(max-width:540px){.learning-chart{height:205px}.rc-controls{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="mast"><div class="mast-inner"><a class="wordmark" href="#stand" aria-label="На стенд"><span aria-hidden="true" class="mark">ϟ</span> ТВН <span class="mast-sep"></span> <span class="course">Техника высоких напряжений</span></a><span class="theme">Тема 17</span></div></header>
+<main>
+<header class="intro"><div><h1>Грозовые перенапряжения</h1><p>Воздушная линия, подстанция и двигатель · ОПН и координация изоляции</p></div><a class="intro-link" href="#theory">Теория и источники</a></header>
+<nav class="tabs" aria-label="Разделы тренажёра">
+<a href="#theory">Теория</a><a href="#stand">Стенд</a><a href="#waves">Волны и время</a><a href="#opn">ОПН</a><a href="#ground">Заземление</a><a href="#practice">Практика</a><a href="#cases">Кейсы</a><a href="#tasks">Задачи</a><a href="#quiz">Тест</a>
+</nav>
+
+<section id="lab" class="lab" aria-label="Измерительный стенд">
+<div class="workbench">
+<section class="panel scene-panel">
+<div class="panel-head"><div><h2 id="scene-title">От грозы до двигателя</h2><p id="scene-desc" class="quiet">Следите за фронтом на ВЛ и в кабеле по курсору B.</p></div><button id="view-toggle" type="button" hidden>Снять кожух</button></div>
+<div class="scene-wrap"><canvas id="scene" width="920" height="290" role="img" aria-label="ВЛ, шины подстанции, кабель, ОПН и двигатель"></canvas><div id="scene-tip" class="scene-tip"></div></div>
+<div class="events"><button id="to-bus" type="button">Фронт на шинах</button><button id="to-motor" type="button">Фронт у двигателя</button><button id="to-peak" type="button">Пик двигателя</button><button id="to-current" type="button" hidden>Пик тока ОПН</button><button id="show-vah" type="button" hidden>Показать ВАХ</button></div>
+<div id="ground-timing" class="ground-timing" hidden>
+<div><strong id="ground-state"></strong><p id="ground-description" class="quiet"></p></div>
+<div class="events"><button id="ground-before" type="button">До прихода волны</button><button id="ground-decay" type="button">На спаде</button></div>
+</div>
+<div class="current-exp" id="active-exp" hidden><div id="active-content"></div></div>
+</section>
+
+<section class="panel osc-panel">
+<div class="panel-head"><div><h2>Осциллограф</h2><p class="quiet" id="scope-hint">Щелчок по графику ставит B. Shift + щелчок ставит A.</p></div><label class="compact">Окно <select id="window"><option value="16">16 мкс</option><option value="45">45 мкс</option><option value="180">180 мкс</option></select></label></div>
+<div class="osc-switches"><div class="seg scope-tabs"><button id="scope-u" type="button" aria-pressed="true">Напряжение</button><button id="scope-i" type="button" aria-pressed="false">Ток ОПН</button><button id="scope-earth" type="button" aria-pressed="false">Потенциал и ток</button></div><label class="compact compare"><input type="checkbox" id="compare" checked> Кривая без ОПН</label></div>
+<div id="legend" class="legend"></div>
+<canvas id="scope" width="920" height="235" aria-label="Измерительные кривые с курсорами A и B" role="img"></canvas>
+<canvas id="scope-ground-i" width="920" height="115" aria-label="Ток ОПН на той же шкале времени, что потенциал" role="img" hidden></canvas>
+<div class="transport"><button class="primary" id="play" type="button">Пуск</button><button id="reset" type="button">Сброс</button><button id="copy-cursor" type="button" title="Записать текущее время B в курсор A">Запомнить A</button><label class="compact">Скорость <select id="speed"><option value="1">×1</option><option value=".25">×¼</option><option value="2">×2</option></select></label><button id="csv" type="button">CSV</button></div>
+<div class="cursor-tools"><label for="cursor">Курсор B</label><input id="cursor" type="range" min="0" max="180" step=".025" value="0"><div class="cursor-values"><label>A <input id="a" type="number" min="0" max="180" step=".025" value="0"> мкс</label><label>B <input id="b" type="number" min="0" max="180" step=".025" value="0"> мкс</label><span>Δt <strong id="delta">0</strong> мкс</span></div></div>
+<div class="cursor-read" id="readouts"></div>
+</section>
+<section class="panel apparatus" id="apparatus" hidden aria-label="Внешний вид и схема ОПН">
+<figure class="apparatus-photo"><img src="data:image/jpeg;base64,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" alt="Реальный полимерный ОПН с рёбрами на корпусе" width="336" height="448"><figcaption>Полимерный ОПН. Фото <a href="https://commons.wikimedia.org/wiki/File:High-voltage_surge_arrester.jpg" target="_blank" rel="noopener">Schennikova.ks</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>.</figcaption></figure>
+<figure class="apparatus-scheme"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0NjAgMjI2IiB3aWR0aD0iNDYwIiBoZWlnaHQ9IjIyNiI+Cjx0aXRsZT7QktC60LvRjtGH0LXQvdC40LUg0J7Qn9CdINC/0LDRgNCw0LvQu9C10LvRjNC90L4g0LfQsNGJ0LjRidCw0LXQvNC+0LzRgyDQvtCx0L7RgNGD0LTQvtCy0LDQvdC40Y48L3RpdGxlPgo8cmVjdCB4PSIxIiB5PSIxIiB3aWR0aD0iNDU4IiBoZWlnaHQ9IjIyNCIgcng9IjEyIiBmaWxsPSIjMTMyMDM3IiBzdHJva2U9IiM1MzYzODEiLz4KPGcgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjY2FkOGYxIiBzdHJva2Utd2lkdGg9IjIuNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj4KIDxwYXRoIGQ9Ik0zMCA1OEgzNDRNMTY3IDU4VjkybTAgNTZ2NDFtLTE2IDBoMzJtLTI2IDdoMjBtLTE0IDdoOCIvPgogPHJlY3QgeD0iMTUwIiB5PSI5MiIgd2lkdGg9IjM0IiBoZWlnaHQ9IjU2IiByeD0iMSIvPgogPHBhdGggZD0iTTE0MSAxNTR2LTEwbDU1LTUyIi8+CiA8cGF0aCBkPSJNMzQ0IDU4djIwbTAgNTh2NTNtLTE2IDBoMzJtLTI2IDdoMjBtLTE0IDdoOCIvPgogPHJlY3QgeD0iMzA0IiB5PSI3OCIgd2lkdGg9IjgwIiBoZWlnaHQ9IjU4IiByeD0iNiIvPgo8L2c+CjxjaXJjbGUgY3g9IjE2NyIgY3k9IjU4IiByPSI0LjUiIGZpbGw9IiM4MmUzZWEiLz4KPGcgZmlsbD0iI2YwZjNmZiIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTUiPgogPHRleHQgeD0iMzAiIHk9IjQwIj7QqNC40L3QsCAvINC30LDQttC40Lw8L3RleHQ+PHRleHQgeD0iMTI0IiB5PSIxNjkiPlU8L3RleHQ+CiA8dGV4dCB4PSIxOTkiIHk9IjEyMyI+0J7Qn9CdPC90ZXh0Pjx0ZXh0IHg9IjM0NCIgeT0iMTA0IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7QlNCy0LjQs9CwLTwvdGV4dD48dGV4dCB4PSIzNDQiIHk9IjEyMiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+0YLQtdC70Yw8L3RleHQ+CiA8dGV4dCB4PSIyMjMiIHk9IjIxMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+0JfQsNC30LXQvNC70LXQvdC40LU8L3RleHQ+CjwvZz48L3N2Zz4K" alt="Шина питает оборудование. Параллельно от шины к заземлению включён ОПН, показанный условным знаком варистора." width="460" height="226"><figcaption>Ветвь «фаза — земля». Прямоугольник с диагональной чертой и буквой U — <a href="https://prikladmeh.ru/Standart/2.728-74.pdf" target="_blank" rel="noopener">УГО варистора по ГОСТ 2.728-74, табл. 1, поз. 14</a>.</figcaption></figure>
+</section>
+<section class="panel lesson-panel" id="vah-panel" hidden aria-labelledby="vah-title">
+<div class="panel-head"><div><h2 id="vah-title">Вольт-амперная характеристика ОПН</h2><p class="quiet">Ток по горизонтали (логарифмическая шкала), напряжение между выводами по вертикали.</p></div></div>
+<div class="learning-pad">
+<div class="formula">U<sub>ОПН</sub> = U<sub>10</sub>(I<sub>ОПН</sub> / 10 кА)<sup>0,075</sup> при I<sub>ОПН</sub> &gt; 0</div>
+<div class="chart-key"><span class="swatch">Учебная ВАХ</span><span class="swatch passport">Паспорт POLIM-D, 8/20 мкс</span><span class="swatch pick">Выбранная точка</span></div>
+<canvas id="vah-chart" class="learning-chart" width="860" height="260" role="img" aria-label="График учебной ВАХ и паспортных точек POLIM-D"></canvas>
+<label class="range"><span>Ток для чтения ВАХ</span><input id="vah-slider" type="range" min="-1" max="1.477121255" step="any" value="0"></label>
+<div class="events vah-events"><button type="button" data-vah="1">1 кА</button><button type="button" data-vah="5">5 кА</button><button type="button" data-vah="10">10 кА</button><button type="button" data-vah="20">20 кА</button><button type="button" id="vah-use-b">Ток с курсора B</button></div>
+<p id="vah-value" class="read-value"></p>
+<p class="quiet">Паспортные точки относятся к аппарату U<sub>c</sub> = 10 кВ и U<sub>r</sub> = 12,5 кВ. Ряд 8/20 мкс: 1 → 29,1; 2,5 → 30,8; 5 → 32,6; 10 → 35,0; 20 кА → 39,8 кВ. <a href="https://files.kempstoncontrols.com/files/7f2116a8a765bb505e804df76d349b6e/POLIM-D-12-03.pdf" target="_blank" rel="noopener">Паспорт, с. 2</a></p>
+<details><summary>Что означает sgn(I)?</summary><p>Обозначение sgn читается «сигнум» (лат. signum — знак). Это функция знака тока. При I &gt; 0 она равна +1, при I &lt; 0 равна −1, при I = 0 равна 0. В формуле знакопеременной модели модуль тока задаёт модуль напряжения. Знак определяет его полярность. Поэтому значение при −1 кА противоположно значению при +1 кА.</p><p><a href="https://encyclopediaofmath.org/wiki/Signum" target="_blank" rel="noopener">Определение и обозначение sgn в Encyclopedia of Mathematics</a></p></details>
+</div>
+</section>
+</div>
+
+<aside class="settings">
+<section class="panel settings-panel">
+<div class="panel-head"><div><h2>Параметры опыта</h2><p class="quiet">Сеть 10 кВ · одна фаза</p></div><button id="defaults" type="button">Исходные</button></div>
+<div class="form-part"><label for="mode">Сценарий грозы</label><select id="mode"><option value="direct">Удар в фазный провод</option><option value="induced">Удар рядом с ВЛ</option></select><div id="source-controls"></div><div class="hint" id="source-note"></div></div>
+<div class="form-part"><label for="location">Расположение ОПН</label><select id="location"><option value="off">Без защиты</option><option value="bus">На шинах подстанции</option><option value="motor">У двигателя</option></select><div id="line-controls"></div></div>
+<details class="form-part" id="advanced"><summary>Фронт, ОПН и параметры кабеля</summary><label class="check"><input type="checkbox" id="steep"> Более крутой входной фронт</label><div id="extra-controls"></div><label for="load">Импульсный эквивалент двигателя</label><select id="load"><option value="120">120 Ом</option><option value="420">420 Ом</option><option value="1000000000">Холостой конец</option></select></details>
+</section>
+<section class="panel results"><div class="panel-head"><div><h2>Результаты опыта</h2><p class="quiet">Пики за 180 мкс · импульсные величины</p></div></div><div id="metrics"></div><p id="verdict"></p></section>
+</aside>
+</section>
+
+<section id="reading" class="reading" hidden></section>
+<section id="wave-lesson" class="reading" hidden>
+<header class="reading-head"><h2>Отражение, преломление и время</h2><p>Первая граница без ОПН и пример ступени на ёмкостном конце.</p></header>
+<div id="wave-exp" class="card" hidden></div>
+<div class="card-grid wave-grid">
+<article class="card">
+<h3>Первая граница без ОПН</h3>
+<label class="compact" for="wave-end">Что находится за границей</label>
+<select id="wave-end"><option value="42">Кабель · 42 Ом</option><option value="350">Согласованная линия · 350 Ом</option><option value="open">Разомкнутый конец</option><option value="0">Короткое замыкание</option><option value="custom">Задать Z₂</option></select>
+<label class="range" id="wave-z2-control" hidden><span>Волновое сопротивление Z₂, Ом</span><input type="range" id="wave-z2" min="10" max="1000" step="1" value="120"></label>
+<label class="range"><span>Амплитуда ступени U<sub>пад</sub>, кВ</span><input type="range" id="wave-u" min="10" max="150" step="1" value="105"></label>
+<p class="quiet">Со стороны падающей волны Z₁ = 350 Ом.</p>
+<span class="formula">β = U<sub>отр</sub>/U<sub>пад</sub> = (Z₂ − Z₁)/(Z₂ + Z₁)</span>
+<span class="formula">α = U<sub>узла</sub>/U<sub>пад</sub> = 1 + β = 2Z₂/(Z₁ + Z₂)</span>
+<p id="wave-coeffs" class="read-value"></p>
+<canvas id="wave-chart" class="learning-chart" width="510" height="218" role="img" aria-label="Амплитуды падающей, отражённой и узловой волн"></canvas>
+<p id="wave-meaning" class="quiet"></p>
+</article>
+<article class="card">
+<h3>Приход, возврат и максимум источника</h3>
+<p>Длины берутся со стенда. В линии без потерь фронт переносится с постоянной скоростью. Повторные отражения приходят с задержкой.</p>
+<span class="formula">t<sub>РУ</sub> = ℓ<sub>ВЛ</sub>/v<sub>ВЛ</sub> · t<sub>дв</sub> = t<sub>РУ</sub> + ℓ<sub>каб</sub>/v<sub>каб</sub></span>
+<span class="formula">t<sub>возв</sub> = t<sub>РУ</sub> + 2ℓ<sub>каб</sub>/v<sub>каб</sub></span>
+<p id="wave-times"></p>
+<h3>Максимум двойной экспоненты</h3>
+<span class="formula">t<sub>пик,формы</sub> = ln(τ<sub>т</sub>/τ<sub>ф</sub>) / (1/τ<sub>ф</sub> − 1/τ<sub>т</sub>)</span>
+<p>Время считается от начала импульса. Для падающей волны на шинах прибавьте время пробега по ВЛ. У двигателя максимум может наступить раньше или позже из-за отражений и ОПН.</p>
+<p id="wave-pulse"></p><a href="#stand">Снять время на стенде</a>
+</article>
+<article class="card rc-card">
+<h3>Ёмкостный конец линии</h3>
+<p>Отдельный опыт по § 4.3.2 Важова и Лавриновича. Линия оканчивается ёмкостью C. В момент прихода ступени U<sub>пад</sub> напряжение на ёмкости начинает расти от нуля.</p>
+<span class="formula">τ = Z₁C &nbsp;·&nbsp; U<sub>C</sub>(t′) = 2U<sub>пад</sub>[1 − exp(−t′/τ)]</span>
+<div class="rc-controls"><label class="range"><span>Ёмкость на конце, нФ</span><input type="range" id="rc-c" min="1" max="5" step=".25" value="3"></label>
+<label class="range"><span>Время от прихода t′, мкс</span><input type="range" id="rc-time" min="0" max="8" step="any" value="1.05"></label></div>
+<div class="events"><button type="button" data-rc="tau">Одна τ</button><button type="button" data-rc="t50">50% отклика</button><button type="button" data-rc="t90">90% отклика</button></div>
+<p id="rc-values" class="read-value"></p>
+<canvas id="rc-chart" class="learning-chart" width="860" height="260" role="img" aria-label="Напряжение на ёмкостном конце после прихода ступени"></canvas>
+<p class="quiet">63,2% предельного напряжения достигаются через одну τ. Формула описывает заряд ёмкости после прихода ступени. Время распространения фронта ℓ/v находится отдельно.</p>
+</article>
+</div>
+</section>
+<footer><span>Техника высоких напряжений · Тема 17</span><a href="#theory">Источники и допущения</a></footer>
+</main>
+<script>
+const dt = .025, duration = 180, zLine = 350, zCable = 42, vLine = 290, vCable = 165;
+const base = Object.freeze({mode:'direct', stroke:24, distance:100, span:580, cable:165, lead:1.5, earth:3,
+  location:'motor', u10:35, limit:75, load:420, steep:false});
+const timeAt = i => i * dt;
+const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+const gamma = (outZ, inZ) => (outZ - inZ)/(outZ + inZ);
+const movExponent = .075;
+const ratedPoints = [[1,29.1],[2.5,30.8],[5,32.6],[10,35],[20,39.8]];
+const movVoltage = (i,u10) => Math.sign(i)*u10*Math.pow(Math.abs(i)/10,movExponent);
+
+function boundary(z1, z2, uIncident) {
+  const beta=z2===Infinity?1:gamma(z2,z1);
+  return {alpha:1+beta,beta, transmitted:(1+beta)*uIncident, reflected:beta*uIncident};
+}
+
+function capacitiveEnd(impedance, capacitance, incident, localTime) {
+  const tau=impedance*capacitance/1000; // Ω · nF → µs.
+  return {tau, final:2*incident, voltage:2*incident*-Math.expm1(-Math.max(0,localTime)/tau),
+    t50:tau*Math.LN2,t90:tau*Math.log(10)};
+}
+const sample = (values, i) => {
+  if(i < 0) return 0;
+  const start = Math.min(Math.floor(i), values.length - 1);
+  const end = Math.min(start+1, values.length - 1);
+  return values[start]+(values[end]-values[start])*(i-start);
+};
+
+function sourceInfo(p) {
+  const primary = p.mode === 'direct' ? zLine * p.stroke / 2 : 38.8465173 * p.stroke * 10 / p.distance;
+  const transfer = p.mode === 'direct' ? .025 : 1;
+  const rise = p.steep ? .25 : 1.4, tail = 55;
+  const peakTime = Math.log(tail / rise) / (1 / rise - 1 / tail);
+  const pulse = t => t < 0 ? 0 : Math.exp(-t/tail) - Math.exp(-t/rise);
+  const norm = pulse(peakTime);
+  return {primary, amplitude:primary * transfer, rise, tail, peakTime, lineDelay:p.span/vLine, cableDelay:p.cable/vCable,
+    at: t => primary * transfer * pulse(t)/norm};
+}
+
+function solve(p) {
+  const src = sourceInfo(p);
+  const names = ['incoming','bus','motor','mov','current','ground','leadV','energy','forward','back','outLine'];
+  const d = Object.fromEntries(names.map(k=>[k,new Float64Array(Math.round(duration/dt)+1)]));
+  const delay = src.cableDelay / dt;
+  const yLine = 1/zLine + 1/zCable, yMotor = 1/zCable + 1/p.load;
+  let previous = 0, peak = 0, peakIndex = 0, peakI = 0, peakIIndex = 0, devicePeak = 0;
+  const dynamic = p.lead/dt;
+  // Norton form for a lossless traveling-wave port. Backward Euler for series L.
+  function protectedNode(rhs, admittance) {
+    const z = 1/admittance;
+    const r = z + p.earth + dynamic;
+    const target = rhs*z + dynamic*previous;
+    const magnitude = Math.abs(target);
+    const currentAtVoltage = voltage => 10 * Math.pow(voltage/p.u10,1/movExponent);
+    let low = 0, high = Math.min(magnitude,movVoltage(magnitude/r,p.u10));
+    for(let step=0;step<28;step++) {
+      const mid = (low+high)/2;
+      if(mid+r*currentAtVoltage(mid) < magnitude) low = mid;
+      else high = mid;
+    }
+    const voltage = (low+high)/2, sign = Math.sign(target);
+    const i = sign*currentAtVoltage(voltage);
+    return [rhs*z-i*z,i,sign*voltage];
+  }
+  for(let i=0;i<d.incoming.length;i++) {
+    const t = timeAt(i);
+    const input = src.at(t-src.lineDelay);
+    d.incoming[i] = input;
+    const back = sample(d.back,i-delay);
+    const forward = sample(d.forward,i-delay);
+    const busRhs = 2*(input/zLine+back/zCable);
+    const motorRhs = 2*forward/zCable;
+    let bus = busRhs/yLine, motor = motorRhs/yMotor, iOpn = 0, vOpn = 0;
+    if(p.location === 'bus') [bus,iOpn,vOpn] = protectedNode(busRhs,yLine);
+    if(p.location === 'motor') [motor,iOpn,vOpn] = protectedNode(motorRhs,yMotor);
+    d.bus[i] = bus; d.motor[i] = motor;
+    d.forward[i] = bus-back; d.back[i] = motor-forward; d.outLine[i] = bus-input;
+    d.mov[i] = vOpn; d.current[i] = iOpn;
+    d.ground[i] = p.earth * iOpn; d.leadV[i] = dynamic * (iOpn-previous);
+    const power = iOpn * vOpn;
+    d.energy[i] = i ? d.energy[i-1] + (power+previous*d.mov[i-1])*.5*dt/1000 : 0;
+    previous = iOpn;
+    if(Math.abs(motor) > peak) {peak = Math.abs(motor); peakIndex = i;}
+    if(Math.abs(iOpn) > peakI) {peakI=Math.abs(iOpn);peakIIndex=i;}
+    devicePeak = Math.max(devicePeak, Math.abs(vOpn));
+  }
+  return {d, src, peak, peakIndex, peakI, peakIIndex, devicePeak, margin:p.limit-peak, energy:d.energy.at(-1)};
+}
+
+const links = {
+  signum:['Encyclopedia of Mathematics. Signum','https://encyclopediaofmath.org/wiki/Signum'],
+  book:['В. Ф. Важов, В. А. Лавринович, «Техника высоких напряжений» · §§ 4.2, 4.3, 4.5, 4.9','https://infra-m.ru/catalog/energetika_promyshlennost/tekhnika_vysokikh_napryazheniy_6/'],
+  ieee:['IEEE Std 1410-2010 · удары в линию, наведённые импульсы, приложение B','https://webstore.ansi.org/standards/ieee/ieeestd14102010'],
+  pue4:['ПУЭ 7, пп. 4.2.133, 4.2.153 · грозозащита РУ и ПС','https://www.elec.ru/library/direction/pue/razdel-4-2-9.html'],
+  pue1:['ПУЭ 7, пп. 1.7.105–1.7.108 · грунты с высоким удельным сопротивлением','https://www.elec.ru/library/direction/pue/razdel-1-7-11.html'],
+  gost:['ГОСТ Р 52725-2021 · ОПН для электроустановок 3–750 кВ','https://protect.gost.ru/gost/details/d32f7435-a831-4830-9b3d-d6452d80fef5'],
+  iec:['IEC 60071-2:2023 · координация изоляции','https://webstore.iec.ch/en/publication/64145'],
+  iecOpn:['IEC 60099-4:2014 · металлооксидные ОПН без искровых промежутков','https://webstore.iec.ch/en/publication/735'],
+  symbol:['ГОСТ 2.728-74, табл. 1, поз. 14 · условное обозначение варистора','https://prikladmeh.ru/Standart/2.728-74.pdf'],
+  operation:['Приказ Минэнерго № 1070, разд. XLII · эксплуатация защиты от перенапряжений','https://www.consultant.ru/document/cons_doc_LAW_433519/4a4d3c60a769f957d8ed8f558531078109278968/'],
+  kola:['Новикова, Шмараго, Макашин. Сборник НИИПТ № 63, с. 138','https://www.ntcees.ru/departments/NTO/sections/sbornik_63.pdf'],
+  yakutia:['Киселев, Львов, Назарычев. «Электричество», 2025, № 3, с. 4–15','https://etr1880.mpei.ru/index.php/electricity/article/view/944'],
+  tyumen:['«ЭЛЕКТРОЭНЕРГИЯ. Передача и распределение», 2021, № 4, с. 118–122','https://polymer-apparat.ru/articles/zhurnal-elektroenergiya/opyt-primeneniya-lineynykh-opn-razryadnikov-dlya-zashchity-lineynoy-izolyatsii-vl-110-kv-issledovani/'],
+  datasheet:['ABB POLIM-D · паспортные точки, с. 2, импульс 8/20 мкс','https://files.kempstoncontrols.com/files/7f2116a8a765bb505e804df76d349b6e/POLIM-D-12-03.pdf'],
+  photo:['Schennikova.ks, фото полимерного ОПН, CC BY-SA 4.0','https://commons.wikimedia.org/wiki/File:High-voltage_surge_arrester.jpg'],
+  opn:['Hitachi Energy POLIM-D · конструкция и паспортные параметры','https://www.hitachienergy.com/products-and-solutions/surge-arresters/medium-voltage-surge-arresters/polim-d'],
+  strokes:['Schoene и др., 2007 · опыт с прямыми ударами во Флориде','https://www.lightning.ece.ufl.edu/PDF/IEEE/Schoene_et_al_2007a.pdf'],
+  soil:['DeCarlo и др. · измерения токов, поступающих из грунта в линию','https://cris.unibo.it/handle/11585/76576']
+};
+const link = key => `<a href="${links[key][1]}" target="_blank" rel="noopener">${links[key][0]}</a>`;
+const terms = {
+ 'β (бета)':'Коэффициент отражения напряжения: Uотр/Uпад на границе. Греческая Γ (гамма) в прежней записи обозначала тот же коэффициент. Это число без единиц, не проводимость G.',
+ 'α (альфа)':'Коэффициент преломления напряжения: Uузла/Uпад = 1 + β. Для двух линий Uузла равняется напряжению первой прошедшей волны.',
+ 'sgn(I)':'Сигнум (лат. signum — знак) — стандартное обозначение функции знака: +1 при положительном токе, −1 при отрицательном, 0 при нуле. Она нужна для записи обеих полярностей одной формулой. В расчёте для I > 0 множитель равен единице.',
+ 'Постоянная времени τ':'В ёмкостном опыте τ = Z₁C. Время t′ отсчитывается после прихода ступени. При t′ = τ напряжение достигает 63,2% предельного.',
+ 'ОПН':'Ограничитель перенапряжений нелинейный. Варисторный столб пропускает значительно больший ток при повышении напряжения и отводит часть импульсного тока в заземление.',
+ 'Волновое сопротивление':'Отношение напряжения бегущей волны к её току. Для линии без потерь Z = √(L′/C′), где L′ и C′ — параметры на единицу длины.',
+ 'Остающееся напряжение':'Импульсное напряжение между выводами ОПН во время протекания разрядного тока. Паспортное значение задаётся для установленной формы и амплитуды тока.',
+ 'Координация изоляции':'Выбор выдерживаемых напряжений изоляции с учётом ожидаемых воздействий и уровня защиты. Стенд показывает учебную проверку одного расчётного импульса.',
+ 'Подъём потенциала земли':'Разность потенциалов локальной точки заземления и условно удалённой земли при прохождении тока. Она отличается от напряжений прикосновения и шага.'
+};
+const term = key => `<button class="term" type="button" data-term="${key}">${key}</button>`;
+const theory = [
+ ['Откуда берётся волна','<p>При прямом ударе ток вводится в провод. При близком ударе изменяющееся электромагнитное поле наводит напряжение. Грозотросы и молниеотводы перехватывают прямые удары. Такой перехват сам по себе не устраняет наведённые импульсы, а подъём потенциала опоры может приводить к обратному перекрытию.</p><span class="formula">U<sub>точка</sub> ≈ I<sub>м</sub>Z<sub>ВЛ</sub>/2 &nbsp;&nbsp; U<sub>нав</sub> ≈ 38,85 I<sub>м</sub>h/d</span><p>Первое выражение относится к двум одинаковым отходящим участкам в момент удара до отражений и перекрытия. Второе — оценка максимума по упрощённой формуле Руска при скорости обратного разряда 0,4c и идеализированном грунте. Если I в кА, результат в кВ. Высота h = 10 м, d — в метрах.</p><p>Прямой режим подаёт к РУ <strong>2,5% от исходного пика</strong> как заданное условие. Это позволяет сравнить защиту на одном входном воздействии. Коэффициент не вычисляется по состоянию реальной ВЛ. Наведённый импульс представлен эквивалентной волной, запущенной в ближайшей точке.</p><p>ПУЭ 7, п. 4.2.153 требует защиты РУ 3–20 кВ с присоединёнными ВЛ. Сравнение «без защиты», «на шинах» и «у двигателя» показывает влияние одной ветви на напряжения.</p>'],
+ ['Отражение и преломление',`<p>В прежней записи ${term('β (бета)')} обозначалось Γ (гамма). ${term('α (альфа)')} показывает долю напряжения на границе, а β — напряжение отражённой волны относительно падающей.</p><span class="formula">β = (Z₂ − Z₁)/(Z₂ + Z₁) &nbsp; α = 1 + β = 2Z₂/(Z₁ + Z₂)</span><span class="formula">U<sub>отр</sub> = βU<sub>пад</sub> &nbsp; U<sub>пр</sub> = αU<sub>пад</sub></span><p>Z₁ и Z₂ — волновые сопротивления по обе стороны границы, Ом. Для 350 → 42 Ом β = −0,7857 и α = 0,2143. На ступень 105 кВ получаем −82,5 кВ отражённой и 22,5 кВ прошедшей волны. При возврате от нагрузки понадобится отдельный расчёт. <a href="#waves">Сравнить четыре границы</a>.</p>`],
+ ['Три разных времени',`<span class="formula">t<sub>пр</sub> = ℓ/v &nbsp;·&nbsp; t<sub>возв</sub> = t<sub>РУ</sub> + 2ℓ<sub>каб</sub>/v<sub>каб</sub></span><p>В исходной цепи фронт проходит ВЛ за 2 мкс и кабель за 1 мкс. Первый возврат к шинам приходит в 4 мкс. Время достижения максимума двойной экспоненты зависит от её параметров.</p><span class="formula">t<sub>пик</sub> = ln(τ<sub>т</sub>/τ<sub>ф</sub>)/(1/τ<sub>ф</sub> − 1/τ<sub>т</sub>)</span><p>Для ступени на ёмкостном конце ${term('Постоянная времени τ')} задаёт иную зависимость: U<sub>C</sub> = 2U<sub>пад</sub>[1 − exp(−t′/τ)]. Время t′ отсчитывается с прихода фронта. При τ = 1,05 мкс 90% достигаются через 2,418 мкс. Этот пример вынесен на вкладку «Волны и время».</p>`],
+ ['Вольт-амперная характеристика ОПН',`<p>${term('ОПН')} включён между фазой и землёй. По горизонтали на ВАХ отложен ток ОПН. По вертикали — напряжение между выводами. Откройте вкладку «ОПН», затем «Показать ВАХ».</p><span class="formula">U<sub>ОПН</sub> = U<sub>10</sub>(I / 10 кА)<sup>0,075</sup> &nbsp; при I &gt; 0</span><p>U<sub>10</sub> задаёт значение при 10 кА в учебной модели. Для отрицательной полярности знак меняется. Общая запись использует ${term('sgn(I)')}. При 1 кА и U<sub>10</sub> = 35 кВ модель даёт 29,45 кВ, при 10 кА — 35 кВ. На графике отдельно показаны точки POLIM-D для 8/20 мкс. Например, при 10 кА на крутом импульсе 1/… мкс тот же паспорт даёт 39,9 кВ.</p><p>${term('Остающееся напряжение')} зависит от формы и амплитуды разрядного тока. U<sub>c</sub>, U<sub>r</sub>, временные перенапряжения и допустимые импульсные нагрузки проверяют по паспорту.</p>`],
+ ['От выводов ОПН к изоляции двигателя',`<span class="formula">U<sub>узла</sub> = U<sub>ОПН</sub> + L<sub>подв</sub>·dI/dt + IR<sub>имп</sub></span><p>Формулу применяют в точке присоединения ОПН. Чтобы проверить её, возьмите все три слагаемых в один момент B. Если ОПН на шинах, у двигателя измеряйте собственную кривую с задержкой и отражениями.</p><span class="formula">ΔU = U<sub>выд</sub> − max|U<sub>дв</sub>(t)| &nbsp;·&nbsp; M = (ΔU/U<sub>выд</sub>)·100%</span><p>M — доля учебного порога, оставшаяся между пиком и пределом. Например, 75 − 30,21 = 44,79 кВ, M = 59,72%. При пике 100,48 кВ запас отрицательный: −25,48 кВ. В стенде корпус принят на опорном потенциале. При общем подъёме корпуса и заземляющей сетки требуется разность «фаза — корпус». ${term('Координация изоляции')} учитывает тип воздействия и выдерживаемое напряжение именно этого оборудования.</p><span class="formula">W = ∫ U<sub>ОПН</sub> I<sub>ОПН</sub> dt &nbsp;·&nbsp; Q = ∫ I<sub>ОПН</sub> dt</span><p>Энергия W измеряется в джоулях, заряд Q — в кулонах (для однонаправленного импульса). Это разные характеристики нагрузки на аппарат.</p>`],
+ ['Заземление в импульсном режиме',`<p>${term('Подъём потенциала земли')} в сосредоточенной модели равен I R<sub>имп</sub>. Горизонтальная пунктирная линия обозначает 0 кВ выносной земли. Розовая кривая показывает потенциал локального заземления ОПН. Она остаётся на нуле до прихода волны к точке установки. Затем её форма повторяет форму тока при постоянном ненулевом R<sub>имп</sub>. R<sub>имп</sub> — заданный эквивалент импульсного пути от нижнего вывода до условной выносной земли. Например, 1 кА × 5 Ом = 5 кВ. Индуктивность соединений добавляет напряжение на крутом фронте.</p><p>Удельное сопротивление грунта ρ измеряют в Ом·м. Его связь с сопротивлением заземлителя зависит от геометрии, слоистости, влажности и сезона. ПУЭ гл. 1.7 рассматривает заземление и электробезопасность при заданных условиях. Напряжения прикосновения и шага здесь отдельно не вычисляются.</p>`],
+ ['Что заложено в источник','<span class="formula">f(t) = e<sup>−t/τₜ</sup> − e<sup>−t/τф</sup>, &nbsp; u(t) = U<sub>пик</sub> f(t)/max f</span><p>Принято τ<sub>т</sub> = 55 мкс, τ<sub>ф</sub> = 1,4 или 0,25 мкс. Это параметры учебного импульса, а не стандартные параметры фронта/полуспада. Обозначения 1,2/50 мкс относятся к стандартному импульсу напряжения, 8/20 мкс — к разрядному импульсу тока. Стенд не имитирует приёмочное испытание.</p><p>ОПН учитывается в уравнении токов узла, а не простым обрезанием кривой по порогу. Шаг 0,025 мкс, окно расчёта 180 мкс. Энергия на карточке — интеграл за это окно.</p>'],
+];
+const experiments = [
+ ['stand','Измерить скорость фронта',{},'Нажмите «Фронт на шинах», нажмите «Запомнить A». Нажмите «Фронт у двигателя». Запишите оба времени и Δt. Установите кабель 330 м, повторите оба замера.','При 165 м: A = 2,00 мкс, B = 3,00 мкс, Δt = 1,00 мкс. При 330 м: B = 4,00 мкс и Δt = 2,00 мкс. Скорость 165 м/мкс.'],
+ ['stand','Прямой удар и наведённая волна',{location:'off'},'Снимите пик принятой входной волны и пик двигателя при 24 кА. Выберите удар рядом с ВЛ, расстояние 100 м. Повторно снимите оба пика.','Прямая волна на подходе 105,0 кВ при заданном коэффициенте. Наведённая — около 93,23 кВ. На двигателе около 100,48 и 89,22 кВ. Сравнение зависит от обоих принятых источников.'],
+ ['stand','Влияние расстояния до удара',{mode:'induced',location:'off',distance:50},'Запишите входной пик при 50 м. Увеличьте расстояние до 100 м. Проверьте отношение входных пиков и сравните пики на двигателе.','При неизменных I и h оценка Руска пропорциональна 1/d: около 186,46 и 93,23 кВ. В линейном режиме без ОПН пиковое напряжение двигателя также уменьшается вдвое.'],
+ ['stand','Отражение на конце кабеля',{location:'off',load:120},'Выберите окно 16 мкс. Запишите пик и форму первых ступеней для 120 Ом. Выберите «Холостой конец». Сравните первую часть записи.','β для 120 Ом равен 0,4815. Для холостого конца β ≈ +1. Смотрите первый проход и первые возвраты. Пик зависит и от последующих отражений.'],
+ ['stand','Порог изоляции',{location:'off'},'Оставьте параметры источника. По очереди установите учебный предел 75 и 110 кВ. Запишите ΔU. Объясните, какой измеренный сигнал должен сохраниться.','Пик остаётся 100,48 кВ. Запасы −25,48 и +9,52 кВ. Ползунок изменяет сравнение, поэтому физическая кривая не меняется.'],
+
+ ['opn','Что происходит внутри ОПН',{},'Откройте разрез, поверните корпус. Перейдите к пику двигателя. Кнопкой «Пик тока ОПН» откройте график тока и поставьте B на максимум. Снимите время и ток.','В начальном режиме пик тока около 0,60 кА. Подсветка столба связана с текущим током. Она гаснет при отключении ветви ОПН.'],
+ ['opn','Место установки ограничителя',{location:'bus'},'Снимите пик на двигателе с ОПН на шинах, у двигателя и без ОПН. Запишите три значения ΔU для порога 75 кВ.','Около 37,16, 30,21 и 100,48 кВ соответственно. Защита в одной точке не задаёт напрямую пик в другой.'],
+ ['opn','Паспортный уровень и реальный ток',{},'Установите U₁₀ 35 кВ. Запишите пик тока и максимальное напряжение между выводами ОПН. Повторите при U₁₀ = 45 кВ. Объясните, почему график не обязан достигать U₁₀.','В первом режиме Iпик ≈ 0,60 кА и Uпик ОПН ≈ 28,33 кВ. Паспортная точка U₁₀ относится к 10 кА. Изменение ВАХ одновременно меняет напряжение и ток.'],
+ ['opn','Вклад индуктивности',{steep:true,lead:0},'При крутом фронте сравните L = 0 и 8 мкГн. На одном и том же времени B запишите напряжение двигателя, напряжение ОПН и L·dI/dt.','При L = 0 вклад подъёма на индуктивности равен нулю. При ненулевом L знак зависит от нарастания или спада тока. Сравнивайте синхронные отсчёты.'],
+ ['opn','Энергия в окне измерения',{window:'180'},'Запустите импульс. Запишите энергию с ОПН у двигателя. Увеличьте ток молнии с 24 до 36 кА и повторите. Сравните энергию и пиковый ток.','В исходном режиме в варисторах рассеивается около 0,441 кДж за 180 мкс. Увеличение входной амплитуды повышает ток и энергию. Для выбора аппарата нужно паспортное ограничение и сведения о повторных воздействиях.'],
+
+ ['ground','Подъём потенциала',{earth:3},'Кнопками «До прихода волны», «Пик тока ОПН» и «На спаде» запишите пары I и ΔUзем. При ненулевом токе проверьте ΔUзем/I. Повторите при 15 Ом, оставив ОПН у двигателя.','До 3,00 мкс тока и подъёма нет. При Rимп = 3 Ом на пике тока около 0,597 кА подъём ≈ 1,79 кВ. При смене сопротивления ток тоже меняется. Отношение одновременных ненулевых отсчётов даёт заданное сопротивление.'],
+ ['ground','Два пути возврата тока',{earth:18},'Снимите пик двигателя и запас для 18 Ом. Затем установите 4,5 Ом и снимите те же величины. Укажите, где стоит ОПН.','В этой модели снижение Rимп при ОПН у двигателя уменьшает пик и увеличивает запас. Эти два сопротивления заданы как эквиваленты.'],
+ ['ground','Варистор и заземление в одной записи',{earth:12},'На пике двигателя выпишите одновременно Uдв, UОПН, Uзем и L·dI/dt. Сложите три вклада.','Сумма трёх вкладов равна Uдв в момент B при установке ОПН непосредственно у двигателя. Пики разных кривых подставлять в эту сумму нельзя.'],
+ ['ground','Высокоомный грунт. Проектное решение',{earth:18,lead:6,steep:true},'В режиме крутой волны сравните отдельно укорочение подводов до 1 мкГн и снижение Rимп до 5 Ом. Назовите, какое изменение сильнее повлияло на пик в вашем опыте.','Укорочение подводов меняет L·dI/dt, снижение Rимп — резистивную составляющую. Сравнение относится к выбранной форме импульса. Для объекта дополнительно нужны результаты измерений грунта.'],
+ ['ground','Контроль с отключённой ветвью',{location:'off'},'При снятом ОПН сравните 3 и 20 Ом, запишите пик двигателя и Uзем. Установите ОПН и повторите.','При отключённом ОПН I = 0 и Uзем = 0 в этой ветви, поэтому его условное сопротивление не влияет на пик. После подключения влияние проявляется.'],
+ ['waves','Знаки на первой границе',{waveEnd:'42'},'При 105 кВ сравните кабель 42 Ом, согласование 350 Ом, разомкнутый и закороченный концы. Для каждого найдите α, β и напряжение узла.','Для режимов по порядку β = −0,7857; 0; +1; −1, α = 0,2143; 1; 2; 0. Напряжения в узле: 22,5; 105; 210; 0 кВ.'],
+ ['waves','Заряд ёмкостного конца',{rcC:3},'Выберите 3 нФ, нажмите «Одна τ» и «90% отклика». Снимите времена и напряжения. Повторите при 5 нФ. Для кабеля стенда отдельно выпишите время пробега.','При 3 нФ: τ = 1,05 мкс, U(τ) = 132,75 кВ, t′₉₀ = 2,418 мкс. При 5 нФ: τ = 1,75 мкс, U(τ) те же 132,75 кВ, t′₉₀ = 4,030 мкс. В обоих случаях U(t′₉₀) = 189 кВ.'],
+ ['opn','Чтение учебной и паспортной ВАХ',{},'Нажмите «Показать ВАХ». Снимите напряжение при 1, 5, 10 и 20 кА. Сравните точки паспорта 8/20 мкс с теми же токами. Затем нажмите «Пик тока ОПН» и перенесите ток с B на ВАХ.','При U₁₀ = 35 кВ учебные значения 29,45; 33,23; 35,00; 36,87 кВ. Паспортные 29,1; 32,6; 35,0; 39,8 кВ. Совпадение при 10 кА связано с выбранной опорной точкой. На B = 6,40 мкс I ≈ 0,597 кА и U ≈ 28,33 кВ.'],
+ ['opn','Запас в кВ и процентах',{},'При пределе 75 кВ снимите пиковое напряжение двигателя с ОПН у двигателя, на шинах и без ОПН. Рассчитайте ΔU и M = 100·ΔU/75. Укажите опорную точку.','При установке у двигателя +44,79 кВ и около +59,72%. На шинах +37,84 кВ и +50,45%. Без ОПН −25,48 кВ и −33,97%. Оценка относится к фазе относительно принятого опорного потенциала корпуса.']
+];
+const cases = [
+ ['Кольско-Карельский транзит 330 кВ','В историческом анализе НИИПТ для семи линий авторы приводят в среднем 8 грозовых отключений из 14 отключений по КЗ в год. Отмечена связь низкой грозоупорности с повышенными сопротивлениями заземления опор.','Откройте учебный опыт 10 кВ и измените Rимп. Затем объясните, какие параметры опор, грозотроса и грунта потребовались бы для воспроизведения обратного перекрытия на ВЛ 330 кВ.','kola',13],
+ ['Россети Тюмень. Пилотные ВЛ 110 кВ','С 2008 года на линиях Губкинская — Новогодняя и Контур — Ай-Пимская применяли линейные разрядники с внешним искровым промежутком. В публикации описаны двухцепные отключения на незащищённых ответвлениях.','На стенде сравните три места/режима защиты. Объясните разницу между защитой отдельного узла и грозоупорностью всей трассы. Внешний искровой промежуток и вторая цепь учебным ОПН не моделируются.','tyumen',6],
+ ['Россети — МЭС Востока. Аварийность ВЛ 220 кВ','Авторы проанализировали 2017–2024 гг., сопоставили число грозовых отключений до и после установки линейных разрядников и рассмотрели импульсные сопротивления заземляющих устройств опор.','Сравните два импульсных сопротивления на стенде. Для анализа статистики реальной ВЛ назовите продолжительность периодов, длину участка, грозовую активность и данные о повреждениях разрядников.','yakutia',11],
+ ['Прямые удары по опытной ВЛ, Флорида','В опыте ICLRT регистрировали прямые удары в две обесточенные ВЛ длиной около 800 м с несколькими пунктами установки ОПН. В части опытов отключались отсоединители ОПН. Установка трансформатора изменила конфигурацию испытаний.','Сравните три положения защиты на стенде. Назовите, какие данные о расположении ОПН и ограничении тока нужны, чтобы перенести вывод на опытную ВЛ.','strokes',1],
+ ['Ток из грунта в опытную линию','В другом опыте ICLRT измеряли токи, поступающие из грунта в обесточенную ВЛ через заземления при ударе вблизи линии. Это ещё один путь воздействия на сеть, помимо наведения.','На стенде сравните близкий удар и подъём локальной земли при работе ОПН. Укажите, какой путь в распределённом грунте нужно добавить, чтобы воспроизвести полевой опыт.','soil',10],
+ ['Подстанция на скальном грунте Кольского полуострова','Учебный сценарий для РУ 10 кВ и электропривода. Пусть два варианта пути возврата тока имеют импульсные эквиваленты 18 и 4,5 Ом.','Снимите пик на двигателе. Сравните, что меняется при улучшении заземления и при укорочении присоединений ОПН. Для проекта запросите профиль ρ по глубине, сведения о сезонности, геометрию и расчёт напряжений прикосновения.','pue1',13]
+];
+const tasks = [
+ ['Время прихода волны','До РУ 870 м ВЛ, от шин до двигателя 330 м кабеля. Найдите обе отметки времени от начала импульса.','870/290 = 3 мкс, 330/165 = 2 мкс. Итого у двигателя 5 мкс.'],
+ ['Преломление на вводе','Падает 105 кВ. На стороне ВЛ 350 Ом, на стороне кабеля 42 Ом. ОПН пока выключен. Найдите первое отражение и волну, уходящую в кабель.','β = −0,7857. Отражённая −82,5 кВ, прошедшая 22,5 кВ. На первом приходе других волн в узле ещё нет.'],
+ ['Близкий удар','Iм = 24 кА, h = 10 м. Сравните пики при d = 50 и 100 м.','38,8465 × 24 × 10 / d. Получается 186,46 и 93,23 кВ.'],
+ ['Напряжение защищаемой точки','В момент B: UОПН = 31 кВ, I = 1,8 кА, Rимп = 5 Ом, L = 2 мкГн, dI/dt = 0,75 кА/мкс. Найдите Uузла и запас до 75 кВ в этот момент.','31 + 1,8 × 5 + 2 × 0,75 = 41,5 кВ. Запас в момент B равен 33,5 кВ. Чтобы проверить импульс целиком, нужен максимум |U|.'],
+ ['Приближённая энергия ОПН','На условном прямоугольном участке импульса UОПН = 32 кВ, I = 1,2 кА и Δt = 40 мкс. Найдите энергию за участок.','32 × 1,2 × 40 = 1536 Дж = 1,536 кДж. Для реальной формы используйте интеграл.'],
+ ['Смена места установки','На шинах с ОПН пик 31 кВ. На двигателе пик 82 кВ, его учебный уровень 75 кВ. Какой запас должен попасть в отчёт?','Для изоляции двигателя ΔU = 75 − 82 = −7 кВ. Нужен пик именно на двигателе.'],
+ ['Максимум двойной экспоненты','У формы импульса τф = 1,4 мкс, τт = 55 мкс. ВЛ длиной 580 м, скорость 290 м/мкс. Найдите время максимума падающей волны в точке ввода.','От запуска формы до максимума ln(55/1,4)/(1/1,4 − 1/55) ≈ 5,273 мкс. С задержкой ВЛ: 7,273 мкс.'],
+ ['Время достижения заданного уровня','На ёмкостный конец Z₁ = 350 Ом, C = 3 нФ приходит ступень 105 кВ. Каковы τ, t′₉₀, U(τ) и t₉₀ от запуска, если пробег 2 мкс?','τ = 1,05 мкс. U(τ) = 210(1−e⁻¹) ≈ 132,75 кВ. t′₉₀ = τ ln 10 ≈ 2,418 мкс. t₉₀ ≈ 4,418 мкс.'],
+ ['Рабочая точка и знак','Учебная ВАХ U₁₀ = 35 кВ, m = 0,075. Определите U при +5 и −5 кА. Чему равно U/I при +5 кА?','При +5 кА около +33,23 кВ, при −5 кА −33,23 кВ. Отношение U/I ≈ 6,65 Ом.'],
+ ['Относительный запас','Uвыд = 75 кВ. На зажимах двигателя зафиксированы положительный пик 72 кВ и отрицательный −80 кВ. Найдите ΔU и M = 100·ΔU/Uвыд.','Максимум модуля 80 кВ, ΔU = 75 − 80 = −5 кВ. M ≈ −6,67%.']
+];
+
+function quizFor(v) {
+  const ℓ=145*(v+2), cable=165*v, current=12+4*v, dist=20+10*v, res=2*v+1;
+  const number = (ask, ok, wrong, unit, why) => [ask,`${fmt(ok,2)} ${unit}`,wrong.map(n=>`${fmt(n,2)} ${unit}`),why];
+  const q = [
+    number(`ВЛ ${ℓ} м. Через сколько фронт дойдёт до шин при v = 290 м/мкс?`,ℓ/290,[ℓ/165,ℓ/290+2],'мкс','Время равно длине пути, делённой на скорость на ВЛ.'),
+    number(`Как долго идёт волна по кабелю ${cable} м при 165 м/мкс?`,v,[2*v,.5*v],'мкс','На участке кабеля используйте его скорость.'),
+    number(`Ток ${current} кА делится между одинаковыми участками по 350 Ом. Какой исходный пик в точке удара?`,current*175,[current*350,current*35],'кВ','В каждое направление уходит половина тока.'),
+    number(`Наведение при ${current} кА, h = 10 м и d = ${dist} м. Каков расчётный пик?`,38.8465173*current*10/dist,[38.8465173*current*20/dist,38.8465173*current*5/dist],'кВ','По формуле Руска пик пропорционален I·h/d.'),
+    number(`I через ОПН = 2 кА, эквивалент заземления ${res} Ом. Каков подъём земли?`,2*res,[res/2,3*res],'кВ','В модели используется Uзем = IRимп.'),
+    number(`Пик двигателя ${51+8*v} кВ, порог ${75+3*v} кВ. Каков запас?`,24-5*v,[29+5*v,126+11*v],'кВ','Запас равен порогу минус пик на двигателе.'),
+    ['Какой знак имеет первое отражение ВЛ → кабель без ОПН при 350 → 42 Ом?','Отрицательный',['Положительный','Коэффициент равен нулю'],'β = (42−350)/(42+350).'],
+    ['Что происходит при первом приходе на условно открытый конец?','Падающая и отражённая волны дают примерно удвоение напряжения',['Напряжение исчезает','Исчезает отражённая волна'],'Коэффициент отражения напряжения β стремится к +1.'],
+    ['Что изменится, если в опыте с ёмкостным концом удвоить C?','Время достижения 90% удвоится',['Предельное напряжение удвоится','Скорость фронта вдоль ВЛ уменьшится вдвое'],'τ = Z₁C, t′₉₀ = τ ln 10. Предельное напряжение 2Uпад.'],
+    ['Что показывает канал «ОПН между выводами»?','Напряжение на варисторной ветви между выводами',['Всю разность потенциалов двигателя и удалённой земли','Действующее напряжение сети'],'Напряжение узла также учитывает подводы и импульсный путь к земле.'],
+    ['Параметр U₁₀ в модели относится к какому току?','К импульсному току ОПН 10 кА',['К току молнии 10 кА','К номинальному току двигателя'],'Это опорная точка варисторной ВАХ.'],
+    ['Как выбрать точки измерения для проверки Uузла = UОПН + Uзем + Uподв?','Взять все составляющие в один и тот же момент',['Взять максимумы каждого канала','Усреднить каждый канал по своему интервалу'],'Пики компонентов могут приходиться на разное время.'],
+    ['Чем определяется энергия, выделенная в варисторах за окно?','Интегралом произведения напряжения и тока ОПН',['Только максимальным остающимся напряжением','Максимальным напряжением двигателя, делённым на сопротивление земли'],'Интеграл мощности даёт энергию.'],
+    ['Какое действие позволяет отдельно увидеть эффект подводов?','Менять L при неизменных источнике, месте ОПН и Rимп',['Одновременно менять источник и Rимп','Снимать пик другого канала'],'При сравнении меняйте один параметр.'],
+    ['Что потребуется для расчёта рабочего заземлителя на скальном грунте?','Измерения удельного сопротивления, геометрия и проверка электробезопасности',['Только номинальный ток двигателя','Только уставка учебного порога'],'Rимп стенда не заменяет исследование грунта и расчёт заземления.']
+  ];
+  return q.map((_,i)=>q[(i+3*(v-1))%q.length]);
+}
+
+const colors = {bus:'#78dfef', motor:'#c5adff', mov:'#ffc582', current:'#87ebae', ground:'#ff9ba6', leadV:'#9fabce', base:'#9fa9bf', limit:'#fb939b'};
+
+function canvasSetup(el, designW, designH) {
+  const width = el.clientWidth, height = el.clientHeight;
+  const density = Math.min(window.devicePixelRatio || 1, 2);
+  if(el.width !== Math.round(width*density) || el.height !== Math.round(height*density)) {
+    el.width = Math.round(width*density); el.height = Math.round(height*density);
+  }
+  const ctx = el.getContext('2d');
+  ctx.setTransform(el.width/designW,0,0,el.height/designH,0,0);
+  ctx.clearRect(0,0,designW,designH);
+  return ctx;
+}
+function path(ctx, points, color, width=1.5, fill=null) {
+  ctx.beginPath();
+  for(const [index,[x,y]] of points.entries()) index ? ctx.lineTo(x,y) : ctx.moveTo(x,y);
+  if(fill) {ctx.closePath();ctx.fillStyle=fill;ctx.fill();}
+  if(color) {ctx.strokeStyle=color;ctx.lineWidth=width;ctx.stroke();}
+}
+function txt(ctx, value, x, y, color='#daE3fb', size=14, align='left', weight=500) {
+  ctx.font = `${weight} ${size}px system-ui`;
+  ctx.fillStyle=color;ctx.textAlign=align;ctx.fillText(value,x,y);
+}
+function box(ctx, x, y, w, h, r, fill, stroke) {
+  ctx.beginPath();ctx.roundRect(x,y,w,h,r);
+  if(fill){ctx.fillStyle=fill;ctx.fill();}
+  if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=1;ctx.stroke();}
+}
+function dot(ctx, x, y, r, fill) {
+  ctx.beginPath();ctx.arc(x,y,r,0,2*Math.PI);ctx.fillStyle=fill;ctx.fill();
+}
+function iso(ctx, x,y,w,h,depth,colors) {
+  path(ctx,[[x,y],[x+depth,y-depth/2],[x+w+depth,y-depth/2],[x+w,y]], '#627390',1,colors[0]);
+  path(ctx,[[x+w,y],[x+w+depth,y-depth/2],[x+w+depth,y+h-depth/2],[x+w,y+h]], '#627390',1,colors[1]);
+  box(ctx,x,y,w,h,1,colors[2],'#627390');
+}
+function pulseOn(ctx, a,b,ratio,hue,direction=1) {
+  if(ratio<0 || ratio>1) return;
+  const pos = f => [a[0]+(b[0]-a[0])*f,a[1]+(b[1]-a[1])*f];
+  const [x,y]=pos(ratio);
+  ctx.save();ctx.shadowColor=hue;ctx.shadowBlur=18;
+  path(ctx,[pos(clamp(ratio-direction*.14,0,1)),[x,y]],hue,5);
+  dot(ctx,x,y,4.6,hue);dot(ctx,x,y,2,'#ffffff');ctx.restore();
+}
+function sky(ctx,w,h) {
+  const g=ctx.createLinearGradient(0,0,0,h);
+  g.addColorStop(0,'#232648');g.addColorStop(.65,'#17223a');g.addColorStop(1,'#101b26');
+  ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
+}
+function terrain(ctx,w,y) {
+  path(ctx,[[0,y],[w*.13,y-19],[w*.23,y-31],[w*.33,y-13],[w*.42,y-34],[w*.55,y-17],[w*.67,y-28],[w*.81,y-4],[w,y-29],[w,y+70],[0,y+70]],null,1,'#20334a');
+  path(ctx,[[0,y+12],[w,y-1],[w,y+70],[0,y+70]],null,1,'#172b35');
+  for(let i=0;i<17;i++) {
+    const x=(i*137)%w, dy=(i*19)%35;
+    path(ctx,[[x,y+11+dy],[x+19,y+13+dy],[x+37,y+10+dy]],'#284651',1);
+  }
+}
+function pylon(ctx,x,y,ground,s) {
+  const l=x-18*s,r=x+18*s, t=x-5*s, u=x+5*s;
+  path(ctx,[[l,ground],[t,y-30*s],[u,y-30*s],[r,ground]],'#8a9bbb',2);
+  for(let i=0;i<4;i++) {
+    const f=i/4,f2=(i+1)/4,base=y-28*s,h=ground-base;
+    path(ctx,[[t+(l-t)*f,base+h*f],[u+(r-u)*f2,base+h*f2]],'#566a8e',1);
+    path(ctx,[[u+(r-u)*f,base+h*f],[t+(l-t)*f2,base+h*f2]],'#566a8e',1);
+  }
+  path(ctx,[[x-28*s,y-11*s],[x+28*s,y-11*s]],'#a4b4d0',2);
+  path(ctx,[[x-15*s,y-11*s],[x-15*s,y+2*s]],'#76aca8',4);
+}
+function drawStand(el,p,r,t) {
+  const w=el.clientWidth, h=el.clientHeight, ctx=canvasSetup(el,w,h);
+  const small=w<545, k=small?.74:1;
+  const wire=h*.39, floor=h*.78;
+  const xs=w*.13, xp=w*.31, xb=w*.58, xm=w*.87, ys=wire+1, ym=wire+29*k;
+  sky(ctx,w,h);
+  const storm=ctx.createRadialGradient(xs,18,5,xs,18,w*.32);
+  storm.addColorStop(0,'#494163');storm.addColorStop(1,'#21244200');
+  ctx.fillStyle=storm;ctx.fillRect(0,0,w,h*.8);
+  terrain(ctx,w,floor+3);
+  const strikeX=p.mode==='direct'?xs:Math.max(20,xs-w*.075);
+  const endpoint=p.mode==='direct'?ys:floor-12;
+  const bright=t>0 && t<Math.max(1.2,r.src.peakTime+1);
+  for(const x of [-24,-9,7,23]) {
+    ctx.fillStyle='#3e405b';ctx.beginPath();ctx.ellipse(strikeX+x*k,h*.12+Math.abs(x)*.2,22*k,10*k,0,0,2*Math.PI);ctx.fill();
+  }
+  ctx.save();
+  if(bright){ctx.shadowColor='#c3a7ff';ctx.shadowBlur=16;}
+  path(ctx,[[strikeX+3,h*.16],[strikeX-10,endpoint*.53],[strikeX+5,endpoint*.56],[strikeX-5,endpoint*.78],[strikeX+8,endpoint*.76],[strikeX,endpoint]],bright?'#f5e6ff':'#897fbd',bright?3:1.7);
+  ctx.restore();
+  if(p.mode==='induced'){
+    ctx.setLineDash([4,4]);path(ctx,[[strikeX+9,endpoint-30],[xs,ys+3]],'#ad9adf',1.5);ctx.setLineDash([]);
+    if(!small)txt(ctx,'наведённый импульс',xs+2,ys-34,'#e0c9ff',12);
+  }
+  pylon(ctx,xp,ys,floor,k);
+  const cb=xb+9*k;
+  iso(ctx,xb-44*k,wire+7*k,76*k,floor-wire-10*k,16*k,['#435477','#273c59','#2d425e']);
+  for(let i=0;i<5;i++){
+    const left=xb-38*k+i*13*k;
+    box(ctx,left,wire+17*k,8*k,30*k,2,'#172740','#465772');
+    dot(ctx,left+4*k,wire+22*k,1.5*k,i===2?'#83f3b9':'#82acc5');
+  }
+  path(ctx,[[cb-17*k,wire-2*k],[cb-17*k,wire+7*k]],'#a5cfce',6*k);
+  const start=[xs,ys], node=[xb,ys], end=[xm,ym];
+  path(ctx,[[xs-9*k,ys],node,[xb,ym],end],'#91a2bd',2.3);
+  path(ctx,[[xb,ym],end],'#5f9aaf',3.2);
+  const mx=xm-12*k;
+  iso(ctx,mx,ym-12*k,42*k,41*k,14*k,['#4c6991','#233953','#345978']);
+  for(let i=1;i<6;i++) path(ctx,[[mx+i*6*k,ym-8*k],[mx+i*6*k,ym+24*k]],'#6183a0',1.2);
+  ctx.beginPath();ctx.ellipse(mx+44*k,ym+8*k,11*k,21*k,0,0,2*Math.PI);ctx.fillStyle='#557797';ctx.fill();ctx.strokeStyle='#9db3c8';ctx.stroke();
+  path(ctx,[[mx+49*k,ym+8*k],[mx+59*k,ym+6*k]],'#becbd8',4*k);
+  const arm=p.location==='bus'?xb:xm;
+  if(p.location!=='off') {
+    const top = p.location==='bus'?ys:ym;
+    const ax=arm-24*k, ay=top+22*k;
+    const active=Math.abs(sample(r.d.current,t/dt))>.015;
+    const stroke=active?'#eecc83':'#88a3ac';
+    path(ctx,[[arm,top],[ax,top],[ax,ay+32*k]],stroke,1.7);
+    for(let i=0;i<5;i++) path(ctx,[[ax-7*k,ay+i*5*k],[ax+7*k,ay+i*5*k]],stroke,2.4);
+    path(ctx,[[ax,ay+21*k],[ax,ay+39*k]],stroke,1.7);
+    for(let i=0;i<3;i++) path(ctx,[[ax-(9-i*3)*k,ay+(38+i*3)*k],[ax+(9-i*3)*k,ay+(38+i*3)*k]],stroke,1.4);
+    if(active) {ctx.save();ctx.shadowColor='#ffd58c';ctx.shadowBlur=10;dot(ctx,ax,ay+9*k,3*k,'#ffd58c');ctx.restore();}
+    if(!small)txt(ctx,'ОПН',ax-12*k,ay+16*k,stroke,12,'right',700);
+  }
+  if(t>0) {
+    pulseOn(ctx,start,node,t/r.src.lineDelay,'#c5aaff');
+    if(t>r.src.lineDelay) pulseOn(ctx,node,start,(t-r.src.lineDelay)/r.src.lineDelay,'#f09fb4');
+    pulseOn(ctx,[xb,ym],end,(t-r.src.lineDelay)/r.src.cableDelay,'#79edff');
+    pulseOn(ctx,end,[xb,ym],(t-r.src.lineDelay-r.src.cableDelay)/r.src.cableDelay,'#ffcb87');
+  }
+  const labelSize=small?11:13;
+  for(const [x,name] of [[w*.14,'Воздушная линия'],[xb,'Подстанция (РУ)'],[xm,'Двигатель']]) txt(ctx,name,x,h*.86,'#dfe7ff',labelSize,'center',680);
+  if(!small) txt(ctx,'кабель',w*.729,ym-9,'#a9c4d4',12,'center');
+}
+function ellipse(ctx,x,y,rx,ry,fill,stroke) {
+  ctx.beginPath();ctx.ellipse(x,y,rx,ry,0,0,2*Math.PI);ctx.fillStyle=fill;ctx.fill();
+  if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=1.2;ctx.stroke();}
+}
+function drawOpn(el,p,r,t,angle,open) {
+  const w=el.clientWidth,h=el.clientHeight,ctx=canvasSetup(el,w,h), x=w*.39, y=h*.14, small=w<490;
+  sky(ctx,w,h);
+  for(let j=0;j<h;j+=20)path(ctx,[[0,j],[w,j]],'#8295bb15',1);
+  for(let j=0;j<w;j+=24)path(ctx,[[j,0],[j,h]],'#8295bb15',1);
+  const v = h*.65, a = clamp(w*.12,34,67), turn = Math.cos(angle), cut = open?Math.abs(turn):0;
+  const current=Math.abs(sample(r.d.current,t/dt)), active=current>.015;
+  ellipse(ctx,x,y+v+8,a*1.27,10,'#0b1422','#52658d');
+  box(ctx,x-a*.3,y,a*.6,v,9,'#4d697c','#a3b8c4');
+  const color=active?'#fcd083':'#788ca8';
+  for(let j=0;j<10;j++) {
+    const u=y+11+j*(v-22)/9;
+    ellipse(ctx,x,u,a,5.5,'#344f65','#6e9bb2');
+    ellipse(ctx,x+turn*a*.08,u-2,a*.88,4.6,'#728f9e','#acc2cc');
+  }
+  if(open){
+    const cx=x+(turn>0?1:-1)*a*.08;
+    const radius=a*(.12+.34*cut);
+    ctx.fillStyle='#141a2a';ctx.fillRect(cx-radius,y+4,2*radius,v-8);
+    for(let j=0;j<8;j++) {
+      const u=y+13+j*(v-26)/8, wide=radius*.77;
+      box(ctx,cx-wide,u,2*wide,(v-26)/8-1,2,active?'#a36e37':'#627075',color);
+      ellipse(ctx,cx,u,wide,3,active?'#f1bf67':'#b6a58d',color);
+    }
+    if(active) {ctx.save();ctx.shadowColor='#fbd38a';ctx.shadowBlur=15;path(ctx,[[cx,y+4],[cx,y+v-4]],'#ffd992',3);ctx.restore();}
+  }
+  box(ctx,x-9,y-7,18,14,2,'#a3b1bf','#c6ced8');box(ctx,x-12,y+v-4,24,11,2,'#819aab','#c6ced8');
+  const x2=w*.64;
+  for(const [y1,y2,label] of [[y-1,h*.2,'Вывод'],[y+v*.25,h*.39,'Силиконовый корпус'],[y+v*.58,h*.58,open?'Варисторы ZnO':'Рёбра изоляции'],[y+v,h*.77,'К заземлению']]){
+    path(ctx,[[x+a*.35,y1],[x2-8,y2-4]],'#7287a5',1);
+    txt(ctx,label,x2,y2,'#e1e9fc',small?10:14);
+  }
+}
+function drawGround(el,p,r,t) {
+  const w=el.clientWidth,h=el.clientHeight,ctx=canvasSetup(el,w,h), small=w<520;
+  sky(ctx,w,h);
+  const surface=h*.56, x=w*.32;
+  path(ctx,[[0,surface],[w*.19,surface-5],[w*.44,surface+4],[w*.72,surface-6],[w,surface],[w,h],[0,h]],null,1,'#353943');
+  for(let i=0;i<19;i++) {
+    const q=(i*93)%w,j=surface+11+(i*27)%(h*.42);
+    path(ctx,[[q,j],[q+10,j-6],[q+22,j-3],[q+29,j+5]],'#525260',1);
+  }
+  const i=sample(r.d.current,t/dt), u=sample(r.d.ground,t/dt), hue=Math.abs(i)>.015?'#ffd491':'#7ba5b5';
+  path(ctx,[[w*.12,h*.18],[x,h*.18],[x,h*.68]],hue,2);
+  box(ctx,x-11,h*.22,22,h*.27,3,'#32485d',hue);
+  for(let j=0;j<5;j++){const y=h*.25+h*.043*j;path(ctx,[[x-13,y],[x+13,y]],hue,2);}
+  path(ctx,[[x,h*.68],[w*.18,h*.78],[w*.43,h*.78],[w*.55,h*.68],[x,h*.68],[w*.43,h*.78]],hue,3);
+  if(Math.abs(u)>.05){
+    for(let j=1;j<5;j++){
+      ctx.beginPath();ctx.ellipse(w*.37,h*.73,w*.042*j,h*.026*j,0,0,2*Math.PI);
+      ctx.strokeStyle=`rgba(255,186,118,${clamp(Math.abs(u)/15,.1,.8)*(1-j/7)})`;ctx.lineWidth=2;ctx.stroke();
+    }
+  }
+  txt(ctx,'ОПН',x+19,h*.33,'#e8ebfc',small?12:16);
+  txt(ctx,'Локальная земля',w*.60,h*.25,'#e8ebfc',small?11:16);
+  txt(ctx,`ΔUзем = ${fmt(u,2)} кВ`,w*.60,h*.38,hue,small?14:22,'left',720);
+  txt(ctx,`Iопн = ${fmt(i,3)} кА`,w*.60,h*.49,'#8debb2',small?12:16);
+  txt(ctx,`Rимп = ${fmt(p.earth,1)} Ом`,w*.6,h*.71,'#ded8ed',small?12:16);
+  txt(ctx,'Выносная земля = 0 кВ',w*.6,h*.81,'#a5b5d4',small?10:13);
+}
+function chartSeries(r,ref,view,p,compare) {
+  if(view==='i') return [{label:'Ток через ОПН',k:'current',data:r.d.current,color:colors.current}];
+  if(view==='earth') return [
+    {label:'Подъём локальной земли',data:r.d.ground,color:colors.ground},
+    {label:'Выносная земля = 0 кВ',value:0,color:colors.base,dash:true},
+    {label:'Ток ОПН на нижней шкале',color:colors.current,legendOnly:true}
+  ];
+  const series=[{label:'Шины РУ',data:r.d.bus,color:colors.bus},{label:'Двигатель',data:r.d.motor,color:colors.motor}];
+  if(p.location!=='off') series.push({label:'ОПН между выводами',data:r.d.mov,color:colors.mov});
+  if(compare && p.location!=='off') series.push({label:'Двигатель без ОПН',data:ref.d.motor,color:colors.base,dash:true});
+  series.push({label:'Учебный предел',value:p.limit,color:colors.limit,dash:true});
+  return series;
+}
+function plot(ctx,w,h,series,maxT,a,b,unit) {
+  const l=45,right=w-11,top=18,bottom=h-27;
+  const samples=Math.round(maxT/dt);
+  let min=0,max=unit==='кА'?.2:series[0].label==='Подъём локальной земли'?.5:5;
+  for(const s of series) {
+    if(s.legendOnly)continue;
+    if('value' in s){max=Math.max(max,s.value);continue;}
+    for(let i=0;i<=samples;i++){min=Math.min(min,s.data[i]);max=Math.max(max,s.data[i]);}
+  }
+  const interval=Math.pow(10,Math.floor(Math.log10((max-min)/4)));
+  const raw=(max-min)/4/interval;
+  const tick=(raw<=1?1:raw<=2?2:raw<=5?5:10)*interval;
+  min=Math.floor(min/tick)*tick;max=Math.ceil(max/tick)*tick;
+  const X=t=>l+(right-l)*t/maxT;
+  const Y=v=>bottom-(bottom-top)*(v-min)/(max-min);
+  ctx.fillStyle='#0e1527';ctx.fillRect(0,0,w,h);
+  for(let value=min;value<=max+tick/2;value+=tick) {
+    const y=Y(value);
+    path(ctx,[[l,y],[right,y]],value===0?'#586683':'#26314a',1);
+    txt(ctx,fmt(Math.abs(value)<tick/100?0:value,Math.max(0,Math.ceil(-Math.log10(tick)))),l-6,y+4,'#9baac9',11,'right');
+  }
+  for(let j=0;j<=4;j++){
+    const t=maxT*j/4,x=X(t);
+    path(ctx,[[x,top],[x,bottom]],'#26314a',1);
+    txt(ctx,fmt(t,0),x,bottom+16,'#a5b1cb',11,j===4?'right':'center');
+  }
+  txt(ctx,unit,4,11,'#acb8d3',11);
+  txt(ctx,'мкс',right,bottom+25,'#acb8d3',10,'right');
+  ctx.save();ctx.beginPath();ctx.rect(l,top,right-l,bottom-top);ctx.clip();
+  for(const s of series) {
+    if(s.legendOnly)continue;
+    ctx.setLineDash(s.dash?[5,5]:[]);
+    if('value' in s) {path(ctx,[[l,Y(s.value)],[right,Y(s.value)]],s.color,1.1);continue;}
+    ctx.beginPath();
+    const step=Math.max(1,Math.floor(samples/(w*2)));
+    for(let i=0;i<=samples;i+=step){const x=X(timeAt(i)),y=Y(s.data[i]);i?ctx.lineTo(x,y):ctx.moveTo(x,y);}
+    ctx.lineTo(right,Y(s.data[samples]));ctx.strokeStyle=s.color;ctx.lineWidth=s.dash?1.3:1.9;ctx.stroke();
+  }
+  ctx.restore();
+  for(const [v,id,color] of [[a,'A','#9de5b4'],[b,'B','#f8e5bc']]) {
+    if(v>maxT)continue;
+    const x=X(v);ctx.setLineDash([3,3]);path(ctx,[[x,top],[x,bottom]],color,1.15);ctx.setLineDash([]);
+    txt(ctx,id,clamp(x+(id==='A'?-5:6),l-10,right-2),12,color,11,id==='A'?'right':'left',700);
+  }
+  return {left:l,right};
+}
+
+const $ = id => document.getElementById(id);
+const numberFormat = new Map();
+function fmt(n,digits=1) {
+  if(!numberFormat.has(digits)) numberFormat.set(digits,new Intl.NumberFormat('ru-RU',{minimumFractionDigits:digits,maximumFractionDigits:digits,useGrouping:false}));
+  return numberFormat.get(digits).format(Math.abs(n)<.5*10**-digits?0:n);
+}
+const routeNames = ['theory','stand','waves','opn','ground','practice','cases','tasks','quiz'];
+const labTabs = new Set(['stand','opn','ground']);
+const labNames = {stand:'ВЛ и кабель',waves:'Волны и время',opn:'ОПН',ground:'Заземление'};
+const teaching = {
+  stand:['От грозы до двигателя','Курсор B управляет положением фронта.','Цветные маркеры показывают ход фронта и первых отражений. Расстояния на схеме условны.'],
+  opn:['Полимерный ОПН в разрезе','Перетащите модель или используйте стрелки. Подсветка следует за током ОПН.','Расположение дисков показано по конструкции полимерного аппарата.'],
+  ground:['Импульсный путь тока в землю','Подъём потенциала и ток показаны в момент B.','Геометрия заземлителя условна, Rимп задаётся отдельно.']
+};
+const sliders = [
+  ['stroke','source-controls','Пик тока молнии','кА',8,48,1,0,'Пиковый ток канала молнии. Через ОПН протекает другой ток.'],
+  ['distance','source-controls','Расстояние до ВЛ','м',25,250,5,0,'Кратчайшее расстояние от канала молнии до воздушной линии.'],
+  ['cable','line-controls','Длина кабеля до двигателя','м',33,495,33,0,'Скорость в кабеле 165 м/мкс.'],
+  ['limit','line-controls','Учебный порог изоляции','кВ',35,150,1,0,'Условный импульсный предел сравнения.'],
+  ['earth','line-controls','Импульсный эквивалент земли','Ом',0,25,.5,1,'Эквивалент импульсного пути от ОПН к выносной земле.'],
+  ['lead','extra-controls','Индуктивность подводов','мкГн',0,12,.5,1,'Модель учитывает сумму индуктивностей присоединений.'],
+  ['u10','extra-controls','Точка ВАХ U₁₀','кВ',25,55,1,0,'Условное напряжение между выводами ОПН при импульсе 10 кА.'],
+  ['span','extra-controls','Участок ВЛ до шин','м',290,1450,145,0,'Скорость на ВЛ 290 м/мкс.']
+];
+for(const [key,host,label,unit,min,max,step,dec,tip] of sliders) {
+  $(host).insertAdjacentHTML('beforeend',`<div class="range" id="group-${key}"><label for="${key}" title="${tip}">${label} <output for="${key}" id="val-${key}"></output></label><input id="${key}" type="range" min="${min}" max="${max}" step="${step}"></div>`);
+}
+const signalLabels = [
+ ['bus','РУ',colors.bus],['motor','Двигатель',colors.motor],['mov','ОПН',colors.mov],
+ ['current','Ток ОПН',colors.current],['ground','Подъём земли',colors.ground],['leadV','Подводы',colors.leadV]
+];
+let p={...base}, r, reference, route='stand', view='u', a=0, b=0, open=true, angle=0, lastPointer, scale, currentExp=null;
+let raf=0, running=false, lastFrame=0, variant=1, quizAnswers=new Map();
+const setButton = (id,value) => $(id).setAttribute('aria-pressed',String(value));
+const windowTime = () => Number($('window').value);
+
+function syncForm() {
+  for(const [key,,,unit,,,,dec] of sliders) {
+    $(key).value=p[key];$ ('val-'+key).textContent=fmt(p[key],dec)+' '+unit;
+  }
+  for(const key of ['mode','location','load']) $(key).value=p[key];
+  $('steep').checked=p.steep;$('group-distance').hidden=p.mode!=='induced';
+}
+function calculate(resetTime=true) {
+  pause();
+  r=solve(p); reference = p.location==='off' ? r : solve({...p,location:'off'});
+  if(resetTime) {a=0;b=0;}
+  syncForm();
+  $('source-note').innerHTML=p.mode==='direct'
+    ? `В точке удара ≈ ${fmt(r.src.primary,0)} кВ до перекрытий. На подходе к РУ задано 2,5% · <strong>${fmt(r.src.amplitude,1)} кВ</strong>.`
+    : `Оценка Руска при h=10 м · <strong>${fmt(r.src.amplitude,1)} кВ</strong> падающей волны.`;
+  renderResult();
+  repaint();
+  if(route==='opn')renderVah();
+}
+function renderResult() {
+  const metric = (title,value,unit,notes='',color='') => `<div class="metric"><span>${title}</span><strong class="${color}">${value} ${unit}</strong>${notes?'<span class="sub">'+notes+'</span>':''}</div>`;
+  const off=p.location==='off';
+  $('to-current').disabled=off;
+  $('metrics').innerHTML=metric('Пик двигателя',fmt(r.peak,2),'кВ','t = '+fmt(timeAt(r.peakIndex),3)+' мкс')+
+    metric('Учебный запас ΔU',fmt(r.margin,2),'кВ',fmt(100*r.margin/p.limit,2)+'% от порога '+p.limit+' кВ',r.margin<0?'bad':'good')+
+    metric('Пик на варисторах',off?'—':fmt(r.devicePeak,2),off?'':'кВ')+
+    metric('Пик тока ОПН',off?'—':fmt(r.peakI,3),off?'':'кА')+
+    metric('Энергия ОПН',off?'—':fmt(r.energy,3),off?'':'кДж')+
+    metric('Пик двигателя без ОПН',fmt(reference.peak,2),'кВ','При том же импульсе');
+  $('verdict').textContent=r.margin<0?'Учебный порог превышен. Модель продолжает расчёт без перекрытия изоляции.':'Пик '+(r.margin>0?'ниже учебного порога.':'равен учебному порогу.')+' Проверка относится к одному расчётному импульсу.';
+}
+function repaint() {
+  if(!labTabs.has(route)) return;
+  const canvas=$('scene');
+  if(route==='stand') drawStand(canvas,p,r,b);
+  if(route==='opn') drawOpn(canvas,p,r,b,angle,open);
+  if(route==='ground') {drawGround(canvas,p,r,b);showGroundTiming();}
+  const chart=$('scope'), max=windowTime(), content=chartSeries(r,reference,view,p,$('compare').checked);
+  const legend=content.map(s=>`<span><b style="color:${s.color}" class="${s.dash?'dash':''}"></b>${s.label}</span>`).join('');
+  if($('legend').dataset.key!==legend){$('legend').dataset.key=legend;$('legend').innerHTML=legend;}
+  scale=plot(canvasSetup(chart,chart.clientWidth,chart.clientHeight),chart.clientWidth,chart.clientHeight,content,max,a,b,view==='i'?'кА':'кВ');
+  const groundChart=$('scope-ground-i');
+  groundChart.hidden=view!=='earth';
+  if(view==='earth') plot(canvasSetup(groundChart,groundChart.clientWidth,groundChart.clientHeight),groundChart.clientWidth,groundChart.clientHeight,chartSeries(r,reference,'i',p,false),max,a,b,'кА');
+  syncCursors();
+  if(route==='opn')syncVah();
+}
+function showGroundTiming() {
+  const arrival = r.src.lineDelay+(p.location==='motor'?r.src.cableDelay:0);
+  const current = sample(r.d.current,b/dt);
+  const local = sample(r.d.ground,b/dt);
+  let stage, description;
+  if(p.location==='off') {
+    stage='Ветвь ОПН отключена';
+    description='Ток через эту ветвь отсутствует. Подъём локального потенциала равен 0 кВ во всём окне.';
+  } else if(b<=arrival) {
+    stage='До начала тока через ОПН';
+    description=`Фронт приходит к точке установки в ${fmt(arrival,2)} мкс. До прихода I = 0 и ΔUзем = 0.`;
+  } else {
+    stage=b<=timeAt(r.peakIIndex)?'Импульс проходит через ОПН':'После максимума тока';
+    description=`При B = ${fmt(b,3)} мкс: ${fmt(current,3)} кА × ${fmt(p.earth,1)} Ом ≈ ${fmt(local,2)} кВ относительно выносной земли.`;
+    if(p.earth===0) description+=' Идеальное заземление держит потенциал на нуле даже при токе.';
+  }
+  $('ground-state').textContent=stage;$('ground-description').textContent=description;
+  $('ground-decay').disabled=p.location==='off';
+}
+function syncCursors() {
+  $('cursor').max=windowTime();$('cursor').value=Math.min(b,windowTime());
+  $('cursor').setAttribute('aria-valuetext',fmt(b,3)+' мкс');
+  $('a').value=Number(a.toFixed(3));$('b').value=Number(b.toFixed(3));$('delta').textContent=fmt(b-a,3);
+  $('readouts').innerHTML=signalLabels.map(([k,label,color])=>{
+    const unit=k==='current'?'кА':'кВ', data=r.d[k];
+    return `<span style="color:${color}">${label} <strong>${fmt(sample(data,b/dt),k==='current'?3:2)} ${unit}</strong></span>`;
+  }).join('');
+}
+function pause() {
+  if(raf) cancelAnimationFrame(raf);
+  running=false;raf=0;lastFrame=0;
+  $('play').textContent=b>0&&b<windowTime()?'Продолжить':'Пуск';
+}
+function playback(t) {
+  if(!lastFrame)lastFrame=t;
+  const elapsed=Math.min(t-lastFrame,60);
+  lastFrame=t;
+  b=Math.min(windowTime(),b+elapsed*windowTime()/7200*Number($('speed').value));
+  repaint();
+  if(b>=windowTime())pause();
+  else raf=requestAnimationFrame(playback);
+}
+function setCursor(which,value) {
+  const time=clamp(Number.isFinite(value)?value:0,0,duration);
+  pause();
+  if(time>windowTime()) $('window').value=time<=45?'45':'180';
+  if(which==='a')a=time;
+  else b=time;
+  repaint();pause();
+}
+function setView(v) {
+  view=v;setButton('scope-u',v==='u');setButton('scope-i',v==='i');
+  setButton('scope-earth',v==='earth');$('compare').disabled=v!=='u';
+  repaint();
+}
+function resetControls() {
+  pause();p={...base};a=0;b=0;
+  $('window').value='16';$('speed').value='1';$('compare').checked=true;
+  $('advanced').open=false;
+  currentExp=null;showExperience();
+  calculate();setView(route==='ground'?'earth':'u');pause();
+}
+function showExperience() {
+  $('active-exp').hidden=currentExp===null;
+  $('wave-exp').hidden=currentExp===null||experiments[currentExp][0]!=='waves';
+  if(currentExp===null)return;
+  const [tab,name,,instructions,answer]=experiments[currentExp];
+  const markup=`<h3>${name}</h3><p>${instructions}</p><details><summary>Проверить результат</summary><p>${answer}</p></details>`;
+  $('active-exp').hidden=tab==='waves';
+  $(tab==='waves'?'wave-exp':'active-content').innerHTML=markup;
+  if(currentExp===17)$('vah-slider').value='0';
+}
+function launch(i,preset={}) {
+  const [tab,,props]=experiments[i];
+  const {window:windowSize,waveEnd='42',rcC=3,...setup}={...props,...preset};
+  p={...base,...setup};currentExp=i;a=b=0;
+  $('wave-end').value=waveEnd;$('rc-c').value=rcC;$('wave-u').value='105';$('rc-time').value='1.05';
+  $('window').value=windowSize||'16';$('advanced').open=!!(setup.steep||setup.lead!==undefined||setup.load!==undefined);
+  setView('u');calculate();showExperience();
+  if(location.hash==='#'+tab)updateRoute();
+  else location.hash=tab;
+  scrollTo(0,0);
+}
+function updateRoute() {
+  const target=location.hash.slice(1);
+  const previousRoute=route;
+  route=routeNames.includes(target)?target:'stand';
+  pause();
+  document.querySelectorAll('.tabs a').forEach(el=>{
+    if(el.hash==='#'+route) el.setAttribute('aria-current','page');
+    else el.removeAttribute('aria-current');
+  });
+  const lab=labTabs.has(route);
+  $('lab').hidden=!lab;$('reading').hidden=lab||route==='waves';$('wave-lesson').hidden=route!=='waves';
+  if(lab) {
+    const [title,detail,hint]=teaching[route];
+    $('scene-title').textContent=title;$('scene-desc').textContent=detail;$('scene-tip').textContent=hint;
+    $('view-toggle').hidden=route!=='opn';
+    $('scene').dataset.rotate=String(route==='opn');
+    $('scene').tabIndex=route==='opn'?0:-1;
+    $('scene').setAttribute('aria-label',title+' · '+detail);
+    $('to-bus').hidden=route!=='stand';$('to-motor').hidden=route!=='stand';
+    $('to-current').hidden=route==='stand';
+    $('ground-timing').hidden=route!=='ground';
+    $('apparatus').hidden=route!=='opn';
+    $('vah-panel').hidden=route!=='opn';$('show-vah').hidden=route!=='opn';
+    if(route==='ground')setView('earth');
+    else if(previousRoute==='ground'||view==='earth')setView('u');
+    repaint();
+    if(route==='opn')renderVah();
+  } else if(route==='waves')renderWaves();
+  else renderReading();
+}
+const blockHeader = (title,description) => `<header class="reading-head"><h2>${title}</h2><p>${description}</p></header>`;
+const card = (name,body) => `<article class="card"><h3>${name}</h3>${body}</article>`;
+const launchButton = (i,label='Установить режим опыта') => `<button type="button" class="primary" data-exp="${i}">${label}</button>`;
+function renderReading() {
+  const pane=$('reading');
+  if(route==='theory') {
+    const concepts=`<h3 class="read-section">Словарь</h3><p>${Object.keys(terms).map(term).join(' · ')}</p>`;
+    const docs = ['book','ieee','pue4','pue1','gost','iec','iecOpn','symbol','operation','opn','datasheet','signum'].map(key=>`<li>${link(key)}</li>`).join('');
+    pane.innerHTML=blockHeader('Как импульс доходит до изоляции','На схеме сравниваются три точки измерения и один учебный предел для двигателя.')+
+      `<div class="card-grid">${theory.map(([name,body])=>card(name,body)).join('')}</div>${concepts}<h3 class="read-section">Методические и нормативные источники</h3><ul class="reference-list">${docs}</ul>`;
+  }
+  if(route==='practice') pane.innerHTML=blockHeader('Практические опыты','Установите режим, снимите показания и измените один параметр. В отчёте укажите величины с единицами и сравните записи.')+
+    Object.entries(labNames).map(([tab,name])=>`<h3 class="read-section">${name}</h3><div class="prompt-list">${experiments.map(([group,title,,action,answer],i)=>group===tab?card(`${i+1}. ${title}`,`<p>${action}</p>${launchButton(i)}<details><summary>Контрольный результат</summary><p>${answer}</p></details>`):'').join('')}</div>`).join('');
+  if(route==='cases') pane.innerHTML=blockHeader('Наблюдения на линиях и учебный кейс','Сопоставьте опубликованные наблюдения с возможностями однофазного стенда.')+
+    `<div class="card-grid">${cases.map(([name,summary,action,key,i])=>card(name,`<p>${summary}</p><p>${action}</p><p>${link(key)}</p>${launchButton(i,'Открыть исходный режим')}`)).join('')}</div>`;
+  if(route==='tasks') pane.innerHTML=blockHeader('Расчётные задачи','Сначала запишите формулу со всеми единицами. Проверьте решение и сопоставьте с тренажёром.')+
+    `<div class="card-grid">${tasks.map(([name,question,answer],i)=>card(`${i+1}. ${name}`,`<p>${question}</p><details><summary>Открыть решение</summary><p>${answer}</p></details>`)).join('')}</div>`;
+  if(route==='quiz') drawQuiz();
+}
+function drawQuiz() {
+  const quiz=quizFor(variant);
+  const form=quiz.map(([question,correct,distractors],i)=>{
+    const slot=(3*i+variant+Math.floor(i/3))%3;
+    const options=[...distractors];options.splice(slot,0,correct);
+    return `<fieldset><legend>${i+1}. ${question}</legend>${options.map((x,j)=>`<label><input type="radio" name="q${i}" value="${j}" ${quizAnswers.get(i)===j?'checked':''}> ${x}</label>`).join('')}<small class="qfeedback" id="feed-${i}" data-slot="${slot}" hidden></small></fieldset>`;
+  }).join('');
+  $('reading').innerHTML=blockHeader('Тест по теме 17','Выберите вариант. После проверки можно разобрать ответы и повторить попытку.')+
+    `<div class="quiz-tools"><label for="variant">Вариант</label><select id="variant">${[1,2,3,4,5].map(v=>`<option ${v===variant?'selected':''}>${v}</option>`).join('')}</select></div><div class="quiz-list">${form}</div><div class="quiz-footer"><button type="button" class="primary" id="grade">Проверить ответы</button><button type="button" id="clear-quiz">Сбросить ответы</button><strong id="quiz-result" role="status"></strong></div>`;
+}
+const dialog=document.createElement('dialog');
+dialog.className='term-dialog';dialog.innerHTML='<h3></h3><p></p><form method="dialog"><button>Закрыть</button></form>';document.body.append(dialog);
+$('reading').addEventListener('click',e=>{
+  const el=e.target.closest('button');
+  if(!el)return;
+  if(el.dataset.term) {
+    dialog.querySelector('h3').textContent=el.dataset.term;
+    const definition=dialog.querySelector('p');
+  definition.textContent=terms[el.dataset.term];
+  if(el.dataset.term==='sgn(I)')definition.insertAdjacentHTML('beforeend','<br>'+link('signum'));
+    dialog.showModal();
+  }
+  if(el.dataset.exp!==undefined)launch(Number(el.dataset.exp));
+  if(el.id==='clear-quiz'){quizAnswers.clear();drawQuiz();}
+  if(el.id==='grade'){
+    let correct=0;
+    quizFor(variant).forEach((q,i)=>{
+      const node=$('feed-'+i),chosen=quizAnswers.get(i),yes=chosen===Number(node.dataset.slot);
+      correct+=yes?1:0;node.hidden=false;
+      node.textContent=(yes?'Верно. ':chosen===undefined?'Ответ пропущен. ':'Проверьте ответ. ')+q[3];
+      node.style.color=yes?'var(--mint)':'var(--amber)';
+    });
+    $('quiz-result').textContent=correct+' из 15 · отвечено '+quizAnswers.size;
+  }
+});
+$('reading').addEventListener('change',e=>{
+  if(e.target.id==='variant'){variant=Number(e.target.value);quizAnswers.clear();drawQuiz();}
+  if(e.target.matches('input[type=radio]')){
+    const i=Number(e.target.name.slice(1));quizAnswers.set(i,Number(e.target.value));
+    $('feed-'+i).hidden=true;$('quiz-result').textContent='';
+  }
+});
+for(const [key] of sliders) $(key).addEventListener('input',()=>{p[key]=Number($(key).value);calculate(false);});
+for(const key of ['mode','location','load','steep']) $(key).addEventListener('change',()=>{
+  p[key]=key==='load'?Number($(key).value):key==='steep'?$(key).checked:$(key).value;
+  calculate(key==='mode');
+});
+$('play').addEventListener('click',()=>{
+  if(running){pause();return;}
+  if(b>=windowTime())b=0;
+  running=true;$('play').textContent='Пауза';raf=requestAnimationFrame(playback);
+});
+$('reset').addEventListener('click',()=>{pause();a=0;b=0;repaint();pause();});
+$('copy-cursor').addEventListener('click',()=>setCursor('a',b));
+$('defaults').addEventListener('click',resetControls);
+$('scope-u').addEventListener('click',()=>setView('u'));
+$('scope-i').addEventListener('click',()=>setView('i'));
+$('scope-earth').addEventListener('click',()=>setView('earth'));
+$('compare').addEventListener('change',repaint);
+$('window').addEventListener('change',()=>{a=Math.min(a,windowTime());b=Math.min(b,windowTime());pause();repaint();});
+$('cursor').addEventListener('input',()=>setCursor('b',Number($('cursor').value)));
+for(const key of ['a','b']) $(key).addEventListener('change',()=>setCursor(key,$(key).valueAsNumber));
+$('to-bus').addEventListener('click',()=>setCursor('b',r.src.lineDelay));
+$('to-motor').addEventListener('click',()=>setCursor('b',r.src.lineDelay+r.src.cableDelay));
+$('to-peak').addEventListener('click',()=>setCursor('b',timeAt(r.peakIndex)));
+$('to-current').addEventListener('click',()=>{setView(route==='ground'?'earth':'i');setCursor('b',timeAt(r.peakIIndex));});
+$('ground-before').addEventListener('click',()=>{setView('earth');setCursor('b',0);});
+$('ground-decay').addEventListener('click',()=>{setView('earth');setCursor('b',Math.min(duration,timeAt(r.peakIIndex)+45));});
+for(const id of ['scope','scope-ground-i']) $(id).addEventListener('click',e=>{
+  if(!scale)return;
+  const x=e.clientX-$(id).getBoundingClientRect().left;
+  setCursor(e.shiftKey?'a':'b',Math.round(clamp((x-scale.left)/(scale.right-scale.left),0,1)*windowTime()/dt)*dt);
+});
+$('view-toggle').addEventListener('click',()=>{
+  open=!open;$('view-toggle').textContent=open?'Закрыть разрез':'Открыть разрез';
+  setButton('view-toggle',open);repaint();
+});
+$('scene').addEventListener('pointerdown',e=>{
+  if(route!=='opn')return;
+  lastPointer=e.clientX;$('scene').setPointerCapture(e.pointerId);
+});
+$('scene').addEventListener('pointermove',e=>{
+  if(route!=='opn'||lastPointer===undefined)return;
+  angle+=(e.clientX-lastPointer)*.025;lastPointer=e.clientX;repaint();
+});
+for(const name of ['pointerup','pointercancel','lostpointercapture']) $('scene').addEventListener(name,()=>{lastPointer=undefined;});
+$('scene').addEventListener('keydown',e=>{
+  if(route==='opn'&&['ArrowLeft','ArrowRight','Home'].includes(e.key)){
+    e.preventDefault();angle=e.key==='Home'?0:angle+(e.key==='ArrowLeft'?-.25:.25);repaint();
+  }
+});
+$('csv').addEventListener('click',()=>{
+  const comment = `# Сценарий=${p.mode}, ОПН=${p.location}, I_молнии_кА=${p.stroke}, d_м=${p.distance}, ВЛ_м=${p.span}, кабель_м=${p.cable}, R_Ом=${p.earth}, L_мкГн=${p.lead}, U10_кВ=${p.u10}, эквивалент_двигателя_Ом=${p.load}, крутой_фронт=${p.steep}, порог_кВ=${p.limit}, A_мкс=${a.toFixed(3)}, B_мкс=${b.toFixed(3)}`;
+  const header = 't_us;u_incident_kV;u_bus_kV;u_motor_kV;u_MOV_kV;i_MOV_kA;u_ground_kV;u_lead_kV;W_MOV_kJ;u_motor_no_MOV_kV';
+  const rows = Array.from(r.d.bus,(_,i)=>[timeAt(i),r.d.incoming[i],r.d.bus[i],r.d.motor[i],r.d.mov[i],r.d.current[i],r.d.ground[i],r.d.leadV[i],r.d.energy[i],reference.d.motor[i]].map(v=>v.toFixed(6)).join(';'));
+  const url=URL.createObjectURL(new Blob(['\ufeff',comment,'\n',header,'\n',rows.join('\n')],{type:'text/csv;charset=utf-8'}));
+  const el=document.createElement('a');el.href=url;el.download='TVN_17_oscillogram.csv';el.click();
+  setTimeout(()=>URL.revokeObjectURL(url),500);
+});
+window.addEventListener('resize',()=>{repaint();if(route==='waves')renderWaves();if(route==='opn')renderVah();});window.addEventListener('hashchange',updateRoute);
+
+function lessonCanvas(id, xmin, xmax, ymin, ymax, ticksX, ticksY, labelX, labelY, tickDigits=0, logX=false) {
+  const el=$(id), w=el.clientWidth, h=el.clientHeight;
+  const c=canvasSetup(el,w,h);
+  const left=51, right=w-14, top=22, bottom=h-40;
+  const map=logX?Math.log10:n=>n;
+  const px=x=>left+(map(x)-map(xmin))/(map(xmax)-map(xmin))*(right-left);
+  const py=y=>bottom-(y-ymin)/(ymax-ymin)*(bottom-top);
+  for(const v of ticksX){
+    const x=px(v);path(c,[[x,top],[x,bottom]],'#26314a');
+    txt(c,String(v).replace('.',','),x,bottom+15,'#a5b1cb',11,'center');
+  }
+  for(const v of ticksY){
+    const y=py(v);path(c,[[left,y],[right,y]],v===0?'#52627d':'#26314a');
+    txt(c,fmt(v,tickDigits),left-6,y+4,'#a5b1cb',11,'right');
+  }
+  txt(c,labelY,left,13,'#e0e8ff',12);
+  txt(c,labelX,right,bottom+33,'#e0e8ff',12,'right');
+  return {c,px,py,w,h,left,right,top,bottom};
+}
+function renderVah(){
+  const i=10**Number($('vah-slider').value);
+  const u=movVoltage(i,p.u10), up=movVoltage(20,p.u10);
+  const yMax=Math.ceil(Math.max(45,up)/10)*10;
+  const {c,px,py}=lessonCanvas('vah-chart',.1,30,0,yMax,[.1,.2,.5,1,2,5,10,20],Array.from({length:yMax/10+1},(_,j)=>10*j),'Ток ОПН, кА (лог. шкала)','Напряжение ОПН, кВ',0,true);
+  const curve=Array.from({length:161},(_,j)=>{const k=10**(-1+j*Math.log10(300)/160);return [px(k),py(movVoltage(k,p.u10))];});
+  path(c,curve,'#c5adff',2.6);
+  for(const [amp,volts] of ratedPoints)dot(c,px(amp),py(volts),4,'#62e4ef');
+  path(c,[[px(i),py(0)],[px(i),py(u)],[px(.1),py(u)]],'#ffce84',1.3);
+  dot(c,px(i),py(u),5,'#ffce84');
+  const row=ratedPoints.find(([amp])=>Math.abs(i-amp)<.0001);
+  $('vah-value').textContent=`I = ${fmt(i,3)} кА · U по модели = ${fmt(u,2)} кВ`+(row?` · паспорт 8/20 мкс: ${fmt(row[1],1)} кВ`:'');
+  const cursorCurrent=Math.abs(sample(r.d.current,b/dt));
+  $('vah-use-b').disabled=cursorCurrent<.1||cursorCurrent>30;
+  $('vah-use-b').title='Шкала для тока 0,1–30 кА. Снимите ненулевой отсчёт в этом диапазоне.';
+}
+function syncVah(){
+  const current=Math.abs(sample(r.d.current,b/dt));
+  $('vah-use-b').disabled=current<.1||current>30;
+}
+
+function waveInput(){
+  const end=$('wave-end').value;
+  const z2=end==='open'?Infinity:end==='custom'?Number($('wave-z2').value):Number(end);
+  return {z2,incident:Number($('wave-u').value),c:Number($('rc-c').value),elapsed:Number($('rc-time').value)};
+}
+function renderWaves(){
+  const {z2,incident,c,elapsed}=waveInput();
+  const v=boundary(zLine,z2,incident);
+  $('wave-z2-control').hidden=$('wave-end').value!=='custom';
+  const label=Number.isFinite(z2)?fmt(z2,0)+' Ом':'∞';
+  $('wave-coeffs').textContent=`Z₂ = ${label} · β = ${fmt(v.beta,4)} · α = ${fmt(v.alpha,4)}`;
+  $('wave-meaning').textContent=z2===Infinity?'В разомкнутой точке напряжение удваивается. Ток нагрузки равен нулю.':z2===0?'В короткозамкнутой точке напряжение равно нулю. Отражённая волна напряжения имеет противоположный знак.':'У границы Uузла = Uпад + Uотр. В присоединённом кабеле это амплитуда первой прошедшей волны.';
+  const w=$('wave-chart').clientWidth,h=$('wave-chart').clientHeight,cv=canvasSetup($('wave-chart'),w,h);
+  const scale=(h-59)/3.3;
+  const baseline=h-39-1.1*scale;
+  path(cv,[[24,baseline],[w-24,baseline]],'#52627d');
+  txt(cv,'кВ',13,18,'#adb8d5',12);
+  const data=[['Падающая',incident,'#64ddfa'],['Отражённая',v.reflected,'#f49aac'],['В узле',v.transmitted,'#c5adff']];
+  data.forEach(([name,amp,color],j)=>{
+    const x=w*(j+1)/4;
+    const y=baseline-amp/incident*scale;
+    const width=Math.min(48,w/8);
+    box(cv,x-width/2,Math.min(y,baseline),width,Math.max(2,Math.abs(y-baseline)),2,color);
+    txt(cv,fmt(amp,1),x,amp<0?y+15:y-7,color,13,'center',650);
+    txt(cv,name,x,h-10,'#dadff7',11,'center');
+  });
+  const {lineDelay,cableDelay,peakTime,rise,tail}=r.src;
+  $('wave-times').textContent=`На шинах ${fmt(lineDelay,2)} мкс · у двигателя ${fmt(lineDelay+cableDelay,2)} мкс · первый возврат к шинам ${fmt(lineDelay+2*cableDelay,2)} мкс.`;
+  $('wave-pulse').textContent=`При τф = ${fmt(rise,2)} мкс, τт = ${fmt(tail,0)} мкс максимум формы через ${fmt(peakTime,3)} мкс. Падающая волна на шинах достигает пика в ${fmt(lineDelay+peakTime,3)} мкс. Пик двигателя на стенде в ${fmt(timeAt(r.peakIndex),3)} мкс.`;
+  const rc=capacitiveEnd(zLine,c,incident,elapsed);
+  const tMax=Math.ceil(Math.max(5*rc.tau,elapsed,1)*2)/2;
+  const uMax=Math.ceil(rc.final/50)*50;
+  const xt=Array.from({length:5},(_,j)=>Number((tMax*j/4).toFixed(2)));
+  const yt=Array.from({length:5},(_,j)=>uMax*j/4);
+  const plot=lessonCanvas('rc-chart',0,tMax,0,uMax,xt,yt,"Время от прихода t′, мкс","Напряжение на ёмкости, кВ",1);
+  path(plot.c,[[plot.px(0),plot.py(rc.final)],[plot.px(tMax),plot.py(rc.final)]],'#7483a8',1.1);
+  const curve=Array.from({length:141},(_,j)=>{const t=tMax*j/140;return [plot.px(t),plot.py(capacitiveEnd(zLine,c,incident,t).voltage)];});
+  path(plot.c,curve,'#c5adff',2.6);
+  path(plot.c,[[plot.px(elapsed),plot.py(0)],[plot.px(elapsed),plot.py(rc.voltage)],[plot.px(0),plot.py(rc.voltage)]],'#ffce84',1.3);
+  dot(plot.c,plot.px(elapsed),plot.py(rc.voltage),5,'#ffce84');
+  $('rc-values').textContent=`C = ${fmt(c,2)} нФ · τ = ${fmt(rc.tau,3)} мкс · при t′ = ${fmt(elapsed,3)} мкс Uc = ${fmt(rc.voltage,2)} кВ · t′₉₀ = ${fmt(rc.t90,3)} мкс`;
+}
+for(const id of ['wave-end','wave-z2','wave-u','rc-c','rc-time']) $(id).addEventListener('input',renderWaves);
+$('wave-lesson').addEventListener('click',e=>{
+  const kind=e.target.dataset.rc;
+  if(!kind)return;
+  const {c,incident}=waveInput();
+  const time=capacitiveEnd(zLine,c,incident,0)[kind];
+  $('rc-time').value=time;
+  renderWaves();
+});
+$('vah-panel').addEventListener('click',e=>{
+  if(!e.target.dataset.vah && e.target.id!=='vah-use-b')return;
+  const current=e.target.id==='vah-use-b'?Math.abs(sample(r.d.current,b/dt)):Number(e.target.dataset.vah);
+  $('vah-slider').value=Math.log10(current);
+  renderVah();
+});
+$('vah-slider').addEventListener('input',renderVah);
+$('show-vah').addEventListener('click',()=>$('vah-title').scrollIntoView({behavior:'smooth',block:'start'}));
+
+$('view-toggle').textContent='Закрыть разрез';setButton('view-toggle',true);calculate();updateRoute();
+
+</script>
+</body>
+</html>
